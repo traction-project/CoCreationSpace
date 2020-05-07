@@ -10,6 +10,7 @@ import * as logger from "morgan";
 import * as path from "path";
 import * as createError from "http-errors";
 import * as cookieParser from "cookie-parser";
+import * as passport from "passport";
 import { MongoClient } from "mongodb";
 
 import indexRouter from "./routes/index";
@@ -32,6 +33,9 @@ app.use(session({
   cookie: { secure: false },
   store: new MongoStore({ url: `${DB_URL!}/traction` })
 }));
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
