@@ -3,6 +3,12 @@ module.exports = {
         "browser": true,
         "es6": true
     },
+    "ignorePatterns": [
+      "node_modules/",
+      "dist/",
+      "bin/",
+      "webpack.config.js"
+    ],
     "extends": [
         "eslint:recommended",
         "plugin:react/recommended",
