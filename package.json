@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node --enable-source-maps ./bin/backend.js"
+    "start": "node --enable-source-maps ./bin/backend.js",
+    "lint": "eslint --ext=ts,tsx,js,jsx ."
   },
   "dependencies": {
     "aws-sdk": "^2.641.0",
