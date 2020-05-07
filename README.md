@@ -18,3 +18,14 @@ launched easily using the following command:
 During first launch, all required images will be fetched and the images will be
 assembled. This will take some time, but subsequent launches will be faster as
 only updated parts of the images need to be reassembled.
+
+**Note:** If you are not planning on doing any development and simply want to
+run the application locally, make sure to remove the following lines from the
+file `docker-compose.yml` (alternatively create a copy of the file with the
+lines removed):
+
+    volumes:
+      - .:/code
+
+Removing these lines will prevent the host directory from being mounted inside
+the container and compiled bundles being overridden.
