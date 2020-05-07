@@ -1,3 +1,6 @@
+import { ThunkAction } from "redux-thunk";
+import { ApplicationState } from "./store";
+
 /**
  * Basic action without payload and string for name of action.
  */
@@ -23,3 +26,11 @@ export interface BasicAction<T extends string> extends Action {
 export interface PayloadAction<T extends string, U> extends BasicAction<T> {
   payload: U;
 }
+
+/**
+ * Type alias which wraps and simplifies ThunkAction.
+ *
+ * @param R Return value of async action
+ * @param A Actions used within action creator
+ */
+export type AsyncAction<R, A extends Action> = ThunkAction<R, ApplicationState, void, A>;
