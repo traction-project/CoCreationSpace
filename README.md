@@ -2,7 +2,8 @@
 
 This repository contains the MediaVault code for the TRACTION EU-project. This
 is a Node.js based web application written in TypeScript, using Express.js as
-backend framework, MongoDB as database and React for the frontend.
+backend framework, MongoDB as database and React in combination with Redux for
+the frontend.
 
 ## Launching
 
