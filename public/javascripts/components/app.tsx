@@ -14,6 +14,6 @@ const App: React.FC<AppProps> = () => {
       </Switch>
     </Router>
   );
-}
+};
 
 export default App;
