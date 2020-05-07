@@ -1,7 +1,8 @@
 import * as dotenv from "dotenv";
+import { getFromEnvironment } from "./util";
 
 dotenv.config();
-const { SESSION_SECRET, DB_URL } = process.env;
+const [ SESSION_SECRET, DB_URL ] = getFromEnvironment("SESSION_SECRET", "DB_URL");
 
 import * as express from "express";
 import * as session from "express-session";
