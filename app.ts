@@ -15,6 +15,7 @@ import * as passport from "passport";
 import { MongoClient } from "mongodb";
 
 import indexRouter from "./routes/index";
+import apiIndexRouter from "./routes/api";
 
 var app = express();
 
@@ -51,7 +52,8 @@ MongoClient.connect(DB_URL!, (err, client) => {
   }
 });
 
-app.use(indexRouter);
+app.use("/", indexRouter);
+app.use("/api", apiIndexRouter);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
