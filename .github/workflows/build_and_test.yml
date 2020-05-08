@@ -14,12 +14,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-      
+
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag traction-mediavault:$(date +%s)
-    
+      run: docker build . --file Dockerfile --tag traction-mediavault:latest
+
     - name: Run linter
-      run: docker run traction-mediavault:$(date +%s) yarn lint
-    
+      run: docker run traction-mediavault:latest yarn lint
+
     - name: Run unit tests
-      run: docker run traction-mediavault:$(date +%s) yarn test
+      run: docker run traction-mediavault:latest yarn test
