@@ -30,3 +30,15 @@ lines removed):
 
 Removing these lines will prevent the host directory from being mounted inside
 the container and compiled bundles being overridden.
+
+## Testing
+
+To run the unit tests, make sure you have `yarn` installed as well as all
+development packages are installed by running `yarn install`. Following this,
+you can run the unit tests and generate a coverage report by invoking the
+following command:
+
+    yarn test
+
+This will run all unit tests and generate a test report. Extended coverage
+analysis can be found in the folder `coverage/`.
