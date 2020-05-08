@@ -1,5 +1,7 @@
 # TRACTION MediaVault
 
+![Docker Image CI](https://github.com/tv-vicomtech/traction_MediaVault/workflows/Docker%20Image%20CI/badge.svg)
+
 This repository contains the MediaVault code for the TRACTION EU-project. This
 is a Node.js based web application written in TypeScript, using Express.js as
 backend framework, MongoDB as database and React in combination with Redux for
