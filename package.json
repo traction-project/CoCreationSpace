@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node --enable-source-maps ./bin/backend.js",
+    "test": "jest --verbose --bail --coverage",
     "lint": "eslint --ext=ts,tsx,js,jsx ."
   },
   "dependencies": {
