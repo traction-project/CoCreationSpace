@@ -6,4 +6,10 @@ describe("Utility function getFromEnvironment()", () => {
       getFromEnvironment()
     ).toEqual([]);
   });
+
+  it("should throw an error when requesting something from empty environment", () => {
+    expect(() => {
+      getFromEnvironment("SOME_KEY");
+    }).toThrow();
+  });
 });
