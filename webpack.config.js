@@ -38,7 +38,7 @@ const backend = {
   },
   externals: [nodeExternals()],
   entry: {
-    backend: "./setup.ts",
+    backend: "./app.ts",
   },
   output: {
     path: __dirname + "/bin",
