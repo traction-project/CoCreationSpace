@@ -34,6 +34,7 @@ mongoose.connect(DB_URL, {
 });
 
 import "./models/user";
+import "./auth/local";
 
 app.use(session({
   secret: SESSION_SECRET,
