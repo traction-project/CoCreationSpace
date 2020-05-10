@@ -12,7 +12,7 @@ import * as path from "path";
 import * as createError from "http-errors";
 import * as cookieParser from "cookie-parser";
 import * as passport from "passport";
-import { MongoClient } from "mongodb";
+import * as mongoose from "mongoose";
 
 import indexRouter from "./routes/index";
 import apiIndexRouter from "./routes/api";
@@ -28,8 +28,13 @@ app.use(express.json());
 
 const MongoStore = connectMongo(session);
 
+mongoose.connect(DB_URL, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+});
+
 app.use(session({
-  secret: SESSION_SECRET!,
+  secret: SESSION_SECRET,
   resave: false,
   saveUninitialized: true,
   cookie: { secure: false },
@@ -42,15 +47,6 @@ app.use(passport.session());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
-
-MongoClient.connect(DB_URL!, (err, client) => {
-  if (!err) {
-    console.log("DB connection established");
-    app.locals.db = client.db("traction");
-  } else {
-    console.error(err);
-  }
-});
 
 app.use("/", indexRouter);
 app.use("/api", apiIndexRouter);
