@@ -4,6 +4,7 @@ import { getFromEnvironment } from "./util";
 dotenv.config();
 const [ SESSION_SECRET, DB_URL ] = getFromEnvironment("SESSION_SECRET", "DB_URL");
 
+import * as http from "http";
 import * as express from "express";
 import * as session from "express-session";
 import * as connectMongo from "connect-mongo";
@@ -70,4 +71,28 @@ app.use((err: any, req: express.Request, res: express.Response) => {
   res.render("error");
 });
 
-export default app;
+const port = process.env.PORT || "3000";
+app.set("port", port);
+
+const server = http.createServer(app);
+server.listen(port);
+
+server.on("error", (error: any) => {
+  if (error.syscall !== "listen") {
+    throw error;
+  }
+
+  // handle specific listen errors with friendly messages
+  switch (error.code) {
+  case "EADDRINUSE":
+    console.error(`Port ${port} is already in use`);
+    process.exit(1);
+    break;
+  default:
+    throw error;
+  }
+});
+
+server.on("listening", () => {
+  console.log(`Server listening on port ${port}`);
+});
