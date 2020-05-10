@@ -33,6 +33,8 @@ mongoose.connect(DB_URL, {
   useUnifiedTopology: true
 });
 
+import "./models/user";
+
 app.use(session({
   secret: SESSION_SECRET,
   resave: false,
