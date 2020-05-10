@@ -1,4 +1,6 @@
 import * as crypto from "crypto";
+import * as jwt from "jsonwebtoken";
+
 import { Document, Schema, model } from "mongoose";
 
 const UserSchema = new Schema({
@@ -28,6 +30,26 @@ UserSchema.methods.validatePassword = function (password: string): boolean {
   return this.password == hashedPassword;
 };
 
+UserSchema.methods.generateToken = function (validityInDays = 60): string {
+  // Generate timestamp n days from now
+  const now = new Date();
+  const expirationDate = new Date().setDate(now.getDate() + validityInDays);
+
+  return jwt.sign({
+    id: this._id,
+    username: this.username,
+    exp: Math.floor(expirationDate / 1000)
+  }, "secret");
+};
+
+UserSchema.methods.getAuth = function () {
+  return {
+    _id: this._id,
+    username: this.username,
+    token: this.generateToken()
+  };
+};
+
 interface User extends Document {
   username: string;
   password: string;
@@ -37,6 +59,8 @@ interface User extends Document {
 
   setPassword: (password: string) => void;
   validatePassword: (password: string) => boolean;
+  generateToken: (validityInDays?: number) => string;
+  getAuth: () => { _id: string, username: string, token: string };
 }
 
 export default model<User>("User", UserSchema);
