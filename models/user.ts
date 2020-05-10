@@ -1,5 +1,5 @@
 import * as crypto from "crypto";
-import { Schema, model } from "mongoose";
+import { Document, Schema, model } from "mongoose";
 
 const UserSchema = new Schema({
   username: String,
@@ -28,4 +28,15 @@ UserSchema.methods.validatePassword = function (password: string): boolean {
   return this.password == hashedPassword;
 };
 
-export default model("User", UserSchema);
+interface User extends Document {
+  username: string;
+  password: string;
+  salt: string;
+  dateCreated: Date;
+  dateUpdated: Date;
+
+  setPassword: (password: string) => void;
+  validatePassword: (password: string) => boolean;
+}
+
+export default model<User>("User", UserSchema);
