@@ -50,3 +50,31 @@ export function uploadToS3(keyname: string, file: aws.S3.Body, bucket: string): 
     });
   });
 }
+
+interface TranscribePronunciation {
+  type: "pronunciation";
+  start_time: string;
+  end_time: string;
+  alternatives: Array<{
+    confidence: string;
+    content: string;
+  }>;
+}
+
+interface TranscribePunctuation {
+  type: "punctuation";
+  alternatives: Array<{
+    content: string;
+  }>;
+}
+
+type TranscribeItem = TranscribePronunciation | TranscribePunctuation;
+
+export interface TranscribeOutput {
+  jobName: string;
+  accountId: string;
+  results: {
+    transcripts: Array<{ transcript: string }>,
+    items: Array<TranscribeItem>
+  };
+}
