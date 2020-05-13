@@ -109,18 +109,18 @@ export function transcribeOutputToVTT(transcript: TranscribeOutput): string {
 
     const pronunciations = sentence.filter((cue) => cue.type === "pronunciation") as Array<TranscribePronunciation>;
 
-    const cue_start = pronunciations[0].start_time;
-    const cue_end = pronunciations[pronunciations.length - 1].end_time;
+    const cue_start = parseFloat(pronunciations[0].start_time);
+    const cue_end = parseFloat(pronunciations[pronunciations.length - 1].end_time);
 
     const cue = joinSentence(sentence);
 
     return result + (
-      `${cue_start} --> ${cue_end}` + "\n" +
+      `${convertTimestamp(cue_start)} --> ${convertTimestamp(cue_end)}` + "\n" +
       `${cue}\n\n`
     );
   }, "");
 
-  return `VTT\n\n${cues}`.trim();
+  return `WEBVTT\n\n${cues}`.trim();
 }
 
 /**
