@@ -340,4 +340,101 @@ describe("Utility function transcribeOutputToVTT()", () => {
       "How are you?"
     );
   });
+
+  it("should split a cue into two parts if it is longer than the max cue length", () => {
+    const testInput: util.TranscribeOutput = {
+      "jobName": "test1",
+      "accountId": "257610463977",
+      "results": {
+        "transcripts": [
+          {
+            "transcript": ""
+          }
+        ],
+        "items": [
+          {
+            "type": "pronunciation",
+            "start_time": "0.00",
+            "end_time": "0.56",
+            "alternatives": [
+              {
+                "content": "Hello",
+                "confidence": "0.99"
+              }
+            ]
+          },
+          {
+            "type": "punctuation",
+            "alternatives": [
+              {
+                "content": ","
+              }
+            ]
+          },
+          {
+            "type": "pronunciation",
+            "start_time": "0.62",
+            "end_time": "0.84",
+            "alternatives": [
+              {
+                "content": "World",
+                "confidence": "0.99"
+              }
+            ]
+          },
+          {
+            "type": "pronunciation",
+            "start_time": "1.00",
+            "end_time": "1.23",
+            "alternatives": [
+              {
+                "content": "How",
+                "confidence": "0.99"
+              }
+            ]
+          },
+          {
+            "type": "pronunciation",
+            "start_time": "1.30",
+            "end_time": "1.37",
+            "alternatives": [
+              {
+                "content": "are",
+                "confidence": "0.99"
+              }
+            ]
+          },
+          {
+            "type": "pronunciation",
+            "start_time": "1.42",
+            "end_time": "1.50",
+            "alternatives": [
+              {
+                "content": "you",
+                "confidence": "0.99"
+              }
+            ]
+          },
+          {
+            "type": "punctuation",
+            "alternatives": [
+              {
+                "content": "?"
+              }
+            ]
+          },
+        ]
+      }
+    };
+
+    expect(util.transcribeOutputToVTT(testInput, 4)).toEqual(
+      "WEBVTT\n" +
+      "\n" +
+      "00:00.000 --> 00:00.840\n" +
+      "Hello, World\n" +
+      "\n" +
+      "00:01.000 --> 00:01.500\n" +
+      "How are you?"
+    );
+  });
 });
