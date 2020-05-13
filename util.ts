@@ -35,16 +35,18 @@ export function uploadToS3(keyname: string, file: aws.S3.Body, bucket: string): 
   const s3 = new aws.S3();
 
   return new Promise((resolve, reject) => {
+    // Upload file to given bucket under given key
     s3.upload({
       Bucket: bucket, Key: keyname, Body: file
     }, {
+      // Upload in chunks of 5MB, 10 chunks in parallel
       partSize: 5 * 1024 * 1024, queueSize: 10
     }, (err, data) => {
+      // Reject promise if there was an error, otherwise resolve
       if (err) {
         console.error("ERROR:", err);
         reject(err);
       } else {
-        console.log(data);
         resolve();
       }
     });
@@ -95,9 +97,12 @@ export interface TranscribeOutput {
 export function transcribeOutputToVTT(transcript: TranscribeOutput, maxCueLength = 20): string {
   const { results: { items }} = transcript;
 
+  // Group sentences
   const sentences = items.reduce<Array<TranscribeItem[]>>((result, item) => {
     result[result.length -1].push(item);
 
+    // If current item is a sentence end mark, push a new empty array to result
+    // for starting a new sentence
     if (item.type === "punctuation") {
       const punctuation = item.alternatives[0].content;
 
@@ -108,11 +113,14 @@ export function transcribeOutputToVTT(transcript: TranscribeOutput, maxCueLength
 
     return result;
   }, [[]]).reduce<Array<TranscribeItem[]>>((result, sentence) => {
+    // Count number of words in current sentence
     const numPronunciations = sentence.filter((cue) => cue.type === "pronunciation").length;
 
+    // Split sentece into two if it is longer than the allowed maximum
     if (numPronunciations > maxCueLength) {
       const halfLength = Math.floor(sentence.length / 2);
 
+      // Append the split sentence separately to result
       return result.concat(
         [sentence.slice(0, halfLength)],
         [sentence.slice(halfLength)]
@@ -123,23 +131,29 @@ export function transcribeOutputToVTT(transcript: TranscribeOutput, maxCueLength
   }, []);
 
   const cues = sentences.reduce((result, sentence) => {
+    // Return result unchanged if sentence is empty
     if (sentence.length === 0) {
-      return result + "";
+      return result;
     }
 
+    // Only get words from sentence
     const pronunciations = sentence.filter(isTranscribePronunciation);
 
+    // Retrieve first and last timestamps from words in current sentence
     const cue_start = parseFloat(pronunciations[0].start_time);
     const cue_end = parseFloat(pronunciations[pronunciations.length - 1].end_time);
 
+    // Join sentence together
     const cue = joinSentence(sentence);
 
+    // Generate cue with valid timestamps and cue text
     return result + (
       `${convertTimestamp(cue_start)} --> ${convertTimestamp(cue_end)}` + "\n" +
       `${cue}\n\n`
     );
   }, "");
 
+  // Return cues together with header and truncate space and newlines
   return `WEBVTT\n\n${cues}`.trim();
 }
 
@@ -168,6 +182,7 @@ function convertTimestamp(timestamp: number): string {
   const seconds = Math.floor(timestamp) - minutes * 60;
   const milliseconds = Math.floor((timestamp - Math.floor(timestamp)) * 100);
 
+  // Return valid WebVTT timestamp
   return `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}.${milliseconds.toString().padEnd(3, "0")}`;
 }
 
@@ -180,6 +195,8 @@ function convertTimestamp(timestamp: number): string {
  */
 function joinSentence(items: Array<TranscribeItem>): string {
   return items.reduce((result, item) => {
+    // If current item is a word, append it to result with a space, otherwise
+    // append it directly
     if (item.type === "pronunciation") {
       return result + " " + item.alternatives[0].content;
     } else {
