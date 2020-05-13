@@ -67,7 +67,7 @@ describe("Utility function transcribeOutputToVTT()", () => {
       }
     };
 
-    expect(util.transcribeOutputToVTT(testInput)).toEqual("VTT");
+    expect(util.transcribeOutputToVTT(testInput)).toEqual("WEBVTT");
   });
 
   it("should produce a file with a single cue with a single sentence in the input", () => {
@@ -124,9 +124,9 @@ describe("Utility function transcribeOutputToVTT()", () => {
     };
 
     expect(util.transcribeOutputToVTT(testInput)).toEqual(
-      "VTT\n" +
+      "WEBVTT\n" +
       "\n" +
-      "0.00 --> 0.84\n" +
+      "00:00.000 --> 00:00.840\n" +
       "Hello, World!"
     );
   });
@@ -226,12 +226,12 @@ describe("Utility function transcribeOutputToVTT()", () => {
     };
 
     expect(util.transcribeOutputToVTT(testInput)).toEqual(
-      "VTT\n" +
+      "WEBVTT\n" +
       "\n" +
-      "0.00 --> 0.84\n" +
+      "00:00.000 --> 00:00.840\n" +
       "Hello, World!\n" +
       "\n" +
-      "1.00 --> 1.50\n" +
+      "00:01.000 --> 00:01.500\n" +
       "How are you?"
     );
   });
