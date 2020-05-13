@@ -78,3 +78,64 @@ export interface TranscribeOutput {
     items: Array<TranscribeItem>
   };
 }
+
+/**
+ * Converts output from AWS Transcribe to WebVTT.
+ *
+ * @param transcript Output from AWS Transcribe to be converted to WebVTT
+ * @returns The resulting WebVTT cues as a string
+ */
+export function transcribeOutputToVTT(transcript: TranscribeOutput): string {
+  const { results: { items }} = transcript;
+
+  const sentences = items.reduce<Array<TranscribeItem[]>>((result, item) => {
+    result[result.length -1].push(item);
+
+    if (item.type === "punctuation") {
+      const punctuation = item.alternatives[0].content;
+
+      if ([".", "!", "?"].indexOf(punctuation) >= 0) {
+        result.push([]);
+      }
+    }
+
+    return result;
+  }, [[]]);
+
+  const cues = sentences.reduce((result, sentence) => {
+    if (sentence.length === 0) {
+      return result + "";
+    }
+
+    const pronunciations = sentence.filter((cue) => cue.type === "pronunciation") as Array<TranscribePronunciation>;
+
+    const cue_start = pronunciations[0].start_time;
+    const cue_end = pronunciations[pronunciations.length - 1].end_time;
+
+    const cue = joinSentence(sentence);
+
+    return result + (
+      `${cue_start} --> ${cue_end}` + "\n" +
+      `${cue}\n\n`
+    );
+  }, "");
+
+  return `VTT\n\n${cues}`.trim();
+}
+
+/**
+ * Joins an array of items returned by AWS Transcribe into a sentence, leaving
+ * a space between words, but joining punctuation marks directly.
+ *
+ * @param items Items to join into a sentence
+ * @returns The items joined into a single string
+ */
+function joinSentence(items: Array<TranscribeItem>): string {
+  return items.reduce((result, item) => {
+    if (item.type === "pronunciation") {
+      return result + " " + item.alternatives[0].content;
+    } else {
+      return result + item.alternatives[0].content;
+    }
+  }, "").trim();
+}
