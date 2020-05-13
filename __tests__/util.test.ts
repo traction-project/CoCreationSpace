@@ -1,15 +1,15 @@
-import { getFromEnvironment } from "../util";
+import * as util from "../util";
 
 describe("Utility function getFromEnvironment()", () => {
   it("returns an empty array when no arguments are given", () => {
     expect(
-      getFromEnvironment()
+      util.getFromEnvironment()
     ).toEqual([]);
   });
 
   it("should throw an error when requesting something from empty environment", () => {
     expect(() => {
-      getFromEnvironment("SOME_KEY");
+      util.getFromEnvironment("SOME_KEY");
     }).toThrow();
   });
 
@@ -19,7 +19,7 @@ describe("Utility function getFromEnvironment()", () => {
     };
 
     expect(
-      getFromEnvironment("SOME_KEY")
+      util.getFromEnvironment("SOME_KEY")
     ).toEqual([
       "some_value"
     ]);
@@ -33,7 +33,7 @@ describe("Utility function getFromEnvironment()", () => {
     };
 
     expect(
-      getFromEnvironment("SOME_KEY", "BLA")
+      util.getFromEnvironment("SOME_KEY", "BLA")
     ).toEqual([
       "some_value", "yaddayadda"
     ]);
@@ -47,7 +47,7 @@ describe("Utility function getFromEnvironment()", () => {
     };
 
     expect(() => {
-      getFromEnvironment("SOME_KEY", "BLA", "NO_SUCH_KEY");
+      util.getFromEnvironment("SOME_KEY", "BLA", "NO_SUCH_KEY");
     }).toThrow();
   });
 });
