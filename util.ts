@@ -127,7 +127,7 @@ export function transcribeOutputToVTT(transcript: TranscribeOutput, maxCueLength
       return result + "";
     }
 
-    const pronunciations = sentence.filter((cue) => cue.type === "pronunciation") as Array<TranscribePronunciation>;
+    const pronunciations = sentence.filter(isTranscribePronunciation);
 
     const cue_start = parseFloat(pronunciations[0].start_time);
     const cue_end = parseFloat(pronunciations[pronunciations.length - 1].end_time);
@@ -141,6 +141,18 @@ export function transcribeOutputToVTT(transcript: TranscribeOutput, maxCueLength
   }, "");
 
   return `WEBVTT\n\n${cues}`.trim();
+}
+
+/**
+ * Type guard for TranscribeItem objects which returns whether the passed
+ * object is of subtype TranscribePronunciation. This is handy when filtering
+ * an array of objects of type TranscribeItem and avoids unnecessary type
+ * casting.
+ *
+ * @param item An object of type TranscribeItem
+ */
+function isTranscribePronunciation(item: TranscribeItem): item is TranscribePronunciation {
+  return item.type === "pronunciation";
 }
 
 /**
