@@ -124,6 +124,22 @@ export function transcribeOutputToVTT(transcript: TranscribeOutput): string {
 }
 
 /**
+ * Converts a second-based timestamp into a timestamp that is valid for use in
+ * WebVTT. WebVTT timestamps must have the format MM:SS.XXX, where M stands for
+ * minutes, S stands for seconds and X stands for milliseconds.
+ *
+ * @param timestamp Timestamp in seconds
+ * @returns Timestamp in valid WebVTT format
+ */
+function convertTimestamp(timestamp: number): string {
+  const minutes = Math.floor(timestamp / 60);
+  const seconds = Math.floor(timestamp) - minutes * 60;
+  const milliseconds = Math.floor((timestamp - Math.floor(timestamp)) * 100);
+
+  return `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}.${milliseconds.toString().padEnd(3, "0")}`;
+}
+
+/**
  * Joins an array of items returned by AWS Transcribe into a sentence, leaving
  * a space between words, but joining punctuation marks directly.
  *
