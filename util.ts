@@ -1,7 +1,5 @@
 import * as aws from "aws-sdk";
 
-const [ BUCKET_NAME ] = getFromEnvironment("BUCKET_NAME");
-
 /**
  * Tries to extract the values of the keys given as parameters from the
  * environment and throws an excaption if one of them cannot be found.
@@ -24,17 +22,16 @@ export function getFromEnvironment(...keys: Array<string>): Array<string> {
 
 /**
  * Uploads a file to S3 and assigns it the given name. The name is an S3 key
- * path and can include a prefix. Optionally a target bucket name can be
- * specified. This value defaults to the value of the BUCKET_NAME environment
- * variable. Returns a void promise which resolves once the upload is complete
- * or rejects with an error otherwise.
+ * path and can include a prefix. The third parameter is the name of the target
+ * bucket. The function returns a void promise which resolves once the upload
+ * is complete or rejects with an error otherwise.
  *
  * @param keyname Name that the file should be stored under in the S3 bucket
  * @param file Contents of the file to be uploaded
- * @param bucket Name of the bucket to store the file in. Optional, defaults to the BUCKET_NAME environment variable
+ * @param bucket Name of the bucket to store the file in
  * @returns A promise which resolves upon completion
  */
-export function uploadToS3(keyname: string, file: aws.S3.Body, bucket = BUCKET_NAME): Promise<void> {
+export function uploadToS3(keyname: string, file: aws.S3.Body, bucket: string): Promise<void> {
   const s3 = new aws.S3();
 
   return new Promise((resolve, reject) => {
