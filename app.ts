@@ -1,11 +1,5 @@
 import * as dotenv from "dotenv";
 import * as aws from "aws-sdk";
-import { getFromEnvironment } from "./util";
-
-dotenv.config();
-aws.config.loadFromPath("./aws.json");
-const [ SESSION_SECRET, DB_URL ] = getFromEnvironment("SESSION_SECRET", "DB_URL");
-
 import * as http from "http";
 import * as express from "express";
 import * as session from "express-session";
@@ -17,8 +11,15 @@ import * as cookieParser from "cookie-parser";
 import * as passport from "passport";
 import * as mongoose from "mongoose";
 
+import { getFromEnvironment } from "./util";
+
 import indexRouter from "./routes/index";
 import apiIndexRouter from "./routes/api";
+
+dotenv.config();
+aws.config.loadFromPath("./aws.json");
+
+const [ SESSION_SECRET, DB_URL ] = getFromEnvironment("SESSION_SECRET", "DB_URL");
 
 var app = express();
 
@@ -29,8 +30,6 @@ app.set("view engine", "ejs");
 app.use(logger("dev"));
 app.use(express.json());
 
-const MongoStore = connectMongo(session);
-
 mongoose.connect(DB_URL, {
   useNewUrlParser: true,
   useUnifiedTopology: true
@@ -39,6 +38,7 @@ mongoose.connect(DB_URL, {
 import "./models/user";
 import "./auth/local";
 
+const MongoStore = connectMongo(session);
 app.use(session({
   secret: SESSION_SECRET,
   resave: false,
