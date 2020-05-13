@@ -1,7 +1,9 @@
 import * as dotenv from "dotenv";
+import * as aws from "aws-sdk";
 import { getFromEnvironment } from "./util";
 
 dotenv.config();
+aws.config.loadFromPath("./aws.json");
 const [ SESSION_SECRET, DB_URL ] = getFromEnvironment("SESSION_SECRET", "DB_URL");
 
 import * as http from "http";
