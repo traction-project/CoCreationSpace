@@ -83,9 +83,10 @@ export interface TranscribeOutput {
  * Converts output from AWS Transcribe to WebVTT.
  *
  * @param transcript Output from AWS Transcribe to be converted to WebVTT
+ * @param maxCueLength Maximum number of words in a single cue before splitting it. Defaults to 30
  * @returns The resulting WebVTT cues as a string
  */
-export function transcribeOutputToVTT(transcript: TranscribeOutput): string {
+export function transcribeOutputToVTT(transcript: TranscribeOutput, maxCueLength = 30): string {
   const { results: { items }} = transcript;
 
   const sentences = items.reduce<Array<TranscribeItem[]>>((result, item) => {
@@ -100,7 +101,20 @@ export function transcribeOutputToVTT(transcript: TranscribeOutput): string {
     }
 
     return result;
-  }, [[]]);
+  }, [[]]).reduce<Array<TranscribeItem[]>>((result, sentence) => {
+    const numPronunciations = sentence.filter((cue) => cue.type === "pronunciation").length;
+
+    if (numPronunciations > maxCueLength) {
+      const halfLength = Math.floor(sentence.length / 2);
+
+      return result.concat(
+        [sentence.slice(0, halfLength)],
+        [sentence.slice(halfLength)]
+      );
+    } else {
+      return result.concat([sentence]);
+    }
+  }, []);
 
   const cues = sentences.reduce((result, sentence) => {
     if (sentence.length === 0) {
