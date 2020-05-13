@@ -235,4 +235,109 @@ describe("Utility function transcribeOutputToVTT()", () => {
       "How are you?"
     );
   });
+
+  it("should produce a file with multiple cues with multiple sentences in the input and timestamps above a minute", () => {
+    const testInput: util.TranscribeOutput = {
+      "jobName": "test1",
+      "accountId": "257610463977",
+      "results": {
+        "transcripts": [
+          {
+            "transcript": ""
+          }
+        ],
+        "items": [
+          {
+            "type": "pronunciation",
+            "start_time": "0.00",
+            "end_time": "0.56",
+            "alternatives": [
+              {
+                "content": "Hello",
+                "confidence": "0.99"
+              }
+            ]
+          },
+          {
+            "type": "punctuation",
+            "alternatives": [
+              {
+                "content": ","
+              }
+            ]
+          },
+          {
+            "type": "pronunciation",
+            "start_time": "0.62",
+            "end_time": "0.84",
+            "alternatives": [
+              {
+                "content": "World",
+                "confidence": "0.99"
+              }
+            ]
+          },
+          {
+            "type": "punctuation",
+            "alternatives": [
+              {
+                "content": "!"
+              }
+            ]
+          },
+          {
+            "type": "pronunciation",
+            "start_time": "64.00",
+            "end_time": "64.23",
+            "alternatives": [
+              {
+                "content": "How",
+                "confidence": "0.99"
+              }
+            ]
+          },
+          {
+            "type": "pronunciation",
+            "start_time": "64.30",
+            "end_time": "64.37",
+            "alternatives": [
+              {
+                "content": "are",
+                "confidence": "0.99"
+              }
+            ]
+          },
+          {
+            "type": "pronunciation",
+            "start_time": "64.42",
+            "end_time": "64.50",
+            "alternatives": [
+              {
+                "content": "you",
+                "confidence": "0.99"
+              }
+            ]
+          },
+          {
+            "type": "punctuation",
+            "alternatives": [
+              {
+                "content": "?"
+              }
+            ]
+          },
+        ]
+      }
+    };
+
+    expect(util.transcribeOutputToVTT(testInput)).toEqual(
+      "WEBVTT\n" +
+      "\n" +
+      "00:00.000 --> 00:00.840\n" +
+      "Hello, World!\n" +
+      "\n" +
+      "01:04.000 --> 01:04.500\n" +
+      "How are you?"
+    );
+  });
 });
