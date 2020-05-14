@@ -8,6 +8,7 @@ module.exports = {
     "node_modules/",
     "dist/",
     "bin/",
+    "docs/",
     "webpack.config.js"
   ],
   "extends": [
