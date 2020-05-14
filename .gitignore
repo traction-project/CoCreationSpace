@@ -65,3 +65,4 @@ backend.js*
 db/
 bin/
 aws.json
+docs/
