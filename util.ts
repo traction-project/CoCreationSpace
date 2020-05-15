@@ -44,7 +44,6 @@ export function uploadToS3(keyname: string, file: aws.S3.Body, bucket: string): 
     }, (err) => {
       // Reject promise if there was an error, otherwise resolve
       if (err) {
-        console.error("ERROR:", err);
         reject(err);
       } else {
         resolve();

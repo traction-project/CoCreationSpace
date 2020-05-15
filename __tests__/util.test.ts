@@ -1,3 +1,6 @@
+import * as sinon from "sinon";
+import * as aws from "aws-sdk";
+
 import * as util from "../util";
 
 describe("Utility function getFromEnvironment()", () => {
@@ -49,6 +52,40 @@ describe("Utility function getFromEnvironment()", () => {
     expect(() => {
       util.getFromEnvironment("SOME_KEY", "BLA", "NO_SUCH_KEY");
     }).toThrow();
+  });
+});
+
+describe("Utility function uploadToS3()", () => {
+  afterEach(() => {
+    sinon.restore();
+  });
+
+  it("should resolve the promise", async () => {
+    sinon.stub(aws, "S3").returns({
+      upload: (a: any, b: any, callback: () => void) => {
+        callback();
+      }
+    });
+
+    expect(
+      await util.uploadToS3("some/key", "some_body", "some_bucket")
+    ).toBeUndefined();
+  });
+
+  it("should reject the promise returning an error", async () => {
+    sinon.stub(aws, "S3").returns({
+      upload: (a: any, b: any, callback: (err: any) => void) => {
+        callback(new Error("ERROR"));
+      }
+    });
+
+    try {
+      await util.uploadToS3("some/key", "some_body", "some_bucket");
+      fail();
+    } catch (err) {
+      expect(err).toBeDefined();
+      expect(err.message).toEqual("ERROR");
+    }
   });
 });
 
