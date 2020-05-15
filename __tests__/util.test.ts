@@ -1,6 +1,7 @@
 import * as sinon from "sinon";
 import * as aws from "aws-sdk";
 
+import * as transcribeResponses from "./fixtures/transcribe_responses";
 import * as util from "../util";
 
 describe("Utility function getFromEnvironment()", () => {
@@ -91,76 +92,13 @@ describe("Utility function uploadToS3()", () => {
 
 describe("Utility function transcribeOutputToVTT()", () => {
   it("should produce a file with only a header on empty input", () => {
-    const testInput = {
-      "jobName": "test1",
-      "accountId": "257610463977",
-      "results": {
-        "transcripts": [
-          {
-            "transcript": ""
-          }
-        ],
-        "items": []
-      }
-    };
-
-    expect(util.transcribeOutputToVTT(testInput)).toEqual("WEBVTT");
+    expect(
+      util.transcribeOutputToVTT(transcribeResponses.emptyResponse)
+    ).toEqual("WEBVTT");
   });
 
   it("should produce a file with a single cue with a single sentence in the input", () => {
-    const testInput: util.TranscribeOutput = {
-      "jobName": "test1",
-      "accountId": "257610463977",
-      "results": {
-        "transcripts": [
-          {
-            "transcript": ""
-          }
-        ],
-        "items": [
-          {
-            "type": "pronunciation",
-            "start_time": "0.00",
-            "end_time": "0.56",
-            "alternatives": [
-              {
-                "content": "Hello",
-                "confidence": "0.99"
-              }
-            ]
-          },
-          {
-            "type": "punctuation",
-            "alternatives": [
-              {
-                "content": ","
-              }
-            ]
-          },
-          {
-            "type": "pronunciation",
-            "start_time": "0.62",
-            "end_time": "0.84",
-            "alternatives": [
-              {
-                "content": "World",
-                "confidence": "0.99"
-              }
-            ]
-          },
-          {
-            "type": "punctuation",
-            "alternatives": [
-              {
-                "content": "!"
-              }
-            ]
-          },
-        ]
-      }
-    };
-
-    expect(util.transcribeOutputToVTT(testInput)).toEqual(
+    expect(util.transcribeOutputToVTT(transcribeResponses.singleCue)).toEqual(
       "WEBVTT\n" +
       "\n" +
       "00:00.000 --> 00:00.840\n" +
@@ -169,100 +107,7 @@ describe("Utility function transcribeOutputToVTT()", () => {
   });
 
   it("should produce a file with multiple cues with multiple sentences in the input", () => {
-    const testInput: util.TranscribeOutput = {
-      "jobName": "test1",
-      "accountId": "257610463977",
-      "results": {
-        "transcripts": [
-          {
-            "transcript": ""
-          }
-        ],
-        "items": [
-          {
-            "type": "pronunciation",
-            "start_time": "0.00",
-            "end_time": "0.56",
-            "alternatives": [
-              {
-                "content": "Hello",
-                "confidence": "0.99"
-              }
-            ]
-          },
-          {
-            "type": "punctuation",
-            "alternatives": [
-              {
-                "content": ","
-              }
-            ]
-          },
-          {
-            "type": "pronunciation",
-            "start_time": "0.62",
-            "end_time": "0.84",
-            "alternatives": [
-              {
-                "content": "World",
-                "confidence": "0.99"
-              }
-            ]
-          },
-          {
-            "type": "punctuation",
-            "alternatives": [
-              {
-                "content": "!"
-              }
-            ]
-          },
-          {
-            "type": "pronunciation",
-            "start_time": "1.00",
-            "end_time": "1.23",
-            "alternatives": [
-              {
-                "content": "How",
-                "confidence": "0.99"
-              }
-            ]
-          },
-          {
-            "type": "pronunciation",
-            "start_time": "1.30",
-            "end_time": "1.37",
-            "alternatives": [
-              {
-                "content": "are",
-                "confidence": "0.99"
-              }
-            ]
-          },
-          {
-            "type": "pronunciation",
-            "start_time": "1.42",
-            "end_time": "1.50",
-            "alternatives": [
-              {
-                "content": "you",
-                "confidence": "0.99"
-              }
-            ]
-          },
-          {
-            "type": "punctuation",
-            "alternatives": [
-              {
-                "content": "?"
-              }
-            ]
-          },
-        ]
-      }
-    };
-
-    expect(util.transcribeOutputToVTT(testInput)).toEqual(
+    expect(util.transcribeOutputToVTT(transcribeResponses.multipleCues)).toEqual(
       "WEBVTT\n" +
       "\n" +
       "00:00.000 --> 00:00.840\n" +
@@ -274,100 +119,7 @@ describe("Utility function transcribeOutputToVTT()", () => {
   });
 
   it("should produce a file with multiple cues with multiple sentences in the input and timestamps above a minute", () => {
-    const testInput: util.TranscribeOutput = {
-      "jobName": "test1",
-      "accountId": "257610463977",
-      "results": {
-        "transcripts": [
-          {
-            "transcript": ""
-          }
-        ],
-        "items": [
-          {
-            "type": "pronunciation",
-            "start_time": "0.00",
-            "end_time": "0.56",
-            "alternatives": [
-              {
-                "content": "Hello",
-                "confidence": "0.99"
-              }
-            ]
-          },
-          {
-            "type": "punctuation",
-            "alternatives": [
-              {
-                "content": ","
-              }
-            ]
-          },
-          {
-            "type": "pronunciation",
-            "start_time": "0.62",
-            "end_time": "0.84",
-            "alternatives": [
-              {
-                "content": "World",
-                "confidence": "0.99"
-              }
-            ]
-          },
-          {
-            "type": "punctuation",
-            "alternatives": [
-              {
-                "content": "!"
-              }
-            ]
-          },
-          {
-            "type": "pronunciation",
-            "start_time": "64.00",
-            "end_time": "64.23",
-            "alternatives": [
-              {
-                "content": "How",
-                "confidence": "0.99"
-              }
-            ]
-          },
-          {
-            "type": "pronunciation",
-            "start_time": "64.30",
-            "end_time": "64.37",
-            "alternatives": [
-              {
-                "content": "are",
-                "confidence": "0.99"
-              }
-            ]
-          },
-          {
-            "type": "pronunciation",
-            "start_time": "64.42",
-            "end_time": "64.50",
-            "alternatives": [
-              {
-                "content": "you",
-                "confidence": "0.99"
-              }
-            ]
-          },
-          {
-            "type": "punctuation",
-            "alternatives": [
-              {
-                "content": "?"
-              }
-            ]
-          },
-        ]
-      }
-    };
-
-    expect(util.transcribeOutputToVTT(testInput)).toEqual(
+    expect(util.transcribeOutputToVTT(transcribeResponses.multipleCuesOverMinute)).toEqual(
       "WEBVTT\n" +
       "\n" +
       "00:00.000 --> 00:00.840\n" +
@@ -379,92 +131,7 @@ describe("Utility function transcribeOutputToVTT()", () => {
   });
 
   it("should split a cue into two parts if it is longer than the max cue length", () => {
-    const testInput: util.TranscribeOutput = {
-      "jobName": "test1",
-      "accountId": "257610463977",
-      "results": {
-        "transcripts": [
-          {
-            "transcript": ""
-          }
-        ],
-        "items": [
-          {
-            "type": "pronunciation",
-            "start_time": "0.00",
-            "end_time": "0.56",
-            "alternatives": [
-              {
-                "content": "Hello",
-                "confidence": "0.99"
-              }
-            ]
-          },
-          {
-            "type": "punctuation",
-            "alternatives": [
-              {
-                "content": ","
-              }
-            ]
-          },
-          {
-            "type": "pronunciation",
-            "start_time": "0.62",
-            "end_time": "0.84",
-            "alternatives": [
-              {
-                "content": "World",
-                "confidence": "0.99"
-              }
-            ]
-          },
-          {
-            "type": "pronunciation",
-            "start_time": "1.00",
-            "end_time": "1.23",
-            "alternatives": [
-              {
-                "content": "How",
-                "confidence": "0.99"
-              }
-            ]
-          },
-          {
-            "type": "pronunciation",
-            "start_time": "1.30",
-            "end_time": "1.37",
-            "alternatives": [
-              {
-                "content": "are",
-                "confidence": "0.99"
-              }
-            ]
-          },
-          {
-            "type": "pronunciation",
-            "start_time": "1.42",
-            "end_time": "1.50",
-            "alternatives": [
-              {
-                "content": "you",
-                "confidence": "0.99"
-              }
-            ]
-          },
-          {
-            "type": "punctuation",
-            "alternatives": [
-              {
-                "content": "?"
-              }
-            ]
-          },
-        ]
-      }
-    };
-
-    expect(util.transcribeOutputToVTT(testInput, 4)).toEqual(
+    expect(util.transcribeOutputToVTT(transcribeResponses.splitCues, 4)).toEqual(
       "WEBVTT\n" +
       "\n" +
       "00:00.000 --> 00:00.840\n" +
