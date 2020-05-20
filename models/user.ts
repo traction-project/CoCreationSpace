@@ -50,7 +50,7 @@ UserSchema.methods.getAuth = function () {
   };
 };
 
-interface User extends Document {
+export interface User extends Document {
   username: string;
   password: string;
   salt: string;

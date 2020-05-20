@@ -1,4 +1,5 @@
 import { Document, Schema, model } from "mongoose";
+import { User } from "./user";
 
 const VideoSchema = new Schema({
   title: String,
@@ -6,6 +7,11 @@ const VideoSchema = new Schema({
   status: { type: String, default: "pending" },
   dateCreated: { type: Date, default: Date.now },
   dateUpdated: { type: Date, default: Date.now },
+  uploadedBy: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+    required: true
+  }
 });
 
 interface Video extends Document {
@@ -14,6 +20,7 @@ interface Video extends Document {
   status: "pending" | "processing" | "done" | "error";
   dateCreated: Date;
   dateUpdated: Date;
+  uploadedBy: User["_id"];
 }
 
 export default model<Video>("Video", VideoSchema);
