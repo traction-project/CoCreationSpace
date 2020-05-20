@@ -36,6 +36,8 @@ mongoose.connect(DB_URL, {
 });
 
 import "./models/user";
+import "./models/video";
+
 import "./auth/local";
 
 const MongoStore = connectMongo(session);
