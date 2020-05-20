@@ -90,6 +90,40 @@ describe("Utility function uploadToS3()", () => {
   });
 });
 
+describe("Utility function encodeDash()", () => {
+  afterEach(() => {
+    sinon.restore();
+  });
+
+  it("should resolve the promise", async () => {
+    sinon.stub(aws, "ElasticTranscoder").returns({
+      createJob: (params: any, callback: (err: Error | null, data: any) => void) => {
+        callback(null, { Job: { Id: "new_job_id" } });
+      }
+    });
+
+    expect(
+      await util.encodeDash("my_pipeline", "video.mp4")
+    ).toEqual("new_job_id");
+  });
+
+  it("should reject the promise returning an error", async () => {
+    sinon.stub(aws, "ElasticTranscoder").returns({
+      createJob: (params: any, callback: (err: Error) => void) => {
+        callback(new Error("ERROR"));
+      }
+    });
+
+    try {
+      await util.encodeDash("my_pipeline", "video.mp4");
+      fail();
+    } catch (err) {
+      expect(err).toBeDefined();
+      expect(err.message).toEqual("ERROR");
+    }
+  });
+});
+
 describe("Utility function transcribeOutputToVTT()", () => {
   it("should produce a file with only a header on empty input", () => {
     expect(
