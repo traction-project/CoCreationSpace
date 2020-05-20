@@ -216,3 +216,20 @@ function joinSentence(items: Array<TranscribeItem>): string {
     }
   }, "").trim();
 }
+
+/**
+ * Returns the extension of a given filename with a leading dot. If the given
+ * filename has no extension, an empty string is returned.
+ *
+ * @param filename Filename to get extension from
+ * @returns The file extension or an empty string is the filename has no extension
+ */
+export function getExtension(filename: string): string {
+  const parts = filename.split(".");
+
+  if (parts.length == 1) {
+    return "";
+  }
+
+  return "." + parts.slice(1).join(".");
+}
