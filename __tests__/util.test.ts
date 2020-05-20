@@ -142,3 +142,17 @@ describe("Utility function transcribeOutputToVTT()", () => {
     );
   });
 });
+
+describe("Utility function getExtension()", () => {
+  it("should return the file's extension", () => {
+    expect(util.getExtension("video.mp4")).toEqual(".mp4");
+  });
+
+  it("should return the all extensions if the filename has multiple extensions", () => {
+    expect(util.getExtension("archive.tar.gz")).toEqual(".tar.gz");
+  });
+
+  it("should return an empty string is the file has no extension", () => {
+    expect(util.getExtension("some_strange_filename")).toEqual("");
+  });
+});
