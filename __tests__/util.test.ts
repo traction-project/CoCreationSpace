@@ -245,3 +245,39 @@ describe("Utility function getExtension()", () => {
     expect(util.getExtension("some_strange_filename")).toEqual("");
   });
 });
+
+describe("Utility function translateText()", () => {
+  afterEach(() => {
+    sinon.restore();
+  });
+
+  it("should resolve with a string", async () => {
+    sinon.stub(aws, "Translate").returns({
+      translateText: (params: any, callback: (err: Error | null, data: any) => void) => {
+        callback(null, { TranslatedText: "This is the translated text" });
+      }
+    });
+
+    expect(
+      await util.translateText("This is the input text", "de")
+    ).toEqual(
+      "This is the translated text"
+    );
+  });
+
+  it("should reject with an error", async () => {
+    sinon.stub(aws, "Translate").returns({
+      translateText: (params: any, callback: (err: Error) => void) => {
+        callback(new Error("ERROR"));
+      }
+    });
+
+    try {
+      await util.translateText("This is the input text", "de");
+      fail();
+    } catch (err) {
+      expect(err).toBeDefined();
+      expect(err.message).toEqual("ERROR");
+    }
+  });
+});
