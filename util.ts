@@ -318,3 +318,34 @@ export function encodeDash(pipeline: string, input: string, hasAudio = true): Pr
     });
   });
 }
+
+/**
+ * Translates a given text to the given target language. By default, the
+ * language of the input text is determined automatically, but the language
+ * of the input text can be set manually, by passing in a language code as
+ * third parameter.
+ *
+ * @param input Text to translate
+ * @param targetLanguage Code of the language to translate into
+ * @param sourceLanguage Language of the input string, defaults to 'auto'
+ * @returns A promise which resolves to the translated text or an error otherwise
+ */
+export function translateText(input: string, targetLanguage: string, sourceLanguage = "auto"): Promise<string> {
+  const params: aws.Translate.TranslateTextRequest = {
+    SourceLanguageCode: sourceLanguage,
+    TargetLanguageCode: targetLanguage,
+    Text: input
+  };
+
+  return new Promise((resolve, reject) => {
+    const translate = new aws.Translate();
+
+    translate.translateText(params, (err, data) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(data.TranslatedText);
+      }
+    });
+  });
+}
