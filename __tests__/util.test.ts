@@ -280,4 +280,20 @@ describe("Utility function translateText()", () => {
       expect(err.message).toEqual("ERROR");
     }
   });
+
+  it("should change the source language if it is set explicitly", async () => {
+    sinon.stub(aws, "Translate").returns({
+      translateText: (params: any, callback: (err: Error | null, data: any) => void) => {
+        callback(null, {
+          TranslatedText: `The text is translated from ${params.SourceLanguageCode}`
+        });
+      }
+    });
+
+    expect(
+      await util.translateText("This is the input text", "de", "en")
+    ).toEqual(
+      "The text is translated from en"
+    );
+  });
 });
