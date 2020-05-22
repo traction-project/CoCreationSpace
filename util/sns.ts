@@ -1,10 +1,11 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response, NextFunction,  } from "express";
+import { IncomingHttpHeaders } from "http";
 import * as aws from "aws-sdk";
 
 /**
  * Headers of an SNS subscription confirmation message
  */
-interface SNSSubcriptionsHeaders {
+interface SNSSubcriptionsHeaders extends IncomingHttpHeaders {
   "x-amz-sns-topic-arn": string;
   "x-amz-sns-message-type": string;
 }
