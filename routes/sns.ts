@@ -1,5 +1,10 @@
 import { Router } from "express";
-import { snsMiddleware, confirmSubscription } from "../util/sns";
+
+import { getFromEnvironment } from "../util";
+import { subscribeToSNSTopic, snsMiddleware, confirmSubscription } from "../util/sns";
+
+const [ SNS_ARN, SNS_ENDPOINT ] = getFromEnvironment("SNS_ARN", "SNS_ENDPOINT");
+subscribeToSNSTopic(SNS_ARN, `${SNS_ENDPOINT}/sns/receive`);
 
 const router = Router();
 router.use(snsMiddleware);
