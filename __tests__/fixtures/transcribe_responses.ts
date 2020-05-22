@@ -1,4 +1,4 @@
-import { TranscribeOutput } from "../../util";
+import { TranscribeOutput } from "../../util/transcribe";
 
 export const emptyResponse: TranscribeOutput = {
   "jobName": "test1",

@@ -2,7 +2,9 @@ import * as sinon from "sinon";
 import * as aws from "aws-sdk";
 
 import * as transcribeResponses from "./fixtures/transcribe_responses";
+
 import * as util from "../util";
+import * as transcribe from "../util/transcribe";
 
 describe("Utility function getFromEnvironment()", () => {
   it("returns an empty array when no arguments are given", () => {
@@ -182,12 +184,12 @@ describe("Utility function encodeDash()", () => {
 describe("Utility function transcribeOutputToVTT()", () => {
   it("should produce a file with only a header on empty input", () => {
     expect(
-      util.transcribeOutputToVTT(transcribeResponses.emptyResponse)
+      transcribe.transcribeOutputToVTT(transcribeResponses.emptyResponse)
     ).toEqual("WEBVTT");
   });
 
   it("should produce a file with a single cue with a single sentence in the input", () => {
-    expect(util.transcribeOutputToVTT(transcribeResponses.singleCue)).toEqual(
+    expect(transcribe.transcribeOutputToVTT(transcribeResponses.singleCue)).toEqual(
       "WEBVTT\n" +
       "\n" +
       "00:00.000 --> 00:00.840\n" +
@@ -196,7 +198,7 @@ describe("Utility function transcribeOutputToVTT()", () => {
   });
 
   it("should produce a file with multiple cues with multiple sentences in the input", () => {
-    expect(util.transcribeOutputToVTT(transcribeResponses.multipleCues)).toEqual(
+    expect(transcribe.transcribeOutputToVTT(transcribeResponses.multipleCues)).toEqual(
       "WEBVTT\n" +
       "\n" +
       "00:00.000 --> 00:00.840\n" +
@@ -208,7 +210,7 @@ describe("Utility function transcribeOutputToVTT()", () => {
   });
 
   it("should produce a file with multiple cues with multiple sentences in the input and timestamps above a minute", () => {
-    expect(util.transcribeOutputToVTT(transcribeResponses.multipleCuesOverMinute)).toEqual(
+    expect(transcribe.transcribeOutputToVTT(transcribeResponses.multipleCuesOverMinute)).toEqual(
       "WEBVTT\n" +
       "\n" +
       "00:00.000 --> 00:00.840\n" +
@@ -220,7 +222,7 @@ describe("Utility function transcribeOutputToVTT()", () => {
   });
 
   it("should split a cue into two parts if it is longer than the max cue length", () => {
-    expect(util.transcribeOutputToVTT(transcribeResponses.splitCues, 4)).toEqual(
+    expect(transcribe.transcribeOutputToVTT(transcribeResponses.splitCues, 4)).toEqual(
       "WEBVTT\n" +
       "\n" +
       "00:00.000 --> 00:00.840\n" +
