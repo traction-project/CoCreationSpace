@@ -1,4 +1,6 @@
+import { Request } from "express";
 import * as aws from "aws-sdk";
+import * as jwt from "express-jwt";
 
 /**
  * Tries to extract the values of the keys given as parameters from the
@@ -182,5 +184,43 @@ export function translateText(input: string, targetLanguage: string, sourceLangu
         resolve(data.TranslatedText);
       }
     });
+  });
+}
+
+/**
+ * Takes an Express.js request object and tries to extract a JSON Web Token
+ * from the `Authorization` HTTP header. If the header is of type `Token`, the
+ * associated token is returned. If the header is either missing or of the
+ * wrong type, the function returns null.
+ *
+ * @param req An Express.js request object
+ * @returns The JWT from the header if present, null otherwise
+ */
+function getTokenFromHeader(req: Request): string | null {
+  const { headers: { authorization } } = req;
+
+  if (authorization) {
+    const [ type, token ] = authorization.split(" ");
+
+    if (type === "Token") {
+      return token;
+    }
+  }
+
+  return null;
+}
+
+/**
+ * Middleware function which makes routes which it is applied to require a
+ * means of authentication. This authentication needs to be supplied as a JSON
+ * Web Token stored in the `Authorization` HTTP header.
+ *
+ * @returns a JWT request handler which can be used as middleware function
+ */
+export function authRequired(): jwt.RequestHandler {
+  return jwt({
+    secret: "",
+    userProperty: "payload",
+    getToken: getTokenFromHeader
   });
 }
