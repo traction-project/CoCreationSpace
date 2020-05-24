@@ -1,7 +1,7 @@
 import { Router } from "express";
 import * as passport from "passport";
 
-import { User } from "../models/user";
+import User, { User as UserSchema } from "../models/user";
 
 import APIRouter from "./api";
 import SNSRouter from "./sns";
@@ -27,7 +27,7 @@ router.post("/login", (req, res, next) => {
     });
   }
 
-  return passport.authenticate("local", { session: false }, (err: Error | null, user: User | undefined, msg: { message: string }) => {
+  return passport.authenticate("local", { session: false }, (err: Error | null, user: UserSchema | undefined, msg: { message: string }) => {
     if (err) {
       return next(err);
     }
@@ -41,6 +41,35 @@ router.post("/login", (req, res, next) => {
       ...msg
     });
   })(req, res, next);
+});
+
+router.post("/register", async (req, res) => {
+  const { username, password, confirmation } = req.body;
+
+  if (password === confirmation) {
+    const userExists = await User.findOne({ username });
+
+    if (!userExists) {
+      const newUser = new User({ username });
+
+      newUser.setPassword(password);
+      newUser.save();
+
+      res.send({ status: "OK" });
+    } else {
+      res.status(400);
+      res.send({
+        status: "ERR",
+        message: "Username exists"
+      });
+    }
+  } else {
+    res.status(400);
+    res.send({
+      status: "ERR",
+      message: "Password does not match confirmation"
+    });
+  }
 });
 
 export default router;
