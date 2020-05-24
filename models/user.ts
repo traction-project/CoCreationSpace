@@ -1,7 +1,10 @@
 import * as crypto from "crypto";
 import * as jwt from "jsonwebtoken";
-
 import { Document, Schema, model } from "mongoose";
+
+import { getFromEnvironment } from "../util";
+
+const [ SESSION_SECRET ] = getFromEnvironment("SESSION_SECRET");
 
 const UserSchema = new Schema({
   username: String,
@@ -39,7 +42,7 @@ UserSchema.methods.generateToken = function (validityInDays = 60): string {
     id: this._id,
     username: this.username,
     exp: Math.floor(expirationDate / 1000)
-  }, "secret");
+  }, SESSION_SECRET);
 };
 
 UserSchema.methods.getAuth = function () {
