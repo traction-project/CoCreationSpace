@@ -299,3 +299,15 @@ describe("Utility function translateText()", () => {
     );
   });
 });
+
+describe("Utility function authRequired()", () => {
+  it("should return a function", () => {
+    process.env = {
+      SESSION_SECRET: "secret"
+    };
+
+    expect(
+      util.authRequired()
+    ).toBeInstanceOf(Function);
+  });
+});
