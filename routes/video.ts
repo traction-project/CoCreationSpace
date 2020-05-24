@@ -3,12 +3,12 @@ import * as Busboy from "busboy";
 import { v4 as uuid4 } from "uuid";
 
 import Video from "../models/video";
-import { getExtension, uploadToS3, getFromEnvironment, encodeDash } from "../util";
+import { getExtension, uploadToS3, getFromEnvironment, encodeDash, authRequired } from "../util";
 
 const [ BUCKET_NAME, ETS_PIPELINE ] = getFromEnvironment("BUCKET_NAME", "ETS_PIPELINE");
 const router = Router();
 
-router.post("/upload", (req, res) => {
+router.post("/upload", authRequired(), (req, res) => {
   const busboy = new Busboy({ headers: req.headers });
 
   busboy.on("file", async (fieldname, file, filename, encoding, mimetype) => {
@@ -31,7 +31,6 @@ router.post("/upload", (req, res) => {
       }
 
       await video.save();
-
       res.send({ status: "OK" });
     } catch {
       res.status(500).send({
