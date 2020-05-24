@@ -11,11 +11,11 @@ import * as cookieParser from "cookie-parser";
 import * as passport from "passport";
 import * as mongoose from "mongoose";
 
-import { getFromEnvironment } from "./util";
-import indexRouter from "./routes/index";
-
 dotenv.config();
 aws.config.loadFromPath("./aws.json");
+
+import { getFromEnvironment } from "./util";
+import indexRouter from "./routes/index";
 
 const [ SESSION_SECRET, DB_URL ] = getFromEnvironment("SESSION_SECRET", "DB_URL");
 
