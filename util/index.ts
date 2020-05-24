@@ -218,8 +218,10 @@ function getTokenFromHeader(req: Request): string | null {
  * @returns a JWT request handler which can be used as middleware function
  */
 export function authRequired(): jwt.RequestHandler {
+  const [ SESSION_SECRET ] = getFromEnvironment("SESSION_SECRET");
+
   return jwt({
-    secret: "",
+    secret: SESSION_SECRET,
     userProperty: "payload",
     getToken: getTokenFromHeader
   });
