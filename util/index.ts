@@ -222,7 +222,7 @@ export function authRequired(): jwt.RequestHandler {
 
   return jwt({
     secret: SESSION_SECRET,
-    userProperty: "payload",
+    userProperty: "user",
     getToken: getTokenFromHeader
   });
 }
