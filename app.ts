@@ -15,6 +15,7 @@ dotenv.config();
 aws.config.loadFromPath("./aws.json");
 
 import { getFromEnvironment } from "./util";
+import { snsMiddleware } from "./util/sns";
 import indexRouter from "./routes/index";
 
 const [ SESSION_SECRET, DB_URL ] = getFromEnvironment("SESSION_SECRET", "DB_URL");
@@ -25,6 +26,7 @@ var app = express();
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
+app.use(snsMiddleware);
 app.use(logger("dev"));
 app.use(express.json());
 
