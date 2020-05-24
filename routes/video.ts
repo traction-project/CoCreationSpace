@@ -14,13 +14,13 @@ router.post("/upload", authRequired(), (req, res) => {
   busboy.on("file", async (fieldname, file, filename, encoding, mimetype) => {
     try {
       const newName = uuid4() + getExtension(filename);
-
       await uploadToS3(newName, file, BUCKET_NAME);
+
       const jobId = await encodeDash(ETS_PIPELINE, newName);
+      const userId: string = (req.user as any).id;
 
       const video = new Video();
-      // TODO get user id
-      video.uploadedBy = "0";
+      video.uploadedBy = userId;
       video.title = filename;
 
       if (jobId) {
