@@ -12,9 +12,7 @@ import * as passport from "passport";
 import * as mongoose from "mongoose";
 
 import { getFromEnvironment } from "./util";
-
 import indexRouter from "./routes/index";
-import snsRouter from "./routes/sns";
 
 dotenv.config();
 aws.config.loadFromPath("./aws.json");
@@ -57,7 +55,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
-app.use("/sns", snsRouter);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

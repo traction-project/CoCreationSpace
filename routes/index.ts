@@ -1,11 +1,13 @@
 import { Router } from "express";
 
-import ApiRouter from "./api";
+import APIRouter from "./api";
+import SNSRouter from "./sns";
 import VideoRouter from "./video";
 
 const router = Router();
 
-router.use("/api", ApiRouter);
+router.use("/api", APIRouter);
+router.use("/sns", SNSRouter);
 router.use("/video", VideoRouter);
 
 router.get("/", (_, res) => {
