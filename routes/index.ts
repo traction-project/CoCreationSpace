@@ -52,6 +52,14 @@ router.post("/register", async (req, res) => {
   }
 });
 
+router.post("/logout", (req, res) => {
+  req.logout();
+
+  res.send({
+    status: "OK"
+  });
+});
+
 router.get("/loginstatus", (req, res) => {
   res.send({
     loggedIn: req.user !== undefined
