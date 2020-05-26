@@ -54,6 +54,32 @@ export function uploadToS3(keyname: string, file: aws.S3.Body, bucket: string): 
 }
 
 /**
+ * Deletes the object with the given key from an S3 bucket. This function
+ * returns a promise which resolves upon successful deletion of the object or
+ * rejects with an error otherwise.
+ *
+ * @param keyname Name of object to be deleted
+ * @param bucket Name of the bucket the object is located in
+ * @returns A promise which resolves upon completion
+ */
+export function deleteFromS3(keyname: string, bucket: string): Promise<void> {
+  const s3 = new aws.S3();
+
+  return new Promise((resolve, reject) => {
+    s3.deleteObject({
+      Bucket: bucket,
+      Key: keyname
+    }, (err) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve();
+      }
+    });
+  });
+}
+
+/**
  * Returns the extension of a given filename with a leading dot. If the given
  * filename has no extension, an empty string is returned.
  *
