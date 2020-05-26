@@ -5,6 +5,7 @@ import * as transcribeResponses from "./fixtures/transcribe_responses";
 
 import * as util from "../util";
 import * as transcribe from "../util/transcribe";
+import * as s3 from "../util/s3";
 
 describe("Utility function getFromEnvironment()", () => {
   it("returns an empty array when no arguments are given", () => {
@@ -71,7 +72,7 @@ describe("Utility function uploadToS3()", () => {
     });
 
     expect(
-      await util.uploadToS3("some/key", "some_body", "some_bucket")
+      await s3.uploadToS3("some/key", "some_body", "some_bucket")
     ).toBeUndefined();
   });
 
@@ -83,7 +84,7 @@ describe("Utility function uploadToS3()", () => {
     });
 
     try {
-      await util.uploadToS3("some/key", "some_body", "some_bucket");
+      await s3.uploadToS3("some/key", "some_body", "some_bucket");
       fail();
     } catch (err) {
       expect(err).toBeDefined();

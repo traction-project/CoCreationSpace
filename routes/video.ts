@@ -3,7 +3,8 @@ import * as Busboy from "busboy";
 import { v4 as uuid4 } from "uuid";
 
 import Video from "../models/video";
-import { getExtension, uploadToS3, getFromEnvironment, encodeDash, authRequired } from "../util";
+import { getExtension, getFromEnvironment, encodeDash, authRequired } from "../util";
+import { uploadToS3 } from "../util/s3";
 
 const [ BUCKET_NAME, ETS_PIPELINE ] = getFromEnvironment("BUCKET_NAME", "ETS_PIPELINE");
 const router = Router();
