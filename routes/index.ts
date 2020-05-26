@@ -1,7 +1,7 @@
 import { Router } from "express";
 import * as passport from "passport";
 
-import User from "../models/user";
+import User, { User as UserSchema } from "../models/user";
 
 import APIRouter from "./api";
 import SNSRouter from "./sns";
@@ -18,8 +18,14 @@ router.get("/", (_, res) => {
 });
 
 router.post("/login", passport.authenticate("local"), (req, res) => {
+  const user = req.user as UserSchema;
+
   res.send({
-    status: "OK"
+    status: "OK",
+    user: {
+      id: user.id,
+      username: user.username
+    }
   });
 });
 
