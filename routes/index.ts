@@ -1,7 +1,7 @@
 import { Router } from "express";
 import * as passport from "passport";
 
-import User, { User as UserSchema } from "../models/user";
+import User from "../models/user";
 
 import APIRouter from "./api";
 import SNSRouter from "./sns";
@@ -17,32 +17,10 @@ router.get("/", (_, res) => {
   res.render("index", { title: "MediaVault" });
 });
 
-router.post("/login", (req, res, next) => {
-  const { username, password  } = req.body;
-
-  if (!username || !password) {
-    return res.status(400).send({
-      status: "ERR",
-      message: "Insufficient parameters"
-    });
-  }
-
-  return passport.authenticate("local", (err: Error | null, user: UserSchema | undefined, msg: { message: string }) => {
-    if (err) {
-      return next(err);
-    }
-
-    if (user) {
-      return res.send({
-        status: "OK"
-      });
-    }
-
-    res.status(401).send({
-      status: "ERR",
-      ...msg
-    });
-  })(req, res, next);
+router.post("/login", passport.authenticate("local"), (req, res) => {
+  res.send({
+    status: "OK"
+  });
 });
 
 router.post("/register", async (req, res) => {
