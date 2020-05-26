@@ -1,3 +1,24 @@
 body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
+
+.dropzone {
+  border: 4px dashed #999999;
+  border-radius: 7px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 15px;
+}
+
+.dropzone div {
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.dropzone-entered {
+  border: 4px dashed #E2E2E2;
+  color: #E2E2E2;
+}
