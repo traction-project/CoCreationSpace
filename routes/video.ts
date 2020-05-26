@@ -9,7 +9,7 @@ import { uploadToS3 } from "../util/s3";
 const [ BUCKET_NAME, ETS_PIPELINE ] = getFromEnvironment("BUCKET_NAME", "ETS_PIPELINE");
 const router = Router();
 
-router.post("/upload", authRequired(), (req, res) => {
+router.post("/upload", authRequired, (req, res) => {
   const busboy = new Busboy({ headers: req.headers });
 
   busboy.on("file", async (fieldname, file, filename, encoding, mimetype) => {

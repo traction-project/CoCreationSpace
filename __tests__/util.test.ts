@@ -301,14 +301,14 @@ describe("Utility function translateText()", () => {
   });
 });
 
-describe("Utility function authRequired()", () => {
+describe("Utility function tokenRequired()", () => {
   it("should return a function", () => {
     process.env = {
       SESSION_SECRET: "secret"
     };
 
     expect(
-      util.authRequired()
+      util.tokenRequired()
     ).toBeInstanceOf(Function);
   });
 });
