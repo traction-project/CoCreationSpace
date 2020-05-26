@@ -3,7 +3,9 @@ import { Provider } from "react-redux";
 import { Route, HashRouter as Router, Switch } from "react-router-dom";
 
 import store from "../store";
+
 import Login from "./login";
+import Video from "./video";
 
 interface AppProps {
 }
@@ -15,6 +17,9 @@ const App: React.FC<AppProps> = () => {
         <Switch>
           <Route path="/login">
             <Login />
+          </Route>
+          <Route path="/video/:id">
+            <Video />
           </Route>
           <Route path="/">
             Hello World!
