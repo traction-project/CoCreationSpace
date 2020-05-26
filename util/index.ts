@@ -1,3 +1,4 @@
+import { Request, Response, NextFunction } from "express";
 import * as aws from "aws-sdk";
 import * as jwt from "express-jwt";
 
@@ -167,4 +168,22 @@ export function tokenRequired(): jwt.RequestHandler {
   return jwt({
     secret: SESSION_SECRET,
   });
+}
+
+/**
+ * Middleware function which makes routes which it is applied to require a
+ * an active session, achieved through a session cookie.
+ *
+ * @returns a JWT request handler which can be used as middleware function
+ */
+export function authRequired(req: Request, res: Response, next: NextFunction) {
+  if (req.user) {
+    next();
+  } else {
+    res.status(401);
+    res.send({
+      status: "ERR",
+      message: "Authorisation required"
+    });
+  }
 }
