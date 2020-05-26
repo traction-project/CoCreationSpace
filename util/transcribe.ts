@@ -1,3 +1,5 @@
+import * as aws from "aws-sdk";
+
 /**
  * Type for words found in the output of AWS Transcribe.
  */
@@ -37,6 +39,38 @@ export interface TranscribeOutput {
     transcripts: Array<{ transcript: string }>,
     items: Array<TranscribeItem>
   };
+}
+
+/**
+ * Starts a new transcription job for the given media file using the given
+ * language. Language codes need to be supplied as ISO language codes, e.g.
+ * `en-us` or `de-de`. The functions returns a promise which resolves once the
+ * job was submitted successfully or rejects with an error otherwise.
+ *
+ * @param inputLanguage Language code for the language used in the input file
+ * @param inputFile URI of the input media file for which the transcript shall be generated
+ * @returns Promise which resolves upon completion
+ */
+export function transcribeAudioFile(inputLanguage: string, inputFile: string): Promise<void> {
+  const params = {
+    TranscriptionJobName: inputFile,
+    LanguageCode: inputLanguage,
+    Media: {
+      MediaFileUri: inputFile
+    }
+  };
+
+  return new Promise((resolve, reject) => {
+    const transcribe = new aws.TranscribeService();
+
+    transcribe.startTranscriptionJob(params, (err) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve();
+      }
+    });
+  });
 }
 
 /**
