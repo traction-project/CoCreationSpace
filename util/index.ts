@@ -161,7 +161,7 @@ export function translateText(input: string, targetLanguage: string, sourceLangu
  *
  * @returns a JWT request handler which can be used as middleware function
  */
-export function authRequired(): jwt.RequestHandler {
+export function tokenRequired(): jwt.RequestHandler {
   const [ SESSION_SECRET ] = getFromEnvironment("SESSION_SECRET");
 
   return jwt({
