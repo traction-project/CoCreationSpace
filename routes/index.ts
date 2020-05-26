@@ -27,13 +27,15 @@ router.post("/login", (req, res, next) => {
     });
   }
 
-  return passport.authenticate("local", { session: false }, (err: Error | null, user: UserSchema | undefined, msg: { message: string }) => {
+  return passport.authenticate("local", (err: Error | null, user: UserSchema | undefined, msg: { message: string }) => {
     if (err) {
       return next(err);
     }
 
     if (user) {
-      return res.send(user.getAuth());
+      return res.send({
+        status: "OK"
+      });
     }
 
     res.status(401).send({
