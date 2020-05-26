@@ -52,4 +52,10 @@ router.post("/register", async (req, res) => {
   }
 });
 
+router.get("/loginstatus", (req, res) => {
+  res.send({
+    loggedIn: req.user !== undefined
+  });
+});
+
 export default router;
