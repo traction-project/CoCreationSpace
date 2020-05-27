@@ -14,7 +14,7 @@ const VideoUpload: React.FC<VideoUploadProps> = () => {
 
   const startUpload = async (file: File) => {
     try {
-      await postFile("/upload", file, (progress) => {
+      await postFile("/video/upload", file, (progress) => {
         setProgress(progress.loaded);
         setTotal(progress.total);
       });
@@ -33,28 +33,30 @@ const VideoUpload: React.FC<VideoUploadProps> = () => {
   };
 
   return (
-    <>
-      <h1 className="title">Upload Video</h1>
-      {(total > 0) ? (
-        <div className="progresscontainer">
-          <progress className="progress is-primary" value={progress} max={total} />
-        </div>
-      ) : (
-        <Dropzone size={["100%", 300]} onFileDropped={startUpload} />
-      )}
+    <div className="columns" style={{ marginTop: 15 }}>
+      <div className="column is-8 is-offset-2">
+        <h1 className="title">Upload Video</h1>
+        {(total > 0) ? (
+          <div className="progresscontainer">
+            <progress className="progress is-primary" value={progress} max={total} />
+          </div>
+        ) : (
+          <Dropzone size={["100%", 300]} onFileDropped={startUpload} />
+        )}
 
-      {(displayNotification == "success") ? (
-        <div className="notification is-success fixed-notification">
-          <button className="delete" onClick={closeNotification}></button>
-          File successfully uploaded
-        </div>
-      ) : (displayNotification == "error") ? (
-        <div className="notification is-error fixed-notification">
-          <button className="delete" onClick={closeNotification}></button>
-          Could not upload file
-        </div>
-      ) : null}
-    </>
+        {(displayNotification == "success") ? (
+          <div className="notification is-success fixed-notification">
+            <button className="delete" onClick={closeNotification}></button>
+            File successfully uploaded
+          </div>
+        ) : (displayNotification == "error") ? (
+          <div className="notification is-error fixed-notification">
+            <button className="delete" onClick={closeNotification}></button>
+            Could not upload file
+          </div>
+        ) : null}
+      </div>
+    </div>
   );
 };
 
