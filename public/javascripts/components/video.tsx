@@ -23,7 +23,7 @@ const Video: React.FC<{}> = (props) => {
       <div className="column is-8 is-offset-2">
         <h1 className="title">{id}</h1>
         <div style={{ display: "flex", justifyContent: "center" }}>
-          {videoUrl ? <DashPlayer width={700} manifest={videoUrl} /> : null}
+          {videoUrl ? <DashPlayer width={700} manifest={videoUrl} subtitlePath={`/video/id/${id}/subtitles`} /> : null}
         </div>
       </div>
     </div>
