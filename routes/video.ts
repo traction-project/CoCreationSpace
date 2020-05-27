@@ -27,6 +27,7 @@ router.post("/upload", authRequired, (req, res) => {
       const video = new Video();
       video.uploadedBy = userId;
       video.title = filename;
+      video.key = newName.split(".")[0];
 
       if (jobId) {
         video.transcodingJobId = jobId;
@@ -59,7 +60,8 @@ router.get("/all", async (req, res) => {
       duration: video.duration,
       resolutions: video.resolutions,
       mainThumbnail: (mainThumbnail) ? `${CLOUDFRONT_URL!}/transcoded/${mainThumbnail}` : undefined,
-      status: video.status
+      status: video.status,
+      key: video.key
     };
   }));
 });
