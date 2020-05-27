@@ -2,6 +2,16 @@ import { Request, Response, NextFunction } from "express";
 import * as aws from "aws-sdk";
 import * as jwt from "express-jwt";
 
+export function Range(start: number, end: number) {
+  if (start === end) {
+    return [];
+  }
+
+  return new Array(end - start).fill(null).map((_, i) => {
+    return start + i;
+  });
+}
+
 /**
  * Tries to extract the values of the keys given as parameters from the
  * environment and throws an excaption if one of them cannot be found.
