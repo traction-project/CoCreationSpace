@@ -8,7 +8,7 @@ import { getExtension, getFromEnvironment, encodeDash, authRequired } from "../u
 import { uploadToS3 } from "../util/s3";
 import { transcribeMediaFile } from "../util/transcribe";
 
-const [ BUCKET_NAME, ETS_PIPELINE ] = getFromEnvironment("BUCKET_NAME", "ETS_PIPELINE");
+const [ BUCKET_NAME, ETS_PIPELINE, CLOUDFRONT_URL ] = getFromEnvironment("BUCKET_NAME", "ETS_PIPELINE", "CLOUDFRONT_URL");
 const router = Router();
 
 router.post("/upload", authRequired, (req, res) => {
@@ -51,12 +51,15 @@ router.post("/upload", authRequired, (req, res) => {
 router.get("/all", async (req, res) => {
   const videos = await Video.find({}).sort({ dateUpdated: -1 });
 
-  res.send(videos.map((v) => {
-    const mainThumbnail = v.thumbnails?.[0];
+  res.send(videos.map((video) => {
+    const mainThumbnail = video.thumbnails?.[0];
 
     return {
-      ...v,
-      mainThumbnail
+      title: video.title,
+      duration: video.duration,
+      resolutions: video.resolutions,
+      mainThumbnail: (mainThumbnail) ? `${CLOUDFRONT_URL!}/transcoded/${mainThumbnail}` : undefined,
+      status: video.status
     };
   }));
 });
