@@ -6,6 +6,7 @@ import store from "../store";
 
 import Login from "./login";
 import Video from "./video";
+import VideoUpload from "./video_upload";
 
 interface AppProps {
 }
@@ -17,6 +18,9 @@ const App: React.FC<AppProps> = () => {
         <Switch>
           <Route path="/login">
             <Login />
+          </Route>
+          <Route path="/upload">
+            <VideoUpload />
           </Route>
           <Route path="/video/:id">
             <Video />
