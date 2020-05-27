@@ -3,7 +3,8 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 interface VideoData {
-  name: string;
+  id: string;
+  title: string;
   resolutions?: Array<number>;
   duration?: number;
   status: string;
@@ -44,10 +45,10 @@ const VideoStream: React.FC<VideoStreamProps> = (props) => {
                 </div>
                 <div className="media-content">
                   <div className="content">
-                    {(v.status === "complete") ? (
-                      <Link to={`/video/${v.name}`}>{v.name}</Link>
+                    {(v.status === "done") ? (
+                      <Link to={`/video/${v.id}`}>{v.title}</Link>
                     ) : (
-                      v.name
+                      v.title
                     )}
                     <hr />
                     <b>Available resolutions:</b> {v.resolutions && v.resolutions.join(", ")}<br />
