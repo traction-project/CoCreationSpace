@@ -7,6 +7,7 @@ import store from "../store";
 import Login from "./login";
 import Video from "./video";
 import VideoUpload from "./video_upload";
+import VideoStream from "./video_stream";
 
 interface AppProps {
 }
@@ -21,6 +22,9 @@ const App: React.FC<AppProps> = () => {
           </Route>
           <Route path="/upload">
             <VideoUpload />
+          </Route>
+          <Route path="/videos">
+            <VideoStream />
           </Route>
           <Route path="/video/:id">
             <Video />
