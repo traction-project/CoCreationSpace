@@ -56,6 +56,7 @@ router.get("/all", async (req, res) => {
     const mainThumbnail = video.thumbnails?.[0];
 
     return {
+      id: video.id,
       title: video.title,
       duration: video.duration,
       resolutions: video.resolutions,
@@ -64,6 +65,21 @@ router.get("/all", async (req, res) => {
       key: video.key
     };
   }));
+});
+
+router.get("/id/:id", async (req, res) => {
+  const { id } = req.params;
+  const video = await Video.findById(id);
+
+  if (video) {
+    return res.send({
+      title: video.title,
+      key: video.key,
+      manifest: `${CLOUDFRONT_URL!}/transcoded/${video.key}.mpd`
+    });
+  } else {
+    res.status(404).send("");
+  }
 });
 
 export default router;
