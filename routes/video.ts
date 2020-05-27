@@ -48,4 +48,17 @@ router.post("/upload", authRequired, (req, res) => {
   req.pipe(busboy);
 });
 
+router.get("/all", async (req, res) => {
+  const videos = await Video.find({}).sort({ dateUpdated: -1 });
+
+  res.send(videos.map((v) => {
+    const mainThumbnail = v.thumbnails?.[0];
+
+    return {
+      ...v,
+      mainThumbnail
+    };
+  }));
+});
+
 export default router;
