@@ -38,7 +38,8 @@ router.post("/upload", authRequired, (req, res) => {
 
       await video.save();
       res.send({ status: "OK" });
-    } catch {
+    } catch (e) {
+      console.error(e);
       res.status(500).send({
         status: "ERR",
         message: "Could not upload to S3"
