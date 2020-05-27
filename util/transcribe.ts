@@ -52,8 +52,9 @@ export interface TranscribeOutput {
  * @returns Promise which resolves upon completion
  */
 export function transcribeMediaFile(inputLanguage: string, inputFile: string): Promise<void> {
+  const jobName = inputFile.split(".")[0];
   const params = {
-    TranscriptionJobName: inputFile,
+    TranscriptionJobName: jobName,
     LanguageCode: inputLanguage,
     Media: {
       MediaFileUri: inputFile
