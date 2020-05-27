@@ -15,7 +15,8 @@ const VideoSchema = new Schema({
   },
   thumbnails: [String],
   resolutions: [Number],
-  duration: Number
+  duration: Number,
+  key: String
 });
 
 interface Video extends Document {
@@ -29,6 +30,7 @@ interface Video extends Document {
   thumbnails: Array<string>;
   resolutions: Array<number>;
   duration: number;
+  key: string;
 }
 
 export default model<Video>("Video", VideoSchema);
