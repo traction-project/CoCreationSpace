@@ -12,7 +12,10 @@ const VideoSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "User",
     required: true
-  }
+  },
+  thumbnails: [String],
+  resolutions: [Number],
+  duration: Number
 });
 
 interface Video extends Document {
@@ -23,6 +26,9 @@ interface Video extends Document {
   dateCreated: Date;
   dateUpdated: Date;
   uploadedBy: User["_id"];
+  thumbnails: Array<string>;
+  resolutions: Array<number>;
+  duration: number;
 }
 
 export default model<Video>("Video", VideoSchema);
