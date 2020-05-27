@@ -51,7 +51,7 @@ export interface TranscribeOutput {
  * @param inputFile URI of the input media file for which the transcript shall be generated
  * @returns Promise which resolves upon completion
  */
-export function transcribeAudioFile(inputLanguage: string, inputFile: string): Promise<void> {
+export function transcribeMediaFile(inputLanguage: string, inputFile: string): Promise<void> {
   const params = {
     TranscriptionJobName: inputFile,
     LanguageCode: inputLanguage,
