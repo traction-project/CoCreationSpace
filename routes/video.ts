@@ -6,7 +6,7 @@ import Video from "../models/video";
 import { User } from "../models/user";
 import { getExtension, getFromEnvironment, encodeDash, authRequired } from "../util";
 import { uploadToS3 } from "../util/s3";
-import { transcribeMediaFile } from "../util/transcribe";
+import { transcribeMediaFile, transcribeOutputToVTT } from "../util/transcribe";
 
 const [ BUCKET_NAME, ETS_PIPELINE, CLOUDFRONT_URL ] = getFromEnvironment("BUCKET_NAME", "ETS_PIPELINE", "CLOUDFRONT_URL");
 const router = Router();
@@ -79,6 +79,17 @@ router.get("/id/:id", async (req, res) => {
     });
   } else {
     res.status(404).send("");
+  }
+});
+
+router.get("/id/:id/subtitles", async (req, res) => {
+  const { id } = req.params;
+  const video = await Video.findById(id);
+
+  if (video && video.transcript) {
+    res.send(transcribeOutputToVTT(video.transcript));
+  } else {
+    res.send("");
   }
 });
 
