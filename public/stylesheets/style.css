@@ -22,3 +22,18 @@ body {
   border: 4px dashed #E2E2E2;
   color: #E2E2E2;
 }
+
+.progresscontainer {
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.fixed-notification {
+  position: fixed;
+  top: 25px;
+  right: 25px;
+
+  z-index: 100;
+}
