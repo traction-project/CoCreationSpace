@@ -5,6 +5,7 @@ const VideoSchema = new Schema({
   title: String,
   path: String,
   transcodingJobId: String,
+  transcriptionJobId: String,
   status: { type: String, default: "pending" },
   dateCreated: { type: Date, default: Date.now },
   dateUpdated: { type: Date, default: Date.now },
@@ -16,7 +17,8 @@ const VideoSchema = new Schema({
   thumbnails: [String],
   resolutions: [Number],
   duration: Number,
-  key: String
+  key: String,
+  transcript: Object
 });
 
 interface Video extends Document {
@@ -24,6 +26,7 @@ interface Video extends Document {
   path: string;
   status: "pending" | "processing" | "done" | "error";
   transcodingJobId: string;
+  transcriptionJobId: string;
   dateCreated: Date;
   dateUpdated: Date;
   uploadedBy: User["_id"];
@@ -31,6 +34,7 @@ interface Video extends Document {
   resolutions: Array<number>;
   duration: number;
   key: string;
+  transcript: any;
 }
 
 export default model<Video>("Video", VideoSchema);
