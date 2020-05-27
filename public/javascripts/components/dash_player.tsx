@@ -6,12 +6,13 @@ import "videojs-contrib-dash";
 
 interface DashPlayerProps {
   manifest: string;
+  subtitlePath?: string;
   width: number;
 }
 
 const DashPlayer: React.FC<DashPlayerProps> = (props) => {
   const videoNode = useRef<HTMLVideoElement>(null);
-  const { manifest, width } = props;
+  const { manifest, width, subtitlePath } = props;
 
   useEffect(() => {
     if (videoNode === null) {
@@ -37,7 +38,13 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
   return (
     <div>
       <div data-vjs-player>
-        <video ref={videoNode} className="video-js"></video>
+        <video ref={videoNode} className="video-js">
+          {(subtitlePath) ? (
+            <track src={subtitlePath} label="English" srcLang="en" default={true} />
+          ) : (
+            null
+          )}
+        </video>
       </div>
     </div>
   );
