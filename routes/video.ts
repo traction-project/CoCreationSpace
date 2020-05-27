@@ -19,7 +19,7 @@ router.post("/upload", authRequired, (req, res) => {
       const newName = uuid4() + getExtension(filename);
       await uploadToS3(newName, file, BUCKET_NAME);
 
-      transcribeMediaFile("en-US", newName);
+      transcribeMediaFile("en-US", newName, BUCKET_NAME);
       const jobId = await encodeDash(ETS_PIPELINE, newName);
 
       const userId: string = (req.user as User).id;

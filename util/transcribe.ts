@@ -49,15 +49,18 @@ export interface TranscribeOutput {
  *
  * @param inputLanguage Language code for the language used in the input file
  * @param inputFile URI of the input media file for which the transcript shall be generated
+ * @param bucketName Name of the bucket that the input file is located in
  * @returns Promise which resolves upon completion
  */
-export function transcribeMediaFile(inputLanguage: string, inputFile: string): Promise<void> {
+export function transcribeMediaFile(inputLanguage: string, inputFile: string, bucketName: string): Promise<void> {
   const jobName = inputFile.split(".")[0];
+  const s3url = `s3://${bucketName}/${inputFile}`;
+
   const params = {
     TranscriptionJobName: jobName,
     LanguageCode: inputLanguage,
     Media: {
-      MediaFileUri: inputFile
+      MediaFileUri: s3url
     }
   };
 
