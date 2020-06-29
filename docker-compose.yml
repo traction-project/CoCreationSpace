@@ -3,7 +3,6 @@ services:
   web:
     build: .
     restart: always
-    command: yarn start
     volumes:
       - .:/code
     ports:
