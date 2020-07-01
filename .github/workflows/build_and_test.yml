@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: Build and publish
 
 on:
   push:
@@ -7,19 +7,25 @@ on:
     branches: [ master ]
 
 jobs:
-
   build:
-
-    runs-on: ubuntu-latest
-
+    name: Build docker image and push to registry
+    runs-on: ubuntu-18.04
+    env:
+      IMAGE_NAME: ${{ secrets.DOCKER_REGISTRY }}/traction-mediavault
     steps:
     - uses: actions/checkout@v2
 
+    - name: Login to registry
+      run: docker login -u ${{ secrets.DOCKER_USER }} -p ${{ secrets.DOCKER_PASS }} ${{ secrets.DOCKER_REGISTRY }}
+
     - name: Build Docker image
-      run: docker build . --file Dockerfile --tag traction-mediavault:latest
+      run: docker build . --file Dockerfile --tag $IMAGE_NAME:latest
 
     - name: Run linter
-      run: docker run traction-mediavault:latest yarn lint
+      run: docker run $IMAGE_NAME:latest yarn lint
 
     - name: Run unit tests
-      run: docker run traction-mediavault:latest yarn test
+      run: docker run $IMAGE_NAME:latest yarn test
+
+    - name: Publish Docker image
+      run: docker push $IMAGE_NAME
