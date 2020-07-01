@@ -2,6 +2,7 @@ version: '3.6'
 services:
   web:
     build: .
+    image: registry.dis.cwi.nl/traction-mediavault
     restart: always
     volumes:
       - .:/code
