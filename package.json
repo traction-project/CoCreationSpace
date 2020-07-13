@@ -6,7 +6,8 @@
     "start": "node --enable-source-maps ./bin/backend.js",
     "test": "jest --verbose --bail --coverage",
     "lint": "eslint --ext=ts,tsx,js,jsx .",
-    "doc": "typedoc --out docs/ --mode file --exclude node_modules/ --ignoreCompilerErrors ."
+    "doc": "typedoc --out docs/ --mode file --exclude node_modules/ --ignoreCompilerErrors .",
+    "build": "webpack"
   },
   "dependencies": {
     "aws-sdk": "^2.641.0",
