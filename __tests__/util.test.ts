@@ -8,6 +8,32 @@ import * as transcribe from "../util/transcribe";
 import * as transcode from "../util/transcode";
 import * as s3 from "../util/s3";
 
+describe("Utility function Range()", () => {
+  it("should return and empty array is start is equal to end", () => {
+    expect(util.Range(2, 2)).toEqual([]);
+  });
+
+  it("should return a list containing all integers from start (inclusive) to end (exclusive)", () => {
+    expect(util.Range(1, 5)).toEqual([1, 2, 3, 4]);
+  });
+
+  it("should return a descending range if end is smaller than start", () => {
+    expect(util.Range(5, 1)).toEqual([5, 4, 3, 2]);
+  });
+
+  it("should return an ascending range with negative numbers when start and end are negative", () => {
+    expect(util.Range(-5, -1)).toEqual([-5, -4, -3, -2]);
+  });
+
+  it("should return an ascending range with negative and positive numbers when start is negative and end is positive", () => {
+    expect(util.Range(-5, 5)).toEqual([-5, -4, -3, -2, -1, 0, 1, 2, 3, 4]);
+  });
+
+  it("should return an descending range with negative and positive numbers when start is positive and end is negative", () => {
+    expect(util.Range(5, -5)).toEqual([5, 4, 3, 2, 1, 0, -1, -2, -3, -4]);
+  });
+});
+
 describe("Utility function getFromEnvironment()", () => {
   it("returns an empty array when no arguments are given", () => {
     expect(
