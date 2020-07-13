@@ -5,6 +5,7 @@ import * as transcribeResponses from "./fixtures/transcribe_responses";
 
 import * as util from "../util";
 import * as transcribe from "../util/transcribe";
+import * as transcode from "../util/transcode";
 import * as s3 from "../util/s3";
 
 describe("Utility function getFromEnvironment()", () => {
@@ -106,7 +107,7 @@ describe("Utility function encodeDash()", () => {
     });
 
     expect(
-      await util.encodeDash("my_pipeline", "video.mp4")
+      await transcode.encodeDash("my_pipeline", "video.mp4")
     ).toEqual("new_job_id");
   });
 
@@ -118,7 +119,7 @@ describe("Utility function encodeDash()", () => {
     });
 
     expect(
-      await util.encodeDash("my_pipeline", "video.mp4")
+      await transcode.encodeDash("my_pipeline", "video.mp4")
     ).toBeUndefined();
   });
 
@@ -130,7 +131,7 @@ describe("Utility function encodeDash()", () => {
     });
 
     try {
-      await util.encodeDash("my_pipeline", "video.mp4");
+      await transcode.encodeDash("my_pipeline", "video.mp4");
       fail();
     } catch (err) {
       expect(err).toBeDefined();
@@ -147,7 +148,7 @@ describe("Utility function encodeDash()", () => {
       }
     });
 
-    const result = await util.encodeDash("my_pipeline", "video.mp4", false);
+    const result = await transcode.encodeDash("my_pipeline", "video.mp4", false);
 
     expect(result).toBeDefined();
     expect(result?.split(",").length).toEqual(3);
@@ -168,7 +169,7 @@ describe("Utility function encodeDash()", () => {
       }
     });
 
-    const result = await util.encodeDash("my_pipeline", "video.mp4", true);
+    const result = await transcode.encodeDash("my_pipeline", "video.mp4", true);
 
     expect(result).toBeDefined();
     expect(result?.split(",").length).toEqual(4);
@@ -195,7 +196,7 @@ describe("Utility function encodeAudio()", () => {
     });
 
     expect(
-      await util.encodeAudio("my_pipeline", "audio.mp3")
+      await transcode.encodeAudio("my_pipeline", "audio.mp3")
     ).toEqual("new_job_id");
   });
 
@@ -207,7 +208,7 @@ describe("Utility function encodeAudio()", () => {
     });
 
     expect(
-      await util.encodeAudio("my_pipeline", "audio.mp3")
+      await transcode.encodeAudio("my_pipeline", "audio.mp3")
     ).toBeUndefined();
   });
 
@@ -219,7 +220,7 @@ describe("Utility function encodeAudio()", () => {
     });
 
     try {
-      await util.encodeAudio("my_pipeline", "audio.mp3");
+      await transcode.encodeAudio("my_pipeline", "audio.mp3");
       fail();
     } catch (err) {
       expect(err).toBeDefined();

@@ -4,7 +4,8 @@ import { v4 as uuid4 } from "uuid";
 
 import Video from "../models/video";
 import { User } from "../models/user";
-import { getExtension, getFromEnvironment, encodeDash, authRequired } from "../util";
+import { getExtension, getFromEnvironment, authRequired } from "../util";
+import { encodeDash } from "../util/transcode";
 import { uploadToS3 } from "../util/s3";
 import { transcribeMediaFile, transcribeOutputToVTT } from "../util/transcribe";
 
