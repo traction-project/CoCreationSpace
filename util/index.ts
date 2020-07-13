@@ -7,6 +7,12 @@ export function Range(start: number, end: number) {
     return [];
   }
 
+  if (end < start) {
+    return new Array(start - end).fill(null).map((_, i) => {
+      return start - i;
+    });
+  }
+
   return new Array(end - start).fill(null).map((_, i) => {
     return start + i;
   });
