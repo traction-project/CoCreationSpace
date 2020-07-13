@@ -94,6 +94,40 @@ describe("Utility function uploadToS3()", () => {
   });
 });
 
+describe("Utility function deleteFromS3()", () => {
+  afterEach(() => {
+    sinon.restore();
+  });
+
+  it("should resolve the promise", async () => {
+    sinon.stub(aws, "S3").returns({
+      deleteObject: (a: any, callback: () => void) => {
+        callback();
+      }
+    });
+
+    expect(
+      await s3.deleteFromS3("some/key", "some_bucket")
+    ).toBeUndefined();
+  });
+
+  it("should reject the promise returning an error", async () => {
+    sinon.stub(aws, "S3").returns({
+      deleteObject: (a: any, callback: (err: any) => void) => {
+        callback(new Error("ERROR"));
+      }
+    });
+
+    try {
+      await s3.deleteFromS3("some/key", "some_bucket");
+      fail();
+    } catch (err) {
+      expect(err).toBeDefined();
+      expect(err.message).toEqual("ERROR");
+    }
+  });
+});
+
 describe("Utility function encodeDash()", () => {
   afterEach(() => {
     sinon.restore();
