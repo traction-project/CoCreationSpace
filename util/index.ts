@@ -135,6 +135,63 @@ export function encodeDash(pipeline: string, input: string, hasAudio = true): Pr
 }
 
 /**
+ * Starts a new audio transcoding job in the given transcoding pipeline using
+ * the given path as input. Returns a promise which resolves to the job ID of
+ * the created transcoding job or rejects with an error otherwise.
+ *
+ * The given input file is encoded into one output audio stream. If an audio
+ * file is submitted as input, the video stream is discarded and only the audio
+ * track is saved.
+ *
+ * @param pipeline ID of the transcoding pipeline to use
+ * @param input Path to input file
+ * @returns A promise which resolves to the job ID if successful, rejects with an error otherwise
+ */
+export function encodeAudio(pipeline: string, input: string): Promise<string> {
+  // Get filename without extension
+  const inputBasename = input.split(".")[0];
+
+  // Transcoder configuration, outputs are placed under the path transcoded/,
+  // whereas the manifest is placed directly into the transcoded/ folder
+  const params = {
+    PipelineId: pipeline,
+    Input: {
+      Key: input,
+    },
+    OutputKeyPrefix: "transcoded/",
+    Outputs: [
+      {
+        Key: `dash-audio/${inputBasename}`,
+        PresetId: "1351620000001-500060",
+        SegmentDuration: "10"
+      }
+    ],
+    Playlists: [
+      {
+        Format: "MPEG-DASH",
+        Name: `${inputBasename}`,
+        OutputKeys: [
+          `dash-audio/${inputBasename}`
+        ],
+      },
+    ]
+  };
+
+  // Create and submit transcoding job
+  return new Promise((resolve, reject) => {
+    const transcoder = new aws.ElasticTranscoder();
+
+    transcoder.createJob(params, (err, data) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(data.Job?.Id);
+      }
+    });
+  });
+}
+
+/**
  * Translates a given text to the given target language. By default, the
  * language of the input text is determined automatically, but the language
  * of the input text can be set manually, by passing in a language code as
