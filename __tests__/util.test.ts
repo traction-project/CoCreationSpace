@@ -316,6 +316,40 @@ describe("Utility function encodeAudio()", () => {
   });
 });
 
+describe("Utility function transcribeMediaFile()", () => {
+  afterEach(() => {
+    sinon.restore();
+  });
+
+  it("should resolve the promise", async () => {
+    sinon.stub(aws, "TranscribeService").returns({
+      startTranscriptionJob: (params: any, callback: (err: Error | null) => void) => {
+        callback(null);
+      }
+    });
+
+    expect(
+      await transcribe.transcribeMediaFile("en_us", "some_path/some_file.mp4", "some_bucket")
+    ).toBeUndefined();
+  });
+
+  it("should reject with an error message", async () => {
+    sinon.stub(aws, "TranscribeService").returns({
+      startTranscriptionJob: (params: any, callback: (err: Error | null) => void) => {
+        callback(new Error("ERROR"));
+      }
+    });
+
+    try {
+      await transcribe.transcribeMediaFile("en_us", "some_path/some_file.mp4", "some_bucket");
+      fail();
+    } catch (err) {
+      expect(err).toBeDefined();
+      expect(err.message).toEqual("ERROR");
+    }
+  });
+});
+
 describe("Utility function transcribeOutputToVTT()", () => {
   it("should produce a file with only a header on empty input", () => {
     expect(
