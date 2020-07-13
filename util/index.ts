@@ -2,6 +2,16 @@ import { Request, Response, NextFunction } from "express";
 import * as aws from "aws-sdk";
 import * as jwt from "express-jwt";
 
+/**
+ * Returns a list containing all integers between the given start point and end
+ * point. If the values for start and end are equal, an empty list is returned.
+ * If the end point is less than the start point, a descending list is returned,
+ * otherwise an ascending list is returned.
+ *
+ * @param start Start point of the range (inclusive)
+ * @param end End point of the range (exclusive)
+ * @returns A list with all integers between start and end
+ */
 export function Range(start: number, end: number) {
   if (start === end) {
     return [];
