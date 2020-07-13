@@ -34,6 +34,33 @@ describe("Utility function Range()", () => {
   });
 });
 
+describe("Utility function authRequired()", () => {
+  it("calls the next() callback function if the request contains the property .user", () => {
+    const next = sinon.fake();
+    util.authRequired({ user: "something" } as any, {} as any, next);
+
+    expect(next.called).toBeTruthy();
+  });
+
+  it("does not call the next() callback function if the request does not contain the property .user", () => {
+    const next = sinon.fake();
+    const res = {
+      status: sinon.spy(),
+      send: sinon.spy()
+    };
+
+    util.authRequired({} as any, res as any, next);
+
+    expect(next.called).toBeFalsy();
+
+    expect(res.status.calledWith(401)).toBeTruthy();
+    expect(res.send.calledWith({
+      status: "ERR",
+      message: "Authorisation required"
+    })).toBeTruthy();
+  });
+});
+
 describe("Utility function getFromEnvironment()", () => {
   it("returns an empty array when no arguments are given", () => {
     expect(
