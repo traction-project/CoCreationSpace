@@ -13,22 +13,33 @@ jobs:
     env:
       IMAGE_NAME: ${{ secrets.DOCKER_REGISTRY }}/traction-mediavault
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Get current revision SHA
-      run: git rev-parse HEAD > REVISION
+      - name: Get current revision SHA
+        run: git rev-parse HEAD > REVISION
 
-    - name: Login to registry
-      run: docker login -u ${{ secrets.DOCKER_USER }} -p "${{ secrets.DOCKER_PASS }}" ${{ secrets.DOCKER_REGISTRY }}
+      - name: Login to registry
+        run: docker login -u ${{ secrets.DOCKER_USER }} -p "${{ secrets.DOCKER_PASS }}" ${{ secrets.DOCKER_REGISTRY }}
 
-    - name: Build Docker image
-      run: docker build . --file Dockerfile --tag $IMAGE_NAME:latest
+      - name: Build Docker image
+        run: docker build . --file Dockerfile --tag $IMAGE_NAME:latest
 
-    - name: Run linter
-      run: docker run $IMAGE_NAME:latest yarn lint
+      - name: Run linter
+        run: docker run $IMAGE_NAME:latest yarn lint
 
-    - name: Run unit tests
-      run: docker run $IMAGE_NAME:latest yarn test
+      - name: Run unit tests
+        run: docker run $IMAGE_NAME:latest yarn test
 
-    - name: Publish Docker image
-      run: docker push $IMAGE_NAME
+      - name: Publish Docker image
+        run: docker push $IMAGE_NAME
+
+  redeploy:
+    name: Call deploy hook
+    runs-on: ubuntu-18.04
+    needs: [ build ]
+    steps:
+      - uses: troeggla/workflow-webhook@v1.1.0
+        env:
+          webhook_url: ${{ secrets.WEBHOOK_URL }}
+          webhook_secret: ${{ secrets.WEBHOOK_SECRET }}
+
