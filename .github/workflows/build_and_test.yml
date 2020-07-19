@@ -15,6 +15,9 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
+    - name: Get current revision SHA
+      run: git rev-parse HEAD > REVISION
+
     - name: Login to registry
       run: docker login -u ${{ secrets.DOCKER_USER }} -p "${{ secrets.DOCKER_PASS }}" ${{ secrets.DOCKER_REGISTRY }}
 
