@@ -1,5 +1,6 @@
 import { Router } from "express";
 import * as passport from "passport";
+import { readFileSync } from "fs";
 
 import User, { User as UserSchema } from "../models/user";
 
@@ -70,6 +71,15 @@ router.get("/loginstatus", (req, res) => {
   res.send({
     loggedIn: req.user !== undefined
   });
+});
+
+router.get("/revision", (_, res) => {
+  try {
+    const REVISION = readFileSync("REVISION").toString().trim();
+    res.send(REVISION);
+  } catch {
+    res.send("unknown");
+  }
 });
 
 export default router;
