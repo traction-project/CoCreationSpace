@@ -3,13 +3,12 @@ import * as aws from "aws-sdk";
 import * as http from "http";
 import * as express from "express";
 import * as session from "express-session";
-import * as connectMongo from "connect-mongo";
 import * as logger from "morgan";
 import * as path from "path";
 import * as createError from "http-errors";
 import * as cookieParser from "cookie-parser";
 import * as passport from "passport";
-import * as mongoose from "mongoose";
+const SequelizeStore = require("connect-session-sequelize")(session.Store);
 
 dotenv.config();
 aws.config.loadFromPath("./aws.json");
@@ -18,7 +17,7 @@ import { getFromEnvironment } from "./util";
 import { snsMiddleware } from "./util/sns";
 import indexRouter from "./routes/index";
 
-const [ SESSION_SECRET, DB_URL ] = getFromEnvironment("SESSION_SECRET", "DB_URL");
+const [SESSION_SECRET, POSTGRES_DB, POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_HOST] = getFromEnvironment("SESSION_SECRET", "POSTGRES_DB", "POSTGRES_USER", "POSTGRES_PASSWORD", "POSTGRES_HOST");
 
 var app = express();
 
@@ -30,23 +29,29 @@ app.use(snsMiddleware);
 app.use(logger("dev"));
 app.use(express.json());
 
-mongoose.connect(DB_URL, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-});
-
-import "./models/user";
-import "./models/video";
-
 import "./auth/local";
 
-const MongoStore = connectMongo(session);
+// Connect to PostgreDB
+import { Sequelize, Options } from "sequelize";
+import { db } from "./models";
+
+const options: Options = {
+  dialect: "postgres"
+};
+
+const url = `postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}/${POSTGRES_DB}`;
+
+const sequelize: Sequelize = new Sequelize(url, options);
+db.createDB(sequelize);
+
 app.use(session({
   secret: SESSION_SECRET,
   resave: false,
   saveUninitialized: true,
   cookie: { secure: false },
-  store: new MongoStore({ url: `${DB_URL!}/traction` })
+  store: new SequelizeStore({
+    db: sequelize
+  })
 }));
 
 app.use(passport.initialize());

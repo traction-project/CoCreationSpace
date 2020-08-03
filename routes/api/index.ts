@@ -1,7 +1,7 @@
 import { Router } from "express";
 import * as passport from "passport";
 
-import { User as UserSchema } from "../../models/user";
+import { UserInstance } from "../../models/users";
 
 const router = Router();
 
@@ -21,7 +21,7 @@ router.post("/login", (req, res, next) => {
     });
   }
 
-  return passport.authenticate("local", { session: false }, (err: Error | null, user: UserSchema | undefined, msg: { message: string }) => {
+  return passport.authenticate("local", { session: false }, (err: Error | null, user: UserInstance | undefined, msg: { message: string }) => {
     if (err) {
       return next(err);
     }

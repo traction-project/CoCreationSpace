@@ -2,7 +2,7 @@ import { Router } from "express";
 
 import { getFromEnvironment, Range } from "../util";
 import { subscribeToSNSTopic, confirmSubscription } from "../util/sns";
-import Video from "../models/video";
+import { db } from "../models";
 
 const [ SNS_ARN, SNS_ENDPOINT ] = getFromEnvironment("SNS_ARN", "SNS_ENDPOINT");
 subscribeToSNSTopic(SNS_ARN, `${SNS_ENDPOINT}/sns/receive`);
@@ -38,7 +38,8 @@ export async function insertVideoMetadata(data: any) {
     ) + ".png";
   });
 
-  const video = await Video.findOne({ transcodingJobId: jobId });
+  const Multimedia = db.getModels().Multimedia;
+  const video = await Multimedia.findOne({ where : {transcodingJobId: jobId } });
 
   if (video) {
     video.status = "done";

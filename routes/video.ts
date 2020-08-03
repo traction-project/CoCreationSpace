@@ -2,17 +2,19 @@ import { Router } from "express";
 import * as Busboy from "busboy";
 import { v4 as uuid4 } from "uuid";
 
-import Video from "../models/video";
-import { User } from "../models/user";
+import { db } from "../models";
 import { getExtension, getFromEnvironment, authRequired } from "../util";
 import { encodeDash } from "../util/transcode";
 import { uploadToS3 } from "../util/s3";
 import { transcribeMediaFile, transcribeOutputToVTT } from "../util/transcribe";
+import { MultimediaInstance } from "../models/multimedia";
+import { UserInstance } from "../models/users";
 
 const [ BUCKET_NAME, ETS_PIPELINE, CLOUDFRONT_URL ] = getFromEnvironment("BUCKET_NAME", "ETS_PIPELINE", "CLOUDFRONT_URL");
 const router = Router();
 
 router.post("/upload", authRequired, (req, res) => {
+  const Multimedia = db.getModels().Multimedia;
   const busboy = new Busboy({ headers: req.headers });
 
   busboy.on("file", async (fieldname, file, filename, encoding, mimetype) => {
@@ -23,13 +25,13 @@ router.post("/upload", authRequired, (req, res) => {
       transcribeMediaFile("en-US", newName, BUCKET_NAME);
       const jobId = await encodeDash(ETS_PIPELINE, newName);
 
-      const userId: string = (req.user as User).id;
+      const userId: number | undefined = (req.user as UserInstance).id;
 
-      const video = new Video();
-      video.uploadedBy = userId;
+      let video: MultimediaInstance = Multimedia.build();
+      
       video.title = filename;
       video.key = newName.split(".")[0];
-
+      
       if (jobId) {
         video.transcodingJobId = jobId;
         video.status = "processing";
@@ -38,6 +40,8 @@ router.post("/upload", authRequired, (req, res) => {
       }
 
       await video.save();
+      video.setUser(userId);
+      
       res.send({ status: "OK" });
     } catch (e) {
       console.error(e);
@@ -52,7 +56,8 @@ router.post("/upload", authRequired, (req, res) => {
 });
 
 router.get("/all", async (req, res) => {
-  const videos = await Video.find({}).sort({ dateUpdated: -1 });
+  const Multimedia = db.getModels().Multimedia;
+  const videos = await Multimedia.findAll({ order: [["created_at", "desc"]] });
 
   res.send(videos.map((video) => {
     const mainThumbnail = video.thumbnails?.[0];
@@ -71,7 +76,8 @@ router.get("/all", async (req, res) => {
 
 router.get("/id/:id", async (req, res) => {
   const { id } = req.params;
-  const video = await Video.findById(id);
+  const Multimedia = db.getModels().Multimedia;
+  const video = await Multimedia.findOne({ where: { id } });
 
   if (video) {
     return res.send({
@@ -86,7 +92,8 @@ router.get("/id/:id", async (req, res) => {
 
 router.get("/id/:id/subtitles", async (req, res) => {
   const { id } = req.params;
-  const video = await Video.findById(id);
+  const Multimedia = db.getModels().Multimedia;
+  const video = await Multimedia.findOne({ where: { id } });
 
   if (video && video.transcript) {
     res.send(transcribeOutputToVTT(video.transcript));
