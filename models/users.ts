@@ -23,6 +23,9 @@ type UserToken = {
     token: string;
 }
 
+/**
+ * Multimedia instance object interface
+ */
 export interface UserInstance extends Sequelize.Model<UsersAttributes>, UsersAttributes {
     setPassword: (password: string) => void;
     validatePassword: (password: string) => boolean;
@@ -40,7 +43,12 @@ export interface UserInstance extends Sequelize.Model<UsersAttributes>, UsersAtt
     countMultimedias: Sequelize.HasManyCountAssociationsMixin;
 }
 
+/**
+ *  Build Users Model object
+ * @param sequelize Sequelize: Conection object with de database
+ */
 export function UsersModelFactory(sequelize: Sequelize.Sequelize): ModelCtor<UserInstance> {
+  // Model attributtes
   const attributes = {
     username: {
       type: Sequelize.DataTypes.STRING,
@@ -62,6 +70,7 @@ export function UsersModelFactory(sequelize: Sequelize.Sequelize): ModelCtor<Use
     }
   };
     
+  // Create the model
   const Users = sequelize.define<UserInstance>("users", attributes, { underscored: true, tableName: "users" });
 
   Users.prototype.setPassword = function(password: string): void {

@@ -22,12 +22,20 @@ export interface MultimediaAttributes extends commonAttributes {
     user?: UsersAttributes | UsersAttributes["id"];
 }
 
+/**
+ * Multimedia instance object interface
+ */
 export interface MultimediaInstance extends Model<MultimediaAttributes>, MultimediaAttributes {
-    getUser: BelongsToGetAssociationMixin<UserInstance>;
-    setUser: BelongsToSetAssociationMixin<UserInstance, UserInstance["id"]>;
+    getUser: BelongsToGetAssociationMixin<UserInstance>; // Return the User that created the multimedia
+    setUser: BelongsToSetAssociationMixin<UserInstance, UserInstance["id"]>; // Set the user that created the multimedia
 }
 
+/**
+ *  Build Multimedia Model object
+ * @param sequelize Sequelize: Conection object with de database
+ */
 export function MultimediaModelFactory(sequelize: Sequelize): ModelCtor<MultimediaInstance> {
+  // Model attributtes
   const attributes = {
     title: {
       type: DataTypes.STRING,
@@ -76,6 +84,7 @@ export function MultimediaModelFactory(sequelize: Sequelize): ModelCtor<Multimed
     }
   };
 
+  // Create the model
   const Multimedia = sequelize.define<MultimediaInstance, MultimediaAttributes>("multimedia", attributes, { underscored: true, tableName: "multimedia" });
 
   return Multimedia;
