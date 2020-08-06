@@ -2,7 +2,7 @@
 
 ## Description
 
-In this document is discrived a relational database.  The physical design was build with PostgreSQL. To build it in Node.js, it's used an ORM library (Sequelize) in order to manage better all data in the base data.
+The following document explains the relational database.  The physical design was build with PostgreSQL. To build it in Node.js, it's used an ORM library (Sequelize) in order to manage better all data in the base data.
 
 ## ERD (Entity Relationship Diagram)
 
