@@ -1,0 +1,42 @@
+import * as Sequelize from "sequelize";
+
+import { commonAttributes } from "typings/modelCommonAttributes";
+import { UsersAttributes, UserInstance } from "./users";
+
+export interface PermissionsAttributes extends commonAttributes{
+    type: string;
+    user?: UsersAttributes | UsersAttributes["id"];
+}
+
+/**
+ * Permissions instance object interface
+ */
+export interface PermissionsInstance extends Sequelize.Model<PermissionsAttributes>, PermissionsAttributes {
+  getUsers: Sequelize.HasManyGetAssociationsMixin<UserInstance>;
+  setUsers: Sequelize.HasManySetAssociationsMixin<UserInstance, UserInstance["id"]>;
+  addUsers: Sequelize.HasManyAddAssociationsMixin<UserInstance, UserInstance["id"]>;
+  addUser: Sequelize.HasManyAddAssociationMixin<UserInstance, UserInstance["id"]>;
+  hasUser: Sequelize.HasManyHasAssociationMixin<UserInstance, UserInstance["id"]>;
+  hasUsers: Sequelize.HasManyHasAssociationsMixin<UserInstance, UserInstance["id"]>;
+  countUsers: Sequelize.HasManyCountAssociationsMixin;
+}
+
+/**
+ *  Build Permissionss Model object
+ * @param sequelize Sequelize: Conection object with de database
+ */
+export function PermissionsModelFactory(sequelize: Sequelize.Sequelize): Sequelize.ModelCtor<PermissionsInstance> {
+  // Model attributtes
+  const attributes = {
+    type: {
+      type: Sequelize.DataTypes.STRING,
+      allowNull: false,
+      unique: true
+    }
+  };
+  
+  // Create the model
+  const Permissions = sequelize.define<PermissionsInstance>("permissions", attributes, { underscored: true, tableName: "permissions" });
+
+  return Permissions;
+}

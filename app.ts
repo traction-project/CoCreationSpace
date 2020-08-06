@@ -36,7 +36,8 @@ import { Sequelize, Options } from "sequelize";
 import { db } from "./models";
 
 const options: Options = {
-  dialect: "postgres"
+  dialect: "postgres",
+  logging: false
 };
 
 const url = `postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}/${POSTGRES_DB}`;
