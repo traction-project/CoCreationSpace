@@ -14,6 +14,28 @@ All models are in models folder. There is a class called [DataBase](index.ts) th
 
 The database models are the next one:
 
-[Users](users.ts)
+[AudioContent](audioContent.ts)
+
+[DataContainer](dataContainer.ts)
+
+[Metadata](metadata.ts)
 
 [Multimedia](multimedia.ts)
+
+[Permissions](permissions.ts)
+
+[Post](post.ts)
+
+[Preferences](preferences.ts)
+
+[Subtitles](subtitles.ts)
+
+[Tag](tag.ts)
+
+[Thread](thread.ts)
+
+[Topic](topic.ts)
+
+[Users](users.ts)
+
+
