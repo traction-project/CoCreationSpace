@@ -71,14 +71,14 @@ export interface PostInstance extends Sequelize.Model<PostAttributes>, PostAttri
   setThread: Sequelize.BelongsToSetAssociationMixin<ThreadInstance, ThreadInstance["id"]>;
 
   getTag: Sequelize.BelongsToManyGetAssociationsMixin<TagInstance>;
-  setTag: Sequelize.BelongsToManySetAssociationsMixin<TagInstance, TagInstance['id']>;
-  addTags: Sequelize.BelongsToManyAddAssociationsMixin<TagInstance, TagInstance['id']>;
-  addTag: Sequelize.BelongsToManyAddAssociationMixin<TagInstance, TagInstance['id']>;
+  setTag: Sequelize.BelongsToManySetAssociationsMixin<TagInstance, TagInstance["id"]>;
+  addTags: Sequelize.BelongsToManyAddAssociationsMixin<TagInstance, TagInstance["id"]>;
+  addTag: Sequelize.BelongsToManyAddAssociationMixin<TagInstance, TagInstance["id"]>;
   createTags: Sequelize.BelongsToManyCreateAssociationMixin<TagInstance["id"]>;
-  removeTag: Sequelize.BelongsToManyRemoveAssociationMixin<TagInstance, TagInstance['id']>;
-  removeTags: Sequelize.BelongsToManyRemoveAssociationsMixin<TagInstance, TagInstance['id']>;
-  hasTag: Sequelize.BelongsToManyHasAssociationMixin<TagInstance, TagInstance['id']>;
-  hasTags: Sequelize.BelongsToManyHasAssociationsMixin<TagInstance, TagInstance['id']>;
+  removeTag: Sequelize.BelongsToManyRemoveAssociationMixin<TagInstance, TagInstance["id"]>;
+  removeTags: Sequelize.BelongsToManyRemoveAssociationsMixin<TagInstance, TagInstance["id"]>;
+  hasTag: Sequelize.BelongsToManyHasAssociationMixin<TagInstance, TagInstance["id"]>;
+  hasTags: Sequelize.BelongsToManyHasAssociationsMixin<TagInstance, TagInstance["id"]>;
   countTags: Sequelize.BelongsToManyCountAssociationsMixin;
 }
 
