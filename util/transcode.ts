@@ -10,7 +10,7 @@ import * as aws from "aws-sdk";
  * The given input file is encoded into three output video streams with the
  * bitrates 4800k, 2400k and 1200k and one audio track (unless `hasAudio` is
  * set to false). Thumbnails will be generated as PNG files from the 4800k
- * video stream, with one thumbnails saved every 5 minutes.
+ * video stream, with one thumbnail saved every 5 minutes.
  *
  * @param pipeline ID of the transcoding pipeline to use
  * @param input Path to input file
