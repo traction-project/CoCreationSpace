@@ -1,10 +1,13 @@
 import * as passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 
-import User, { User as UserSchema} from "../models/user";
+import { UserInstance } from "../models/users";
+import { db } from "../models";
+
 
 passport.use(new LocalStrategy((username, password, done) => {
-  User.findOne({ username }).then((user) => {
+  const User = db.getModels().Users;
+  User.findOne( { where: { username } }).then((user: UserInstance) => {
     if (user && user.validatePassword(password)) {
       done(null, user);
     } else {
@@ -17,12 +20,13 @@ passport.use(new LocalStrategy((username, password, done) => {
   );
 }));
 
-passport.serializeUser((user: UserSchema, done) => {
+passport.serializeUser((user: UserInstance, done) => {
   done(null, user.id);
 });
 
-passport.deserializeUser((id, done) => {
-  User.findById(id, (err, user) => {
-    done(err, user);
-  });
+passport.deserializeUser((id: string, done) => {
+  const User = db.getModels().Users;
+  User.findOne({where : { id }}).then((user: UserInstance) => {
+    done(null,user);
+  }).catch(done);
 });

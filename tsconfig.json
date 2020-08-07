@@ -9,7 +9,16 @@
     "lib": ["dom", "es2015"],
     "strictNullChecks": true,
     "keyofStringsOnly": true,
-    "noUnusedLocals": true
+    "noUnusedLocals": true,
+    "baseUrl": ".",
+    "paths": {
+      "typings/*": [
+        "util/typing/*"
+      ],
+      "models/*": [
+        "models/*"
+      ]
+    }
   },
   "include": [
     "./**/*.tsx",

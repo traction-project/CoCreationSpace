@@ -2,11 +2,11 @@ import { Router } from "express";
 import * as passport from "passport";
 import { readFileSync } from "fs";
 
-import User, { User as UserSchema } from "../models/user";
-
 import APIRouter from "./api";
 import SNSRouter from "./sns";
 import VideoRouter from "./video";
+import { UserInstance } from "../models/users";
+import { db } from "../models";
 
 const router = Router();
 
@@ -19,7 +19,7 @@ router.get("/", (_, res) => {
 });
 
 router.post("/login", passport.authenticate("local"), (req, res) => {
-  const user = req.user as UserSchema;
+  const user = req.user as UserInstance;
 
   res.send({
     status: "OK",
@@ -31,13 +31,14 @@ router.post("/login", passport.authenticate("local"), (req, res) => {
 });
 
 router.post("/register", async (req, res) => {
+  const User = db.getModels().Users;
   const { username, password, confirmation } = req.body;
 
   if (password === confirmation) {
-    const userExists = await User.findOne({ username });
+    const userExists = await User.findOne({ where: { username } });
 
     if (!userExists) {
-      const newUser = new User({ username });
+      const newUser = User.build({ username });
 
       newUser.setPassword(password);
       newUser.save();
