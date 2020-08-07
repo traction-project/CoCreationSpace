@@ -2,7 +2,7 @@ import * as crypto from "crypto";
 import * as jwt from "jsonwebtoken";
 import * as Sequelize from "sequelize";
 
-import { commonAttributes } from "typings/modelCommonAttributes";
+import { commonAttributes } from "util/typing/modelCommonAttributes";
 import { getFromEnvironment } from "../util";
 import { MultimediaInstance, MultimediaAttributes } from "./multimedia";
 import { PreferencesAttributes, PreferencesInstance } from "./preferences";

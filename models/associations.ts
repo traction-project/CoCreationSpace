@@ -1,4 +1,4 @@
-import { DbInterface } from "typings/DbInterface";
+import { DbInterface } from "util/typing/DbInterface";
 
 /**
  *  Create all AudioContent table relationship with rest of tables

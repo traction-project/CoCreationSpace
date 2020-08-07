@@ -1,6 +1,6 @@
 import * as Sequelize from "sequelize";
 
-import { commonAttributes } from "typings/modelCommonAttributes";
+import { commonAttributes } from "util/typing/modelCommonAttributes";
 import { ThreadAttributes, ThreadInstance } from "./thread";
 
 export interface TopicAttributes extends commonAttributes{

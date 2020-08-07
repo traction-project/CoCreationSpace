@@ -1,6 +1,6 @@
 import { Sequelize } from "sequelize";
 
-import { DbInterface } from "typings/DbInterface";
+import { DbInterface } from "util/typing/DbInterface";
 import { createAssociations } from "./associations";
 import { MultimediaModelFactory } from "./multimedia";
 import { TopicModelFactory } from "./topic";

@@ -1,6 +1,6 @@
 import * as Sequelize from "sequelize";
 
-import { commonAttributes } from "typings/modelCommonAttributes";
+import { commonAttributes } from "util/typing/modelCommonAttributes";
 import { TopicAttributes, TopicInstance } from "./topic";
 import { PostAttributes, PostInstance } from "./post";
 

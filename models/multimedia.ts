@@ -1,6 +1,6 @@
 import * as Sequelize from "sequelize";
 
-import { commonAttributes } from "typings/modelCommonAttributes";
+import { commonAttributes } from "util/typing/modelCommonAttributes";
 import { UsersAttributes, UserInstance } from "./users";
 import { TranscribeOutput } from "util/transcribe";
 import { DataContainerAttributes, DataContainerInstance } from "./dataContainer";
