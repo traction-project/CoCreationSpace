@@ -81,6 +81,8 @@ export interface UserInstance extends Sequelize.Model<UsersAttributes>, UsersAtt
  * @param sequelize Sequelize: Conection object with de database
  */
 export function UsersModelFactory(sequelize: Sequelize.Sequelize): Sequelize.ModelCtor<UserInstance> {
+
+  const keyPasswordLeng = 512;
   // Model attributtes
   const attributes = {
     username: {
@@ -89,7 +91,7 @@ export function UsersModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mod
       unique: true
     },
     password: {
-      type: Sequelize.DataTypes.STRING,
+      type: Sequelize.DataTypes.STRING(keyPasswordLeng * 2),
       unique: true
     },
     salt: {
@@ -110,7 +112,7 @@ export function UsersModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mod
     this.salt = crypto.randomBytes(16).toString("hex");
     this.password = crypto.pbkdf2Sync(
       password, this.salt,
-      10000, 512,
+      10000, keyPasswordLeng,
       "sha512"
     ).toString("hex");
   };
@@ -118,7 +120,7 @@ export function UsersModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mod
   Users.prototype.validatePassword = function (password: string): boolean {
     const hashedPassword = crypto.pbkdf2Sync(
       password, this.salt,
-      10000, 512,
+      10000, keyPasswordLeng,
       "sha512"
     ).toString("hex");
 
