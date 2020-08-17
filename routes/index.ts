@@ -41,9 +41,16 @@ router.post("/register", async (req, res) => {
       const newUser = User.build({ username });
 
       newUser.setPassword(password);
-      newUser.save();
-
-      res.send({ status: "OK" });
+      try {
+        await newUser.save();
+        res.send({ status: "OK" });
+      } catch(err) {
+        res.status(500);
+        res.send({
+          status: "ERR",
+          message: err.message
+        });  
+      }
     } else {
       res.status(400);
       res.send({
