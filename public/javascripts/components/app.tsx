@@ -8,6 +8,7 @@ import Login from "./login";
 import Video from "./video";
 import VideoUpload from "./video_upload";
 import VideoStream from "./video_stream";
+import VideoRecorder from "./video_recorder";
 
 interface AppProps {
 }
@@ -28,6 +29,9 @@ const App: React.FC<AppProps> = () => {
           </Route>
           <Route path="/video/:id">
             <Video />
+          </Route>
+          <Route path="/record">
+            <VideoRecorder />
           </Route>
           <Route path="/">
             Hello World!
