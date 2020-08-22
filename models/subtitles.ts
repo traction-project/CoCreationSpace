@@ -5,7 +5,7 @@ import { MultimediaAttributes, MultimediaInstance } from "./multimedia";
 
 export interface SubtitlesAttributes extends commonAttributes{
     language?: string;
-    file: string;
+    object: string;
     multimedia?: MultimediaAttributes | MultimediaAttributes["id"];
 }
 
@@ -18,7 +18,7 @@ export interface SubtitlesInstance extends Sequelize.Model<SubtitlesAttributes>,
 }
 
 /**
- *  Build Subtitless Model object
+ *  Build Subtitles Model object
  * @param sequelize Sequelize: Conection object with de database
  */
 export function SubtitlesModelFactory(sequelize: Sequelize.Sequelize): Sequelize.ModelCtor<SubtitlesInstance> {
@@ -27,7 +27,7 @@ export function SubtitlesModelFactory(sequelize: Sequelize.Sequelize): Sequelize
     language: {
       type: Sequelize.DataTypes.STRING
     },
-    file: {
+    object: {
       type: Sequelize.DataTypes.STRING,
       allowNull: false
     }
