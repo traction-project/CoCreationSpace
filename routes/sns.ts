@@ -43,10 +43,10 @@ export async function insertVideoTranscript(jobName: string) {
     const subtitles = Subtitles.build();
 
     subtitles.language = language;
-    subtitles.object = transcript;
-    subtitles.setMultimedia(video);
+    subtitles.file = transcript;
 
     await subtitles.save();
+    subtitles.setMultimedia(video);
   }
 }
 
