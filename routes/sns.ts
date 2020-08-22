@@ -1,6 +1,7 @@
 import { Router } from "express";
 
 import { getFromEnvironment, Range } from "../util";
+import { fetchTranscript } from "../util/transcribe";
 import { subscribeToSNSTopic, confirmSubscription } from "../util/sns";
 import { db } from "../models";
 
@@ -27,6 +28,19 @@ router.post("/receive", (req, res) => {
   res.send("");
 });
 
+export async function insertVideoTranscript(jobName: string) {
+  const { language, transcript } = await fetchTranscript(jobName);
+  const { Multimedia, Subtitles } = db.getModels();
+
+  const subtitles = Subtitles.build();
+  subtitles.language = language;
+  subtitles.object = transcript;
+  await subtitles.save();
+
+  const video = await Multimedia.findOne({ where: { key: jobName } });
+  video?.addSubtitle(subtitles);
+}
+
 export async function insertVideoMetadata(data: any) {
   const { jobId, outputs } = data;
   const thumbnailPattern: string = outputs[0].thumbnailPattern;
@@ -39,7 +53,7 @@ export async function insertVideoMetadata(data: any) {
   });
 
   const Multimedia = db.getModels().Multimedia;
-  const video = await Multimedia.findOne({ where : {transcodingJobId: jobId } });
+  const video = await Multimedia.findOne({ where : { transcodingJobId: jobId } });
 
   if (video) {
     video.status = "done";
