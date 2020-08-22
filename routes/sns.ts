@@ -32,13 +32,17 @@ export async function insertVideoTranscript(jobName: string) {
   const { language, transcript } = await fetchTranscript(jobName);
   const { Multimedia, Subtitles } = db.getModels();
 
-  const subtitles = Subtitles.build();
-  subtitles.language = language;
-  subtitles.object = transcript;
-  await subtitles.save();
-
   const video = await Multimedia.findOne({ where: { key: jobName } });
-  video?.addSubtitle(subtitles);
+
+  if (video) {
+    const subtitles = Subtitles.build();
+
+    subtitles.language = language;
+    subtitles.object = transcript;
+    subtitles.setMultimedia(video);
+
+    await subtitles.save();
+  }
 }
 
 export async function insertVideoMetadata(data: any) {
