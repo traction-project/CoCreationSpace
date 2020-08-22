@@ -28,12 +28,13 @@ router.post("/upload", authRequired, (req, res) => {
       const userId: number | undefined = (req.user as UserInstance).id;
 
       let video: MultimediaInstance = Multimedia.build();
-      
+
       video.title = filename;
       video.key = newName.split(".")[0];
-      
+
       if (jobId) {
         video.transcodingJobId = jobId;
+        video.transcriptionJobId = newName.split(".")[0];
         video.status = "processing";
       } else {
         video.status = "error";
@@ -41,7 +42,7 @@ router.post("/upload", authRequired, (req, res) => {
 
       await video.save();
       video.setUser(userId);
-      
+
       res.send({ status: "OK" });
     } catch (e) {
       console.error(e);
