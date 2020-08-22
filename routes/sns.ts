@@ -19,7 +19,12 @@ router.post("/receive", (req, res) => {
     if (topic == SNS_ARN) {
       const data = JSON.parse(req.body.Message);
 
-      if (data.state == "COMPLETED") {
+      // transcription service notification
+      if (data.source == "aws.transcribe" && data.detail.TranscriptionJobStatus == "COMPLETED") {
+        console.log("transcribe message received");
+        insertVideoTranscript(data.detail.TranscriptionJobName);
+      } else if (data.pipelineId && data.state == "COMPLETED") {
+        // process transcoder notification
         insertVideoMetadata(data);
       }
     }
