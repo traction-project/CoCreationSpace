@@ -1,4 +1,5 @@
 import * as aws from "aws-sdk";
+import fetch from "node-fetch";
 
 /**
  * Type for words found in the output of AWS Transcribe.
@@ -73,6 +74,27 @@ export function transcribeMediaFile(inputLanguage: string, inputFile: string, bu
       } else {
         resolve();
       }
+    });
+  });
+}
+
+export function fetchTranscript(jobName: string): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const transcribe = new aws.TranscribeService();
+
+    transcribe.getTranscriptionJob({ TranscriptionJobName: jobName }, async (err, data) => {
+      if (err) {
+        return reject(err);
+      }
+
+      const transcriptUri = data.TranscriptionJob?.Transcript?.TranscriptFileUri!;
+      console.log(transcriptUri);
+
+      fetch(transcriptUri).then((res) => {
+        return res.json();
+      }).then((data) => {
+        resolve(JSON.stringify(data));
+      });
     });
   });
 }
