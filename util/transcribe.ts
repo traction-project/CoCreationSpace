@@ -78,7 +78,7 @@ export function transcribeMediaFile(inputLanguage: string, inputFile: string, bu
   });
 }
 
-export function fetchTranscript(jobName: string): Promise<string> {
+export function fetchTranscript(jobName: string): Promise<{ language: string, transcript: string }> {
   return new Promise((resolve, reject) => {
     const transcribe = new aws.TranscribeService();
 
@@ -88,12 +88,14 @@ export function fetchTranscript(jobName: string): Promise<string> {
       }
 
       const transcriptUri = data.TranscriptionJob?.Transcript?.TranscriptFileUri!;
-      console.log(transcriptUri);
 
       fetch(transcriptUri).then((res) => {
         return res.json();
-      }).then((data) => {
-        resolve(JSON.stringify(data));
+      }).then((transcript) => {
+        resolve({
+          language: data.TranscriptionJob?.LanguageCode!,
+          transcript: JSON.stringify(transcript)
+        });
       });
     });
   });
