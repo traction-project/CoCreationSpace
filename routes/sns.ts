@@ -16,17 +16,22 @@ router.post("/receive", (req, res) => {
   } else {
     const topic = req.headers["x-amz-sns-topic-arn"];
 
-    if (topic == SNS_ARN) {
-      const data = JSON.parse(req.body.Message);
+    if (topic !== SNS_ARN) {
+      console.error("Invalid ARN");
+      res.send("");
 
-      // transcription service notification
-      if (data.source == "aws.transcribe" && data.detail.TranscriptionJobStatus == "COMPLETED") {
-        console.log("transcribe message received");
-        insertVideoTranscript(data.detail.TranscriptionJobName);
-      } else if (data.pipelineId && data.state == "COMPLETED") {
-        // process transcoder notification
-        insertVideoMetadata(data);
-      }
+      return;
+    }
+
+    const data = JSON.parse(req.body.Message);
+
+    // transcription service notification
+    if (data.source == "aws.transcribe" && data.detail.TranscriptionJobStatus == "COMPLETED") {
+      console.log("transcribe message received");
+      insertVideoTranscript(data.detail.TranscriptionJobName);
+    } else if (data.pipelineId && data.state == "COMPLETED") {
+      // process transcoder notification
+      insertVideoMetadata(data);
     }
   }
 
