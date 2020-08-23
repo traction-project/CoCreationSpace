@@ -6,7 +6,7 @@ import { db } from "../models";
 import { getExtension, getFromEnvironment, authRequired } from "../util";
 import { encodeDash } from "../util/transcode";
 import { uploadToS3 } from "../util/s3";
-import { transcribeMediaFile, transcribeOutputToVTT } from "../util/transcribe";
+import { transcribeMediaFile } from "../util/transcribe";
 import { MultimediaInstance } from "../models/multimedia";
 import { UserInstance } from "../models/users";
 
@@ -93,11 +93,32 @@ router.get("/id/:id", async (req, res) => {
 
 router.get("/id/:id/subtitles", async (req, res) => {
   const { id } = req.params;
-  const Multimedia = db.getModels().Multimedia;
+
+  const { Multimedia } = db.getModels();
   const video = await Multimedia.findOne({ where: { id } });
 
-  if (video && video.transcript) {
-    res.send(transcribeOutputToVTT(video.transcript));
+  if (video) {
+    const subtitles = await video.getSubtitle();
+
+    res.json(subtitles.map((s) => {
+      return {
+        id: s.id,
+        language: s.language
+      };
+    }));
+  } else {
+    res.json([]);
+  }
+});
+
+router.get("/subtitles/:id", async (req, res) => {
+  const { id } = req.params;
+
+  const { Subtitles } = db.getModels();
+  const subtitle = await Subtitles.findOne({ where: { id } });
+
+  if (subtitle) {
+    res.send(subtitle.content);
   } else {
     res.send("");
   }
