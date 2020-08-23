@@ -1,11 +1,11 @@
 import { Router } from "express";
 import { db } from "../models";
 import { generateCues, generateVTT } from "../util/transcribe";
-import { translateText } from "../util";
+import { translateText, authRequired } from "../util";
 
 const router = Router();
 
-router.post("/:id/:target", async (req, res) => {
+router.post("/:id/:target", authRequired, async (req, res) => {
   const { id, target } = req.params;
   const { Multimedia, Subtitles } = db.getModels();
 
