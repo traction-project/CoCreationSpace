@@ -45,46 +45,46 @@ const VideoRecorder: React.FC<VideoRecorderProps> = () => {
   };
 
   return (
-    <div>
-      <h1 className="title">Record Video</h1>
-      <input
-        ref={fileInput}
-        style={{ display: "none" }}
-        type="file"
-        accept="video/*"
-        capture="environment"
-        onChange={updateVideoFile}
-      />
+    <div className="columns" style={{ marginTop: 15 }}>
+      <div className="column is-8 is-offset-2">
+        <h1 className="title">Record Video</h1>
+        <input
+          ref={fileInput}
+          style={{ display: "none" }}
+          type="file"
+          accept="video/*"
+          capture="environment"
+          onChange={updateVideoFile}
+        />
 
-      {(total > 0) ? (
-        <div className="progresscontainer">
-          <progress className="progress is-primary" value={progress} max={total} />
+        <div style={{ width: "80vw", marginLeft: "10vw" }}>
+          {(total > 0) ? (
+            <div className="progresscontainer">
+              <progress className="progress is-primary" value={progress} max={total} />
+            </div>
+          ) : (videoFile) ? (
+            <button className="button is-info is-fullwidth" onClick={startUpload.bind(null, videoFile)}>
+              Upload
+            </button>
+          ) : (
+            <button className="button is-info is-fullwidth" onClick={() => fileInput.current?.click()}>
+              Record
+            </button>
+          )}
         </div>
-      ) : (videoFile) ? (
-        <div>
-          <video src={URL.createObjectURL(videoFile)} controls={true} />
-          <br/>
-          <button className="button is-info" onClick={startUpload.bind(null, videoFile)}>
-            Upload
-          </button>
-        </div>
-      ) : (
-        <button className="button is-info" onClick={() => fileInput.current?.click()}>
-          Record
-        </button>
-      )}
 
-      {(displayNotification == "success") ? (
-        <div className="notification is-success fixed-notification">
-          <button className="delete" onClick={closeNotification}></button>
-          File successfully uploaded
-        </div>
-      ) : (displayNotification == "error") ? (
-        <div className="notification is-error fixed-notification">
-          <button className="delete" onClick={closeNotification}></button>
-          Could not upload file
-        </div>
-      ) : null}
+        {(displayNotification == "success") ? (
+          <div className="notification is-success fixed-notification">
+            <button className="delete" onClick={closeNotification}></button>
+            File successfully uploaded
+          </div>
+        ) : (displayNotification == "error") ? (
+          <div className="notification is-error fixed-notification">
+            <button className="delete" onClick={closeNotification}></button>
+            Could not upload file
+          </div>
+        ) : null}
+      </div>
     </div>
   );
 };
