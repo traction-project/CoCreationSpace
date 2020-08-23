@@ -82,7 +82,7 @@ class DataBase {
     createAssociations(this.models);
 
     // Syncronice with physical database (If the models not exists in the database, they are created)
-    await sequelize.sync();
+    await sequelize.sync({ alter: true });
 
     return this.models;
   }
