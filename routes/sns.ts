@@ -1,7 +1,7 @@
 import { Router } from "express";
 
 import { getFromEnvironment, Range } from "../util";
-import { fetchTranscript } from "../util/transcribe";
+import { fetchTranscript, transcribeOutputToVTT } from "../util/transcribe";
 import { subscribeToSNSTopic, confirmSubscription } from "../util/sns";
 import { db } from "../models";
 
@@ -40,13 +40,21 @@ router.post("/receive", (req, res) => {
 
 export async function insertVideoTranscript(jobName: string) {
   const { language, transcript } = await fetchTranscript(jobName);
-  const { Multimedia } = db.getModels();
+  const { Multimedia, Subtitles } = db.getModels();
 
   const video = await Multimedia.findOne({ where: { key: jobName } });
 
   if (video) {
     video.transcript = transcript;
     video.save();
+
+    const subtitles = Subtitles.build();
+
+    subtitles.language = language;
+    subtitles.content = transcribeOutputToVTT(transcript);
+
+    await subtitles.save();
+    subtitles.setMultimedia(video);
   }
 }
 
