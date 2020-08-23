@@ -26,6 +26,7 @@ const VideoRecorder: React.FC<VideoRecorderProps> = () => {
       setDisplayNotification("error");
     } finally {
       setTotal(0);
+      setVideoFile(undefined);
       setTimeout(() => setDisplayNotification(undefined), 3000);
     }
   };
