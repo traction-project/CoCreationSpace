@@ -10,18 +10,15 @@ const Video: React.FC<{}> = (props) => {
   const [ availableSubtitles, setAvailableSubtitles ] = useState<Array<{ language: string, url: string }>>([]);
 
   useEffect(() => {
-
-    fetch(`/video/id/${id}/subtitles`).then(async (res) => {
-      if (res.ok) {
-        const data = await res.json();
-
-        setAvailableSubtitles(data.map((s: any) => {
-          return {
-            language: s.language,
-            url: `/video/subtitles/${s.id}`
-          };
-        }));
-      }
+    fetch(`/video/id/${id}/subtitles`).then((res) => {
+      return res.json();
+    }).then((data) => {
+      setAvailableSubtitles(data.map((s: any) => {
+        return {
+          language: s.language,
+          url: `/video/subtitles/${s.id}`
+        };
+      }));
 
       return fetch(`/video/id/${id}`);
     }).then(async (res) => {
