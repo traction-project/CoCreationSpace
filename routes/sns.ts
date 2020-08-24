@@ -6,13 +6,27 @@ import { subscribeToSNSTopic, confirmSubscription } from "../util/sns";
 import { db } from "../models";
 
 const [ SNS_ARN, SNS_ENDPOINT ] = getFromEnvironment("SNS_ARN", "SNS_ENDPOINT");
-subscribeToSNSTopic(SNS_ARN, `${SNS_ENDPOINT}/sns/receive`);
+
+const endpointUrl = SNS_ENDPOINT + "/sns/receive";
+console.log("Subscribing to", SNS_ARN, "with endpoint", endpointUrl);
+
+subscribeToSNSTopic(SNS_ARN, endpointUrl).then(() => {
+  console.log("Successfully sent SNS subscription request");
+}).catch((err) => {
+  console.error("Could not subscribe to SNS channel:", err);
+});
 
 const router = Router();
 
 router.post("/receive", (req, res) => {
   if (req.headers["x-amz-sns-message-type"] === "SubscriptionConfirmation") {
-    confirmSubscription(req.headers as any, req.body);
+    console.log("Confirming subscription");
+
+    confirmSubscription(req.headers as any, req.body).then(() => {
+      console.log("SNS subscription confirmed");
+    }).catch((err) => {
+      console.error("Could not confirm SNS subscription:", err);
+    });
   } else {
     const topic = req.headers["x-amz-sns-topic-arn"];
 
