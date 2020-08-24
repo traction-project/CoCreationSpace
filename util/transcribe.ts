@@ -132,6 +132,8 @@ export function fetchTranscript(jobName: string): Promise<{ language: string, tr
         return reject(new Error(`Invalid job status: ${data.TranscriptionJob.TranscriptionJobStatus}`));
       }
 
+      // Get language code
+      const transcriptLanguage = data.TranscriptionJob.LanguageCode!;
       // Get transcript url
       const transcriptUri = data.TranscriptionJob.Transcript?.TranscriptFileUri!;
 
@@ -144,7 +146,7 @@ export function fetchTranscript(jobName: string): Promise<{ language: string, tr
         return res.json();
       }).then((transcript) => {
         resolve({
-          language: data.TranscriptionJob?.LanguageCode!,
+          language: transcriptLanguage,
           transcript
         });
       });

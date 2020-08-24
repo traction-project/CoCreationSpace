@@ -1,5 +1,6 @@
 import * as sinon from "sinon";
 import * as aws from "aws-sdk";
+import * as nodeFetch from "node-fetch";
 
 import * as transcribe from "../util/transcribe";
 import * as transcribeResponses from "./fixtures/transcribe_responses";
@@ -135,6 +136,31 @@ describe("Utility function fetchTranscript()", () => {
       expect(err).toBeDefined();
       expect(err.message).toEqual("Could not retrieve transcript URI from job");
     }
+  });
+
+  it("should resolve with the transcript and language code", async () => {
+    sinon.stub(aws, "TranscribeService").returns({
+      getTranscriptionJob: (params: any, callback: (err: Error | null, data: any) => void) => {
+        callback(null, {
+          TranscriptionJob: {
+            TranscriptionJobStatus: "COMPLETED",
+            LanguageCode: "en_US",
+            Transcript: {
+              TranscriptFileUri: "http://some_uri.com"
+            }
+          }
+        });
+      }
+    });
+
+    sinon.stub(nodeFetch, "default").returns(Promise.resolve(new nodeFetch.Response(JSON.stringify({
+      transcript: "This is the transcript"
+    }))));
+
+    const { language, transcript } = await transcribe.fetchTranscript("some_job_name");
+
+    expect(language).toEqual("en_US");
+    expect(transcript).toEqual({ transcript: "This is the transcript" });
   });
 });
 
