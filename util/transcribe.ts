@@ -157,7 +157,7 @@ export function fetchTranscript(jobName: string): Promise<{ language: string, tr
 /**
  * Data type representing a cue in the WebVTT output
  */
-interface Cue {
+export interface Cue {
   cueStart: number;
   cueEnd: number;
   cue: string;
