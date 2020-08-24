@@ -421,6 +421,70 @@ describe("Utility function generateCues()", () => {
   });
 });
 
+describe("Utility function generateVTT()", () => {
+  it("should produce output which only contains the header if there are now cues", () => {
+    expect(transcribe.generateVTT([])).toEqual(
+      "WEBVTT"
+    );
+  });
+
+  it("should generate a WebVTT output if there is a single cue in the input", () => {
+    const cue = {
+      cueStart: 0,
+      cueEnd: 25.12,
+      cue: "Hello"
+    };
+
+    expect(transcribe.generateVTT([cue])).toEqual(
+      "WEBVTT\n" +
+      "\n" +
+      "00:00.000 --> 00:25.120\n" +
+      "Hello"
+    );
+  });
+
+  it("should generate a WebVTT output with all cues in the input", () => {
+    const cues = [
+      {
+        cueStart: 0,
+        cueEnd: 25.12,
+        cue: "Hello"
+      },
+      {
+        cueStart: 27,
+        cueEnd: 30,
+        cue: "World!"
+      },
+      {
+        cueStart: 35,
+        cueEnd: 66,
+        cue: "How are"
+      },
+      {
+        cueStart: 70,
+        cueEnd: 82.34,
+        cue: "you?"
+      }
+    ];
+
+    expect(transcribe.generateVTT(cues)).toEqual(
+      "WEBVTT\n" +
+      "\n" +
+      "00:00.000 --> 00:25.120\n" +
+      "Hello\n" +
+      "\n" +
+      "00:27.000 --> 00:30.000\n" +
+      "World!\n" +
+      "\n" +
+      "00:35.000 --> 01:06.000\n" +
+      "How are\n" +
+      "\n" +
+      "01:10.000 --> 01:22.340\n" +
+      "you?"
+    );
+  });
+});
+
 describe("Utility function transcribeOutputToVTT()", () => {
   it("should produce a file with only a header on empty input", () => {
     expect(
