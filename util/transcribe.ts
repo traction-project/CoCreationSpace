@@ -123,13 +123,21 @@ export function fetchTranscript(jobName: string): Promise<{ language: string, tr
         return reject(err);
       }
 
+      if (!data.TranscriptionJob) {
+        return reject(new Error("Transcription job not available"));
+      }
+
       // Reject if the transcript status is different from COMPLETED
-      if (data.TranscriptionJob?.TranscriptionJobStatus != "COMPLETED") {
-        return reject("Invalid job status");
+      if (data.TranscriptionJob.TranscriptionJobStatus != "COMPLETED") {
+        return reject(new Error(`Invalid job status: ${data.TranscriptionJob.TranscriptionJobStatus}`));
       }
 
       // Get transcript url
-      const transcriptUri = data.TranscriptionJob?.Transcript?.TranscriptFileUri!;
+      const transcriptUri = data.TranscriptionJob.Transcript?.TranscriptFileUri!;
+
+      if (!transcriptUri) {
+        return reject(new Error("Could not retrieve transcript URI from job"));
+      }
 
       // Download transcript from given url
       fetch(transcriptUri).then((res) => {
