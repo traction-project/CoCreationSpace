@@ -14,10 +14,10 @@ router.post("/:id/:target", authRequired, async (req, res) => {
   if (video && video.transcript) {
     try {
       const cues = generateCues(video.transcript);
-      const cueText = cues.map((c) => c.cue).join("\n");
+      const cueText = cues.map((c) => c.cue).join("<br/>");
       const translatedCues = await translateText(cueText, target);
 
-      translatedCues.split("\n").forEach((cue, i) => {
+      translatedCues.split("<br/>").forEach((cue, i) => {
         cues[i].cue = cue;
       });
 
