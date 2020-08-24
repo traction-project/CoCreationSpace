@@ -1,6 +1,22 @@
 import * as aws from "aws-sdk";
 import fetch from "node-fetch";
 
+interface SpeakerLabelSegment {
+  start_time: string;
+  end_time: string;
+  speaker_label: string;
+  items: Array<{
+    start_time: string;
+    end_time: string;
+    speaker_label: string;
+  }>;
+}
+
+interface SpeakerLabels {
+  speakers: number;
+  segments: Array<SpeakerLabelSegment>;
+}
+
 /**
  * Type for words found in the output of AWS Transcribe.
  */
@@ -38,6 +54,7 @@ export interface TranscribeOutput {
   accountId: string;
   results: {
     transcripts: Array<{ transcript: string }>,
+    speaker_labels: SpeakerLabels,
     items: Array<TranscribeItem>
   };
 }
