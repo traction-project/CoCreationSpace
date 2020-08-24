@@ -101,21 +101,37 @@ export function transcribeMediaFile(inputLanguage: string, inputFile: string, bu
   });
 }
 
+/**
+ * Tries to retrieve the transcript associated with the given job name. If the
+ * transcription job was marked as `COMPLETED` and has a transcription file URI
+ * available, the transcript is downloaded and the returned promise is resolved
+ * receiving it and its associated language code as values. If the job is not
+ * completed yet, resulted in error or the call failed altogether, the promise
+ * is rejected.
+ *
+ * @param jobName Name of the job for which the transcript shall be retrieved
+ * @returns A promise resolving to the retrieved transcript alongside a language code
+ */
 export function fetchTranscript(jobName: string): Promise<{ language: string, transcript: TranscribeOutput }> {
   return new Promise((resolve, reject) => {
     const transcribe = new aws.TranscribeService();
 
+    // Try and fetch transcript
     transcribe.getTranscriptionJob({ TranscriptionJobName: jobName }, async (err, data) => {
+      // Reject if there was an error
       if (err) {
         return reject(err);
       }
 
+      // Reject if the transcript status is different from COMPLETED
       if (data.TranscriptionJob?.TranscriptionJobStatus != "COMPLETED") {
         return reject("Invalid job status");
       }
 
+      // Get transcript url
       const transcriptUri = data.TranscriptionJob?.Transcript?.TranscriptFileUri!;
 
+      // Download transcript from given url
       fetch(transcriptUri).then((res) => {
         return res.json();
       }).then((transcript) => {
