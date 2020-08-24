@@ -350,6 +350,77 @@ describe("Utility function transcribeMediaFile()", () => {
   });
 });
 
+describe("Utility function generateCues()", () => {
+  it("should produce a file with only a header on empty input", () => {
+    expect(
+      transcribe.generateCues(transcribeResponses.emptyResponse)
+    ).toEqual([]);
+  });
+
+  it("should produce a file with a single cue with a single sentence in the input", () => {
+    expect(transcribe.generateCues(transcribeResponses.singleCue)).toEqual([
+      {
+        cueStart: 0,
+        cueEnd: 0.84,
+        cue: "Hello, World!"
+      }
+    ]);
+  });
+
+  it("should produce a file with multiple cues with multiple sentences in the input", () => {
+    expect(transcribe.generateCues(transcribeResponses.multipleCues)).toEqual([
+      {
+        cueStart: 0,
+        cueEnd: 0.84,
+        cue: "Hello, World!"
+      },
+      {
+        cueStart: 1,
+        cueEnd: 1.5,
+        cue: "How are you?"
+      }
+    ]);
+  });
+
+  it("should produce a file with multiple cues with multiple sentences in the input and timestamps above a minute", () => {
+    expect(transcribe.generateCues(transcribeResponses.multipleCuesOverMinute)).toEqual([
+      {
+        cueStart: 0,
+        cueEnd: 0.84,
+        cue: "Hello, World!"
+      },
+      {
+        cueStart: 64,
+        cueEnd: 64.5,
+        cue: "How are you?"
+      }
+    ]);
+  });
+
+  it("should split a cue into two parts if it is longer than the max cue length", () => {
+    expect(transcribe.generateCues(transcribeResponses.splitCues)).toEqual([
+      {
+        cueStart: 0,
+        cueEnd: 1.5,
+        cue: "Hello, World How are you?"
+      }
+    ]);
+
+    expect(transcribe.generateCues(transcribeResponses.splitCues, 4)).toEqual([
+      {
+        cueStart: 0,
+        cueEnd: 0.84,
+        cue: "Hello, World"
+      },
+      {
+        cueStart: 1,
+        cueEnd: 1.5,
+        cue: "How are you?"
+      }
+    ]);
+  });
+});
+
 describe("Utility function transcribeOutputToVTT()", () => {
   it("should produce a file with only a header on empty input", () => {
     expect(
@@ -391,6 +462,13 @@ describe("Utility function transcribeOutputToVTT()", () => {
   });
 
   it("should split a cue into two parts if it is longer than the max cue length", () => {
+    expect(transcribe.transcribeOutputToVTT(transcribeResponses.splitCues)).toEqual(
+      "WEBVTT\n" +
+      "\n" +
+      "00:00.000 --> 00:01.500\n" +
+      "Hello, World How are you?"
+    );
+
     expect(transcribe.transcribeOutputToVTT(transcribeResponses.splitCues, 4)).toEqual(
       "WEBVTT\n" +
       "\n" +
