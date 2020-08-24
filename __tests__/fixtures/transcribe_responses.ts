@@ -9,6 +9,10 @@ export const emptyResponse: TranscribeOutput = {
         "transcript": ""
       }
     ],
+    "speaker_labels": {
+      "speakers": 0,
+      "segments": []
+    },
     "items": []
   }
 };
@@ -22,6 +26,10 @@ export const singleCue: TranscribeOutput = {
         "transcript": ""
       }
     ],
+    "speaker_labels": {
+      "speakers": 0,
+      "segments": []
+    },
     "items": [
       {
         "type": "pronunciation",
@@ -74,6 +82,10 @@ export const multipleCues: TranscribeOutput = {
         "transcript": ""
       }
     ],
+    "speaker_labels": {
+      "speakers": 0,
+      "segments": []
+    },
     "items": [
       {
         "type": "pronunciation",
@@ -167,6 +179,10 @@ export const multipleCuesOverMinute: TranscribeOutput = {
         "transcript": ""
       }
     ],
+    "speaker_labels": {
+      "speakers": 0,
+      "segments": []
+    },
     "items": [
       {
         "type": "pronunciation",
@@ -260,6 +276,10 @@ export const splitCues: TranscribeOutput = {
         "transcript": ""
       }
     ],
+    "speaker_labels": {
+      "speakers": 0,
+      "segments": []
+    },
     "items": [
       {
         "type": "pronunciation",
