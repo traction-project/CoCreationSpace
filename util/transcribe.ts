@@ -110,6 +110,10 @@ export function fetchTranscript(jobName: string): Promise<{ language: string, tr
         return reject(err);
       }
 
+      if (data.TranscriptionJob?.TranscriptionJobStatus != "COMPLETED") {
+        return reject("Invalid job status");
+      }
+
       const transcriptUri = data.TranscriptionJob?.Transcript?.TranscriptFileUri!;
 
       fetch(transcriptUri).then((res) => {
