@@ -350,6 +350,106 @@ describe("Utility function transcribeMediaFile()", () => {
   });
 });
 
+describe("Utility function fetchTranscript()", () => {
+  afterEach(() => {
+    sinon.restore();
+  });
+
+  it("should reject with an error", async () => {
+    sinon.stub(aws, "TranscribeService").returns({
+      getTranscriptionJob: (params: any, callback: (err: Error | null) => void) => {
+        callback(new Error("some error"));
+      }
+    });
+
+    try {
+      await transcribe.fetchTranscript("some_job_name");
+      fail();
+    } catch (err) {
+      expect(err).toBeDefined();
+      expect(err.message).toEqual("some error");
+    }
+  });
+
+  it("should reject if the transription job could not be retrieved", async () => {
+    sinon.stub(aws, "TranscribeService").returns({
+      getTranscriptionJob: (params: any, callback: (err: Error | null, data: any) => void) => {
+        callback(null, {
+        });
+      }
+    });
+
+    try {
+      await transcribe.fetchTranscript("some_job_name");
+      fail();
+    } catch (err) {
+      expect(err).toBeDefined();
+      expect(err.message).toEqual("Transcription job not available");
+    }
+  });
+
+  it("should reject if the transcription job has a status not equal to COMPLETED", async () => {
+    sinon.stub(aws, "TranscribeService").returns({
+      getTranscriptionJob: (params: any, callback: (err: Error | null, data: any) => void) => {
+        callback(null, {
+          TranscriptionJob: {
+            TranscriptionJobStatus: "QUEUED"
+          }
+        });
+      }
+    });
+
+    try {
+      await transcribe.fetchTranscript("some_job_name");
+      fail();
+    } catch (err) {
+      expect(err).toBeDefined();
+      expect(err.message).toEqual("Invalid job status: QUEUED");
+    }
+  });
+
+  it("should reject if the response does not contain a transcript key", async () => {
+    sinon.stub(aws, "TranscribeService").returns({
+      getTranscriptionJob: (params: any, callback: (err: Error | null, data: any) => void) => {
+        callback(null, {
+          TranscriptionJob: {
+            TranscriptionJobStatus: "COMPLETED"
+          }
+        });
+      }
+    });
+
+    try {
+      await transcribe.fetchTranscript("some_job_name");
+      fail();
+    } catch (err) {
+      expect(err).toBeDefined();
+      expect(err.message).toEqual("Could not retrieve transcript URI from job");
+    }
+  });
+
+  it("should reject if the transcript URI could not be retrieved", async () => {
+    sinon.stub(aws, "TranscribeService").returns({
+      getTranscriptionJob: (params: any, callback: (err: Error | null, data: any) => void) => {
+        callback(null, {
+          TranscriptionJob: {
+            TranscriptionJobStatus: "COMPLETED",
+            Transcript: {}
+          }
+        });
+      }
+    });
+
+    try {
+      await transcribe.fetchTranscript("some_job_name");
+      fail();
+    } catch (err) {
+      expect(err).toBeDefined();
+      expect(err.message).toEqual("Could not retrieve transcript URI from job");
+    }
+  });
+});
+
 describe("Utility function generateCues()", () => {
   it("should produce a file with only a header on empty input", () => {
     expect(
