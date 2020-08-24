@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { db } from "../models";
 import { generateCues, generateVTT } from "../util/transcribe";
-import { translateText, authRequired } from "../util";
+import { translateCues, authRequired } from "../util";
 
 const router = Router();
 
@@ -14,17 +14,12 @@ router.post("/:id/:target", authRequired, async (req, res) => {
   if (video && video.transcript) {
     try {
       const cues = generateCues(video.transcript);
-      const cueText = cues.map((c) => c.cue).join("<br/>");
-      const translatedCues = await translateText(cueText, target);
-
-      translatedCues.split("<br/>").forEach((cue, i) => {
-        cues[i].cue = cue;
-      });
+      const translatedCues = await translateCues(cues, target);
 
       const subtitles = Subtitles.build();
 
       subtitles.language = target;
-      subtitles.content = generateVTT(cues);
+      subtitles.content = generateVTT(translatedCues);
 
       await subtitles.save();
       subtitles.setMultimedia(video);
