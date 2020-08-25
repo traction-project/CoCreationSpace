@@ -7,9 +7,9 @@ interface VideoRecorderProps {
 }
 
 const VideoRecorder: React.FC<VideoRecorderProps> = () => {
-  const [ videoFile, setVideoFile ] = useState<File>();
-  const fileInput = useRef<HTMLInputElement>(null);
+  const video = useRef<HTMLVideoElement>(null);
 
+  const [ recorderStatus, setRecorderStatus ] = useState<"recording" | "stopped">();
   const [ progress, setProgress ] = useState<number>(0);
   const [ total, setTotal ] = useState<number>(0);
   const [ displayNotification, setDisplayNotification] = useState<"success" | "error">();
@@ -26,7 +26,7 @@ const VideoRecorder: React.FC<VideoRecorderProps> = () => {
       setDisplayNotification("error");
     } finally {
       setTotal(0);
-      setVideoFile(undefined);
+      setRecorderStatus(undefined);
       setTimeout(() => setDisplayNotification(undefined), 3000);
     }
   };
@@ -35,43 +35,79 @@ const VideoRecorder: React.FC<VideoRecorderProps> = () => {
     setDisplayNotification(undefined);
   };
 
-  const updateVideoFile = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+  const startRecording = () => {
+    setRecorderStatus("recording");
 
-    if (file) {
-      console.log("Updating video file:", file);
-      setVideoFile(file);
-    }
+    navigator.mediaDevices.getUserMedia({ audio: true, video: true }).then((stream) => {
+      let stopped = false;
+      let requestStop = false;
+
+      if (video.current) {
+        video.current.srcObject = stream;
+        video.current.muted = true;
+        video.current.onloadeddata = () => video.current?.play();
+
+        video.current.onclick = () => {
+          console.log("video clicked");
+          requestStop = true;
+        };
+      }
+
+      const recorder = new MediaRecorder(stream, { mimeType: "video/webm" });
+      const chunks: Array<BlobPart> = [];
+
+      console.log("setting up recorder...");
+
+      recorder.addEventListener("error", (e) => {
+        console.error(e);
+      });
+
+      recorder.addEventListener("dataavailable", (e) => {
+        if (e.data.size > 0) {
+          chunks.push(e.data);
+        }
+
+        if (requestStop == true && stopped == false) {
+          console.log("stopping recorder...");
+
+          recorder.stop();
+          video.current?.pause();
+          stream.getTracks().forEach((t) => t.stop());
+
+          stopped = true;
+        }
+      });
+
+      recorder.addEventListener("stop", () => {
+        console.log("recorder stopped. starting file upload...");
+        startUpload(new File(chunks, "video.mp4"));
+      });
+
+      recorder.start(1000);
+    });
   };
 
   return (
     <div className="columns" style={{ marginTop: 15 }}>
       <div className="column is-8 is-offset-2">
         <h1 className="title">Record Video</h1>
-        <input
-          ref={fileInput}
-          style={{ display: "none" }}
-          type="file"
-          accept="video/*"
-          capture="environment"
-          onChange={updateVideoFile}
-        />
 
-        <div style={{ width: "80vw", marginLeft: "10vw" }}>
-          {(total > 0) ? (
-            <div className="progresscontainer">
-              <progress className="progress is-primary" value={progress} max={total} />
-            </div>
-          ) : (videoFile) ? (
-            <button className="button is-info is-fullwidth" onClick={startUpload.bind(null, videoFile)}>
-              Upload
-            </button>
-          ) : (
-            <button className="button is-info is-fullwidth" onClick={() => fileInput.current?.click()}>
-              Record
-            </button>
-          )}
-        </div>
+        {(total > 0) ? (
+          <div className="progresscontainer">
+            <progress className="progress is-primary" value={progress} max={total} />
+          </div>
+        ) : (recorderStatus) ? (
+          <div>
+            <video ref={video} />
+            <p>
+              Tap the video to stop recording and upload the video
+            </p>
+          </div>
+        ) : (
+          <button className="button is-info" onClick={startRecording}>
+            Record
+          </button>
+        )}
 
         {(displayNotification == "success") ? (
           <div className="notification is-success fixed-notification">
