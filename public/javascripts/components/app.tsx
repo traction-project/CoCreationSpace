@@ -10,9 +10,9 @@ import VideoUpload from "./video_upload";
 import VideoStream from "./video_stream";
 import VideoRecorder from "./video_recorder";
 import Translate from "./translate";
+import Thread from "./thread";
 
-interface AppProps {
-}
+interface AppProps {}
 
 const App: React.FC<AppProps> = () => {
   return (
@@ -39,6 +39,7 @@ const App: React.FC<AppProps> = () => {
           </Route>
           <Route path="/">
             Hello World!
+            <Thread></Thread>
           </Route>
         </Switch>
       </Router>

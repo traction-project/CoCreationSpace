@@ -4,11 +4,13 @@ import { commonAttributes } from "util/typing/modelCommonAttributes";
 import { UsersAttributes, UserInstance } from "./users";
 import { ThreadAttributes, ThreadInstance } from "./thread";
 import { TagAttributes, TagInstance } from "./tag";
+import { DataContainerAttributes } from "./dataContainer";
 
 export interface PostAttributes extends commonAttributes{
     title: string;
     thread_id?: number;
     karma_points?: number;
+    dataContainer?: DataContainerAttributes | DataContainerAttributes["id"];
     childPosts?: PostAttributes | PostAttributes["id"];
     parentPost?: PostAttributes | PostAttributes["id"];
     postReference?: PostAttributes | PostAttributes["id"];

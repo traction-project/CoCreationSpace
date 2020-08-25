@@ -33,7 +33,7 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
     return () => {
       player.dispose();
     };
-  });
+  }, [manifest]);
 
   return (
     <div>
