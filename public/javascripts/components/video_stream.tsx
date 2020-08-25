@@ -39,7 +39,7 @@ const VideoStream: React.FC<VideoStreamProps> = (props) => {
                 <div className="media-left">
                   <figure className="image is-128x128">
                     {(v.mainThumbnail) ? (
-                      <img src={v.mainThumbnail} alt="Image" />
+                      <img src={v.mainThumbnail} style={{ maxWidth: 128, maxHeight: 128}} alt="Image" />
                     ) : null}
                   </figure>
                 </div>
