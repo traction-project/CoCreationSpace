@@ -38,7 +38,13 @@ const VideoRecorder: React.FC<VideoRecorderProps> = () => {
   const startRecording = () => {
     setRecorderStatus("recording");
 
-    navigator.mediaDevices.getUserMedia({ audio: true, video: true }).then((stream) => {
+    navigator.mediaDevices.getUserMedia({
+      audio: true,
+      video: {
+        width: { ideal: 4096 },
+        height: { ideal: 2160 }
+      }
+    }).then((stream) => {
       let stopped = false;
       let requestStop = false;
 
