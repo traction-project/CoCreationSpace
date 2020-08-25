@@ -53,8 +53,12 @@ const VideoRecorder: React.FC<VideoRecorderProps> = () => {
         };
       }
 
-      const recorder = new MediaRecorder(stream, { mimeType: "video/webm" });
       const chunks: Array<BlobPart> = [];
+      const recorder = new MediaRecorder(stream, {
+        mimeType: "video/webm",
+        videoBitsPerSecond: 5000000,
+        audioBitsPerSecond: 256000
+      });
 
       console.log("setting up recorder...");
 
@@ -80,7 +84,7 @@ const VideoRecorder: React.FC<VideoRecorderProps> = () => {
 
       recorder.addEventListener("stop", () => {
         console.log("recorder stopped. starting file upload...");
-        startUpload(new File(chunks, "video.mp4"));
+        startUpload(new File(chunks, "video.webm"));
       });
 
       recorder.start(1000);
