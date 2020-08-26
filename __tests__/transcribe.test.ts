@@ -358,3 +358,100 @@ describe("Utility function transcribeOutputToVTT()", () => {
     );
   });
 });
+
+describe("Utility function translateCues()", () => {
+  afterEach(() => {
+    sinon.restore();
+  });
+
+  it("should reject with an error if the number of translated cues is more than the input", async () => {
+    sinon.stub(aws, "Translate").returns({
+      translateText: (params: any, callback: (err: Error | null, data: any) => void) => {
+        callback(null, {
+          TranslatedText: "Hello<br/>World"
+        });
+      }
+    });
+
+    const cue = {
+      cueStart: 0,
+      cueEnd: 5,
+      cue: "Hello"
+    };
+
+    try {
+      await transcribe.translateCues([cue], "de");
+      fail();
+    } catch (err) {
+      expect(err).toBeDefined();
+      expect(err.message).toEqual("Length of translated cues is different from input cues");
+    }
+  });
+
+  it("should reject with an error if the number of translated cues is less than the input", async () => {
+    sinon.stub(aws, "Translate").returns({
+      translateText: (params: any, callback: (err: Error | null, data: any) => void) => {
+        callback(null, {
+          TranslatedText: "Hello"
+        });
+      }
+    });
+
+    const cues = [
+      {
+        cueStart: 0,
+        cueEnd: 5,
+        cue: "Hello"
+      },
+      {
+        cueStart: 6,
+        cueEnd: 10,
+        cue: "World"
+      },
+    ];
+
+    try {
+      await transcribe.translateCues(cues, "de");
+      fail();
+    } catch (err) {
+      expect(err).toBeDefined();
+      expect(err.message).toEqual("Length of translated cues is different from input cues");
+    }
+  });
+
+  it("should resolve with a list of translated cues on success", async () => {
+    sinon.stub(aws, "Translate").returns({
+      translateText: (params: any, callback: (err: Error | null, data: any) => void) => {
+        callback(null, {
+          TranslatedText: "Hallo<br/>Welt"
+        });
+      }
+    });
+
+    const cues = [
+      {
+        cueStart: 0,
+        cueEnd: 5,
+        cue: "Hello"
+      },
+      {
+        cueStart: 6,
+        cueEnd: 10,
+        cue: "World"
+      },
+    ];
+
+    const translatedCues = await transcribe.translateCues(cues, "de");
+
+    expect(translatedCues.length).toEqual(cues.length);
+
+    expect(translatedCues[0].cueStart).toEqual(cues[0].cueStart);
+    expect(translatedCues[1].cueStart).toEqual(cues[1].cueStart);
+
+    expect(translatedCues[0].cueEnd).toEqual(cues[0].cueEnd);
+    expect(translatedCues[1].cueEnd).toEqual(cues[1].cueEnd);
+
+    expect(translatedCues[0].cue).toEqual("Hallo");
+    expect(translatedCues[1].cue).toEqual("Welt");
+  });
+});
