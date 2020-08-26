@@ -23,6 +23,7 @@ const Translate: React.FC<TranslateProps> = () => {
   const { id } = useParams();
 
   const [ transcript, setTranscript ] = useState<Array<Cue>>([]);
+  const [ translatedTranscript, setTranslatedTranscript ] = useState<Array<Cue>>([]);
   const [ targetLanguage, setTargetLanguage ] = useState("en");
   const [ displayNotification, setDisplayNotification] = useState<"success" | "error">();
 
@@ -31,8 +32,20 @@ const Translate: React.FC<TranslateProps> = () => {
       if (res.ok) {
         return res.json();
       }
-    }).then(setTranscript);
+    }).then((data) => {
+      setTranslatedTranscript(data.map((c: Cue) => {
+        return { ...c, cue: "" };
+      }));
+      setTranscript(data);
+    });
   }, []);
+
+  const updateTranslatedTranscript = (i: number, e: React.ChangeEvent<HTMLInputElement>) => {
+    const transcript = translatedTranscript.slice();
+    transcript[i].cue = e.target.value;
+
+    setTranslatedTranscript(transcript);
+  };
 
   const translateTranscript = async () => {
     try {
@@ -129,6 +142,13 @@ const Translate: React.FC<TranslateProps> = () => {
               <strong>{convertTimestamp(cueStart)} -&gt; {convertTimestamp(cueEnd)}</strong>
               <br/>
               <p>{cue}</p>
+              <input
+                type="text"
+                className="input"
+                value={translatedTranscript[i].cue}
+                onChange={updateTranslatedTranscript.bind(null, i)}
+              />
+              <br/>
               <br/>
             </div>
           );
