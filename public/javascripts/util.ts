@@ -60,6 +60,6 @@ export function postFile(endpoint: string, file: File, onProgress: (e: ProgressE
 
 export type commonType = {
   id: number;
-  created_at: string;
-  updated_at: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
