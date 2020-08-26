@@ -25,6 +25,8 @@ const Translate: React.FC<TranslateProps> = () => {
 
   const [ transcript, setTranscript ] = useState<Array<Cue>>([]);
   const [ translatedTranscript, setTranslatedTranscript ] = useState<Array<Cue>>([]);
+  const [ manualTranslationLanguage, setManualTranslationLanguage ] = useState("");
+
   const [ targetLanguage, setTargetLanguage ] = useState("en");
   const [ displayNotification, setDisplayNotification] = useState<"success" | "error">();
 
@@ -59,6 +61,25 @@ const Translate: React.FC<TranslateProps> = () => {
     }
   };
 
+  const saveTranscript = async () => {
+    try {
+      await fetch(`/translate/${id}/${manualTranslationLanguage}/manual`, {
+        method: "POST",
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(translatedTranscript)
+      });
+
+      setDisplayNotification("success");
+    } catch {
+      setDisplayNotification("error");
+    } finally {
+      setTimeout(() => setDisplayNotification(undefined), 3000);
+    }
+  };
+
   const closeNotification = () => {
     setDisplayNotification(undefined);
   };
@@ -67,6 +88,7 @@ const Translate: React.FC<TranslateProps> = () => {
     <div className="columns" style={{ marginTop: 15 }}>
       <div className="column is-8 is-offset-2">
         <h1 className="title">Translate {id}</h1>
+        <h4 className="title is-4">Automatic Translation</h4>
         <LanguageSelector
           value={targetLanguage}
           onChange={(e) => setTargetLanguage(e.target.value)}
@@ -80,7 +102,7 @@ const Translate: React.FC<TranslateProps> = () => {
         <br/>
         <br/>
 
-        <h4 className="title is-4">Transcript</h4>
+        <h4 className="title is-4">Manual Translation</h4>
 
         {transcript.map(({ cueStart, cueEnd, cue }, i) => {
           return (
@@ -99,6 +121,24 @@ const Translate: React.FC<TranslateProps> = () => {
             </div>
           );
         })}
+
+        <br/>
+        <br/>
+
+        <div className="field">
+          <label className="label">Language</label>
+          <div className="control">
+            <input
+              type="text"
+              className="input"
+              value={manualTranslationLanguage}
+              onChange={(e) => setManualTranslationLanguage(e.target.value)}
+            />
+          </div>
+        </div>
+        <button className="button is-info" disabled={manualTranslationLanguage.length == 0} onClick={saveTranscript}>
+          Save
+        </button>
 
         {(displayNotification == "success") ? (
           <div className="notification is-success fixed-notification">
