@@ -44,8 +44,8 @@ function multimediaAssociations(models: DbInterface): void {
  * @param models DbInterface
  */
 function postsAssociations(models: DbInterface): void {
-  models.Posts.hasMany(models.Posts, { as: "childPosts", foreignKey: "parent_post_id" });
-  models.Posts.belongsTo(models.Posts, { as: "parentPost", foreignKey: "parent_post_id" });
+  models.Posts.hasOne(models.DataContainer, { as: "dataContainer", foreignKey: "post_id" });
+  models.Posts.hasMany(models.Posts, { as: "comments", foreignKey: "parent_post_id" });
   models.Posts.belongsTo(models.Users, { as: "user", foreignKey: "user_id" });
   models.Posts.belongsTo(models.Threads, { as: "thread", foreignKey: "thread_id" });
   const optionsPostsPosts = {

@@ -12,9 +12,9 @@ export interface MultimediaAttributes extends commonAttributes {
   title: string;
   file: string;
   status?: string;
-  transcodingJobId?: string,
-  transcriptionJobId?: string,
-  thumbnails?: Array<string>,
+  transcodingJobId?: string;
+  transcriptionJobId?: string;
+  thumbnails?: Array<string>;
   key?: string;
   transcript?: TranscribeOutput;
   media_properties?: string;

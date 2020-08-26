@@ -4,14 +4,15 @@ import { commonAttributes } from "util/typing/modelCommonAttributes";
 import { UsersAttributes, UserInstance } from "./users";
 import { ThreadAttributes, ThreadInstance } from "./thread";
 import { TagAttributes, TagInstance } from "./tag";
-import { DataContainerAttributes } from "./dataContainer";
+import { DataContainerAttributes, DataContainerInstance } from "./dataContainer";
 
 export interface PostAttributes extends commonAttributes{
     title: string;
+    parent_post_id?: string;
     thread_id?: number;
     karma_points?: number;
     dataContainer?: DataContainerAttributes | DataContainerAttributes["id"];
-    childPosts?: PostAttributes | PostAttributes["id"];
+    comments?: PostAttributes | PostAttributes["id"];
     parentPost?: PostAttributes | PostAttributes["id"];
     postReference?: PostAttributes | PostAttributes["id"];
     postReferenced?: PostAttributes | PostAttributes["id"];
@@ -25,13 +26,17 @@ export interface PostAttributes extends commonAttributes{
  * Post instance object interface
  */
 export interface PostInstance extends Sequelize.Model<PostAttributes>, PostAttributes {
-  getChildPosts: Sequelize.HasManyGetAssociationsMixin<PostInstance>;
-  setChildPosts: Sequelize.HasManySetAssociationsMixin<PostInstance, PostInstance["id"]>;
-  addChildPosts: Sequelize.HasManyAddAssociationsMixin<PostInstance, PostInstance["id"]>;
-  addChildPost: Sequelize.HasManyAddAssociationMixin<PostInstance, PostInstance["id"]>;
-  hasChildPost: Sequelize.HasManyHasAssociationMixin<PostInstance, PostInstance["id"]>;
-  hasChildPosts: Sequelize.HasManyHasAssociationsMixin<PostInstance, PostInstance["id"]>;
-  countChildPosts: Sequelize.HasManyCountAssociationsMixin;
+  getDataContainer: Sequelize.HasOneGetAssociationMixin<DataContainerInstance>;
+  setDataContainer: Sequelize.HasOneSetAssociationMixin<DataContainerInstance, DataContainerInstance["id"]>;
+  createDataContainer: Sequelize.HasOneCreateAssociationMixin<DataContainerInstance>;
+  
+  getComments: Sequelize.HasManyGetAssociationsMixin<PostInstance>;
+  setComments: Sequelize.HasManySetAssociationsMixin<PostInstance, PostInstance["id"]>;
+  addComments: Sequelize.HasManyAddAssociationsMixin<PostInstance, PostInstance["id"]>;
+  addComment: Sequelize.HasManyAddAssociationMixin<PostInstance, PostInstance["id"]>;
+  hasComment: Sequelize.HasManyHasAssociationMixin<PostInstance, PostInstance["id"]>;
+  hasComments: Sequelize.HasManyHasAssociationsMixin<PostInstance, PostInstance["id"]>;
+  countComments: Sequelize.HasManyCountAssociationsMixin;
 
   getPostReference: Sequelize.BelongsToManyGetAssociationsMixin<PostInstance>;
   setPostReference: Sequelize.BelongsToManySetAssociationsMixin<PostInstance, PostInstance["id"]>;

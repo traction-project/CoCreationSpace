@@ -5,6 +5,7 @@ import { readFileSync } from "fs";
 import APIRouter from "./api";
 import SNSRouter from "./sns";
 import VideoRouter from "./video";
+import PostRouter from "./post";
 import TranslateRouter from "./translate";
 
 import { UserInstance } from "../models/users";
@@ -14,6 +15,7 @@ const router = Router();
 
 router.use("/api", APIRouter);
 router.use("/sns", SNSRouter);
+router.use("/posts", PostRouter);
 router.use("/video", VideoRouter);
 router.use("/translate", TranslateRouter);
 
