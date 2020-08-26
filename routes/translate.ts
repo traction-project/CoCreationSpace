@@ -31,7 +31,21 @@ router.post("/:id/:target", authRequired, async (req, res) => {
     }
   } else {
     res.status(400);
-    res.send("No available transcript");
+    res.send("No transcript available");
+  }
+});
+
+router.get("/:id/transcript", authRequired, async (req, res) => {
+  const { id } = req.params;
+  const { Multimedia } = db.getModels();
+
+  const video = await Multimedia.findOne({ where: { id } });
+
+  if (video && video.transcript) {
+    res.json(generateCues(video.transcript));
+  } else {
+    res.status(400);
+    res.send("No transcript available");
   }
 });
 
