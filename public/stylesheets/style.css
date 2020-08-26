@@ -78,6 +78,10 @@ textarea {
   background: rgb(251, 236, 242);
 }
 
+.alert:focus, .alert:hover {
+  border-color: rgb(191, 22, 80) rgb(191, 22, 80) rgb(191, 22, 80) rgb(236, 89, 144);
+}
+
 .message-warning {
   color: rgb(191, 22, 80);
 }
