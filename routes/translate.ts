@@ -35,6 +35,22 @@ router.post("/:id/:target", authRequired, async (req, res) => {
   }
 });
 
+router.post("/:id/:target/manual", async (req, res) => {
+  const { id, target } = req.params;
+  const cues = req.body;
+
+  const { Subtitles } = db.getModels();
+  const subtitles = Subtitles.build();
+
+  subtitles.language = target;
+  subtitles.content = generateVTT(cues);
+
+  await subtitles.save();
+  subtitles.setMultimedia(parseInt(id));
+
+  res.send("OK");
+});
+
 router.get("/:id/transcript", authRequired, async (req, res) => {
   const { id } = req.params;
   const { Multimedia } = db.getModels();

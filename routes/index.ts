@@ -52,7 +52,7 @@ router.post("/register", async (req, res) => {
         res.send({
           status: "ERR",
           message: err.message
-        });  
+        });
       }
     } else {
       res.status(400);
