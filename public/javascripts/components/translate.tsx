@@ -1,6 +1,20 @@
 import * as React from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+
+interface Cue {
+  cueStart: number;
+  cueEnd: number;
+  cue: string;
+}
+
+function convertTimestamp(timestamp: number): string {
+  const minutes = Math.floor(timestamp / 60);
+  const seconds = Math.floor(timestamp) - minutes * 60;
+  const milliseconds = Math.floor((timestamp - Math.floor(timestamp)) * 100);
+
+  return `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}.${milliseconds.toString().padEnd(3, "0")}`;
+}
 
 interface TranslateProps {
 }
@@ -8,8 +22,17 @@ interface TranslateProps {
 const Translate: React.FC<TranslateProps> = () => {
   const { id } = useParams();
 
+  const [ transcript, setTranscript ] = useState<Array<Cue>>([]);
   const [ targetLanguage, setTargetLanguage ] = useState("en");
   const [ displayNotification, setDisplayNotification] = useState<"success" | "error">();
+
+  useEffect(() => {
+    fetch(`/translate/${id}/transcript`).then((res) => {
+      if (res.ok) {
+        return res.json();
+      }
+    }).then(setTranscript);
+  }, []);
 
   const translateTranscript = async () => {
     try {
@@ -97,6 +120,19 @@ const Translate: React.FC<TranslateProps> = () => {
 
         <br/>
         <br/>
+
+        <h4 className="title is-4">Transcript</h4>
+
+        {transcript.map(({ cueStart, cueEnd, cue }, i) => {
+          return (
+            <div key={i}>
+              <strong>{convertTimestamp(cueStart)} -&gt; {convertTimestamp(cueEnd)}</strong>
+              <br/>
+              <p>{cue}</p>
+              <br/>
+            </div>
+          );
+        })}
 
         {(displayNotification == "success") ? (
           <div className="notification is-success fixed-notification">
