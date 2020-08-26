@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { db } from "../models";
-import { generateCues, generateVTT } from "../util/transcribe";
-import { translateCues, authRequired } from "../util";
+import { generateCues, generateVTT, translateCues } from "../util/transcribe";
+import { authRequired } from "../util";
 
 const router = Router();
 

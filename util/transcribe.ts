@@ -1,6 +1,8 @@
 import * as aws from "aws-sdk";
 import fetch from "node-fetch";
 
+import { translateText } from "./index";
+
 /**
  * Type for segments in the speaker labels from AWS Transcribe
  */
@@ -318,4 +320,35 @@ function joinSentence(items: Array<TranscribeItem>): string {
       return result + item.alternatives[0].content;
     }
   }, "").trim();
+}
+
+/**
+ * Translates all cues in a given list of cues into the given target language.
+ * The function returns a promise resolving the a list of translated cues or
+ * rejects with an error.
+ *
+ * @param cues List of cues to translate
+ * @param target Target language to translate the cues to
+ */
+export async function translateCues(cues: Array<Cue>, target: string): Promise<Array<Cue>> {
+  // Join all cue texts with <br/> in between
+  const cueText = cues.map((c) => c.cue).join("<br/>");
+
+  // Translate entire text
+  const translatedCueText = await translateText(cueText, target);
+  // Split text into cues using <br/>
+  const translatedCues = translatedCueText.split("<br/>");
+
+  // Make sure we have the same number of cues as in the input
+  if (cues.length != translatedCues.length) {
+    throw new Error("Length of translated cues is different from input cues");
+  }
+
+  // Return a new list of cues replacing the cue texts with corresponding tranlations
+  return cues.map((c, i) => {
+    return {
+      ...c,
+      cue: translatedCues[i]
+    };
+  });
 }
