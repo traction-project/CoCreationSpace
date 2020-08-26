@@ -7,8 +7,9 @@ import { TagAttributes, TagInstance } from "./tag";
 import { DataContainerAttributes, DataContainerInstance } from "./dataContainer";
 
 export interface PostAttributes extends commonAttributes{
-    title: string;
+    title?: string;
     parent_post_id?: string;
+    user_id?: number;
     thread_id?: number;
     karma_points?: number;
     dataContainer?: DataContainerAttributes | DataContainerAttributes["id"];
@@ -97,8 +98,7 @@ export function PostModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mode
   // Model attributtes
   const attributes = {
     title: {
-      type: Sequelize.DataTypes.STRING,
-      allowNull: false
+      type: Sequelize.DataTypes.STRING
     },
     karma_points: {
       type: Sequelize.DataTypes.INTEGER

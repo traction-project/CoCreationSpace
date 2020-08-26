@@ -1,12 +1,14 @@
 import { Router } from "express";
 import { db } from "../models";
+import { authRequired } from "../util";
+import { UserInstance } from "models/users";
 
 const router = Router();
 
 /**
  * Get all posts
  */
-router.get("/all", async (req, res) => {
+router.get("/all", authRequired, async (req, res) => {
   const PostModel = db.getModels().Posts;
   const posts = await PostModel.findAll(
     { 
@@ -20,7 +22,7 @@ router.get("/all", async (req, res) => {
 /**
  * Get Post by id
  */
-router.get("/id/:id", async (req, res) => {
+router.get("/id/:id", authRequired, async (req, res) => {
   const { id } = req.params;
   const PostModel = db.getModels().Posts;
   const post = await PostModel.findByPk(id, 
@@ -39,7 +41,7 @@ router.get("/id/:id", async (req, res) => {
 /**
  * Create new Post
  */
-router.post("/", async (req, res) => {
+router.post("/", authRequired, async (req, res) => {
   const { text, title } = req.body; 
   if (!text) return res.status(400).send({ message: "Field text not present"});
     
@@ -59,23 +61,26 @@ router.post("/", async (req, res) => {
 /**
  * Create comment from post with specific id
  */
-router.post("/id/:id", async (req, res) => {
+router.post("/id/:id", authRequired, async (req, res) => {
   const { id } = req.params;
   const { text, title } = req.body;
   if (!text) return res.status(400).send({ message: "Field text not present"});
-    
+  const user = req.user as UserInstance;
+  
   const PostModel = db.getModels().Posts;
-  return PostModel.create({
+  const post = PostModel.build({
     title: title,
-    dataContainer: {
-      text_content: text
-    },
-    parent_post_id: id
-  }).then((post) => {
-    return res.send(post);
-  }).catch((error) => {
-    return res.status(500).send({ message: error.message });
+    parent_post_id: id,
+    user_id: user.id
   });
+  post.createDataContainer({
+    text_content: text,
+    post_id: post.id
+  });
+  
+  const postSaved = await post.save();
+
+  return res.send(postSaved);
 });
 
 export default router;

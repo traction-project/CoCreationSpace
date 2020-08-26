@@ -82,16 +82,21 @@ const Post: React.FC<PostProps> = (props) => {
   };
  
   const handleSubmitNewComment = (content: string) => {
-    const comment: PostType = {
-      id: 8,
-      user: props.post.user,
-      dataContainer: {
-        text_content: content
-      }
-    };
-    let commentList = comments;
-    commentList.push(comment);
-    setComments(commentList);
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
+    const body = JSON.stringify({ text: content });
+
+    fetch(`posts/id/${id}`,{ 
+      method: "POST",
+      headers,
+      body
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        let commentsList = comments;
+        commentsList.push(data);
+        setComments(commentsList);
+      });
   };
 
   const handleClickCancel = () => {
@@ -108,7 +113,7 @@ const Post: React.FC<PostProps> = (props) => {
               <div className="media-content">
                 <div className="content">
                   <p>
-                    <strong style={{ fontSize: "17px" }}>{post.user.username}</strong> <small>{calculateTime(post)}</small>
+                    <strong style={{ fontSize: "17px" }}>{post.user ? post.user.username : "Anónimo"}</strong> <small>{calculateTime(post)}</small>
                   </p>
                   { post.dataContainer && post.dataContainer.multimedia &&
                     <Video id={post.dataContainer.multimedia.id}></Video>
