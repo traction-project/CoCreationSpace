@@ -1,10 +1,12 @@
 import * as React from "react";
+import Moment from "react-moment";
 import UserLogo, { UserType } from "./userLogo";
 import { commonType } from "../util";
 import CommentList from "./commentList";
 import { useState, useEffect } from "react";
 import Video from "./video";
 import NewComment from "./new-comment";
+
 
 type dataContainerType = {
   text_content?: string;
@@ -30,7 +32,9 @@ export type PostType = {
 } & commonType;
 
 interface PostProps {
-  post: PostType;
+  post: {
+    id: number;
+  };
 }
 
 const Post: React.FC<PostProps> = (props) => {
@@ -51,25 +55,10 @@ const Post: React.FC<PostProps> = (props) => {
       });
   }, [id]);
 
-  const calculateTime = (post: PostType): string => {
-    if (!post.createdAt) return "";
-
-    const createdAt = new Date(post.createdAt);
-    let differences = Math.abs(new Date().getTime() - createdAt.getTime());
-    const days = new Date(differences).getDay();
-    const hours = new Date(differences).getHours();
-    const min = new Date(differences).getMinutes();
-    let time = "";
-    time = days ? `${days}d` : time;
-    time = hours ? `${hours}h ` : time;
-    time = min ? `${time}${min}min ` : time;
-    return time;
-  };
-
   const handleClickLike = () => {
     setIsLike(!isLike);
     console.log(isLike);
-    // Send change to API 
+    // Send change to API
   };
 
   const handleClickReply = () => {
@@ -96,6 +85,7 @@ const Post: React.FC<PostProps> = (props) => {
         let commentsList = comments;
         commentsList.push(data);
         setComments(commentsList);
+        setShowNewComment(false);
       });
   };
 
@@ -113,7 +103,7 @@ const Post: React.FC<PostProps> = (props) => {
               <div className="media-content">
                 <div className="content">
                   <p>
-                    <strong style={{ fontSize: "17px" }}>{post.user ? post.user.username : "Anónimo"}</strong> <small>{calculateTime(post)}</small>
+                    <strong style={{ fontSize: "17px" }}>{post.user ? post.user.username : "Anónimo"}</strong> <small><Moment fromNow>{post.createdAt}</Moment></small>
                   </p>
                   { post.dataContainer && post.dataContainer.multimedia &&
                     <Video id={post.dataContainer.multimedia.id}></Video>

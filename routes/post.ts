@@ -73,13 +73,14 @@ router.post("/id/:id", authRequired, async (req, res) => {
     parent_post_id: id,
     user_id: user.id
   });
-  post.createDataContainer({
+  
+  const postSaved = await post.save();
+
+  postSaved.createDataContainer({
     text_content: text,
     post_id: post.id
   });
   
-  const postSaved = await post.save();
-
   return res.send(postSaved);
 });
 
