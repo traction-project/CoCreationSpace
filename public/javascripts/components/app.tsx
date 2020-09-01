@@ -11,7 +11,7 @@ import VideoStream from "./video_stream";
 import VideoRecorder from "./video_recorder";
 import Translate from "./translate";
 import Threads from "./threads";
-import Thread from "./thread";
+import Post from "./post";
 
 interface AppProps {}
 
@@ -41,8 +41,8 @@ const App: React.FC<AppProps> = () => {
           <Route path="/threads">
             <Threads />
           </Route>
-          <Route path="/thread/:id">
-            <Thread />
+          <Route path="/post/:id">
+            <Post />
           </Route>
           <Route path="/">
             Hello World!

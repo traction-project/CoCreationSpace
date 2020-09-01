@@ -6,6 +6,7 @@ import CommentList from "./commentList";
 import { useState, useEffect } from "react";
 import Video from "./video";
 import NewComment from "./new-comment";
+import { useParams } from "react-router-dom";
 
 type dataContainerType = {
   text_content?: string;
@@ -31,28 +32,29 @@ export type PostType = {
 } & commonType;
 
 interface PostProps {
-  post: {
+  post?: {
     id: number;
   };
 }
 
 const Post: React.FC<PostProps> = (props) => {
-  const { id } = props.post;
+  const { id } = useParams();
+  const idPost = props.post ? props.post.id : id;
   const [ post, setPost ] = useState<PostType>();
   const [ isLike, setIsLike ] = useState<boolean>(false);
   const [ showNewComment, setShowNewComment ] = useState<boolean>(false);
   const [ comments, setComments ] = useState<PostType[]>([]);
-  const [ showComments, setShowComments ] = useState(true);
+  const [ showComments, setShowComments ] = useState(false);
 
   useEffect(() => {
-    fetch(`/posts/id/${id}`)
+    fetch(`/posts/id/${idPost}`)
       .then((res) => res.json())
       .then((data) => {
         console.log(`Post: ${data.id}`);
         setPost(data);
         setComments(data.comments);
       });
-  }, [id]);
+  }, [idPost]);
 
   const handleClickLike = () => {
     setIsLike(!isLike);
@@ -61,11 +63,11 @@ const Post: React.FC<PostProps> = (props) => {
   };
 
   const handleClickReply = () => {
-    console.log(`Reply post ${props.post.id}`);
     setShowNewComment(true);
   };
 
   const handleClickComments = () => {
+    console.log(!showComments);
     setShowComments(!showComments);
   };
  
@@ -80,7 +82,7 @@ const Post: React.FC<PostProps> = (props) => {
 
     const body = JSON.stringify(bodyJson);
 
-    fetch(`posts/id/${id}`,{ 
+    fetch(`posts/id/${idPost}`,{ 
       method: "POST",
       headers,
       body
@@ -99,55 +101,56 @@ const Post: React.FC<PostProps> = (props) => {
   };
 
   return (
-    <React.Fragment>
-      { post ? 
-        <div>
-          <div className="comment">
-            <article className="media">
-              <UserLogo user={post.user}></UserLogo>
-              <div className="media-content">
-                <div className="content">
-                  <p>
-                    <strong style={{ fontSize: "17px" }}>{post.user ? post.user.username : "Anónimo"}</strong> <small><Moment fromNow>{post.createdAt}</Moment></small>
-                  </p>
-                  { post.dataContainer && post.dataContainer.multimedia &&
-                    post.dataContainer.multimedia.map((multimedia,index) => {
-                      return (
-                        <Video key={index} id={multimedia.id}></Video>
-                      );
-                    })
-                    
-                  }
-                  { post.dataContainer && post.dataContainer.text_content && 
+    <div className="columns" style={{ marginTop: 15 }}>
+      <div className="column is-8 is-offset-2">
+        { post ? 
+          <div>
+            <div className="comment">
+              <article className="media">
+                <UserLogo user={post.user}></UserLogo>
+                <div className="media-content">
+                  <div className="content">
                     <p>
-                      <span>{post.dataContainer.text_content}</span>
-                    </p> 
-                  }
-                </div>
-                <nav className="level is-mobile">
-                  <div className="level-left">
-                    <a className="level-item" onClick={handleClickReply}>
-                      <span className="icon is-small"><i className="fas fa-reply"></i></span>
-                    </a>
-                    <a className="level-item" onClick={handleClickLike}>
-                      <span key="unique" className="icon is-small">
-                        <i className={ isLike ? "fas fa-heart" : "far fa-heart"} />
-                      </span>
-                    </a>
+                      <strong style={{ fontSize: "17px" }}>{post.user ? post.user.username : "Anónimo"}</strong> <small><Moment fromNow>{post.createdAt}</Moment></small>
+                    </p>
+                    { post.dataContainer && post.dataContainer.multimedia &&
+                      post.dataContainer.multimedia.map((multimedia,index) => {
+                        return (
+                          <Video key={index} id={multimedia.id}></Video>
+                        );
+                      })
+                      
+                    }
+                    { post.dataContainer && post.dataContainer.text_content && 
+                      <p>
+                        <span>{post.dataContainer.text_content}</span>
+                      </p> 
+                    }
                   </div>
-                </nav>
-              </div>
-            </article>
+                  <nav className="level is-mobile">
+                    <div className="level-left">
+                      <a className="level-item" onClick={handleClickReply}>
+                        <span className="icon is-small"><i className="fas fa-reply"></i></span>
+                      </a>
+                      <a className="level-item" onClick={handleClickLike}>
+                        <span key="unique" className="icon is-small">
+                          <i className={ isLike ? "fas fa-heart" : "far fa-heart"} />
+                        </span>
+                      </a>
+                    </div>
+                  </nav>
+                </div>
+              </article>
+            </div>
+            { showNewComment && 
+              <NewComment user={post.user} handleSubmitNewComment={handleSubmitNewComment} handleClickCancel={handleClickCancel}></NewComment>
+            }
+            { !!comments && comments.length > 0 && <a className="text-comments" onClick={handleClickComments}><i className="fas fa-sort-down"></i> Show Comments ({comments?.length})</a>}
+            { showComments && <CommentList posts={comments}></CommentList> }
           </div>
-          { showNewComment && 
-            <NewComment user={post.user} handleSubmitNewComment={handleSubmitNewComment} handleClickCancel={handleClickCancel}></NewComment>
-          }
-          { !!comments && comments.length > 0 && <a className="text-comments" onClick={handleClickComments}><i className="fas fa-sort-down"></i> Show Comments ({comments?.length})</a>}
-          { showComments && <CommentList posts={comments}></CommentList> }
-        </div>
-        : null}
-    </React.Fragment> 
-    
+          : null}
+      </div>        
+    </div>
   );
 };
 
