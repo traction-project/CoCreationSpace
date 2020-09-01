@@ -10,7 +10,7 @@ import VideoUpload from "./video_upload";
 import VideoStream from "./video_stream";
 import VideoRecorder from "./video_recorder";
 import Translate from "./translate";
-import Threads from "./threads";
+import Tags from "./tags";
 import Post from "./post";
 
 interface AppProps {}
@@ -38,8 +38,8 @@ const App: React.FC<AppProps> = () => {
           <Route path="/translate/:id">
             <Translate />
           </Route>
-          <Route path="/threads">
-            <Threads />
+          <Route path="/tags">
+            <Tags />
           </Route>
           <Route path="/post/:id">
             <Post />
