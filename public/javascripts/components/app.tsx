@@ -12,6 +12,7 @@ import VideoRecorder from "./video_recorder";
 import Translate from "./translate";
 import Tags from "./tags";
 import Post from "./post";
+import Tag from "./tag";
 
 interface AppProps {}
 
@@ -40,6 +41,9 @@ const App: React.FC<AppProps> = () => {
           </Route>
           <Route path="/tags">
             <Tags />
+          </Route>
+          <Route path="/tag/:id">
+            <Tag />
           </Route>
           <Route path="/post/:id">
             <Post />

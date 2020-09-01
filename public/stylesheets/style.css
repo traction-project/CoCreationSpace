@@ -95,3 +95,35 @@ textarea {
 .file-icon {
   margin: 0;
 }
+
+.list-title {
+  font-weight: 700;
+}
+
+.list-item__date {
+  align-self: center;
+  padding: 2rem .5rem;
+}
+
+.list-item {
+  display: flex;
+  cursor: pointer;
+  transition: all .5s;
+  border-bottom: none !important;
+}
+
+.list-item:hover {
+  transform: translateY(-1rem);
+}
+
+.list-item__files {
+  display: flex;
+}
+
+.list-item__files-item {
+  padding: .2rem .2rem;
+}
+
+.box:not(:last-of-type) {
+  margin-right: 1rem;
+}

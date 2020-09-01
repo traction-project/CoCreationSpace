@@ -27,7 +27,12 @@ router.get("/id/:id", async (req, res) => {
     include: [{
       model: db.getModels().Posts,
       as: "post",
-      where: { parent_post_id: { [Op.is] : null }}
+      where: { parent_post_id: { [Op.is] : null }},
+      include: ["user", {
+        model: db.getModels().DataContainer,
+        as: "dataContainer",
+        include: ["multimedia"]
+      }]
     }],
     order: [
       ["post", "created_at", "DESC"]

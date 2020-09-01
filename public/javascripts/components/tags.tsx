@@ -2,11 +2,13 @@ import * as React from "react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Moment from "react-moment";
+import { PostType } from "./post";
 
 export type TagData = {
     id: number;
     tag_name: string;
     createdAt: string;
+    post?: PostType[]
 }
 interface TagsProps {}
 
