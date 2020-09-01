@@ -29,7 +29,11 @@ router.get("/id/:id", authRequired, async (req, res) => {
   const PostModel = db.getModels().Posts;
   const post = await PostModel.findByPk(id, 
     { 
-      include: ["dataContainer", "comments", "postReference", "postReferenced", "user", "userReferenced", "tag"]
+      include: [
+        {
+          association: association.getAssociatons().postAssociations.PostDataContainer,
+          include: [ association.getAssociatons().datacontainerAssociations.DatacontainerMultimedia ]
+        }, "comments", "postReference", "postReferenced", "user", "userReferenced", "tag"]
     });
 
   if (post) {

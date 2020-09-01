@@ -7,12 +7,11 @@ import { useState, useEffect } from "react";
 import Video from "./video";
 import NewComment from "./new-comment";
 
-
 type dataContainerType = {
   text_content?: string;
-  multimedia?: {
+  multimedia?: [{
     id?: number
-  }
+  }]
 }
 
 type TagType = {
@@ -112,7 +111,12 @@ const Post: React.FC<PostProps> = (props) => {
                     <strong style={{ fontSize: "17px" }}>{post.user ? post.user.username : "Anónimo"}</strong> <small><Moment fromNow>{post.createdAt}</Moment></small>
                   </p>
                   { post.dataContainer && post.dataContainer.multimedia &&
-                    <Video id={post.dataContainer.multimedia.id}></Video>
+                    post.dataContainer.multimedia.map((multimedia,index) => {
+                      return (
+                        <Video key={index} id={multimedia.id}></Video>
+                      );
+                    })
+                    
                   }
                   { post.dataContainer && post.dataContainer.text_content && 
                     <p>
