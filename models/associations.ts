@@ -1,4 +1,49 @@
 import { DbInterface } from "util/typing/DbInterface";
+import { HasOne, HasMany } from "sequelize/types/lib/associations";
+import { PostInstance } from "./post";
+import { DataContainerInstance } from "./dataContainer";
+import { MultimediaInstance } from "./multimedia";
+
+type AssociationType = {
+  datacontainerAssociations: {
+    DatacontainerMultimedia: HasMany<DataContainerInstance, MultimediaInstance>
+  },
+  postAssociations: {
+    PostDataContainer: HasOne<PostInstance, DataContainerInstance>;
+  }
+}
+
+class Associations {
+
+  private associatons: AssociationType;
+
+  getAssociatons(): AssociationType {
+    return this.associatons;
+  }
+
+  createAssociations(models: DbInterface) {
+    audioContentAssociations(models);
+    const datacontainerAssociations = dataContainerAssociations(models);
+    metadataAssociations(models);
+    multimediaAssociations(models);
+    permissionsAssociations(models);
+    const postAssociations = postsAssociations(models);
+    subtitleAssociations(models);
+    tagAssociations(models);
+    topicAssociations(models);
+    threadAssociations(models);
+    userAssociations(models);
+  
+    this.associatons = {
+      datacontainerAssociations,
+      postAssociations
+    };
+  }
+}
+
+const association = new Associations();
+
+export default association;
 
 /**
  *  Create all AudioContent table relationship with rest of tables
@@ -13,9 +58,13 @@ function audioContentAssociations(models: DbInterface): void {
  *  Create all DataContainer table relationship with rest of tables
  * @param models DbInterface
  */
-function dataContainerAssociations(models: DbInterface): void {
+function dataContainerAssociations(models: DbInterface) {
   models.DataContainer.belongsTo(models.Posts, { as: "post", foreignKey: "post_id" });
-  models.DataContainer.hasMany(models.Multimedia, { as: "multimedia", foreignKey: "data_container_id" });
+  const DatacontainerMultimedia = models.DataContainer.hasMany(models.Multimedia, { as: "multimedia", foreignKey: "data_container_id" });
+
+  return {
+    DatacontainerMultimedia
+  };
 }
 
 /**
@@ -43,8 +92,8 @@ function multimediaAssociations(models: DbInterface): void {
  *  Create all permissions table relationship with rest of tables
  * @param models DbInterface
  */
-function postsAssociations(models: DbInterface): void {
-  models.Posts.hasOne(models.DataContainer, { as: "dataContainer", foreignKey: "post_id" });
+function postsAssociations(models: DbInterface) {
+  const PostDataContainer = models.Posts.hasOne(models.DataContainer, { as: "dataContainer", foreignKey: "post_id" });
   models.Posts.hasMany(models.Posts, { as: "comments", foreignKey: "parent_post_id" });
   models.Posts.belongsTo(models.Users, { as: "user", foreignKey: "user_id" });
   models.Posts.belongsTo(models.Threads, { as: "thread", foreignKey: "thread_id" });
@@ -79,6 +128,9 @@ function postsAssociations(models: DbInterface): void {
     as: "tag"
   });
 
+  return {
+    PostDataContainer
+  };
 }
 /**
  *  Create all permissions table relationship with rest of tables
@@ -145,18 +197,4 @@ function userAssociations(models: DbInterface): void {
     foreignKey: "user_id",
     as: "postReferenced"
   });
-}
-
-export function createAssociations(models: DbInterface): void {
-  audioContentAssociations(models);
-  dataContainerAssociations(models);
-  metadataAssociations(models);
-  multimediaAssociations(models);
-  permissionsAssociations(models);
-  postsAssociations(models);
-  subtitleAssociations(models);
-  tagAssociations(models);
-  topicAssociations(models);
-  threadAssociations(models);
-  userAssociations(models);
 }

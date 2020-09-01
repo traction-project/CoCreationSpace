@@ -35,16 +35,26 @@ export interface PayloadAction<T extends string, U> extends BasicAction<T> {
  */
 export type AsyncAction<R, A extends Action> = ThunkAction<R, ApplicationState, void, A>;
 
-export function postFile(endpoint: string, file: File, onProgress: (e: ProgressEvent) => void, field = "file") {
+/**
+ * Type alias from upload file response
+ */
+export type ResponseUploadType = {
+  status: string;
+  id: number;
+}
+
+export function postFile(endpoint: string, file: File, onProgress: (e: ProgressEvent) => void, field = "file"): Promise<string> {
   const formData = new FormData();
   formData.append(field, file);
 
   const xhr = new XMLHttpRequest();
   xhr.upload.onprogress = onProgress;
 
-  const promise = new Promise((resolve, reject) => {
-    xhr.upload.onloadend = () => {
-      resolve();
+  const promise: Promise<string> = new Promise((resolve, reject) => {
+    xhr.onreadystatechange = () => {
+      if (xhr.readyState === XMLHttpRequest.DONE) {
+        resolve(xhr.response);
+      }
     };
 
     xhr.upload.onerror = (err) => {

@@ -1,7 +1,9 @@
 import { Router } from "express";
+
 import { db } from "../models";
 import { authRequired } from "../util";
 import { UserInstance } from "models/users";
+import association from "../models/associations";
 
 const router = Router();
 
@@ -63,7 +65,7 @@ router.post("/", authRequired, async (req, res) => {
  */
 router.post("/id/:id", authRequired, async (req, res) => {
   const { id } = req.params;
-  const { text, title } = req.body;
+  const { text, title, multimedia } = req.body;
   if (!text) return res.status(400).send({ message: "Field text not present"});
   const user = req.user as UserInstance;
   
@@ -71,16 +73,21 @@ router.post("/id/:id", authRequired, async (req, res) => {
   const post = PostModel.build({
     title: title,
     parent_post_id: id,
-    user_id: user.id
+    user_id: user.id,
+    dataContainer: {
+      text_content: text
+    }
+  }, {
+    include: [ association.getAssociatons().postAssociations.PostDataContainer ]
   });
-  
+
   const postSaved = await post.save();
 
-  postSaved.createDataContainer({
-    text_content: text,
-    post_id: post.id
-  });
-  
+  if (multimedia && multimedia.length > 0) {
+    const dataContainer = await postSaved.getDataContainer();
+    await dataContainer.setMultimedia(multimedia);
+  }
+
   return res.send(postSaved);
 });
 

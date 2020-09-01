@@ -70,10 +70,16 @@ const Post: React.FC<PostProps> = (props) => {
     setShowComments(!showComments);
   };
  
-  const handleSubmitNewComment = (content: string) => {
+  const handleSubmitNewComment = ({comment, multimedia}: {comment: string, multimedia?: Array<number>}) => {
+    console.log(multimedia);
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
-    const body = JSON.stringify({ text: content });
+    let bodyJson = {
+      text: comment,
+      ...(multimedia && multimedia.length > 0 && {multimedia})
+    };
+
+    const body = JSON.stringify(bodyJson);
 
     fetch(`posts/id/${id}`,{ 
       method: "POST",
@@ -132,7 +138,7 @@ const Post: React.FC<PostProps> = (props) => {
           { showNewComment && 
             <NewComment user={post.user} handleSubmitNewComment={handleSubmitNewComment} handleClickCancel={handleClickCancel}></NewComment>
           }
-          { !!comments && comments.length > 0 && <a className="text-comments" onClick={handleClickComments}><i className="fas fa-sort-down"></i> Ver Comentarios ({comments?.length})</a>}
+          { !!comments && comments.length > 0 && <a className="text-comments" onClick={handleClickComments}><i className="fas fa-sort-down"></i> Show Comments ({comments?.length})</a>}
           { showComments && <CommentList posts={comments}></CommentList> }
         </div>
         : null}

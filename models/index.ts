@@ -1,7 +1,7 @@
 import { Sequelize } from "sequelize";
 
 import { DbInterface } from "util/typing/DbInterface";
-import { createAssociations } from "./associations";
+import association from "./associations";
 import { MultimediaModelFactory } from "./multimedia";
 import { TopicModelFactory } from "./topic";
 import { ThreadModelFactory } from "./thread";
@@ -79,7 +79,7 @@ class DataBase {
     this.createModels(sequelize);
 
     // Create all relationships between models
-    createAssociations(this.models);
+    association.createAssociations(this.models);
 
     // Syncronice with physical database (If the models not exists in the database, they are created)
     await sequelize.sync();

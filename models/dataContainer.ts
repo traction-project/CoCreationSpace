@@ -7,7 +7,7 @@ import { MultimediaAttributes, MultimediaInstance } from "./multimedia";
 export interface DataContainerAttributes extends commonAttributes{
     text_content?: string;
     post?: PostAttributes | PostAttributes["id"];
-    multimedia?: MultimediaAttributes | MultimediaAttributes["id"];
+    multimedia?: MultimediaAttributes[] | MultimediaAttributes["id"][];
 }
 
 /**

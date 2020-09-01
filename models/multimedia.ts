@@ -10,7 +10,7 @@ import { SubtitlesAttributes, SubtitlesInstance } from "./subtitles";
 
 export interface MultimediaAttributes extends commonAttributes {
   title: string;
-  file: string;
+  file?: string;
   status?: string;
   transcodingJobId?: string;
   transcriptionJobId?: string;

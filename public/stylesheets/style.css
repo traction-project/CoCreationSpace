@@ -92,3 +92,12 @@ textarea {
   color: #3273dc;
   font-weight: 600;
 }
+
+.file {
+  display: inline-flex;
+  margin-left: 5px;
+}
+
+.file-icon {
+  margin: 0;
+}

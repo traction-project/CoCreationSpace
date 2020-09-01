@@ -43,7 +43,7 @@ router.post("/upload", authRequired, (req, res) => {
       await video.save();
       video.setUser(userId);
 
-      res.send({ status: "OK" });
+      res.send({ status: "OK", id: video.id });
     } catch (e) {
       console.error(e);
       res.status(500).send({
