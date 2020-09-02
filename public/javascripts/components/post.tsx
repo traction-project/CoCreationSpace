@@ -53,13 +53,20 @@ const Post: React.FC<PostProps> = (props) => {
         console.log(`Post: ${data.id}`);
         setPost(data);
         setComments(data.comments);
+        if (data.isLiked) { setIsLike(data.isLiked); }
       });
   }, [idPost]);
 
   const handleClickLike = () => {
+    const action = isLike ? "unlike" : "like";
+    postLike(action);
     setIsLike(!isLike);
     console.log(isLike);
-    // Send change to API
+  };
+
+  const postLike = (action: string) => {
+    action = action.toLowerCase();
+    return fetch(`/posts/id/${idPost}/${action}`, { method: "POST" }).then(res => res.json);
   };
 
   const handleClickReply = () => {

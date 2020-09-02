@@ -17,6 +17,7 @@ import { DataContainerModelFactory } from "./dataContainer";
 import { AudioContentModelFactory } from "./audioContent";
 import { MetadataModelFactory } from "./metadata";
 import { SubtitlesModelFactory } from "./subtitles";
+import { LikesModelFactory } from "./likes";
 
 /**
  *  Class that contains all models created in the data base. Also, it is charge of
@@ -37,6 +38,7 @@ class DataBase {
   createModels(sequelize: Sequelize): void {
     const AudioContent = AudioContentModelFactory(sequelize);
     const DataContainer = DataContainerModelFactory(sequelize);
+    const Likes = LikesModelFactory(sequelize);
     const Metadata = MetadataModelFactory(sequelize);
     const Multimedia = MultimediaModelFactory(sequelize);
     const Permissions = PermissionsModelFactory(sequelize);
@@ -54,6 +56,7 @@ class DataBase {
     this.models = {
       AudioContent,
       DataContainer,
+      Likes,
       Metadata,
       Multimedia,
       Permissions,

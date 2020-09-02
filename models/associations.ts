@@ -127,6 +127,14 @@ function postsAssociations(models: DbInterface) {
     foreignKey: "post_id",
     as: "tag"
   });
+  models.Posts.belongsToMany(models.Users, {
+    through: {
+      model: models.Likes,
+      unique: false
+    },
+    foreignKey: "post_id",
+    as: "likesUsers"
+  });
 
   return {
     PostDataContainer
@@ -196,5 +204,13 @@ function userAssociations(models: DbInterface): void {
     },
     foreignKey: "user_id",
     as: "postReferenced"
+  });
+  models.Users.belongsToMany(models.Posts, {
+    through: {
+      model: models.Likes,
+      unique: false
+    },
+    foreignKey: "user_id",
+    as: "likesPosts"
   });
 }

@@ -16,6 +16,7 @@ export interface UsersAttributes extends commonAttributes {
   password?: string;
   salt?: string;
   role?: string;
+  likesPosts?: PostAttributes | PostAttributes["id"];
   multimedia?: MultimediaAttributes | MultimediaAttributes["id"];
   preferences?: PreferencesAttributes | PreferencesAttributes["id"];
   permissions?: PermissionsAttributes | PermissionsAttributes["id"];
@@ -37,6 +38,16 @@ export interface UserInstance extends Sequelize.Model<UsersAttributes>, UsersAtt
   validatePassword: (password: string) => boolean;
   generateToken: (validityInDays: number) => string;
   getAuth: () => UserToken;
+
+  getLikesPosts: Sequelize.BelongsToManyGetAssociationsMixin<PostInstance>;
+  setLikesPosts: Sequelize.BelongsToManySetAssociationsMixin<PostInstance, PostInstance["id"]>;
+  addLikesPosts: Sequelize.BelongsToManyAddAssociationsMixin<PostInstance, PostInstance["id"]>;
+  addLikesPost: Sequelize.BelongsToManyAddAssociationMixin<PostInstance, PostInstance["id"]>;
+  removeLikesPost: Sequelize.BelongsToManyRemoveAssociationMixin<PostInstance, PostInstance["id"]>;
+  removeLikesPosts: Sequelize.BelongsToManyRemoveAssociationsMixin<PostInstance, PostInstance["id"]>;
+  hasLikesPost: Sequelize.BelongsToManyHasAssociationMixin<PostInstance, PostInstance["id"]>;
+  hasLikesPosts: Sequelize.BelongsToManyHasAssociationsMixin<PostInstance, PostInstance["id"]>;
+  countLikesPosts: Sequelize.BelongsToManyCountAssociationsMixin;
 
   getMultimedia: Sequelize.HasManyGetAssociationsMixin<MultimediaInstance>;
   setMultimedia: Sequelize.HasManySetAssociationsMixin<MultimediaInstance, MultimediaInstance["id"]>;

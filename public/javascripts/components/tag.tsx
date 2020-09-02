@@ -42,7 +42,10 @@ const Tag: React.FC<TagProps> = () => {
                             <div className="media-content">
                               <div className="content">
                                 <p>
-                                  <strong>{post.user.username}</strong>
+                                  { post.user && post.user.username ?
+                                    <strong>{post.user.username}</strong>
+                                    : <strong>Anonymous</strong>
+                                  }
                                   <br />
                                   <br />
                                   {post.dataContainer?.text_content}

@@ -14,6 +14,7 @@ export interface PostAttributes extends commonAttributes{
     karma_points?: number;
     dataContainer?: DataContainerAttributes | DataContainerAttributes["id"];
     comments?: PostAttributes | PostAttributes["id"];
+    likesUsers?: UsersAttributes | UsersAttributes["id"];
     parentPost?: PostAttributes | PostAttributes["id"];
     postReference?: PostAttributes | PostAttributes["id"];
     postReferenced?: PostAttributes | PostAttributes["id"];
@@ -38,6 +39,16 @@ export interface PostInstance extends Sequelize.Model<PostAttributes>, PostAttri
   hasComment: Sequelize.HasManyHasAssociationMixin<PostInstance, PostInstance["id"]>;
   hasComments: Sequelize.HasManyHasAssociationsMixin<PostInstance, PostInstance["id"]>;
   countComments: Sequelize.HasManyCountAssociationsMixin;
+
+  getLikesUsers: Sequelize.BelongsToManyGetAssociationsMixin<UserInstance>;
+  setLikesUsers: Sequelize.BelongsToManySetAssociationsMixin<UserInstance, UserInstance["id"]>;
+  addLikesUsers: Sequelize.BelongsToManyAddAssociationsMixin<UserInstance, UserInstance["id"]>;
+  addLikesUser: Sequelize.BelongsToManyAddAssociationMixin<UserInstance, UserInstance["id"]>;
+  removeLikesUser: Sequelize.BelongsToManyRemoveAssociationMixin<UserInstance, UserInstance["id"]>;
+  removeLikesUsers: Sequelize.BelongsToManyRemoveAssociationsMixin<UserInstance, UserInstance["id"]>;
+  hasLikesUser: Sequelize.BelongsToManyHasAssociationMixin<UserInstance, UserInstance["id"]>;
+  hasLikesUsers: Sequelize.BelongsToManyHasAssociationsMixin<UserInstance, UserInstance["id"]>;
+  countLikesUsers: Sequelize.BelongsToManyCountAssociationsMixin;
 
   getPostReference: Sequelize.BelongsToManyGetAssociationsMixin<PostInstance>;
   setPostReference: Sequelize.BelongsToManySetAssociationsMixin<PostInstance, PostInstance["id"]>;

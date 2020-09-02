@@ -15,6 +15,7 @@ import { TopicInstance } from "models/topic";
 import { UserInstance } from "models/users";
 import { UserReferencesInstance } from "models/userReferences";
 import { PostReferencesInstance } from "models/postReferences";
+import { LikesInstance } from "models/likes";
 
 /**
  *  Interface for the objects that containes all models from database
@@ -22,6 +23,7 @@ import { PostReferencesInstance } from "models/postReferences";
 export interface DbInterface {
     AudioContent: ModelCtor<AudioContentInstance>;
     DataContainer: ModelCtor<DataContainerInstance>;
+    Likes: ModelCtor<LikesInstance>;
     Metadata: ModelCtor<MetadataInstance>;
     Multimedia: ModelCtor<MultimediaInstance>;
     Permissions: ModelCtor<PermissionsInstance>;

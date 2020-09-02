@@ -17,8 +17,16 @@ router.get("/all", authRequired, async (req, res) => {
       order: [["created_at", "desc"]],
       include: ["dataContainer", "comments"] 
     });
-
-  res.send(posts);
+  
+  const postsJSON = await Promise.all(posts.map(async (post) => {
+    const likes = await post.countLikesUsers();
+    let postJSON = post.toJSON(); 
+    return {
+      likes,
+      ...postJSON
+    };
+  }));
+  res.send(postsJSON);
 });
 
 /**
@@ -27,6 +35,7 @@ router.get("/all", authRequired, async (req, res) => {
 router.get("/id/:id", authRequired, async (req, res) => {
   const { id } = req.params;
   const PostModel = db.getModels().Posts;
+  const user = req.user as UserInstance;
   const post = await PostModel.findByPk(id, 
     { 
       include: [
@@ -35,13 +44,20 @@ router.get("/id/:id", authRequired, async (req, res) => {
           include: [ association.getAssociatons().datacontainerAssociations.DatacontainerMultimedia ]
         }, "comments", "postReference", "postReferenced", "user", "userReferenced", "tag"]
     });
-
+  
   if (post) {
-    res.send(post);
+    const likes = await post.countLikesUsers();
+    const isLiked = await post.hasLikesUser(user);
+    let postJSON = post.toJSON(); 
+    const result = {
+      likes,
+      isLiked,
+      ...postJSON
+    };
+    res.send(result);
   } else {
     res.status(404).json([]);
   }
-  
 });
 
 /**
@@ -95,4 +111,41 @@ router.post("/id/:id", authRequired, async (req, res) => {
   return res.send(postSaved);
 });
 
+/**
+ * Like a post from user
+ */
+router.post("/id/:id/like", authRequired, async (req, res) => {
+  const { id } = req.params;
+  const user = req.user as UserInstance;
+
+  const PostModel = db.getModels().Posts;
+  const post = await PostModel.findByPk(id);
+
+  if (post) {
+    await post.addLikesUser(user);
+
+    const numLikes = await post.countLikesUsers();
+    res.send({ count: numLikes });
+  }
+
+});
+
+/**
+ * Unlike a post from user
+ */
+router.post("/id/:id/unlike", authRequired, async (req, res) => {
+  const { id } = req.params;
+  const user = req.user as UserInstance;
+
+  const PostModel = db.getModels().Posts;
+  const post = await PostModel.findByPk(id);
+
+  if (post) {
+    await post.removeLikesUser(user);
+
+    const numLikes = await post.countLikesUsers();
+    res.send({ count: numLikes });
+  }
+
+});
 export default router;
