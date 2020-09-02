@@ -13,6 +13,7 @@ import Translate from "./translate";
 import Tags from "./tags";
 import Post from "./post";
 import Tag from "./tag";
+import UserPost from "./user-post";
 
 interface AppProps {}
 
@@ -47,6 +48,9 @@ const App: React.FC<AppProps> = () => {
           </Route>
           <Route path="/post/:id">
             <Post />
+          </Route>
+          <Route path="/userPosts">
+            <UserPost />
           </Route>
           <Route path="/">
             Hello World!

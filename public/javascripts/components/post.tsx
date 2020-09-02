@@ -42,6 +42,7 @@ const Post: React.FC<PostProps> = (props) => {
   const idPost = props.post ? props.post.id : id;
   const [ post, setPost ] = useState<PostType>();
   const [ isLike, setIsLike ] = useState<boolean>(false);
+  const [ likes, setLikes ] = useState<number>(0);
   const [ showNewComment, setShowNewComment ] = useState<boolean>(false);
   const [ comments, setComments ] = useState<PostType[]>([]);
   const [ showComments, setShowComments ] = useState(false);
@@ -54,6 +55,7 @@ const Post: React.FC<PostProps> = (props) => {
         setPost(data);
         setComments(data.comments);
         if (data.isLiked) { setIsLike(data.isLiked); }
+        if (data.likes) { setLikes(data.likes); }
       });
   }, [idPost]);
 
@@ -66,7 +68,13 @@ const Post: React.FC<PostProps> = (props) => {
 
   const postLike = (action: string) => {
     action = action.toLowerCase();
-    return fetch(`/posts/id/${idPost}/${action}`, { method: "POST" }).then(res => res.json);
+    fetch(`/posts/id/${idPost}/${action}`, { method: "POST" })
+      .then(res => res.json())
+      .then((data) => {
+        if (data.count || data.count === 0) {
+          setLikes(data.count);
+        }
+      });
   };
 
   const handleClickReply = () => {
@@ -144,6 +152,7 @@ const Post: React.FC<PostProps> = (props) => {
                           <i className={ isLike ? "fas fa-heart" : "far fa-heart"} />
                         </span>
                       </a>
+                      <span className="level-item">{likes}</span>
                     </div>
                   </nav>
                 </div>

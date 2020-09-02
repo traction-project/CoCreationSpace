@@ -30,6 +30,33 @@ router.get("/all", authRequired, async (req, res) => {
 });
 
 /**
+ * Get all post from user
+ */
+router.get("/all/user", authRequired, async (req, res) => {
+  const user = req.user as UserInstance;
+  const postModel = db.getModels().Posts;
+  const userModel = db.getModels().Users;
+  const dataContainerModel = db.getModels().DataContainer;
+
+  const posts = await postModel.findAll({
+    include: [{
+      model: userModel,
+      as: "user",
+      where: { id: user.id }
+    },{
+      model: dataContainerModel,
+      as: "dataContainer",
+      include: ["multimedia"]
+    }],
+    order: [
+      ["created_at", "DESC"]
+    ]
+  });
+  
+  res.send(posts);
+});
+
+/**
  * Get Post by id
  */
 router.get("/id/:id", authRequired, async (req, res) => {
