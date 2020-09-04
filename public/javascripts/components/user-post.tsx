@@ -4,25 +4,39 @@ import { Link } from "react-router-dom";
 import Moment from "react-moment";
 
 import { PostType } from "./post";
+import Filter from "./filter";
 
 interface UserPostProps {}
 
 const UserPost: React.FC<UserPostProps> = () => {
   const [ posts, setPosts ] = useState<Array<PostType>>([]);
+  const endpoint = "/posts/all/user";
 
   useEffect(() => {
-    (async () => {
-      fetch("/posts/all/user")
-        .then(res => res.json())
-        .then(data => setPosts(data));
-    })();
+    (async () => { getPosts(); })();
   }, []);
+
+  const getPosts = (criteria?: string) => {
+    const url = criteria ? `${endpoint}?q=${criteria}` : endpoint;
+
+    fetch(url)
+      .then(res => res.json())
+      .then(data => { setPosts(data); });
+  };
+
+  const handleChange = (value: string) => {
+    getPosts(value);
+  };
 
   return (
     <div className="columns" style={{ marginTop: 15 }}>
       <div className="column is-8 is-offset-2">
         <div>
           <h2 className="list-title">Posts</h2>
+          <br/>
+          <div>
+            <Filter searchValueChange={handleChange}></Filter>
+          </div>
           <hr/>
           {posts ? 
             posts.map((post, index) => {

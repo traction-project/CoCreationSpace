@@ -2,6 +2,8 @@ import { Request, Response, NextFunction } from "express";
 import * as aws from "aws-sdk";
 import * as jwt from "express-jwt";
 
+import { ModelCtor, Model, Op } from "sequelize";
+
 /**
  * Returns a list containing all integers between the given start point and end
  * point. If the values for start and end are equal, an empty list is returned.
@@ -128,3 +130,57 @@ export function authRequired(req: Request, res: Response, next: NextFunction) {
     });
   }
 }
+
+/**
+ * Check if value include the term.
+ * @param value string to check
+ * @param term string to check if it is include in the other one
+ */
+export const findTerm = (value: string, term: string): string => {
+  if (value.includes(term)){
+    return value;
+  }
+  return "";
+};
+
+/**
+ * Check if the model attribute type and return the value casted with that typ
+ * @param value string from request query param
+ * @param type model attribute type
+ */
+const castType = (value: string, type: string) => {
+  switch(type) {
+  case findTerm(type, "INTEGER"):
+    return parseInt(value);
+  case findTerm(type, "CHARACTER"):
+    return `%${value}%`;
+  case findTerm(type, "TIMETAMP"):
+    return "";
+  default:
+    return "";
+  }
+};
+
+/**
+ * Generate the query to do it with the DB. Get the request params and depending of its value, genare the query with operators like: order, limit, pagination or where
+ * @param param0 : request params
+ * @param model Model where to do the query
+ */
+export const buildCriteria = async ({ q }: { q?: string }, model: ModelCtor<Model>)  => {
+  let criteria = {};
+  if (q) {
+    let where: {  where: {[key: string]: any}} = { where: {} };
+    
+    const modelSchema: {[key: string]: any} = await model.describe();
+    Object.keys(modelSchema).forEach((key) => {
+      const castValue = castType(q, modelSchema[key].type);
+      if (castValue) {
+        const operator = { [Op.like]: castValue};
+        where.where[key] = operator;
+      }
+    });
+    Object.assign(criteria, where);
+  }
+  return criteria;
+};
+

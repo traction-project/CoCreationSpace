@@ -1,7 +1,7 @@
 import { Router } from "express";
 
 import { db } from "../models";
-import { authRequired } from "../util";
+import { authRequired, buildCriteria } from "../util";
 import { UserInstance } from "models/users";
 import association from "../models/associations";
 
@@ -12,12 +12,18 @@ const router = Router();
  */
 router.get("/all", authRequired, async (req, res) => {
   const PostModel = db.getModels().Posts;
-  const posts = await PostModel.findAll(
-    { 
-      order: [["created_at", "desc"]],
-      include: ["dataContainer", "comments"] 
-    });
-  
+  const DataContainerModel = db.getModels().DataContainer;
+  let queryDataContainer = {
+    model: DataContainerModel,
+    as: "dataContainer"
+  }; 
+
+  const criteria = await buildCriteria(req.query, DataContainerModel);
+  queryDataContainer = Object.assign(queryDataContainer, criteria); 
+  const posts = await PostModel.findAll({ 
+    order: [["created_at", "desc"]],
+    include: [queryDataContainer, "comments"] 
+  });
   const postsJSON = await Promise.all(posts.map(async (post) => {
     const likes = await post.countLikesUsers();
     let postJSON = post.toJSON(); 
@@ -26,6 +32,7 @@ router.get("/all", authRequired, async (req, res) => {
       ...postJSON
     };
   }));
+
   res.send(postsJSON);
 });
 
@@ -36,18 +43,22 @@ router.get("/all/user", authRequired, async (req, res) => {
   const user = req.user as UserInstance;
   const postModel = db.getModels().Posts;
   const userModel = db.getModels().Users;
-  const dataContainerModel = db.getModels().DataContainer;
+  const DataContainerModel = db.getModels().DataContainer;
+  let queryDataContainer = {
+    model: DataContainerModel,
+    as: "dataContainer",
+    include: ["multimedia"]
+  };
+  
+  const criteria = await buildCriteria(req.query, DataContainerModel);
+  queryDataContainer = Object.assign(queryDataContainer, criteria);
 
   const posts = await postModel.findAll({
     include: [{
       model: userModel,
       as: "user",
       where: { id: user.id }
-    },{
-      model: dataContainerModel,
-      as: "dataContainer",
-      include: ["multimedia"]
-    }],
+    },queryDataContainer],
     order: [
       ["created_at", "DESC"]
     ]
