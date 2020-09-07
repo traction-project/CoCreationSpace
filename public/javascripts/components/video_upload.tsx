@@ -1,24 +1,30 @@
 import * as React from "react";
-import { useState } from "react";
+import { useState, ChangeEvent } from "react";
 
-import { postFile } from "../util";
+import { postFile, ResponseUploadType } from "../util";
 import Dropzone from "./dropzone";
+import Video from "./video";
 
 interface VideoUploadProps {
 }
 
 const VideoUpload: React.FC<VideoUploadProps> = () => {
+  const [ multimedia, setMultimedia ] = useState<number>();
   const [ progress, setProgress ] = useState<number>(0);
   const [ total, setTotal ] = useState<number>(0);
   const [ displayNotification, setDisplayNotification] = useState<"success" | "error">();
+  const [ summary, setSummary ] = useState<string>("");
+  const [ tags, setTags ] = useState<Array<string>>([]);
 
   const startUpload = async (file: File) => {
     try {
-      await postFile("/video/upload", file, (progress) => {
+      const response: string = await postFile("/video/upload", file, (progress) => {
         setProgress(progress.loaded);
         setTotal(progress.total);
       });
 
+      const responseJson: ResponseUploadType = JSON.parse(response);
+      setMultimedia(responseJson.id);
       setDisplayNotification("success");
     } catch {
       setDisplayNotification("error");
@@ -32,6 +38,25 @@ const VideoUpload: React.FC<VideoUploadProps> = () => {
     setDisplayNotification(undefined);
   };
 
+  const handleClickButton = () => {
+    console.log(summary);
+  };
+
+  const handleClickRemoveTag = (tagToRemove: string) => {
+    const tagsFiltered = tags.filter(tag => tag !== tagToRemove);
+    setTags(tagsFiltered);
+  };
+
+  const handleKeyInputTag = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const enterCode = 13;
+    if (e.keyCode === enterCode && e.currentTarget.value) {
+      const value = e.currentTarget.value;
+      if (tags.indexOf(value) === -1 ) {
+        setTags([...tags, value]);
+      }
+    }
+  };
+
   return (
     <div className="columns" style={{ marginTop: 15 }}>
       <div className="column is-8 is-offset-2">
@@ -40,10 +65,39 @@ const VideoUpload: React.FC<VideoUploadProps> = () => {
           <div className="progresscontainer">
             <progress className="progress is-primary" value={progress} max={total} />
           </div>
-        ) : (
-          <Dropzone size={["100%", 300]} onFileDropped={startUpload} />
+        ) : ( multimedia ? 
+          
+          (<Video id={multimedia}></Video>)
+          : (
+            <Dropzone size={["100%", 300]} onFileDropped={startUpload} />
+          )
         )}
 
+        { (total > 0 || multimedia) ?
+          (
+            <React.Fragment>
+              <br />
+              <div className="columns">
+                <div className="column">
+                  <input type="text" placeholder="Add tag..." className="searcher-tag" onKeyDown={handleKeyInputTag}/>
+                  <ul className="list-tags">
+                    { tags ?
+                      tags.map((tag, index) => {
+                        return ( 
+                          <li key={index} className="list-tags__item">{tag}<a className="delete" onClick={(_) => handleClickRemoveTag(tag)}></a></li>);
+                      })
+                      : null}
+                  </ul>
+                </div>
+                <div className="column">
+                  <textarea placeholder="Write summary..." className="summary" onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setSummary(e.currentTarget.value)}></textarea>
+                </div>
+              </div>
+
+              <button onClick={handleClickButton} disabled={(summary && multimedia) ? false : true}>Add content</button>  
+            </React.Fragment>
+          ) 
+          : null} 
         {(displayNotification == "success") ? (
           <div className="notification is-success fixed-notification">
             <button className="delete" onClick={closeNotification}></button>

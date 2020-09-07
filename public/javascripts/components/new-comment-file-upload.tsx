@@ -28,10 +28,9 @@ const FileUpload: React.FC<FileUploadProps> = ({ fileToUpload, addMultimedia }) 
           await setLoaded(progress.loaded);
           await setTotal(progress.total);
         });
-        const responseJSON: ResponseUploadType = JSON.parse(response);
-        console.log(`File ${fileToUpload.name} uploaded!`);
+        const responseJson: ResponseUploadType = JSON.parse(response);
         await setFile(fileUpload);
-        await addMultimedia(responseJSON.id);
+        await addMultimedia(responseJson.id);
       } finally {
         setTotal(0);
       }
