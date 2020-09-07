@@ -125,7 +125,7 @@ function postsAssociations(models: DbInterface) {
       unique: false
     },
     foreignKey: "post_id",
-    as: "tag"
+    as: "tags"
   });
   models.Posts.belongsToMany(models.Users, {
     through: {

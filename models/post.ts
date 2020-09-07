@@ -21,7 +21,7 @@ export interface PostAttributes extends commonAttributes{
     user?: UsersAttributes | UsersAttributes["id"];
     userReferenced?: UsersAttributes | UsersAttributes["id"];
     thread?: ThreadAttributes | ThreadAttributes["id"];
-    tag?: TagAttributes | TagAttributes["id"];
+    tags?: TagAttributes | TagAttributes["id"];
 }
 
 /**
@@ -89,8 +89,8 @@ export interface PostInstance extends Sequelize.Model<PostAttributes>, PostAttri
   getThread: Sequelize.BelongsToGetAssociationMixin<ThreadInstance>;
   setThread: Sequelize.BelongsToSetAssociationMixin<ThreadInstance, ThreadInstance["id"]>;
 
-  getTag: Sequelize.BelongsToManyGetAssociationsMixin<TagInstance>;
-  setTag: Sequelize.BelongsToManySetAssociationsMixin<TagInstance, TagInstance["id"]>;
+  getTags: Sequelize.BelongsToManyGetAssociationsMixin<TagInstance>;
+  setTags: Sequelize.BelongsToManySetAssociationsMixin<TagInstance, TagInstance["id"]>;
   addTags: Sequelize.BelongsToManyAddAssociationsMixin<TagInstance, TagInstance["id"]>;
   addTag: Sequelize.BelongsToManyAddAssociationMixin<TagInstance, TagInstance["id"]>;
   createTags: Sequelize.BelongsToManyCreateAssociationMixin<TagInstance["id"]>;

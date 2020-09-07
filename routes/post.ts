@@ -4,6 +4,7 @@ import { db } from "../models";
 import { authRequired, buildCriteria } from "../util";
 import { UserInstance } from "models/users";
 import association from "../models/associations";
+import { TagInstance } from "models/tag";
 
 const router = Router();
 
@@ -80,7 +81,7 @@ router.get("/id/:id", authRequired, async (req, res) => {
         {
           association: association.getAssociatons().postAssociations.PostDataContainer,
           include: [ association.getAssociatons().datacontainerAssociations.DatacontainerMultimedia ]
-        }, "comments", "postReference", "postReferenced", "user", "userReferenced", "tag"]
+        }, "comments", "postReference", "postReferenced", "user", "userReferenced", "tags"]
     });
   
   if (post) {
@@ -102,20 +103,45 @@ router.get("/id/:id", authRequired, async (req, res) => {
  * Create new Post
  */
 router.post("/", authRequired, async (req, res) => {
-  const { text, title } = req.body; 
+  const { text, title, multimedia, tags } = req.body;
   if (!text) return res.status(400).send({ message: "Field text not present"});
+  const user = req.user as UserInstance; 
     
   const PostModel = db.getModels().Posts; 
-  return PostModel.create({
+  const post = await PostModel.build({
     title: title,
+    user_id: user.id,
     dataContainer: {
       text_content: text
     }
-  }).then((post) => {
-    return res.send(post);
-  }).catch((error) => {
-    return res.status(500).send({ message: error.message });
+  }, {
+    include: [ association.getAssociatons().postAssociations.PostDataContainer, "tags" ]
   });
+
+  const postSaved = await post.save();
+
+  if (multimedia && multimedia.length > 0) {
+    const dataContainer = await postSaved.getDataContainer();
+    await dataContainer.setMultimedia(multimedia);
+  }
+
+  const TagModel = db.getModels().Tags;
+  if (tags && tags.length > 0) {
+    tags.forEach(async (tag: TagInstance) => {
+      const { id, tag_name } = tag;
+      const query = id ? { id } : { tag_name: tag_name.toLowerCase() };
+      
+      const tagSaved = await TagModel.findAll({where: query});
+      if (tagSaved && tagSaved.length > 0) {
+        await postSaved.addTag(tagSaved[0]);
+      } else {
+        const newTag = await TagModel.create(tag);
+        await postSaved.addTag(newTag);
+      }
+    });
+  }
+
+  return res.send(postSaved);
 });
 
 /**
