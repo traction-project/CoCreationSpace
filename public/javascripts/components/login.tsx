@@ -6,6 +6,7 @@ import { actionCreators as loginActionCreators, LoginActions } from "../actions/
 import { LoginState } from "../reducers/login";
 import { ApplicationState } from "../store";
 import { connect } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 interface LoginActionProps {
   loginActions: LoginActions;
@@ -18,6 +19,7 @@ interface LoginConnectedProps {
 type LoginProps = LoginActionProps & LoginConnectedProps;
 
 const Login: React.FC<LoginProps> = (props) => {
+  const history = useHistory();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -35,6 +37,7 @@ const Login: React.FC<LoginProps> = (props) => {
         user.id,
         user.username
       );
+      history.push("/");
     }
   };
 
