@@ -4,10 +4,11 @@ import { debounce } from "lodash";
 
 interface FilterProps {
   delay?: number;
+  placeholder?: string;
   searchValueChange: (text: string) => void;
 }
 
-const Filter: React.FC<FilterProps> = ({ searchValueChange, delay=500 }) => {
+const Filter: React.FC<FilterProps> = ({ searchValueChange, delay=500, placeholder="Search..." }) => {
   
   const handleChange = debounce((value: string) => {
     console.log("Valor cambiado: " + value);
@@ -16,7 +17,7 @@ const Filter: React.FC<FilterProps> = ({ searchValueChange, delay=500 }) => {
 
   return (
     <React.Fragment>
-      <input type="text" onChange={(e) => {handleChange(e.currentTarget.value);}}/>
+      <input type="text" placeholder={placeholder} onChange={(e) => {handleChange(e.currentTarget.value);}}/>
     </React.Fragment>
   );
 };

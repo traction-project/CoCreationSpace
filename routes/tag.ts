@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { db } from "../models";
 import { Op } from "sequelize";
+import { buildCriteria } from "../util";
 
 
 const router = Router();
@@ -10,8 +11,9 @@ const router = Router();
  */
 router.get("/all", async (req, res) => {
   const TagModel = db.getModels().Tags;
+  const criteria = await buildCriteria(req.query, TagModel);
 
-  const tags = await TagModel.findAll();
+  const tags = await TagModel.findAll(criteria);
 
   res.send(tags);
 });
