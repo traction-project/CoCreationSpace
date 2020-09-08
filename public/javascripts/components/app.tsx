@@ -14,6 +14,7 @@ import Tags from "./tags";
 import Post from "./post";
 import Tag from "./tag";
 import UserPost from "./user-post";
+import Home from "./home";
 
 interface AppProps {}
 
@@ -53,7 +54,7 @@ const App: React.FC<AppProps> = () => {
             <UserPost />
           </Route>
           <Route path="/">
-            Hello World!
+            <Home />
           </Route>
         </Switch>
       </Router>

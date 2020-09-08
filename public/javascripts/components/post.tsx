@@ -87,7 +87,6 @@ const Post: React.FC<PostProps> = (props) => {
   };
  
   const handleSubmitNewComment = ({comment, multimedia}: {comment: string, multimedia?: Array<number>}) => {
-    console.log(multimedia);
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
     let bodyJson = {

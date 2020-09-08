@@ -160,6 +160,7 @@ textarea {
   font-size: 1rem;
   width: max-content;
 }
+
 .list-tags__item:not(:last-of-type) {
   margin-bottom: .5rem;
 }
@@ -168,4 +169,35 @@ textarea {
   margin-left: 1rem;
   height: 18px;
   min-height: 18px;
+}
+
+.home__title {
+  font-size: 5rem;
+  text-align: center;
+  padding: 5rem 0;
+}
+
+.home__menu {
+  justify-items: center;
+}
+
+.home__menu-item {
+  background-color: white;
+  border-radius: 6px;
+  box-shadow: 0 0.5em 1em -0.125em rgba(10, 10, 10, 0.1), 0 0px 0 1px rgba(10, 10, 10, 0.02);
+  color: #4a4a4a;
+  display: block;
+  width: 40%;
+  text-align: center;
+  padding: 1.85rem 0;
+  margin: .5rem auto;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1.5rem;
+  transition: all .5s;
+}
+
+.home__menu-item:hover {
+  background-color: #E2E2E2;
+  font-weight: 400;
 }

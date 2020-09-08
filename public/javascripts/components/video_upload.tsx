@@ -4,11 +4,13 @@ import { useState, ChangeEvent } from "react";
 import { postFile, ResponseUploadType } from "../util";
 import Dropzone from "./dropzone";
 import Video from "./video";
+import { useHistory } from "react-router-dom";
 
 interface VideoUploadProps {
 }
 
 const VideoUpload: React.FC<VideoUploadProps> = () => {
+  const history = useHistory();
   const [ multimedia, setMultimedia ] = useState<number>();
   const [ progress, setProgress ] = useState<number>(0);
   const [ total, setTotal ] = useState<number>(0);
@@ -39,7 +41,31 @@ const VideoUpload: React.FC<VideoUploadProps> = () => {
   };
 
   const handleClickButton = () => {
-    console.log(summary);
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
+    const body = {
+      text: summary,
+      multimedia: [multimedia],
+      tags: tags.map((tag) => { return { tag_name: tag }; } )
+    };
+    fetch("/posts", { 
+      headers,
+      method: "POST",
+      body: JSON.stringify(body)
+    })
+      .then(res => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          const err = new Error("HTTP status code: " + res.status);
+          throw err;
+        }
+      })
+      .then(_ => {
+        history.push("/userPosts");
+      })
+      .catch(_ => setDisplayNotification("error"))
+      .finally(() => setTimeout(() => setDisplayNotification(undefined), 3000));
   };
 
   const handleClickRemoveTag = (tagToRemove: string) => {
