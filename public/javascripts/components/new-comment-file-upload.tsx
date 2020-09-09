@@ -6,9 +6,10 @@ import { postFile, ResponseUploadType } from "../util";
 type FileUploadProps = {
     fileToUpload: File;
     addMultimedia: (id: number) => void;
+    setLoading: (value: boolean) => void;
 }
 
-const FileUpload: React.FC<FileUploadProps> = ({ fileToUpload, addMultimedia }) => {
+const FileUpload: React.FC<FileUploadProps> = ({ fileToUpload, addMultimedia, setLoading }) => {
   const [file, setFile] = useState<File>();
   const [loaded, setLoaded] = useState<number>(0);
   const [total, setTotal] = useState<number>(0);
@@ -24,6 +25,7 @@ const FileUpload: React.FC<FileUploadProps> = ({ fileToUpload, addMultimedia }) 
 
     if (fileUpload) {
       try {
+        setLoading(true);
         const response: string = await postFile("/video/upload", fileUpload, async (progress) => {
           await setLoaded(progress.loaded);
           await setTotal(progress.total);
@@ -32,6 +34,7 @@ const FileUpload: React.FC<FileUploadProps> = ({ fileToUpload, addMultimedia }) 
         await setFile(fileUpload);
         await addMultimedia(responseJson.id);
       } finally {
+        setLoading(false);
         setTotal(0);
       }
     }

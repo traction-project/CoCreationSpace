@@ -14,6 +14,7 @@ type NewCommentProps = {
 const NewComment: React.FC<NewCommentProps> = (props) => {
   const [ files, setFiles ] = useState<Array<File>>([]);
   const [ multimedia, setMultimedia ] = useState<Array<number>>([]);
+  const [ loading, setLoading ] = useState<boolean>(false);
   
   const { handleSubmit, register, errors } = useForm();
   const user: UserType = props.user;
@@ -72,7 +73,7 @@ const NewComment: React.FC<NewCommentProps> = (props) => {
               <div className="columns">
                 {files.map(((file, index) => {
                   return(
-                    <FileUpload key={index} fileToUpload={file} addMultimedia={addMultimedia}></FileUpload>    
+                    <FileUpload key={index} fileToUpload={file} addMultimedia={addMultimedia} setLoading={setLoading}></FileUpload>    
                   );
                 }))}
                 
@@ -80,7 +81,7 @@ const NewComment: React.FC<NewCommentProps> = (props) => {
             ) : null
         }
         <div className="form-group" style={{padding: ".5em 0"}}>
-          <button className="button is-info">
+          <button className="button is-info" disabled={loading}>
             Comment
           </button>
           <button 
