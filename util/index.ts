@@ -175,7 +175,7 @@ export const buildCriteria = async ({ q }: { q?: string }, model: ModelCtor<Mode
     Object.keys(modelSchema).forEach((key) => {
       const castValue = castType(q, modelSchema[key].type);
       if (castValue) {
-        const operator = { [Op.like]: castValue};
+        const operator = { [Op.iLike]: castValue};
         where.where[key] = operator;
       }
     });
