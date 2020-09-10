@@ -10,14 +10,11 @@ import VideoUpload from "./video_upload";
 import VideoStream from "./video_stream";
 import VideoRecorder from "./video_recorder";
 import Translate from "./translate";
-import Tags from "./tags";
 import Post from "./post";
-import Tag from "./tag";
-import UserPost from "./user-post";
 import Home from "./home";
 import PrivateRoute from "./private_route";
 import Header from "./header";
-import Explore from "./explore";
+import PostList from "./post-list";
 
 interface AppProps {}
 
@@ -43,15 +40,11 @@ const App: React.FC<AppProps> = () => {
           <Route path="/translate/:id">
             <Translate />
           </Route>
-          <PrivateRoute path="/tags" component={Tags} />
-          <Route path="/tag/:id">
-            <Tag />
-          </Route>
-          <PrivateRoute path="/posts" component={Explore} />
+          <PrivateRoute path="/posts" component={PostList} endpoint="/posts/all" />
           <Route path="/post/:id">
             <Post />
           </Route>
-          <PrivateRoute path="/userPosts" component={UserPost} />
+          <PrivateRoute path="/userPosts" component={PostList} endpoint="/posts/all/user" />
           <Route path="/">
             <Home />
           </Route>

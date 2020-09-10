@@ -5,28 +5,32 @@ import Moment from "react-moment";
 
 import { PostType } from "./post";
 import Filter from "./filter";
-import { TagData } from "./tags";
 
-interface UserPostProps {}
+interface PostListProps {
+  endpoint: string;
+}
 
-const UserPost: React.FC<UserPostProps> = () => {
+type TagData = {
+  id: number;
+  tag_name: string;
+  createdAt: string;
+  post?: PostType[]
+}
+
+const PostList: React.FC<PostListProps> = ({endpoint}) => {
   const history = useHistory();
   const [ posts, setPosts ] = useState<Array<PostType>>([]);
   const [ filteredPosts, setFilteredPosts ] = useState<Array<PostType>>([]);
   const [ tags, setTags ] = useState<Array<TagData>>();
-  const endpoint = "/posts/all/user";
 
   useEffect(() => {
-    (async () => { 
-      console.log("Called to useEffect");
+    (async () => {
       const postsList: Array<PostType> = await getPosts();
       setPosts(postsList);
       setFilteredPosts(postsList);
-      if (!tags || tags.length == 0) {
-        getTags(postsList);
-      } 
+      getTags(postsList);
     })();
-  }, []);
+  }, [endpoint]);
 
   const getPosts = (criteria?: string) => {
     const url = criteria ? `${endpoint}?q=${criteria}` : endpoint;
@@ -51,8 +55,6 @@ const UserPost: React.FC<UserPostProps> = () => {
     setTags(tagsList);
   };
 
-
-
   const handleClickButtonNewPost = () => {
     history.push("/upload");
   };
@@ -74,8 +76,10 @@ const UserPost: React.FC<UserPostProps> = () => {
     setFilteredPosts(postList);
   };
 
-  const handleChange = (value: string) => {
-    getPosts(value);
+  const handleChange = async (value: string) => {
+    const postsList: Array<PostType> = await getPosts(value);
+    setPosts(postsList);
+    setFilteredPosts(postsList);
   };
 
   return (
@@ -137,7 +141,7 @@ const UserPost: React.FC<UserPostProps> = () => {
                   </div>
                 );
               })
-              : <p>This tag has not posts</p>}
+              : <p>This user has not posts</p>}
           </div>
         </div>
         <div className="column is-2">
@@ -157,4 +161,4 @@ const UserPost: React.FC<UserPostProps> = () => {
   );
 };
 
-export default UserPost;
+export default PostList;

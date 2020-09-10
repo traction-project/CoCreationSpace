@@ -29,7 +29,7 @@ const Header: React.FC<HeaderProps> = () => {
           <Link to={"/userPosts"}><span className={location.pathname === "/userPosts" ? "active" : ""}>MyPosts</span></Link>
         </div>
         <div className="menu-bar__item">
-          <Link to={"/posts"}><span className={location.pathname === "/tags" ? "active" : ""}>Explore</span></Link>
+          <Link to={"/posts"}><span className={location.pathname === "/posts" ? "active" : ""}>Explore</span></Link>
         </div>
       </div>
       { isLoggedIn()

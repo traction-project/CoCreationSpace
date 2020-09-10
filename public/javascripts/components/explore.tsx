@@ -1,30 +1,79 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import Moment from "react-moment";
 import { PostType } from "./post";
 import Filter from "./filter";
+import { TagData } from "./tags";
 
 interface ExploreProps {}
 
 const Explore: React.FC<ExploreProps> = () => {
+  const history = useHistory();
   const [ posts, setPosts ] = useState<Array<PostType>>([]);
+  const [ filteredPosts, setFilteredPosts ] = useState<Array<PostType>>([]);
+  const [ tags, setTags ] = useState<Array<TagData>>();
   const endpoint = "/posts/all";
 
   useEffect(() => {
-    (async () => { getPosts(); })();
+    (async () => {
+      const postsList: Array<PostType> = await getPosts();
+      setPosts(postsList);
+      setFilteredPosts(postsList);
+      if (!tags || tags.length == 0) {
+        getTags(postsList);
+      } 
+    })();
   }, []);
 
   const getPosts = (criteria?: string) => {
     const url = criteria ? `${endpoint}?q=${criteria}` : endpoint;
 
-    fetch(url)
-      .then(res => res.json())
-      .then(data => { setPosts(data); });
+    return fetch(url)
+      .then(res => res.json());
   };
 
-  const handleChange = (value: string) => {
-    getPosts(value);
+  const getTags = (posts: Array<PostType>) => {
+    const tagsList: Array<TagData> = [];
+    posts.forEach((post) => {
+      if (post.tags && post.tags.length > 0) {
+        post.tags.forEach((tag: TagData) => {
+          const isSaved = tagsList.filter(tagSaved => tagSaved.id === tag.id);
+          if (!isSaved || isSaved.length == 0) {
+            tagsList.push(tag);
+          }
+        });
+      }
+    });
+
+    setTags(tagsList);
+  };
+
+  const handleClickButtonNewPost = () => {
+    history.push("/upload");
+  };
+
+  const handleClickAllPosts = () => {
+    setFilteredPosts(posts);
+  };
+
+  const handleClickTag = (tagSelected: TagData) => {
+    const postList: Array<PostType> = [];
+    posts.forEach((post) => {
+      post.tags?.forEach((tag) => {
+        if (tag.id === tagSelected.id) {
+          postList.push(post);
+        } 
+      });
+    });
+
+    setFilteredPosts(postList);
+  };
+
+  const handleChange = async (value: string) => {
+    const postsList: Array<PostType> = await getPosts(value);
+    setPosts(postsList);
+    setFilteredPosts(postsList);
   };
     
   return (
@@ -34,7 +83,7 @@ const Explore: React.FC<ExploreProps> = () => {
       </div>
       <div className="columns" style={{ marginTop: 15 }}>
         <div className="column is-8 is-offset-1">
-          {posts.map((post, index) => {
+          {filteredPosts.map((post, index) => {
             return (
               <div key={index}>
                 <Link to={`/post/${post.id}`}>
@@ -84,6 +133,18 @@ const Explore: React.FC<ExploreProps> = () => {
               </div>
             );
           })}
+        </div>
+        <div className="column is-2">
+          <ul className="lateral-menu">
+            <li><button className="btn" onClick={handleClickButtonNewPost}>New Post</button></li>
+            <li className="lateral-menu__item" onClick={handleClickAllPosts}>All posts</li>
+            <hr />
+            { tags ?
+              tags.map((tag, index) => {
+                return (<li key={index} className="tag" onClick={() => handleClickTag(tag)}>{tag.tag_name}</li>);
+              })
+              : null}
+          </ul>
         </div>
       </div>
     </React.Fragment>
