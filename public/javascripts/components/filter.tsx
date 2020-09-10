@@ -17,7 +17,10 @@ const Filter: React.FC<FilterProps> = ({ searchValueChange, delay=500, placehold
 
   return (
     <React.Fragment>
-      <input type="text" placeholder={placeholder} onChange={(e) => {handleChange(e.currentTarget.value);}}/>
+      <div className="filter">
+        <input type="text" placeholder={placeholder} onChange={(e) => {handleChange(e.currentTarget.value);}}/>
+        <i className="fas fa-search"></i>
+      </div>
     </React.Fragment>
   );
 };

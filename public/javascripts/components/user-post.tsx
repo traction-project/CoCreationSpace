@@ -1,27 +1,77 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import Moment from "react-moment";
 
 import { PostType } from "./post";
 import Filter from "./filter";
+import { TagData } from "./tags";
 
 interface UserPostProps {}
 
 const UserPost: React.FC<UserPostProps> = () => {
+  const history = useHistory();
   const [ posts, setPosts ] = useState<Array<PostType>>([]);
+  const [ filteredPosts, setFilteredPosts ] = useState<Array<PostType>>([]);
+  const [ tags, setTags ] = useState<Array<TagData>>();
   const endpoint = "/posts/all/user";
 
   useEffect(() => {
-    (async () => { getPosts(); })();
+    (async () => { 
+      console.log("Called to useEffect");
+      const postsList: Array<PostType> = await getPosts();
+      setPosts(postsList);
+      setFilteredPosts(postsList);
+      if (!tags || tags.length == 0) {
+        getTags(postsList);
+      } 
+    })();
   }, []);
 
   const getPosts = (criteria?: string) => {
     const url = criteria ? `${endpoint}?q=${criteria}` : endpoint;
 
-    fetch(url)
-      .then(res => res.json())
-      .then(data => { setPosts(data); });
+    return fetch(url)
+      .then(res => res.json());
+  };
+
+  const getTags = (posts: Array<PostType>) => {
+    const tagsList: Array<TagData> = [];
+    posts.forEach((post) => {
+      if (post.tags && post.tags.length > 0) {
+        post.tags.forEach((tag: TagData) => {
+          const isSaved = tagsList.filter(tagSaved => tagSaved.id === tag.id);
+          if (!isSaved || isSaved.length == 0) {
+            tagsList.push(tag);
+          }
+        });
+      }
+    });
+
+    setTags(tagsList);
+  };
+
+
+
+  const handleClickButtonNewPost = () => {
+    history.push("/upload");
+  };
+
+  const handleClickAllPosts = () => {
+    setFilteredPosts(posts);
+  };
+
+  const handleClickTag = (tagSelected: TagData) => {
+    const postList: Array<PostType> = [];
+    posts.forEach((post) => {
+      post.tags?.forEach((tag) => {
+        if (tag.id === tagSelected.id) {
+          postList.push(post);
+        } 
+      });
+    });
+
+    setFilteredPosts(postList);
   };
 
   const handleChange = (value: string) => {
@@ -29,65 +79,81 @@ const UserPost: React.FC<UserPostProps> = () => {
   };
 
   return (
-    <div className="columns" style={{ marginTop: 15 }}>
-      <div className="column is-8 is-offset-2">
-        <div>
-          <h2 className="list-title">Posts</h2>
-          <br/>
+    <React.Fragment>
+      <div>
+        <Filter searchValueChange={handleChange}></Filter>
+      </div>
+      <div className="columns" style={{ marginTop: 15 }}>
+        <div className="column is-8 is-offset-1">
           <div>
-            <Filter searchValueChange={handleChange}></Filter>
-          </div>
-          <hr/>
-          {posts ? 
-            posts.map((post, index) => {
-              return (
-                <div key={index}>
-                  <Link to={`/post/${post.id}`}>
-                    <div className="list-item">
-                      <div className="box" style={{width: "12%", padding: "0 1.25rem"}}>
-                        <div className="list-item__date">
-                          <strong><Moment format="DD/MM/YYYY">{post.createdAt}</Moment></strong>
+            {filteredPosts ? 
+              filteredPosts.map((post, index) => {
+                return (
+                  <div key={index}>
+                    <Link to={`/post/${post.id}`}>
+                      <div className="list-item">
+                        <div className="box" style={{width: "100%"}}>
+                          <article className="media">
+                            <figure className="media-left" style={{width: "min-content", paddingRight: "1rem"}}>
+                              <span className="image is-64x64">
+                                <img src="https://tecnoduero.com/wp-content/uploads/2017/02/h.png" alt="Logo"/>
+                              </span>
+                              {post.user && post.user.username ?
+                                <p>{post.user.username}</p>
+                                : <p>Anonymous</p>
+                              }
+                            </figure>
+                            <div className="media-content">
+                              <div className="content">
+                                <p>
+                                  <strong className="post-title">{post.title ? post.title : "Post"}</strong><small className="list-item__date"><Moment format="DD/MM/YYYY">{post.createdAt}</Moment></small>
+                                  <br />
+                                  <br />
+                                  {post.dataContainer?.text_content}
+                                </p>
+                              </div>
+                              { (post.dataContainer && post.dataContainer.multimedia && post.dataContainer.multimedia.length > 0) ?
+                                <div className="list-item__files">
+                                  {post.dataContainer.multimedia.map((multimedia, index) => {
+                                    return (
+                                      <div key={index}>
+                                        <figure className="image is-24x24 list-item__files-item">
+                                          <img src="https://icons.iconarchive.com/icons/dtafalonso/android-lollipop/512/Docs-icon.png"/>
+                                        </figure>
+                                      </div>
+                                    );
+                                  })}
+                                </div>
+                                : null}
+                            </div>
+                            <div className="media-right number-comments">
+                              <i className="far fa-comment"></i>
+                              <p>{(post.comments && post.comments.length > 0) ? post.comments.length : 0} {(post.comments && post.comments.length == 1) ? "Comment" : "Comments" }</p>
+                            </div>
+                          </article>
                         </div>
                       </div>
-                      <div className="box" style={{width: "100%"}}>
-                        <article className="media">
-                          <div className="media-content">
-                            <div className="content">
-                              <p>
-                                { post.user && post.user.username ?
-                                  <strong>{post.user.username}</strong>
-                                  : <strong>Anonymous</strong>
-                                }
-                                <br />
-                                <br />
-                                {post.dataContainer?.text_content}
-                              </p>
-                            </div>
-                            { (post.dataContainer && post.dataContainer.multimedia && post.dataContainer.multimedia.length > 0) ?
-                              <div className="list-item__files">
-                                {post.dataContainer.multimedia.map((multimedia, index) => {
-                                  return (
-                                    <div key={index}>
-                                      <figure className="image is-24x24 list-item__files-item">
-                                        <img src="https://icons.iconarchive.com/icons/dtafalonso/android-lollipop/512/Docs-icon.png"/>
-                                      </figure>
-                                    </div>
-                                  );
-                                })}
-                              </div>
-                              : null}
-                          </div>
-                        </article>
-                      </div>
-                    </div>
-                  </Link>
-                </div>
-              );
-            })
-            : <p>This tag has not posts</p>}
+                    </Link>
+                  </div>
+                );
+              })
+              : <p>This tag has not posts</p>}
+          </div>
+        </div>
+        <div className="column is-2">
+          <ul className="lateral-menu">
+            <li><button className="btn" onClick={handleClickButtonNewPost}>New Post</button></li>
+            <li className="lateral-menu__item" onClick={handleClickAllPosts}>All posts</li>
+            <hr />
+            { tags ?
+              tags.map((tag, index) => {
+                return (<li key={index} className="tag" onClick={() => handleClickTag(tag)}>{tag.tag_name}</li>);
+              })
+              : null}
+          </ul>
         </div>
       </div>
-    </div>
+    </React.Fragment>
   );
 };
 

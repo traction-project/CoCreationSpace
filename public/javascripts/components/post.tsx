@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 import Video from "./video";
 import NewComment from "./new-comment";
 import { useParams } from "react-router-dom";
+import { TagData } from "./tags";
 
 type dataContainerType = {
   text_content?: string;
@@ -15,20 +16,16 @@ type dataContainerType = {
   }]
 }
 
-type TagType = {
-  tagName: string;
-}
-
 export type PostType = {
   title?: string;
   dataContainer?: dataContainerType;
-  childPosts?: PostType[];
+  comments?: PostType[];
   karma_points?: number;
   postReference?: PostType[];
   postReferenced?: PostType[];
   user: UserType;
   userReferenced?: UserType[];
-  tags?: TagType[];
+  tags?: TagData[];
 } & commonType;
 
 interface PostProps {

@@ -17,6 +17,7 @@ import UserPost from "./user-post";
 import Home from "./home";
 import PrivateRoute from "./private_route";
 import Header from "./header";
+import Explore from "./explore";
 
 interface AppProps {}
 
@@ -46,6 +47,7 @@ const App: React.FC<AppProps> = () => {
           <Route path="/tag/:id">
             <Tag />
           </Route>
+          <PrivateRoute path="/posts" component={Explore} />
           <Route path="/post/:id">
             <Post />
           </Route>

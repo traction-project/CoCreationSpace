@@ -14,6 +14,7 @@ const router = Router();
 router.get("/all", authRequired, async (req, res) => {
   const PostModel = db.getModels().Posts;
   const DataContainerModel = db.getModels().DataContainer;
+  const userModel = db.getModels().Users;
   let queryDataContainer = {
     model: DataContainerModel,
     as: "dataContainer"
@@ -22,8 +23,14 @@ router.get("/all", authRequired, async (req, res) => {
   const criteria = await buildCriteria(req.query, DataContainerModel);
   queryDataContainer = Object.assign(queryDataContainer, criteria); 
   const posts = await PostModel.findAll({ 
+    where: {
+      parent_post_id: null
+    },
     order: [["created_at", "desc"]],
-    include: [queryDataContainer, "comments"] 
+    include: [{
+      model: userModel,
+      as: "user"
+    }, queryDataContainer, "comments", "tags"] 
   });
   const postsJSON = await Promise.all(posts.map(async (post) => {
     const likes = await post.countLikesUsers();
@@ -55,11 +62,14 @@ router.get("/all/user", authRequired, async (req, res) => {
   queryDataContainer = Object.assign(queryDataContainer, criteria);
 
   const posts = await postModel.findAll({
+    where: {
+      parent_post_id: null
+    },
     include: [{
       model: userModel,
       as: "user",
       where: { id: user.id }
-    },queryDataContainer],
+    },queryDataContainer, "comments", "tags"],
     order: [
       ["created_at", "DESC"]
     ]

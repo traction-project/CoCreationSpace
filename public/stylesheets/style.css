@@ -116,12 +116,41 @@ textarea {
   transform: translateY(-1rem);
 }
 
+.list-item:focus {
+  outline: none;
+}
+
 .list-item__files {
   display: flex;
 }
 
 .list-item__files-item {
   padding: .2rem .2rem;
+}
+
+.number-comments {
+  align-self: center;
+  font-family: Roboto;
+  display: flex;
+}
+
+.number-comments > p {
+  margin-left: .4rem;
+}
+
+.post-title {
+  font-size: 1.2rem;
+}
+
+.content {
+  width: 90%;
+}
+
+.media-left > p {
+  text-align: center;
+  font-family: Roboto;
+  font-weight: 300;
+  margin-top: .5rem;
 }
 
 .box:not(:last-of-type) {
@@ -259,4 +288,84 @@ a.header__item:hover {
 .active {
   border-bottom: .1rem solid rgba(10, 10, 10, 0.4);
   padding-bottom: .2rem;
+}
+
+.filter {
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  padding: 2rem 0 1rem 0;
+}
+
+.filter > input {
+  width: 35%;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  border-radius: 44px;
+  padding: 0.1rem .7rem;
+}
+
+.filter > input:focus {
+  outline: none;
+  border: 2px solid rgba(0, 0, 0, 0.3);
+}
+
+.filter > input::after {
+  font-family: 'FontAwesome';
+  position: relative;
+  content: "\f002"
+}
+
+.filter > i {
+  transform: translate(-150%, 20%);
+}
+
+.btn {
+  background-color: #7BBFFE;
+  color: white;
+  font-weight: 700;
+  border: 1px solid #7BBFFE;
+  border-radius: 15px;
+  width: 100%;
+  height: 3rem;
+  cursor: pointer;
+  transition: all .2s
+}
+
+.btn:hover {
+  transform: translateY(-.2rem);
+}
+
+.btn:focus {
+  outline: none;
+}
+
+.lateral-menu__item {
+  margin-top: 2rem;
+  display: flex;
+  cursor: pointer;
+  transition: all .2s;
+}
+
+.lateral-menu__item::before {
+  content: "";
+  height: 1rem;
+  width: 1rem;
+  background-color:#7BBFFE;
+  border: 1px solid #7BBFFE;
+  border-radius: 40%;
+  position: relative;
+  margin-right: 1rem;
+}
+
+.lateral-menu__item:hover {
+  color: #7BBFFE;
+}
+.tag {
+  margin: 0 .4rem 1rem 0;
+  cursor: pointer;
+  transition: all .2s;
+}
+
+.tag:hover {
+  transform: translateY(-.2rem);
 }
