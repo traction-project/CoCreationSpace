@@ -201,3 +201,62 @@ textarea {
   background-color: #E2E2E2;
   font-weight: 400;
 }
+
+.header {
+  display: flex;
+  align-items: center;
+  border-bottom: .1rem solid rgba(10, 10, 10, 0.1);
+}
+
+.header__item {
+  padding: 0 2rem;
+}
+
+a.header__item {
+  font-family: SeoulHangang;
+  color: black;
+  font-size: 16px;
+}
+
+a.header__item:hover {
+  color: rgba(10, 10, 10, 0.2);
+  transition: all .5s;
+}
+
+.header__logo {
+  font-size: 24px;
+  font-family: Short Stack;
+  cursor: pointer;
+}
+
+.menu-bar {
+  margin: 0 auto;
+  display: flex;
+  font-size: 1.4rem;
+  padding: 13px 8px;
+  height: auto;
+}
+
+.menu-bar__item {
+  padding: 0 5em;
+  font-weight: normal;
+  cursor: pointer;
+  transition: all .5s;
+  position: relative;
+  font-size: 16px;
+  font-family: SeoulHangang;
+}
+
+.menu-bar__item > a > span {
+  color: black;
+}
+
+.menu-bar__item:hover > a > span {
+  color: rgba(10, 10, 10, 0.2);
+  transition: all .5s;
+}
+
+.active {
+  border-bottom: .1rem solid rgba(10, 10, 10, 0.4);
+  padding-bottom: .2rem;
+}

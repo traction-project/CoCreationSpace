@@ -16,6 +16,7 @@ import Tag from "./tag";
 import UserPost from "./user-post";
 import Home from "./home";
 import PrivateRoute from "./private_route";
+import Header from "./header";
 
 interface AppProps {}
 
@@ -23,6 +24,7 @@ const App: React.FC<AppProps> = () => {
   return (
     <Provider store={store}>
       <Router>
+        <Header />
         <Switch>
           <Route path="/login">
             <Login />
@@ -40,9 +42,7 @@ const App: React.FC<AppProps> = () => {
           <Route path="/translate/:id">
             <Translate />
           </Route>
-          <Route path="/tags">
-            <Tags />
-          </Route>
+          <PrivateRoute path="/tags" component={Tags} />
           <Route path="/tag/:id">
             <Tag />
           </Route>
@@ -50,7 +50,9 @@ const App: React.FC<AppProps> = () => {
             <Post />
           </Route>
           <PrivateRoute path="/userPosts" component={UserPost} />
-          <PrivateRoute path="/" component={Home} />
+          <Route path="/">
+            <Home />
+          </Route>
         </Switch>
       </Router>
     </Provider>
