@@ -23,7 +23,7 @@ const Dropzone: React.FC<DropzoneProps> = (props) => {
   };
 
   return (
-    <div>
+    <React.Fragment>
       <div
         style={{ width, height }}
         className={classNames("dropzone", { "dropzone-entered": dropzoneEntered })}
@@ -34,7 +34,7 @@ const Dropzone: React.FC<DropzoneProps> = (props) => {
       >
         <div>Drop a file here</div>
       </div>
-    </div>
+    </React.Fragment>
   );
 };
 

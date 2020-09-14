@@ -5,12 +5,14 @@ import { postFile, ResponseUploadType } from "../util";
 import Dropzone from "./dropzone";
 import Video from "./video";
 import { useHistory } from "react-router-dom";
+import ProgressRing from "./progress-ring";
 
 interface VideoUploadProps {
 }
 
 const VideoUpload: React.FC<VideoUploadProps> = () => {
   const history = useHistory();
+  const [ title, setTitle ] = useState<string>();
   const [ multimedia, setMultimedia ] = useState<number>();
   const [ progress, setProgress ] = useState<number>(0);
   const [ total, setTotal ] = useState<number>(0);
@@ -44,6 +46,7 @@ const VideoUpload: React.FC<VideoUploadProps> = () => {
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
     const body = {
+      title,
       text: summary,
       multimedia: [multimedia],
       tags: tags.map((tag) => { return { tag_name: tag }; } )
@@ -83,44 +86,57 @@ const VideoUpload: React.FC<VideoUploadProps> = () => {
     }
   };
 
+  const handleChangeInputTitle = (text: string) => {
+    setTitle(text);
+  };
+
   return (
     <div className="columns" style={{ marginTop: 15 }}>
       <div className="column is-8 is-offset-2">
-        <h1 className="title">Upload Video</h1>
-        {(total > 0) ? (
-          <div className="progresscontainer">
-            <progress className="progress is-primary" value={progress} max={total} />
-          </div>
-        ) : ( multimedia ? 
-          
-          (<Video id={multimedia}></Video>)
-          : (
-            <Dropzone size={["100%", 300]} onFileDropped={startUpload} />
-          )
-        )}
+        <div className="container">
+          {(total > 0) ? (
+            <ProgressRing radius={160} stroke={15} progress={progress} total={total}></ProgressRing>
+          ) : ( multimedia ? 
+            (<Video id={multimedia}></Video>)
+            : (
+              <Dropzone size={["100%", 300]} onFileDropped={startUpload} />
+            )
+          )}
+        </div>
 
         { (total > 0 || multimedia) ?
           (
             <React.Fragment>
               <br />
               <div className="columns">
+                <div className="column is-2">
+                  <h1 className="title-2">Title</h1>
+                  <hr/>
+                  <input type="text" placeholder="Add title..." className="searcher-tag" onChange={(e) => handleChangeInputTitle(e.currentTarget.value)}/>
+                </div>
+              </div>
+              <br/>
+              <div className="columns">
                 <div className="column">
+                  <h1 className="title-2">Tags</h1>
+                  <hr/>
                   <input type="text" placeholder="Add tag..." className="searcher-tag" onKeyDown={handleKeyInputTag}/>
                   <ul className="list-tags">
                     { tags ?
                       tags.map((tag, index) => {
                         return ( 
-                          <li key={index} className="list-tags__item">{tag}<a className="delete" onClick={(_) => handleClickRemoveTag(tag)}></a></li>);
+                          <li key={index} className="tag">{tag}<a className="delete" onClick={(_) => handleClickRemoveTag(tag)}></a></li>);
                       })
                       : null}
                   </ul>
                 </div>
                 <div className="column">
+                  <h1 className="title-2">Text</h1>
+                  <hr/>
                   <textarea placeholder="Write summary..." className="summary" onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setSummary(e.currentTarget.value)}></textarea>
                 </div>
               </div>
-
-              <button onClick={handleClickButton} disabled={(summary && multimedia) ? false : true}>Add content</button>  
+              <button className="btn" onClick={handleClickButton} disabled={(summary && multimedia) ? false : true}>Create content</button>  
             </React.Fragment>
           ) 
           : null} 

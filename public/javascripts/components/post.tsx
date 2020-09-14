@@ -7,7 +7,7 @@ import { useState, useEffect } from "react";
 import Video from "./video";
 import NewComment from "./new-comment";
 import { useParams } from "react-router-dom";
-import { TagData } from "./tags";
+import { TagData } from "./post-list";
 
 type dataContainerType = {
   text_content?: string;
@@ -113,7 +113,7 @@ const Post: React.FC<PostProps> = (props) => {
 
   return (
     <div className="columns" style={{ marginTop: 15 }}>
-      <div className="column is-8 is-offset-2">
+      <div className="column is-8 is-offset-1">
         { post ? 
           <div>
             <div className="comment">
@@ -122,7 +122,10 @@ const Post: React.FC<PostProps> = (props) => {
                 <div className="media-content">
                   <div className="content">
                     <p>
-                      <strong style={{ fontSize: "17px" }}>{post.user ? post.user.username : "Anónimo"}</strong> <small><Moment fromNow>{post.createdAt}</Moment></small>
+                      <strong className="post-title">{post.title ? post.title : "Post"}</strong><small className="list-item__date"><Moment format="DD/MM/YYYY">{post.createdAt}</Moment></small>
+                      <br />
+                      <br />
+                      {post.dataContainer?.text_content}
                     </p>
                     { post.dataContainer && post.dataContainer.multimedia &&
                       post.dataContainer.multimedia.map((multimedia,index) => {
@@ -131,11 +134,6 @@ const Post: React.FC<PostProps> = (props) => {
                         );
                       })
                       
-                    }
-                    { post.dataContainer && post.dataContainer.text_content && 
-                      <p>
-                        <span>{post.dataContainer.text_content}</span>
-                      </p> 
                     }
                   </div>
                   <nav className="level is-mobile">
@@ -151,14 +149,14 @@ const Post: React.FC<PostProps> = (props) => {
                       <span className="level-item">{likes}</span>
                     </div>
                   </nav>
+                  { showNewComment && 
+                    <NewComment user={post.user} handleSubmitNewComment={handleSubmitNewComment} handleClickCancel={handleClickCancel}></NewComment>
+                  }
+                  { !!comments && comments.length > 0 && <a className="text-comments" onClick={handleClickComments}><i className="fas fa-sort-down"></i> Show Comments ({comments?.length})</a>}
+                  { showComments && <CommentList posts={comments}></CommentList> }
                 </div>
               </article>
             </div>
-            { showNewComment && 
-              <NewComment user={post.user} handleSubmitNewComment={handleSubmitNewComment} handleClickCancel={handleClickCancel}></NewComment>
-            }
-            { !!comments && comments.length > 0 && <a className="text-comments" onClick={handleClickComments}><i className="fas fa-sort-down"></i> Show Comments ({comments?.length})</a>}
-            { showComments && <CommentList posts={comments}></CommentList> }
           </div>
           : null}
       </div>        

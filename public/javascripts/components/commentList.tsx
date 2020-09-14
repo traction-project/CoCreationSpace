@@ -8,7 +8,7 @@ interface CommentListProps {
 const CommentList: React.FC<CommentListProps> = (props) => {
   
   return (
-    <div className="comments">
+    <div>
       {props.posts?.map((post, index) => {
         return (<Post key={index} post={post}></Post>);
       })}

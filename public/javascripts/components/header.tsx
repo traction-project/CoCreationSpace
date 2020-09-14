@@ -26,7 +26,7 @@ const Header: React.FC<HeaderProps> = () => {
           <Link to={"/"}><span className={location.pathname === "/" ? "active" : ""}>Home</span></Link>
         </div>
         <div className="menu-bar__item">
-          <Link to={"/userPosts"}><span className={location.pathname === "/userPosts" ? "active" : ""}>MyPosts</span></Link>
+          <Link to={"/userPosts"}><span className={location.pathname === "/userPosts" ? "active" : ""}>My Posts</span></Link>
         </div>
         <div className="menu-bar__item">
           <Link to={"/posts"}><span className={location.pathname === "/posts" ? "active" : ""}>Explore</span></Link>

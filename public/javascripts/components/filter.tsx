@@ -6,9 +6,10 @@ interface FilterProps {
   delay?: number;
   placeholder?: string;
   searchValueChange: (text: string) => void;
+  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
-const Filter: React.FC<FilterProps> = ({ searchValueChange, delay=500, placeholder="Search..." }) => {
+const Filter: React.FC<FilterProps> = ({ searchValueChange, delay=500, placeholder="Search...", onKeyDown }) => {
   
   const handleChange = debounce((value: string) => {
     console.log("Valor cambiado: " + value);
@@ -18,7 +19,7 @@ const Filter: React.FC<FilterProps> = ({ searchValueChange, delay=500, placehold
   return (
     <React.Fragment>
       <div className="filter">
-        <input type="text" placeholder={placeholder} onChange={(e) => {handleChange(e.currentTarget.value);}}/>
+        <input type="text" placeholder={placeholder} onChange={(e) => {handleChange(e.currentTarget.value);}} onKeyDown={onKeyDown}/>
         <i className="fas fa-search"></i>
       </div>
     </React.Fragment>

@@ -38,21 +38,16 @@ const Video: React.FC<VideoProps> = (props) => {
   }, [idVideo]);
 
   return (
-    <div className="columns" style={{ marginTop: 15 }}>
-      <div className="column is-8 is-offset-2">
-        <h1 className="title">{idVideo}</h1>
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          {videoUrl ? (
-            <DashPlayer
-              width={700}
-              manifest={videoUrl}
-              subtitles={availableSubtitles}
-            />
-          ) : (
-            null
-          )}
-        </div>
-      </div>
+    <div style={{ display: "flex" }}>
+      {videoUrl ? (
+        <DashPlayer
+          width={700}
+          manifest={videoUrl}
+          subtitles={availableSubtitles}
+        />
+      ) : (
+        null
+      )}
     </div>
   );
 };
