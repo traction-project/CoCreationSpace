@@ -30,7 +30,6 @@ const Video: React.FC<VideoProps> = (props) => {
     }).then(async (res) => {
       if (res.ok) {
         const data = await res.json();
-        console.log("Video data:", data);
 
         setVideoUrl(data.manifest);
       }

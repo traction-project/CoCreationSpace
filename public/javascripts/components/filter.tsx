@@ -12,7 +12,6 @@ interface FilterProps {
 const Filter: React.FC<FilterProps> = ({ searchValueChange, delay=500, placeholder="Search...", onKeyDown }) => {
   
   const handleChange = debounce((value: string) => {
-    console.log("Valor cambiado: " + value);
     searchValueChange(value);
   }, delay);
 

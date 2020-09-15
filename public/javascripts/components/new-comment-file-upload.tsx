@@ -16,7 +16,6 @@ const FileUpload: React.FC<FileUploadProps> = ({ fileToUpload, addMultimedia, se
 
   useEffect(() => {
     (async () => {
-      console.log(`To upload file: ${fileToUpload.name}`);
       await startUpload(fileToUpload);
     })();
   }, [fileToUpload]);

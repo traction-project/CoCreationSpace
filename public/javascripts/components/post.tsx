@@ -48,7 +48,6 @@ const Post: React.FC<PostProps> = (props) => {
     fetch(`/posts/id/${idPost}`)
       .then((res) => res.json())
       .then((data) => {
-        console.log(`Post: ${data.id}`);
         setPost(data);
         setComments(data.comments);
         if (data.isLiked) { setIsLike(data.isLiked); }
@@ -60,7 +59,6 @@ const Post: React.FC<PostProps> = (props) => {
     const action = isLike ? "unlike" : "like";
     postLike(action);
     setIsLike(!isLike);
-    console.log(isLike);
   };
 
   const postLike = (action: string) => {
@@ -79,7 +77,6 @@ const Post: React.FC<PostProps> = (props) => {
   };
 
   const handleClickComments = () => {
-    console.log(!showComments);
     setShowComments(!showComments);
   };
  
