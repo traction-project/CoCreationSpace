@@ -1,0 +1,23 @@
+name: Build and test
+
+on:
+  pull_request:
+    branches: [ develop ]
+
+jobs:
+  build:
+    name: Build docker image, lint code and run tests
+    runs-on: ubuntu-18.04
+    env:
+      IMAGE_NAME: ${{ secrets.DOCKER_REGISTRY }}/traction-mediavault
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Build Docker image
+        run: docker build . --file Dockerfile --tag $IMAGE_NAME:latest
+
+      - name: Run linter
+        run: docker run $IMAGE_NAME:latest yarn lint
+
+      - name: Run unit tests
+        run: docker run $IMAGE_NAME:latest yarn test
