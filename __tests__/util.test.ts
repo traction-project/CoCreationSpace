@@ -185,3 +185,24 @@ describe("Utility function tokenRequired()", () => {
     ).toBeInstanceOf(Function);
   });
 });
+
+describe("Utility function findTerm()", () => {
+
+  const text = "hello world";
+
+  it("should return the text if includes substring", () => {
+    const substring = "hello";
+
+    const result = util.findTerm(text, substring);
+
+    expect(result).toBe(text);
+  });
+
+  it("should return empty string if text doesn't includes substring", () => {
+    const substring = "test";
+
+    const result = util.findTerm(text, substring);
+
+    expect(result).toBe("");
+  });
+});
