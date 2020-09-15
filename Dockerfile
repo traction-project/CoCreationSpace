@@ -4,7 +4,7 @@ ADD . /code/
 WORKDIR /code
 
 RUN yarn install && \
-    yarn run webpack
+    yarn build
 
 EXPOSE 3000
 

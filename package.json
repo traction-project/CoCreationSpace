@@ -7,7 +7,7 @@
     "test": "jest --verbose --bail --coverage",
     "lint": "eslint --ext=ts,tsx,js,jsx .",
     "doc": "typedoc --out docs/ --mode file --exclude node_modules/ --ignoreCompilerErrors .",
-    "build": "webpack"
+    "build": "NODE_OPTIONS=--max_old_space_size=8192 webpack"
   },
   "dependencies": {
     "@types/lodash": "^4.14.161",
