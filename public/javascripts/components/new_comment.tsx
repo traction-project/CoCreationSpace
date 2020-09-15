@@ -1,15 +1,15 @@
 import * as React from "react";
 import { useForm } from "react-hook-form";
 
-import UserLogo, { UserType } from "./userLogo";
+import UserLogo, { UserType } from "./user_logo";
 import { useState } from "react";
-import FileUpload from "./new-comment-file-upload";
+import FileUpload from "./new_comment_file_upload";
 
-type NewCommentProps = {
+interface NewCommentProps {
     user: UserType;
     handleSubmitNewComment: ({comment, multimedia}: {comment: string, multimedia?: Array<number>}) => void;
     handleClickCancel: () => void;
-};
+}
 
 const NewComment: React.FC<NewCommentProps> = (props) => {
   const [ files, setFiles ] = useState<Array<File>>([]);

@@ -14,7 +14,7 @@ import Post from "./post";
 import Home from "./home";
 import PrivateRoute from "./private_route";
 import Header from "./header";
-import PostList from "./post-list";
+import PostList from "./post_list";
 
 interface AppProps {}
 

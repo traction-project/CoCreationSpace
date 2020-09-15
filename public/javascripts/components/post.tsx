@@ -1,13 +1,13 @@
 import * as React from "react";
 import Moment from "react-moment";
-import UserLogo, { UserType } from "./userLogo";
+import UserLogo, { UserType } from "./user_logo";
 import { commonType } from "../util";
-import CommentList from "./commentList";
+import CommentList from "./comment_list";
 import { useState, useEffect } from "react";
 import Video from "./video";
-import NewComment from "./new-comment";
+import NewComment from "./new_comment";
 import { useParams } from "react-router-dom";
-import { TagData } from "./post-list";
+import { TagData } from "./post_list";
 
 type dataContainerType = {
   text_content?: string;
@@ -79,7 +79,7 @@ const Post: React.FC<PostProps> = (props) => {
   const handleClickComments = () => {
     setShowComments(!showComments);
   };
- 
+
   const handleSubmitNewComment = ({comment, multimedia}: {comment: string, multimedia?: Array<number>}) => {
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
@@ -90,7 +90,7 @@ const Post: React.FC<PostProps> = (props) => {
 
     const body = JSON.stringify(bodyJson);
 
-    fetch(`posts/id/${idPost}`,{ 
+    fetch(`posts/id/${idPost}`,{
       method: "POST",
       headers,
       body
@@ -111,7 +111,7 @@ const Post: React.FC<PostProps> = (props) => {
   return (
     <div className="columns" style={{ marginTop: 15 }}>
       <div className="column is-8 is-offset-1">
-        { post ? 
+        { post ?
           <div>
             <div className="comment">
               <article className="media">
@@ -130,7 +130,6 @@ const Post: React.FC<PostProps> = (props) => {
                           <Video key={index} id={multimedia.id}></Video>
                         );
                       })
-                      
                     }
                   </div>
                   <nav className="level is-mobile">
@@ -146,7 +145,7 @@ const Post: React.FC<PostProps> = (props) => {
                       <span className="level-item">{likes}</span>
                     </div>
                   </nav>
-                  { showNewComment && 
+                  { showNewComment &&
                     <NewComment user={post.user} handleSubmitNewComment={handleSubmitNewComment} handleClickCancel={handleClickCancel}></NewComment>
                   }
                   { !!comments && comments.length > 0 && <a className="text-comments" onClick={handleClickComments}><i className="fas fa-sort-down"></i> Show Comments ({comments?.length})</a>}
@@ -156,7 +155,7 @@ const Post: React.FC<PostProps> = (props) => {
             </div>
           </div>
           : null}
-      </div>        
+      </div>
     </div>
   );
 };

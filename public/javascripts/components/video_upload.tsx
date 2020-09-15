@@ -5,7 +5,7 @@ import { postFile, ResponseUploadType } from "../util";
 import Dropzone from "./dropzone";
 import Video from "./video";
 import { useHistory } from "react-router-dom";
-import ProgressRing from "./progress-ring";
+import ProgressRing from "./progress_ring";
 
 interface VideoUploadProps {
 }

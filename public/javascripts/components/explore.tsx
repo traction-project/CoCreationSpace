@@ -4,7 +4,7 @@ import { Link, useHistory } from "react-router-dom";
 import Moment from "react-moment";
 import { PostType } from "./post";
 import Filter from "./filter";
-import { TagData } from "./post-list";
+import { TagData } from "./post_list";
 
 interface ExploreProps {}
 
