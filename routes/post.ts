@@ -159,13 +159,16 @@ router.post("/", authRequired, async (req, res) => {
  */
 router.post("/id/:id", authRequired, async (req, res) => {
   const { id } = req.params;
-  const { text, title, multimedia } = req.body;
-  if (!text) return res.status(400).send({ message: "Field text not present"});
+  const { text, multimedia } = req.body;
+
+  if (!text) {
+    return res.status(400).send({ message: "Field text not present"});
+  }
+
   const user = req.user as UserInstance;
-  
+
   const PostModel = db.getModels().Posts;
   const post = PostModel.build({
-    title: title,
     parent_post_id: id,
     user_id: user.id,
     dataContainer: {
