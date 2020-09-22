@@ -9,7 +9,7 @@ jobs:
     name: Build docker image, lint code and run tests
     runs-on: ubuntu-18.04
     env:
-      IMAGE_NAME: ${{ secrets.DOCKER_REGISTRY }}/traction-mediavault
+      IMAGE_NAME: traction-mediavault
     steps:
       - uses: actions/checkout@v2
 
