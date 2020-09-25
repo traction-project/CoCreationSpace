@@ -1,46 +1,50 @@
 "use strict";
-const sequelize_1 = require("sequelize");
+
+// DB table name
+const TABLE_NAME = "users";
+
 module.exports = {
-  up: function (queryInterface, sequelize) {
+  up: function (queryInterface, Sequelize) {
     const keyPasswordLeng = 512;
+    // Model attributtes
     const attributes = {
       id: {
-        type: sequelize_1.DataTypes.UUID,
+        type: Sequelize.DataTypes.UUID,
         primaryKey: true,
-        defaultValue: sequelize_1.DataTypes.UUIDV4,
+        defaultValue: Sequelize.DataTypes.UUIDV4,
         allowNull: false,
         autoIncrement: false
       },
       created_at: {
-        type: sequelize_1.DataTypes.DATE,
-        defaultValue: sequelize_1.NOW,
+        type: Sequelize.DataTypes.DATE,
+        defaultValue: Sequelize.NOW,
         allowNull: false
       },
       updated_at: {
-        type: sequelize_1.DataTypes.DATE,
-        defaultValue: sequelize_1.NOW,
+        type: Sequelize.DataTypes.DATE,
+        defaultValue: Sequelize.NOW,
         allowNull: false
       },
       username: {
-        type: sequelize_1.DataTypes.STRING,
+        type: Sequelize.DataTypes.STRING,
         allowNull: false,
         unique: true
       },
       password: {
-        type: sequelize_1.DataTypes.STRING(keyPasswordLeng * 2),
+        type: Sequelize.DataTypes.STRING(keyPasswordLeng * 2),
         unique: true
       },
       salt: {
-        type: sequelize_1.DataTypes.STRING
+        type: Sequelize.DataTypes.STRING
       },
       role: {
-        type: sequelize_1.DataTypes.STRING
+        type: Sequelize.DataTypes.STRING
       }
     };
 
-    return queryInterface.createTable("users", attributes);
+    return queryInterface.createTable(TABLE_NAME, attributes);
   },
   down: function (queryInterface, Sequelize) {
-    return queryInterface.dropTable("users");
+    return queryInterface.dropTable(TABLE_NAME);
   }
 };
