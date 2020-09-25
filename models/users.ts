@@ -113,7 +113,7 @@ export function UsersModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mod
       type: Sequelize.DataTypes.STRING
     },
     preferences_id: {
-      type: Sequelize.DataTypes.INTEGER
+      type: Sequelize.DataTypes.UUID
     }
   };
 

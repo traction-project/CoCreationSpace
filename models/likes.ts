@@ -22,11 +22,11 @@ export function LikesModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mod
   // Model attributtes
   const attributes = {
     user_id : {
-      type: Sequelize.DataTypes.INTEGER,
+      type: Sequelize.DataTypes.UUID,
       allowNull: false
     },
     post_id: {
-      type: Sequelize.DataTypes.INTEGER,
+      type: Sequelize.DataTypes.UUID,
       allowNull: false
     }
   };

@@ -22,11 +22,11 @@ export function PostReferencesModelFactory(sequelize: Sequelize.Sequelize): Sequ
   // Model attributtes
   const attributes = {
     post_references_id: {
-      type: Sequelize.DataTypes.INTEGER,
+      type: Sequelize.DataTypes.UUID,
       allowNull: false
     },
     post_referenced_id: {
-      type: Sequelize.DataTypes.INTEGER,
+      type: Sequelize.DataTypes.UUID,
       allowNull: false
     }
   };

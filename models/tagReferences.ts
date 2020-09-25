@@ -22,11 +22,11 @@ export function TagReferencesModelFactory(sequelize: Sequelize.Sequelize): Seque
   // Model attributtes
   const attributes = {
     tag_id: {
-      type: Sequelize.DataTypes.INTEGER,
+      type: Sequelize.DataTypes.UUID,
       allowNull: false
     },
     post_id: {
-      type: Sequelize.DataTypes.INTEGER,
+      type: Sequelize.DataTypes.UUID,
       allowNull: false
     }
   };

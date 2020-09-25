@@ -48,10 +48,10 @@ export function MetadataModelFactory(sequelize: Sequelize.Sequelize): Sequelize.
       type: Sequelize.DataTypes.STRING
     },
     multimedia_id: {
-      type: Sequelize.DataTypes.INTEGER
+      type: Sequelize.DataTypes.UUID
     },
     audio_content_id: {
-      type: Sequelize.DataTypes.INTEGER
+      type: Sequelize.DataTypes.UUID
     }
   };
   
