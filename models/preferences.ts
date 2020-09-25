@@ -1,4 +1,5 @@
 import * as Sequelize from "sequelize";
+import * as uuid from "uuid";
 
 import { commonAttributes } from "util/typing/modelCommonAttributes";
 
@@ -16,6 +17,8 @@ export interface PreferencesInstance extends Sequelize.Model<PreferencesAttribut
  * @param sequelize Sequelize: Conection object with de database
  */
 export function PreferencesModelFactory(sequelize: Sequelize.Sequelize): Sequelize.ModelCtor<PreferencesInstance> {
+  //  DB table name
+  const TABLE_NAME = "preferences";
   // Model attributtes
   const attributes = {
     language: {
@@ -26,7 +29,9 @@ export function PreferencesModelFactory(sequelize: Sequelize.Sequelize): Sequeli
   };
   
   // Create the model
-  const Preferences = sequelize.define<PreferencesInstance>("preferences", attributes, { underscored: true, tableName: "preferences" });
+  const Preferences = sequelize.define<PreferencesInstance>("preferences", attributes, { underscored: true, tableName: TABLE_NAME });
+
+  Preferences.beforeCreate(preference => { preference.id = uuid.v4(); });
 
   return Preferences;
 }

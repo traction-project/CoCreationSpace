@@ -69,3 +69,30 @@ following command:
 
 This will run all unit tests and generate a test report. Extended coverage
 analysis can be found in the folder `coverage/`.
+
+## Data Model Migrations
+
+Migrations allows to keep track of changes to the database schema. To each action that we are going to do with database schema (update a table, delete a table or create a new one), we must create a new migration file. This files are located in `migrations/` folder.
+
+If we do a change in the database schema, we must do the next steps:
+
+1. We must create another migration file where we set the logic that we must do:
+
+```bash
+    npx sequelize migration:generate --name action_name
+```
+
+This will generate a new file XXXXXX-action_name.js in `migrations/` folder. To run this action, we must write the next command:
+
+```bash
+    npx sequelize db:migration
+```
+
+If we want to undo this actions, we can write the next command:
+
+```bash
+    npx sequelize db:migration:undo
+```
+
+2. We have to update the respective model in `models/` folder. For example, if we want to add a new column in users Table, we must update `models/users.ts`.  This folder is used by the backend in order to connect with the database and work with it.
+

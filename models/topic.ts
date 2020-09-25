@@ -1,4 +1,5 @@
 import * as Sequelize from "sequelize";
+import * as uuid from "uuid";
 
 import { commonAttributes } from "util/typing/modelCommonAttributes";
 import { ThreadAttributes, ThreadInstance } from "./thread";
@@ -29,6 +30,8 @@ export interface TopicInstance extends Sequelize.Model<TopicAttributes>, TopicAt
  * @param sequelize Sequelize: Conection object with de database
  */
 export function TopicModelFactory(sequelize: Sequelize.Sequelize): Sequelize.ModelCtor<TopicInstance> {
+  //  DB table name
+  const TABLE_NAME = "topics";
   // Model attributtes
   const attributes = {
     title: {
@@ -39,7 +42,9 @@ export function TopicModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mod
   };
   
   // Create the model
-  const Topic = sequelize.define<TopicInstance>("topic", attributes, { underscored: true, tableName: "topics" });
+  const Topic = sequelize.define<TopicInstance>("topic", attributes, { underscored: true, tableName: TABLE_NAME });
+  
+  Topic.beforeCreate(topic => { topic.id = uuid.v4(); });
 
   return Topic;
 }

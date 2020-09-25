@@ -1,4 +1,5 @@
 import * as Sequelize from "sequelize";
+import * as uuid from "uuid";
 
 import { commonAttributes } from "util/typing/modelCommonAttributes";
 import { PostAttributes, PostInstance } from "./post";
@@ -29,6 +30,8 @@ export interface TagInstance extends Sequelize.Model<TagAttributes>, TagAttribut
  * @param sequelize Sequelize: Conection object with de database
  */
 export function TagModelFactory(sequelize: Sequelize.Sequelize): Sequelize.ModelCtor<TagInstance> {
+  //  DB table name
+  const TABLE_NAME = "tags";
   // Model attributtes
   const attributes = {
     tag_name: {
@@ -39,7 +42,9 @@ export function TagModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Model
   };
   
   // Create the model
-  const Tag = sequelize.define<TagInstance>("tag", attributes, { underscored: true, tableName: "tags" });
+  const Tag = sequelize.define<TagInstance>("tag", attributes, { underscored: true, tableName: TABLE_NAME });
+
+  Tag.beforeCreate(tag => { tag.id = uuid.v4(); });
 
   return Tag;
 }

@@ -46,7 +46,7 @@ router.post("/:id/:target/manual", async (req, res) => {
   subtitles.content = generateVTT(cues);
 
   await subtitles.save();
-  subtitles.setMultimedia(parseInt(id));
+  subtitles.setMultimedia(id);
 
   res.send("OK");
 });

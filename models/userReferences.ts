@@ -17,6 +17,8 @@ export interface UserReferencesInstance extends Sequelize.Model<UserReferencesAt
  * @param sequelize Sequelize: Conection object with de database
  */
 export function UserReferencesModelFactory(sequelize: Sequelize.Sequelize): Sequelize.ModelCtor<UserReferencesInstance> {
+  //  DB table name
+  const TABLE_NAME = "user_references";
   // Model attributtes
   const attributes = {
     user_id: {
@@ -30,7 +32,7 @@ export function UserReferencesModelFactory(sequelize: Sequelize.Sequelize): Sequ
   };
   
   // Create the model
-  const UserReferences = sequelize.define<UserReferencesInstance>("userReferences", attributes, { underscored: true, tableName: "user_references" });
+  const UserReferences = sequelize.define<UserReferencesInstance>("userReferences", attributes, { underscored: true, tableName: TABLE_NAME });
 
   return UserReferences;
 }

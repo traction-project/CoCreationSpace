@@ -1,4 +1,5 @@
 import * as Sequelize from "sequelize";
+import * as uuid from "uuid";
 
 import { commonAttributes } from "util/typing/modelCommonAttributes";
 import { UsersAttributes, UserInstance } from "./users";
@@ -9,8 +10,8 @@ import { DataContainerAttributes, DataContainerInstance } from "./dataContainer"
 export interface PostAttributes extends commonAttributes{
     title?: string;
     parent_post_id?: string;
-    user_id?: number;
-    thread_id?: number;
+    user_id?: string;
+    thread_id?: string;
     karma_points?: number;
     dataContainer?: DataContainerAttributes | DataContainerAttributes["id"];
     comments?: PostAttributes | PostAttributes["id"];
@@ -106,6 +107,8 @@ export interface PostInstance extends Sequelize.Model<PostAttributes>, PostAttri
  * @param sequelize Sequelize: Conection object with de database
  */
 export function PostModelFactory(sequelize: Sequelize.Sequelize): Sequelize.ModelCtor<PostInstance> {
+  //  DB table name
+  const TABLE_NAME = "posts";
   // Model attributtes
   const attributes = {
     title: {
@@ -117,7 +120,9 @@ export function PostModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mode
   };
   
   // Create the model
-  const Post = sequelize.define<PostInstance>("post", attributes, { underscored: true, tableName: "posts" });
+  const Post = sequelize.define<PostInstance>("post", attributes, { underscored: true, tableName: TABLE_NAME });
+
+  Post.beforeCreate(post => { post.id = uuid.v4(); });
 
   return Post;
 }

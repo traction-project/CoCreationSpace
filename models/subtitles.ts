@@ -1,4 +1,5 @@
 import * as Sequelize from "sequelize";
+import * as uuid from "uuid";
 
 import { commonAttributes } from "util/typing/modelCommonAttributes";
 import { MultimediaAttributes, MultimediaInstance } from "./multimedia";
@@ -22,6 +23,8 @@ export interface SubtitlesInstance extends Sequelize.Model<SubtitlesAttributes>,
  * @param sequelize Sequelize: Conection object with de database
  */
 export function SubtitlesModelFactory(sequelize: Sequelize.Sequelize): Sequelize.ModelCtor<SubtitlesInstance> {
+  //  DB table name
+  const TABLE_NAME = "subtitles";
   // Model attributtes
   const attributes = {
     language: {
@@ -33,7 +36,9 @@ export function SubtitlesModelFactory(sequelize: Sequelize.Sequelize): Sequelize
   };
 
   // Create the model
-  const Subtitles = sequelize.define<SubtitlesInstance>("subtitles", attributes, { underscored: true, tableName: "subtitles" });
+  const Subtitles = sequelize.define<SubtitlesInstance>("subtitles", attributes, { underscored: true, tableName: TABLE_NAME });
+
+  Subtitles.beforeCreate(subtitle => { subtitle.id = uuid.v4(); });
 
   return Subtitles;
 }

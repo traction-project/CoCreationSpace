@@ -17,6 +17,8 @@ export interface LikesInstance extends Sequelize.Model<LikesAttributes>, LikesAt
  * @param sequelize Sequelize: Conection object with de database
  */
 export function LikesModelFactory(sequelize: Sequelize.Sequelize): Sequelize.ModelCtor<LikesInstance> {
+  //  DB table name
+  const TABLE_NAME = "likes";
   // Model attributtes
   const attributes = {
     user_id : {
@@ -30,7 +32,7 @@ export function LikesModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mod
   };
   
   // Create the model
-  const Likes = sequelize.define<LikesInstance>("likes", attributes, { underscored: true, tableName: "likes" });
+  const Likes = sequelize.define<LikesInstance>("likes", attributes, { underscored: true, tableName: TABLE_NAME });
 
   return Likes;
 }

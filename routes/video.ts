@@ -25,7 +25,7 @@ router.post("/upload", authRequired, (req, res) => {
       transcribeMediaFile("en-US", newName, BUCKET_NAME);
       const jobId = await encodeDash(ETS_PIPELINE, newName);
 
-      const userId: number | undefined = (req.user as UserInstance).id;
+      const userId: string | undefined = (req.user as UserInstance).id;
 
       let video: MultimediaInstance = Multimedia.build();
 

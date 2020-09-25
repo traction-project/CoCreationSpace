@@ -1,4 +1,5 @@
 import * as Sequelize from "sequelize";
+import * as uuid from "uuid";
 
 import { commonAttributes } from "util/typing/modelCommonAttributes";
 import { UsersAttributes, UserInstance } from "./users";
@@ -26,6 +27,8 @@ export interface PermissionsInstance extends Sequelize.Model<PermissionsAttribut
  * @param sequelize Sequelize: Conection object with de database
  */
 export function PermissionsModelFactory(sequelize: Sequelize.Sequelize): Sequelize.ModelCtor<PermissionsInstance> {
+  //  DB table name
+  const TABLE_NAME = "permissions";
   // Model attributtes
   const attributes = {
     type: {
@@ -36,7 +39,9 @@ export function PermissionsModelFactory(sequelize: Sequelize.Sequelize): Sequeli
   };
   
   // Create the model
-  const Permissions = sequelize.define<PermissionsInstance>("permissions", attributes, { underscored: true, tableName: "permissions" });
+  const Permissions = sequelize.define<PermissionsInstance>("permissions", attributes, { underscored: true, tableName: TABLE_NAME });
+
+  Permissions.beforeCreate(permission => { permission.id = uuid.v4(); });
 
   return Permissions;
 }

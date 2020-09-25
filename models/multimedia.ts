@@ -1,4 +1,5 @@
 import * as Sequelize from "sequelize";
+import * as uuid from "uuid";
 
 import { commonAttributes } from "util/typing/modelCommonAttributes";
 import { UsersAttributes, UserInstance } from "./users";
@@ -79,6 +80,8 @@ export interface MultimediaInstance extends Sequelize.Model<MultimediaAttributes
  * @param sequelize Sequelize: Conection object with de database
  */
 export function MultimediaModelFactory(sequelize: Sequelize.Sequelize): Sequelize.ModelCtor<MultimediaInstance> {
+  //  DB table name
+  const TABLE_NAME = "multimedia";
   // Model attributtes
   const attributes = {
     title: {
@@ -129,7 +132,9 @@ export function MultimediaModelFactory(sequelize: Sequelize.Sequelize): Sequeliz
   };
 
   // Create the model
-  const Multimedia = sequelize.define<MultimediaInstance, MultimediaAttributes>("multimedia", attributes, { underscored: true, tableName: "multimedia" });
+  const Multimedia = sequelize.define<MultimediaInstance, MultimediaAttributes>("multimedia", attributes, { underscored: true, tableName: TABLE_NAME });
+
+  Multimedia.beforeCreate(multimedia => { multimedia.id = uuid.v4(); });
 
   return Multimedia;
 }

@@ -145,7 +145,7 @@ function postsAssociations(models: DbInterface) {
  * @param models DbInterface
  */
 function permissionsAssociations(models: DbInterface): void {
-  models.Permissions.hasMany(models.Users, { as: "user", foreignKey: "permissions_id" });
+  models.Permissions.hasMany(models.Users, { as: "user", foreignKey: "permission_id" });
 }
 
 /**

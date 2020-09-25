@@ -1,4 +1,5 @@
 import * as Sequelize from "sequelize";
+import * as uuid from "uuid";
 
 import { commonAttributes } from "util/typing/modelCommonAttributes";
 import { MultimediaAttributes, MultimediaInstance } from "./multimedia";
@@ -36,6 +37,8 @@ export interface AudioContentInstance extends Sequelize.Model<AudioContentAttrib
  * @param sequelize Sequelize: Conection object with de database
  */
 export function AudioContentModelFactory(sequelize: Sequelize.Sequelize): Sequelize.ModelCtor<AudioContentInstance> {
+  // DB table name
+  const TABLE_NAME = "audio_content";
   // Model attributtes
   const attributes = {
     file: {
@@ -49,9 +52,10 @@ export function AudioContentModelFactory(sequelize: Sequelize.Sequelize): Sequel
       type: Sequelize.DataTypes.STRING
     }
   };
-  
   // Create the model
-  const AudioContent = sequelize.define<AudioContentInstance>("audioContent", attributes, { underscored: true, tableName: "audio_content" });
+  const AudioContent = sequelize.define<AudioContentInstance>("audioContent", attributes, { underscored: true, tableName: TABLE_NAME });
+
+  AudioContent.beforeCreate(audioContent => { audioContent.id = uuid.v4(); });
 
   return AudioContent;
 }

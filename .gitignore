@@ -66,5 +66,6 @@ db/
 bin/
 aws.json
 docs/
-
+.vscode/
 REVISION
+CONTAINER_ALREADY_STARTED_PLACEHOLDER

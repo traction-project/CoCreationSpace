@@ -17,6 +17,8 @@ export interface PostReferencesInstance extends Sequelize.Model<PostReferencesAt
  * @param sequelize Sequelize: Conection object with de database
  */
 export function PostReferencesModelFactory(sequelize: Sequelize.Sequelize): Sequelize.ModelCtor<PostReferencesInstance> {
+  //  DB table name
+  const TABLE_NAME = "post_references";
   // Model attributtes
   const attributes = {
     post_references_id: {
@@ -30,7 +32,7 @@ export function PostReferencesModelFactory(sequelize: Sequelize.Sequelize): Sequ
   };
   
   // Create the model
-  const PostReferences = sequelize.define<PostReferencesInstance>("postReferences", attributes, { underscored: true, tableName: "post_references" });
+  const PostReferences = sequelize.define<PostReferencesInstance>("postReferences", attributes, { underscored: true, tableName: TABLE_NAME });
 
   return PostReferences;
 }

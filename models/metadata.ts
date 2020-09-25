@@ -1,4 +1,5 @@
 import * as Sequelize from "sequelize";
+import * as uuid from "uuid";
 
 import { commonAttributes } from "util/typing/modelCommonAttributes";
 import { MultimediaAttributes, MultimediaInstance } from "./multimedia";
@@ -29,6 +30,8 @@ export interface MetadataInstance extends Sequelize.Model<MetadataAttributes>, M
  * @param sequelize Sequelize: Conection object with de database
  */
 export function MetadataModelFactory(sequelize: Sequelize.Sequelize): Sequelize.ModelCtor<MetadataInstance> {
+  //  DB table name
+  const TABLE_NAME = "metadata";
   // Model attributtes
   const attributes = {
     metadata_type: {
@@ -53,7 +56,9 @@ export function MetadataModelFactory(sequelize: Sequelize.Sequelize): Sequelize.
   };
   
   // Create the model
-  const Metadata = sequelize.define<MetadataInstance>("metadata", attributes, { underscored: true, tableName: "metadata" });
+  const Metadata = sequelize.define<MetadataInstance>("metadata", attributes, { underscored: true, tableName: TABLE_NAME });
+
+  Metadata.beforeCreate(metadata => { metadata.id = uuid.v4(); });
 
   return Metadata;
 }

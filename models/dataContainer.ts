@@ -1,4 +1,5 @@
 import * as Sequelize from "sequelize";
+import * as uuid from "uuid";
 
 import { commonAttributes } from "util/typing/modelCommonAttributes";
 import { PostAttributes, PostInstance } from "./post";
@@ -35,6 +36,8 @@ export interface DataContainerInstance extends Sequelize.Model<DataContainerAttr
  * @param sequelize Sequelize: Conection object with de database
  */
 export function DataContainerModelFactory(sequelize: Sequelize.Sequelize): Sequelize.ModelCtor<DataContainerInstance> {
+  // DB table name
+  const TABLE_NAME = "data_container";
   // Model attributtes
   const attributes = {
     text_content: {
@@ -43,7 +46,9 @@ export function DataContainerModelFactory(sequelize: Sequelize.Sequelize): Seque
   };
   
   // Create the model
-  const DataContainer = sequelize.define<DataContainerInstance>("DataContainer", attributes, { underscored: true, tableName: "data_container" });
+  const DataContainer = sequelize.define<DataContainerInstance>("DataContainer", attributes, { underscored: true, tableName: TABLE_NAME });
+
+  DataContainer.beforeCreate(dataContainer => { dataContainer.id = uuid.v4(); });
 
   return DataContainer;
 }

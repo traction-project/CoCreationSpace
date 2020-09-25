@@ -17,6 +17,8 @@ export interface TagReferencesInstance extends Sequelize.Model<TagReferencesAttr
  * @param sequelize Sequelize: Conection object with de database
  */
 export function TagReferencesModelFactory(sequelize: Sequelize.Sequelize): Sequelize.ModelCtor<TagReferencesInstance> {
+  //  DB table name
+  const TABLE_NAME = "tag_references";
   // Model attributtes
   const attributes = {
     tag_id: {
@@ -30,7 +32,7 @@ export function TagReferencesModelFactory(sequelize: Sequelize.Sequelize): Seque
   };
   
   // Create the model
-  const TagReferences = sequelize.define<TagReferencesInstance>("tagReferences", attributes, { underscored: true, tableName: "tag_references" });
+  const TagReferences = sequelize.define<TagReferencesInstance>("tagReferences", attributes, { underscored: true, tableName: TABLE_NAME });
 
   return TagReferences;
 }
