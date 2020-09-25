@@ -38,6 +38,6 @@ jobs:
     steps:
       - uses: troeggla/workflow-webhook@v1.1.0
         env:
-          webhook_url: ${{ secrets.WEBHOOK_URL }}
+          webhook_url: http://mediavault.traction-project.eu:9000/hooks/mediavault-development
           webhook_secret: ${{ secrets.WEBHOOK_SECRET }}
 
