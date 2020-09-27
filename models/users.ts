@@ -20,7 +20,7 @@ export interface UsersAttributes extends commonAttributes {
   likesPosts?: PostAttributes | PostAttributes["id"];
   multimedia?: MultimediaAttributes | MultimediaAttributes["id"];
   preferences?: PreferencesAttributes | PreferencesAttributes["id"];
-  permissions?: PermissionsAttributes | PermissionsAttributes["id"];
+  permission?: PermissionsAttributes | PermissionsAttributes["id"];
   post?: PostAttributes | PostAttributes["id"];
   postReferenced?: PostAttributes | PostAttributes["id"];
 }
