@@ -9,7 +9,7 @@ router.post("/:id/:target", authRequired, async (req, res) => {
   const { id, target } = req.params;
   const { Multimedia, Subtitles } = db.getModels();
 
-  const video = await Multimedia.findOne({ where: { id } });
+  const video = await Multimedia.findByPk(id);
 
   if (video && video.transcript) {
     try {
@@ -55,7 +55,7 @@ router.get("/:id/transcript", authRequired, async (req, res) => {
   const { id } = req.params;
   const { Multimedia } = db.getModels();
 
-  const video = await Multimedia.findOne({ where: { id } });
+  const video = await Multimedia.findByPk(id);
 
   if (video && video.transcript) {
     res.json(generateCues(video.transcript));

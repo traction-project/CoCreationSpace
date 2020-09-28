@@ -91,6 +91,21 @@ router.get("/id/:id", async (req, res) => {
   }
 });
 
+router.get("/id/:id/status", async (req, res) => {
+  const { id } = req.params;
+  const { Multimedia } = db.getModels();
+
+  const video = await Multimedia.findByPk(id);
+
+  if (video) {
+    return res.send({
+      status: video.status
+    });
+  } else {
+    return res.status(404).send("Video not found");
+  }
+});
+
 router.get("/id/:id/subtitles", async (req, res) => {
   const { id } = req.params;
 
