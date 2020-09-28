@@ -14,24 +14,33 @@ const Video: React.FC<VideoProps> = (props) => {
 
   const [ videoUrl, setVideoUrl ] = useState<string | undefined>(undefined);
   const [ availableSubtitles, setAvailableSubtitles ] = useState<Array<{ language: string, url: string }>>([]);
+  const [ videoStatus, setVideoStatus ] = useState<string | undefined>();
 
   useEffect(() => {
-    fetch(`/video/id/${idVideo}/subtitles`).then((res) => {
+    fetch(`/video/id/${idVideo}/status`).then((res) => {
       return res.json();
-    }).then((data) => {
-      setAvailableSubtitles(data.map((s: any) => {
-        return {
-          language: s.language,
-          url: `/video/subtitles/${s.id}`
-        };
-      }));
+    }).then(({ status }) => {
+      setVideoStatus(status);
 
-      return fetch(`/video/id/${idVideo}`);
-    }).then(async (res) => {
-      if (res.ok) {
-        const data = await res.json();
+      if (status == "done") {
+        fetch(`/video/id/${idVideo}/subtitles`).then((res) => {
+          return res.json();
+        }).then((data) => {
+          setAvailableSubtitles(data.map((s: any) => {
+            return {
+              language: s.language,
+              url: `/video/subtitles/${s.id}`
+            };
+          }));
 
-        setVideoUrl(data.manifest);
+          return fetch(`/video/id/${idVideo}`);
+        }).then(async (res) => {
+          if (res.ok) {
+            const data = await res.json();
+
+            setVideoUrl(data.manifest);
+          }
+        });
       }
     });
   }, [idVideo]);
