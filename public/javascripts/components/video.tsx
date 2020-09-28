@@ -45,19 +45,31 @@ const Video: React.FC<VideoProps> = (props) => {
     });
   }, [idVideo]);
 
-  return (
-    <div style={{ display: "flex" }}>
-      {videoUrl ? (
-        <DashPlayer
-          width={700}
-          manifest={videoUrl}
-          subtitles={availableSubtitles}
-        />
-      ) : (
-        null
-      )}
-    </div>
-  );
+  if (videoStatus === "done") {
+    return (
+      <div style={{ display: "flex" }}>
+        {videoUrl ? (
+          <DashPlayer
+            width={700}
+            manifest={videoUrl}
+            subtitles={availableSubtitles}
+          />
+        ) : (
+          null
+        )}
+      </div>
+    );
+  } else {
+    return (
+      <div style={{ display: "flex" }}>
+        <div style={{ width: 700, height: 394, backgroundColor: "#000" }}>
+          <p style={{ textAlign: "center", marginTop: "25%", color: "#FFF" }}>
+            {videoStatus}
+          </p>
+        </div>
+      </div>
+    );
+  }
 };
 
 export default Video;
