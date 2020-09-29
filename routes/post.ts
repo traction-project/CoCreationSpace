@@ -34,7 +34,8 @@ router.get("/all", authRequired, async (req, res) => {
     order: [["created_at", "desc"]],
     include: [{
       model: Users,
-      as: "user"
+      as: "user",
+      attributes: ["id", "username", "image"]
     }, queryDataContainer, "comments", "tags"]
   });
 
