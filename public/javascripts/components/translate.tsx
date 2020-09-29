@@ -21,7 +21,7 @@ interface TranslateProps {
 }
 
 const Translate: React.FC<TranslateProps> = () => {
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
 
   const [ transcript, setTranscript ] = useState<Array<Cue>>([]);
   const [ translatedTranscript, setTranslatedTranscript ] = useState<Array<Cue>>([]);

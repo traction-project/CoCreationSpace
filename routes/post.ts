@@ -93,26 +93,31 @@ router.get("/all/user", authRequired, async (req, res) => {
  */
 router.get("/id/:id", authRequired, async (req, res) => {
   const { id } = req.params;
-  const PostModel = db.getModels().Posts;
   const user = req.user as UserInstance;
-  const post = await PostModel.findByPk(id, 
-    { 
-      include: [
-        {
-          association: association.getAssociatons().postAssociations.PostDataContainer,
-          include: [ association.getAssociatons().datacontainerAssociations.DatacontainerMultimedia ]
-        }, "comments", "postReference", "postReferenced", "user", "userReferenced", "tags"]
-    });
-  
+
+  const { Posts } = db.getModels();
+
+  const post = await Posts.findByPk(id, {
+    include: [
+      {
+        association: association.getAssociatons().postAssociations.PostDataContainer,
+        include: [ association.getAssociatons().datacontainerAssociations.DatacontainerMultimedia ]
+      }, "comments", "postReference", "postReferenced", "user", "userReferenced", "tags"
+    ]
+  });
+
   if (post) {
     const likes = await post.countLikesUsers();
     const isLiked = await post.hasLikesUser(user);
-    let postJSON = post.toJSON(); 
+
+    let postJSON = post.toJSON();
+
     const result = {
       likes,
       isLiked,
       ...postJSON
     };
+
     res.send(result);
   } else {
     res.status(404).json([]);
@@ -125,10 +130,11 @@ router.get("/id/:id", authRequired, async (req, res) => {
 router.post("/", authRequired, async (req, res) => {
   const { text, title, multimedia, tags } = req.body;
   if (!text) return res.status(400).send({ message: "Field text not present"});
-  const user = req.user as UserInstance; 
-    
-  const PostModel = db.getModels().Posts; 
-  const post = await PostModel.build({
+  const user = req.user as UserInstance;
+
+  const { Posts, Tags } = db.getModels();
+
+  const post = Posts.build({
     title: title,
     user_id: user.id,
     dataContainer: {
@@ -145,17 +151,17 @@ router.post("/", authRequired, async (req, res) => {
     await dataContainer.setMultimedia(multimedia);
   }
 
-  const TagModel = db.getModels().Tags;
   if (tags && tags.length > 0) {
     tags.forEach(async (tag: TagInstance) => {
       const { id, tag_name } = tag;
       const query = id ? { id } : { tag_name: tag_name.toLowerCase() };
-      
-      const tagSaved = await TagModel.findAll({where: query});
+
+      const tagSaved = await Tags.findAll({where: query});
+
       if (tagSaved && tagSaved.length > 0) {
         await postSaved.addTag(tagSaved[0]);
       } else {
-        const newTag = await TagModel.create(tag);
+        const newTag = await Tags.create(tag);
         await postSaved.addTag(newTag);
       }
     });
@@ -176,9 +182,9 @@ router.post("/id/:id", authRequired, async (req, res) => {
   }
 
   const user = req.user as UserInstance;
+  const { Posts } = db.getModels();
 
-  const PostModel = db.getModels().Posts;
-  const post = PostModel.build({
+  const post = Posts.build({
     parent_post_id: id,
     user_id: user.id,
     dataContainer: {
@@ -204,9 +210,9 @@ router.post("/id/:id", authRequired, async (req, res) => {
 router.post("/id/:id/like", authRequired, async (req, res) => {
   const { id } = req.params;
   const user = req.user as UserInstance;
+  const { Posts } = db.getModels();
 
-  const PostModel = db.getModels().Posts;
-  const post = await PostModel.findByPk(id);
+  const post = await Posts.findByPk(id);
 
   if (post) {
     await post.addLikesUser(user);
@@ -223,9 +229,9 @@ router.post("/id/:id/like", authRequired, async (req, res) => {
 router.post("/id/:id/unlike", authRequired, async (req, res) => {
   const { id } = req.params;
   const user = req.user as UserInstance;
+  const { Posts } = db.getModels();
 
-  const PostModel = db.getModels().Posts;
-  const post = await PostModel.findByPk(id);
+  const post = await Posts.findByPk(id);
 
   if (post) {
     await post.removeLikesUser(user);

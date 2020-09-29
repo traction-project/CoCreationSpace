@@ -36,7 +36,7 @@ interface PostProps {
 }
 
 const Post: React.FC<PostProps> = (props) => {
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
   const idPost = props.post ? props.post.id : id;
   const [ post, setPost ] = useState<PostType>();
   const [ isLike, setIsLike ] = useState<boolean>(false);

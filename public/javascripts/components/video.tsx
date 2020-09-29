@@ -8,7 +8,7 @@ type VideoProps = {
 }
 
 const Video: React.FC<VideoProps> = (props) => {
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
   const idAttribute = props.id;
   const idVideo = idAttribute ? idAttribute : id;
 
