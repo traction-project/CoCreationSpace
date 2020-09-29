@@ -25,14 +25,19 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
 
   useEffect(() => {
     (async () => {
-      const postsList: Array<PostType> = await getPosts();
+      const postsList = (await getPosts()).filter((post) => {
+        return post.dataContainer?.multimedia?.every(({ status }) => {
+          return status === "done";
+        });
+      });
+
       setPosts(postsList);
       setFilteredPosts(postsList);
       getTags(postsList);
     })();
   }, [endpoint]);
 
-  const getPosts = (criteria?: string) => {
+  const getPosts = (criteria?: string): Promise<Array<PostType>> => {
     const url = criteria ? `${endpoint}?q=${criteria}` : endpoint;
 
     return fetch(url)
