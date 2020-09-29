@@ -1,12 +1,10 @@
 import * as React from "react";
 import { useForm } from "react-hook-form";
 
-import UserLogo, { UserType } from "./user_logo";
 import { useState } from "react";
 import FileUpload from "./new_comment_file_upload";
 
 interface NewCommentProps {
-    user: UserType;
     handleSubmitNewComment: ({comment, multimedia}: {comment: string, multimedia?: Array<number>}) => void;
     handleClickCancel: () => void;
 }
@@ -17,7 +15,6 @@ const NewComment: React.FC<NewCommentProps> = (props) => {
   const [ loading, setLoading ] = useState<boolean>(false);
   
   const { handleSubmit, register, errors } = useForm();
-  const user: UserType = props.user;
 
   const addFile = (filesToUpload: FileList) => {
     if (filesToUpload && filesToUpload.length > 0) {
@@ -52,7 +49,6 @@ const NewComment: React.FC<NewCommentProps> = (props) => {
 
   return (
     <React.Fragment>
-      <UserLogo user={user}></UserLogo>
       <form onSubmit={handleClickComment}>
         <div className="form-group">
           <textarea

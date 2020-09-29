@@ -15,6 +15,7 @@ const [SESSION_SECRET] = getFromEnvironment("SESSION_SECRET");
 export interface UsersAttributes extends commonAttributes {
   username: string;
   password?: string;
+  image?: string;
   salt?: string;
   role?: string;
   likesPosts?: PostAttributes | PostAttributes["id"];
@@ -97,6 +98,9 @@ export function UsersModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mod
   const keyPasswordLeng = 512;
   // Model attributtes
   const attributes = {
+    image: {
+      type: Sequelize.DataTypes.STRING
+    },
     username: {
       type: Sequelize.DataTypes.STRING,
       allowNull: false,

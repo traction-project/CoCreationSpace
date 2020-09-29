@@ -1,11 +1,12 @@
 import { Router } from "express";
 
 import { db } from "../models";
-import { authRequired, buildCriteria } from "../util";
+import { authRequired, buildCriteria, isUser, getFromEnvironment } from "../util";
 import { UserInstance } from "models/users";
 import association from "../models/associations";
 import { TagInstance } from "models/tag";
 
+const [ CLOUDFRONT_URL ] = getFromEnvironment("CLOUDFRONT_URL");
 const router = Router();
 
 /**
@@ -38,7 +39,11 @@ router.get("/all", authRequired, async (req, res) => {
       attributes: ["id", "username", "image"]
     }, queryDataContainer, "comments", "tags"]
   });
-
+  posts.forEach(post => {
+    if (post.user && isUser(post.user)) {
+      post.user.image = `${CLOUDFRONT_URL}/${post.user.image}`;
+    }
+  });
   const postsJSON = await Promise.all(posts.map(async (post) => {
     const likes = await post.countLikesUsers();
     let postJSON = post.toJSON();
@@ -86,6 +91,12 @@ router.get("/all/user", authRequired, async (req, res) => {
     ]
   });
 
+  posts.forEach(post => {
+    if (post.user && isUser(post.user)) {
+      post.user.image = `${CLOUDFRONT_URL}/${post.user.image}`;
+    }
+  });
+  
   res.send(posts);
 });
 
@@ -110,7 +121,9 @@ router.get("/id/:id", authRequired, async (req, res) => {
   if (post) {
     const likes = await post.countLikesUsers();
     const isLiked = await post.hasLikesUser(user);
-
+    if (post.user && isUser(post.user)) {
+      post.user.image = `${CLOUDFRONT_URL}/${post.user.image}`;
+    }
     let postJSON = post.toJSON();
 
     const result = {

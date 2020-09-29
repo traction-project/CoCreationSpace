@@ -9,6 +9,7 @@ import PostRouter from "./post";
 import ThreadRouter from "./thread";
 import TagRouter from "./tag";
 import TranslateRouter from "./translate";
+import UserRouter from "./user";
 
 import { UserInstance } from "../models/users";
 import { db } from "../models";
@@ -20,8 +21,9 @@ router.use("/sns", SNSRouter);
 router.use("/posts", PostRouter);
 router.use("/tags", TagRouter);
 router.use("/threads", ThreadRouter);
-router.use("/video", VideoRouter);
 router.use("/translate", TranslateRouter);
+router.use("/users", UserRouter);
+router.use("/video", VideoRouter);
 
 router.get("/", (_, res) => {
   res.render("index", { title: "MediaVault" });

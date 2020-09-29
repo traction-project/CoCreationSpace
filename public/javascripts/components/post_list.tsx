@@ -5,6 +5,7 @@ import Moment from "react-moment";
 
 import { PostType } from "./post";
 import Filter from "./filter";
+import UserLogo from "./user_logo";
 
 interface PostListProps {
   endpoint: string;
@@ -103,15 +104,7 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
                       <div className="list-item">
                         <div className="box" style={{width: "100%"}}>
                           <article className="media">
-                            <figure className="media-left" style={{width: "min-content", paddingRight: "1rem"}}>
-                              <span className="image is-64x64">
-                                <img src="https://tecnoduero.com/wp-content/uploads/2017/02/h.png" alt="Logo"/>
-                              </span>
-                              {post.user && post.user.username ?
-                                <p>{post.user.username}</p>
-                                : <p>Anonymous</p>
-                              }
-                            </figure>
+                            <UserLogo user={post.user}></UserLogo>
                             <div className="media-content">
                               <div className="content">
                                 <p>

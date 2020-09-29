@@ -147,7 +147,7 @@ const Post: React.FC<PostProps> = (props) => {
                     </div>
                   </nav>
                   { showNewComment &&
-                    <NewComment user={post.user} handleSubmitNewComment={handleSubmitNewComment} handleClickCancel={handleClickCancel}></NewComment>
+                    <NewComment handleSubmitNewComment={handleSubmitNewComment} handleClickCancel={handleClickCancel}></NewComment>
                   }
                   { !!comments && comments.length > 0 && <a className="text-comments" onClick={handleClickComments}><i className="fas fa-sort-down"></i> Show Comments ({comments?.length})</a>}
                   { showComments && <CommentList posts={comments}></CommentList> }

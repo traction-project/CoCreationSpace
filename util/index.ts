@@ -3,6 +3,7 @@ import * as aws from "aws-sdk";
 import * as jwt from "express-jwt";
 
 import { ModelCtor, Model, Op } from "sequelize";
+import { UsersAttributes } from "models/users";
 
 /**
  * Returns a list containing all integers between the given start point and end
@@ -185,3 +186,10 @@ export const buildCriteria = async ({ q }: { q?: string }, model: ModelCtor<Mode
   return criteria;
 };
 
+/**
+ * Check if the object is an instance of UserAttributes
+ * @param object 
+ */
+export const isUser = (object: any): object is UsersAttributes => {
+  return "username" in object;
+};
