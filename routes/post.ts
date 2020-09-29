@@ -19,7 +19,8 @@ router.get("/all", authRequired, async (req, res) => {
     as: "dataContainer",
     include: [{
       model: Multimedia,
-      as: "multimedia"
+      as: "multimedia",
+      attributes: ["status"]
     }]
   };
 
@@ -62,7 +63,8 @@ router.get("/all/user", authRequired, async (req, res) => {
     as: "dataContainer",
     include: [{
       model: Multimedia,
-      as: "multimedia"
+      as: "multimedia",
+      attributes: ["status"]
     }]
   };
 
