@@ -12,7 +12,8 @@ import { TagData } from "./post_list";
 type dataContainerType = {
   text_content?: string;
   multimedia?: [{
-    id?: number
+    id?: number,
+    status?: string
   }]
 }
 
