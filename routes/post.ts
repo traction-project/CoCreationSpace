@@ -12,29 +12,35 @@ const router = Router();
  * Get all posts
  */
 router.get("/all", authRequired, async (req, res) => {
-  const PostModel = db.getModels().Posts;
-  const DataContainerModel = db.getModels().DataContainer;
-  const userModel = db.getModels().Users;
-  let queryDataContainer = {
-    model: DataContainerModel,
-    as: "dataContainer"
-  }; 
+  const { Posts, DataContainer, Users, Multimedia } = db.getModels();
 
-  const criteria = await buildCriteria(req.query, DataContainerModel);
-  queryDataContainer = Object.assign(queryDataContainer, criteria); 
-  const posts = await PostModel.findAll({ 
+  let queryDataContainer = {
+    model: DataContainer,
+    as: "dataContainer",
+    include: [{
+      model: Multimedia,
+      as: "multimedia"
+    }]
+  };
+
+  const criteria = await buildCriteria(req.query, DataContainer);
+  queryDataContainer = Object.assign(queryDataContainer, criteria);
+
+  const posts = await Posts.findAll({
     where: {
       parent_post_id: null
     },
     order: [["created_at", "desc"]],
     include: [{
-      model: userModel,
+      model: Users,
       as: "user"
-    }, queryDataContainer, "comments", "tags"] 
+    }, queryDataContainer, "comments", "tags"]
   });
+
   const postsJSON = await Promise.all(posts.map(async (post) => {
     const likes = await post.countLikesUsers();
-    let postJSON = post.toJSON(); 
+    let postJSON = post.toJSON();
+
     return {
       likes,
       ...postJSON
@@ -49,32 +55,34 @@ router.get("/all", authRequired, async (req, res) => {
  */
 router.get("/all/user", authRequired, async (req, res) => {
   const user = req.user as UserInstance;
-  const postModel = db.getModels().Posts;
-  const userModel = db.getModels().Users;
-  const DataContainerModel = db.getModels().DataContainer;
+  const { Posts, Users, DataContainer, Multimedia } = db.getModels();
+
   let queryDataContainer = {
-    model: DataContainerModel,
+    model: DataContainer,
     as: "dataContainer",
-    include: ["multimedia"]
+    include: [{
+      model: Multimedia,
+      as: "multimedia"
+    }]
   };
-  
-  const criteria = await buildCriteria(req.query, DataContainerModel);
+
+  const criteria = await buildCriteria(req.query, DataContainer);
   queryDataContainer = Object.assign(queryDataContainer, criteria);
 
-  const posts = await postModel.findAll({
+  const posts = await Posts.findAll({
     where: {
       parent_post_id: null
-    },
+    } as any,
     include: [{
-      model: userModel,
+      model: Users,
       as: "user",
       where: { id: user.id }
-    },queryDataContainer, "comments", "tags"],
+    }, queryDataContainer, "comments", "tags"],
     order: [
       ["created_at", "DESC"]
     ]
   });
-  
+
   res.send(posts);
 });
 

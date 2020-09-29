@@ -163,14 +163,15 @@ const castType = (value: string, type: string) => {
 
 /**
  * Generate the query to do it with the DB. Get the request params and depending of its value, genare the query with operators like: order, limit, pagination or where
- * @param param0 : request params
+ * @param q : request params
  * @param model Model where to do the query
  */
 export const buildCriteria = async ({ q }: { q?: string }, model: ModelCtor<Model>)  => {
   let criteria = {};
+
   if (q) {
     let where: {  where: {[key: string]: any}} = { where: {} };
-    
+
     const modelSchema: {[key: string]: any} = await model.describe();
     Object.keys(modelSchema).forEach((key) => {
       const castValue = castType(q, modelSchema[key].type);
