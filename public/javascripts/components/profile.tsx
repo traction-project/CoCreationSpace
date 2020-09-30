@@ -8,7 +8,7 @@ import { postFile } from "../util";
 interface ProfileProps {}
 
 const Profile: React.FC<ProfileProps> = (props) => {
-  const { handleSubmit, register, errors, watch } = useForm({});
+  const { handleSubmit, register, errors } = useForm({});
   const state = useStore();
   const [ name, setName ] = useState<string>();
   const [ photo, setPhoto ] = useState<string>();
@@ -38,7 +38,7 @@ const Profile: React.FC<ProfileProps> = (props) => {
   
   const handleInputPasswordChange = (value: string) => {
     setPassword(value);
-  });
+  };
 
   const handleButtonApplyClick = handleSubmit((data) => {
     const headers = new Headers();
