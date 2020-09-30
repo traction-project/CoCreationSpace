@@ -35,7 +35,8 @@ const Login: React.FC<LoginProps> = (props) => {
 
       props.loginActions.setLoggedInUser(
         user.id,
-        user.username
+        user.username,
+        user.image
       );
       history.push("/");
     }

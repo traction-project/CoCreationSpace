@@ -1,18 +1,42 @@
 import * as React from "react";
 import { useLocation, Link, useHistory } from "react-router-dom";
-import store from "../store";
 import { actionCreators } from "../actions/login";
+import store from "../store";
+import { useState, useEffect } from "react";
+import { Unsubscribe } from "redux";
 
 interface HeaderProps {}
 
 const Header: React.FC<HeaderProps> = () => {
+  const [ image, setImage ] = useState<string>();
+  const [ loggedIn, setLoggedIn ] = useState<boolean>(false);
   const location = useLocation();
   const history = useHistory();
+  let subscription: Unsubscribe;
 
-  const isLoggedIn = (): boolean => {
-    return store.getState().login.loggedIn;
-  };
+  useEffect(() => {
+    let { login } = store.getState();
+    
+    if (login) {
+      setLoggedIn(login.loggedIn);
+      if (login.user) {
+        setImage(login.user?.image);  
+      }
+    }
+    if (!subscription) {
+      subscription = store.subscribe(() => {
+        const { login } = store.getState();
 
+        if (login) {
+          setLoggedIn(login.loggedIn);
+          if (login.user) {
+            setImage(login.user.image);  
+          }
+        }
+      });
+    }
+  }, []);
+  
   const logOut = () => {
     store.dispatch(actionCreators.clearLoggedInUser());
     history.push("/");
@@ -32,8 +56,17 @@ const Header: React.FC<HeaderProps> = () => {
           <Link to={"/posts"}><span className={location.pathname === "/posts" ? "active" : ""}>Explore</span></Link>
         </div>
       </div>
-      { isLoggedIn()
-        ? <a className="header__item" onClick={logOut}>Sign Out</a>
+      { loggedIn
+        ? <figure className="header__item dropdown-btn" style={{width: "min-content"}}>
+          <span className="image is-48x48">
+            <img src={image} alt="Logo"/>
+          </span>
+          <ul className="box dropdown">
+            <Link to={"/profile"}><li className="dropdown__item">Profile</li></Link>
+            <hr/>
+            <li className="dropdown__item red" onClick={() => logOut()}>Sign Out</li>
+          </ul>
+        </figure>
         : <Link to={"/login"}><span className="header__item">Sign In</span></Link>  
       }
     </nav>

@@ -13,7 +13,9 @@ import UserRouter from "./user";
 
 import { UserInstance } from "../models/users";
 import { db } from "../models";
+import { getFromEnvironment } from "../util";
 
+const [ CLOUDFRONT_URL ] = getFromEnvironment("CLOUDFRONT_URL");
 const router = Router();
 
 router.use("/api", APIRouter);
@@ -36,7 +38,8 @@ router.post("/login", passport.authenticate("local"), (req, res) => {
     status: "OK",
     user: {
       id: user.id,
-      username: user.username
+      username: user.username,
+      image: `${CLOUDFRONT_URL}/${user.image}`
     }
   });
 });

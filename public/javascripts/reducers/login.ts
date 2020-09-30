@@ -3,7 +3,7 @@ import * as actions from "../actions/login";
 
 export interface LoginState {
   loggedIn: boolean;
-  user?: { id: string, username: string };
+  user?: { id: string, username: string, image?: string };
 }
 
 export const initialState: LoginState = {

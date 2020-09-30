@@ -15,6 +15,7 @@ import Home from "./home";
 import PrivateRoute from "./private_route";
 import Header from "./header";
 import PostList from "./post_list";
+import Profile from "./profile";
 
 interface AppProps {}
 
@@ -44,6 +45,7 @@ const App: React.FC<AppProps> = () => {
           <Route path="/post/:id">
             <Post />
           </Route>
+          <PrivateRoute path="/profile" component={Profile} />
           <PrivateRoute path="/userPosts" component={PostList} endpoint="/posts/all/user" />
           <Route path="/">
             <Home />

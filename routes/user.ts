@@ -5,17 +5,21 @@ import { v4 as uuid4 } from "uuid";
 import { getExtension, authRequired, getFromEnvironment } from "../util";
 import { uploadToS3 } from "../util/s3";
 import { UserInstance } from "models/users";
+import { db } from "../models";
 
-const [ BUCKET_NAME ] = getFromEnvironment("BUCKET_NAME", "ETS_PIPELINE", "CLOUDFRONT_URL");
+const [ BUCKET_NAME, CLOUDFRONT_URL ] = getFromEnvironment("BUCKET_NAME", "CLOUDFRONT_URL");
 const router = Router();
 
+/**
+ * POST an image to the authenticated user that did the request
+ */
 router.post("/image", authRequired, (req, res) => {
   const user = req.user as UserInstance;
   const busboy = new Busboy({ headers: req.headers });
 
   busboy.on("file", async (fieldname, file, filename, encoding, mimetype) => {
     const newName = uuid4() + getExtension(filename);
-
+    
     try {
       await uploadToS3(newName, file, BUCKET_NAME);
       user.image = newName;
@@ -31,11 +35,70 @@ router.post("/image", authRequired, (req, res) => {
   });
 
   busboy.on("finish", () => {
-    console.log("Upload complete");
-    res.sendStatus(200);
+    let { id, username, image} = user;
+
+    image = `${CLOUDFRONT_URL}/${image}`;
+    return res.send({id, username, image});
   });
 
   return req.pipe(busboy);
+});
+
+/**
+ * Get user information
+ */
+router.get("/profile", authRequired, (req, res) => {
+  let { id, username, image} = req.user as UserInstance;
+
+  image = `${CLOUDFRONT_URL}/${image}`;
+  return res.send({id, username, image});
+
+});
+
+/**
+ * Modify user account (username and password)
+ */
+router.put("/", authRequired, async (req, res) => {
+  const userModel = db.getModels().Users;
+  let user = req.user as UserInstance;
+  const { body } = req;
+
+  if (body.username) {
+    const existUser = await userModel.findOne({ where: { username: body.username }});
+    if (!existUser) {
+      const newUsername = body.username;
+      if (user.username !== newUsername) {
+        user.username = newUsername;
+        try { 
+          await user.save();
+        } catch (err) {
+          res.status(500);
+          return res.send({
+            status: "ERR",
+            message: err.message
+          });
+        }
+      }
+    } else {
+      return res.status(400).send({ message: "The username already exists"});
+    }
+  }
+  if (body.password) {
+    user.setPassword(body.password);
+    try {
+      await user.save();
+    } catch(err) {
+      res.status(500);
+      return res.send({
+        status: "ERR",
+        message: err.message
+      });
+    }
+  }
+
+  let { id, username, image} = user;
+  image = `${CLOUDFRONT_URL}/${image}`;
+  res.send({ id, username, image});
 });
 
 export default router;

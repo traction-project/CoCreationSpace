@@ -1,12 +1,12 @@
 import { ActionCreatorsMapObject } from "redux";
 import { BasicAction, PayloadAction } from "../util";
 
-export type SET_LOGGED_IN_USER = PayloadAction<"SET_LOGGED_IN_USER", { id: string, username: string }>;
-function setLoggedInUser(id: string, username: string): SET_LOGGED_IN_USER {
+export type SET_LOGGED_IN_USER = PayloadAction<"SET_LOGGED_IN_USER", { id: string, username: string, image: string }>;
+function setLoggedInUser(id: string, username: string, image: string): SET_LOGGED_IN_USER {
   return {
     type: "SET_LOGGED_IN_USER",
     payload: {
-      id, username
+      id, username, image
     }
   };
 }
@@ -19,7 +19,7 @@ function clearLoggedInUser(): CLEAR_LOGGED_IN_USER {
 }
 
 export interface LoginActions extends ActionCreatorsMapObject {
-  setLoggedInUser: (id: string, username: string) => SET_LOGGED_IN_USER;
+  setLoggedInUser: (id: string, username: string, image: string) => SET_LOGGED_IN_USER;
   clearLoggedInUser: () => CLEAR_LOGGED_IN_USER;
 }
 
