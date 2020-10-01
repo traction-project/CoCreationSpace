@@ -84,6 +84,9 @@ class DataBase {
     // Create all relationships between models
     association.createAssociations(this.models);
 
+    // Synchronize with physical database (If the models not exists in the database, they are created)
+    await sequelize.sync();
+
     return this.models;
   }
 }
