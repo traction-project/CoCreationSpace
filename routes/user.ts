@@ -24,7 +24,9 @@ router.post("/image", authRequired, (req, res) => {
       await uploadToS3(newName, file, BUCKET_NAME);
       user.image = newName;
       await user.save();
-      file.resume();
+      const { id, username } = user;
+      const image = `${CLOUDFRONT_URL}/${newName}`;
+      return res.send({id, username, image});
     } catch (e) {
       console.error(e);
       res.status(500).send({
@@ -32,13 +34,6 @@ router.post("/image", authRequired, (req, res) => {
         message: "Could not upload to S3"
       });
     }
-  });
-
-  busboy.on("finish", () => {
-    let { id, username, image} = user;
-
-    image = `${CLOUDFRONT_URL}/${image}`;
-    return res.send({id, username, image});
   });
 
   return req.pipe(busboy);
