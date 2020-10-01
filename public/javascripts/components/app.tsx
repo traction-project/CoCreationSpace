@@ -16,6 +16,7 @@ import PrivateRoute from "./private_route";
 import Header from "./header";
 import PostList from "./post_list";
 import Profile from "./profile";
+import Signup from "./signup";
 
 interface AppProps {}
 
@@ -25,6 +26,9 @@ const App: React.FC<AppProps> = () => {
       <Router>
         <Header />
         <Switch>
+          <Route path="/signup">
+            <Signup />
+          </Route>
           <Route path="/login">
             <Login />
           </Route>

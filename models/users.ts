@@ -99,7 +99,8 @@ export function UsersModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mod
   // Model attributtes
   const attributes = {
     image: {
-      type: Sequelize.DataTypes.STRING
+      type: Sequelize.DataTypes.STRING,
+      defaultValue: "717502c4-23d9-4ab7-bee9-171a92fb3842.png"
     },
     username: {
       type: Sequelize.DataTypes.STRING,

@@ -67,7 +67,10 @@ const Header: React.FC<HeaderProps> = () => {
             <li className="dropdown__item red" onClick={() => logOut()}>Sign Out</li>
           </ul>
         </figure>
-        : <Link to={"/login"}><span className="header__item">Sign In</span></Link>
+        : <div>
+          <Link to={"/login"}><span className="header__item">Sign In</span></Link>  
+          <Link to={"/signup"}><span className="header__item">Sign Up</span></Link>  
+        </div>
       }
     </nav>
   );
