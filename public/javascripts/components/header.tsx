@@ -68,8 +68,8 @@ const Header: React.FC<HeaderProps> = () => {
           </ul>
         </figure>
         : <div>
-          <Link to={"/login"}><span className="header__item">Sign In</span></Link>  
-          <Link to={"/signup"}><span className="header__item">Sign Up</span></Link>  
+          <Link to={"/login"}><span className="header__item">Sign In</span></Link>
+          <Link to={"/signup"}><span className="header__item">Sign Up</span></Link>
         </div>
       }
     </nav>

@@ -9,7 +9,7 @@ const Signup: React.FC<SignupProps> = (props) => {
   const history = useHistory();
   const { handleSubmit, register, errors } = useForm({});
   const [ username, setUsername ] = useState<string>();
-  const [ password, setPassword ] = useState<string>(); 
+  const [ password, setPassword ] = useState<string>();
 
   const handleButtonSubmitClick = handleSubmit(({ username, password, confirmation }) => {
     const headers = new Headers();
@@ -46,12 +46,12 @@ const Signup: React.FC<SignupProps> = (props) => {
               <div className="field">
                 <label className="label">Username</label>
                 <div className="control">
-                  <input 
-                    className="input-1" 
+                  <input
+                    className="input-1"
                     type="text"
-                    name="username" 
-                    value={username || ""} 
-                    onChange={(e) => handleInputUsernameChange(e.currentTarget.value)} 
+                    name="username"
+                    value={username || ""}
+                    onChange={(e) => handleInputUsernameChange(e.currentTarget.value)}
                     ref={register({
                       required: true
                     })} />
@@ -63,10 +63,10 @@ const Signup: React.FC<SignupProps> = (props) => {
               <div className="field">
                 <label className="label">New Password</label>
                 <div className="control">
-                  <input 
+                  <input
                     className="input-1"
                     name="password"
-                    onChange={(e) => handleInputPasswordChange(e.currentTarget.value)} 
+                    onChange={(e) => handleInputPasswordChange(e.currentTarget.value)}
                     ref={register({
                       required: true
                     })}
@@ -77,10 +77,10 @@ const Signup: React.FC<SignupProps> = (props) => {
               <div className="field">
                 <label className="label">Confirm Password</label>
                 <div className="control">
-                  <input 
+                  <input
                     className="input-1"
-                    name="confirmation" 
-                    type="password" 
+                    name="confirmation"
+                    type="password"
                     ref={register({
                       validate: (value) => !password || value === password  || "The passwords do not match"
                     })}/>
