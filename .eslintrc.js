@@ -55,6 +55,7 @@ module.exports = {
       "always"
     ],
     "no-unused-vars": "off",
-    "react/prop-types": "off"
+    "react/prop-types": "off",
+    "no-trailing-spaces": "error"
   }
 };
