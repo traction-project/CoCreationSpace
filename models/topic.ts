@@ -40,10 +40,10 @@ export function TopicModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mod
       unique: true
     }
   };
-  
+
   // Create the model
   const Topic = sequelize.define<TopicInstance>("topic", attributes, { underscored: true, tableName: TABLE_NAME });
-  
+
   Topic.beforeCreate(topic => { topic.id = uuid.v4(); });
 
   return Topic;

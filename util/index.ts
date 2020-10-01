@@ -188,7 +188,7 @@ export const buildCriteria = async ({ q }: { q?: string }, model: ModelCtor<Mode
 
 /**
  * Check if the object is an instance of UserAttributes
- * @param object 
+ * @param object
  */
 export const isUser = (object: any): object is UsersAttributes => {
   return "username" in object;

@@ -16,11 +16,11 @@ const Header: React.FC<HeaderProps> = () => {
 
   useEffect(() => {
     let { login } = store.getState();
-    
+
     if (login) {
       setLoggedIn(login.loggedIn);
       if (login.user) {
-        setImage(login.user?.image);  
+        setImage(login.user?.image);
       }
     }
     if (!subscription) {
@@ -30,13 +30,13 @@ const Header: React.FC<HeaderProps> = () => {
         if (login) {
           setLoggedIn(login.loggedIn);
           if (login.user) {
-            setImage(login.user.image);  
+            setImage(login.user.image);
           }
         }
       });
     }
   }, []);
-  
+
   const logOut = () => {
     store.dispatch(actionCreators.clearLoggedInUser());
     history.push("/");
@@ -67,7 +67,7 @@ const Header: React.FC<HeaderProps> = () => {
             <li className="dropdown__item red" onClick={() => logOut()}>Sign Out</li>
           </ul>
         </figure>
-        : <Link to={"/login"}><span className="header__item">Sign In</span></Link>  
+        : <Link to={"/login"}><span className="header__item">Sign In</span></Link>
       }
     </nav>
   );

@@ -30,7 +30,7 @@ export function PostReferencesModelFactory(sequelize: Sequelize.Sequelize): Sequ
       allowNull: false
     }
   };
-  
+
   // Create the model
   const PostReferences = sequelize.define<PostReferencesInstance>("postReferences", attributes, { underscored: true, tableName: TABLE_NAME });
 

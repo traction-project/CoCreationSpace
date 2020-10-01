@@ -33,7 +33,7 @@ class Associations {
     topicAssociations(models);
     threadAssociations(models);
     userAssociations(models);
-  
+
     this.associatons = {
       datacontainerAssociations,
       postAssociations
@@ -153,7 +153,7 @@ function permissionsAssociations(models: DbInterface): void {
  * @param models DbInterface
  */
 function subtitleAssociations(models: DbInterface): void {
-  models.Subtitles.belongsTo(models.Multimedia, { as: "multimedia", foreignKey: "multimedia_id" }); 
+  models.Subtitles.belongsTo(models.Multimedia, { as: "multimedia", foreignKey: "multimedia_id" });
 }
 
 /**

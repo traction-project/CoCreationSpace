@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 interface HomeProps {}
 
 const Home: React.FC<HomeProps> = () => {
-    
+
   return (
     <div className="columns" style={{ marginTop: 15 }}>
       <div className="column is-8 is-offset-2">

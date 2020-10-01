@@ -51,7 +51,7 @@ const VideoUpload: React.FC<VideoUploadProps> = () => {
       multimedia: [multimedia],
       tags: tags.map((tag) => { return { tag_name: tag }; } )
     };
-    fetch("/posts", { 
+    fetch("/posts", {
       headers,
       method: "POST",
       body: JSON.stringify(body)
@@ -96,7 +96,7 @@ const VideoUpload: React.FC<VideoUploadProps> = () => {
         <div className="container">
           {(total > 0) ? (
             <ProgressRing radius={160} stroke={15} progress={progress} total={total}></ProgressRing>
-          ) : ( multimedia ? 
+          ) : ( multimedia ?
             (<Video id={multimedia}></Video>)
             : (
               <Dropzone size={["100%", 300]} onFileDropped={startUpload} />
@@ -124,7 +124,7 @@ const VideoUpload: React.FC<VideoUploadProps> = () => {
                   <ul className="list-tags">
                     { tags ?
                       tags.map((tag, index) => {
-                        return ( 
+                        return (
                           <li key={index} className="tag">{tag}<a className="delete" onClick={(_) => handleClickRemoveTag(tag)}></a></li>);
                       })
                       : null}
@@ -136,10 +136,10 @@ const VideoUpload: React.FC<VideoUploadProps> = () => {
                   <textarea placeholder="Write summary..." className="summary" onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setSummary(e.currentTarget.value)}></textarea>
                 </div>
               </div>
-              <button className="btn" onClick={handleClickButton} disabled={(summary && multimedia) ? false : true}>Create content</button>  
+              <button className="btn" onClick={handleClickButton} disabled={(summary && multimedia) ? false : true}>Create content</button>
             </React.Fragment>
-          ) 
-          : null} 
+          )
+          : null}
         {(displayNotification == "success") ? (
           <div className="notification is-success fixed-notification">
             <button className="delete" onClick={closeNotification}></button>

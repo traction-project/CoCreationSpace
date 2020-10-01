@@ -75,7 +75,7 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
       post.tags?.forEach((tag) => {
         if (tag.id === tagSelected.id) {
           postList.push(post);
-        } 
+        }
       });
     });
 
@@ -96,7 +96,7 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
       <div className="columns" style={{ marginTop: 15 }}>
         <div className="column is-8 is-offset-1">
           <div>
-            {filteredPosts ? 
+            {filteredPosts ?
               filteredPosts.map((post, index) => {
                 return (
                   <div key={index}>

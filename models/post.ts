@@ -32,7 +32,7 @@ export interface PostInstance extends Sequelize.Model<PostAttributes>, PostAttri
   getDataContainer: Sequelize.HasOneGetAssociationMixin<DataContainerInstance>;
   setDataContainer: Sequelize.HasOneSetAssociationMixin<DataContainerInstance, DataContainerInstance["id"]>;
   createDataContainer: Sequelize.HasOneCreateAssociationMixin<DataContainerInstance>;
-  
+
   getComments: Sequelize.HasManyGetAssociationsMixin<PostInstance>;
   setComments: Sequelize.HasManySetAssociationsMixin<PostInstance, PostInstance["id"]>;
   addComments: Sequelize.HasManyAddAssociationsMixin<PostInstance, PostInstance["id"]>;
@@ -118,7 +118,7 @@ export function PostModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mode
       type: Sequelize.DataTypes.INTEGER
     }
   };
-  
+
   // Create the model
   const Post = sequelize.define<PostInstance>("post", attributes, { underscored: true, tableName: TABLE_NAME });
 

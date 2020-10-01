@@ -30,7 +30,7 @@ export function UserReferencesModelFactory(sequelize: Sequelize.Sequelize): Sequ
       allowNull: false
     }
   };
-  
+
   // Create the model
   const UserReferences = sequelize.define<UserReferencesInstance>("userReferences", attributes, { underscored: true, tableName: TABLE_NAME });
 

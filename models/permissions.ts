@@ -37,7 +37,7 @@ export function PermissionsModelFactory(sequelize: Sequelize.Sequelize): Sequeli
       unique: true
     }
   };
-  
+
   // Create the model
   const Permissions = sequelize.define<PermissionsInstance>("permissions", attributes, { underscored: true, tableName: TABLE_NAME });
 

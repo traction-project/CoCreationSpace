@@ -19,13 +19,13 @@ router.get("/all", async (req, res) => {
 });
 
 /**
- * Get tag by id 
+ * Get tag by id
  */
 router.get("/id/:id", async (req, res) => {
   const { id } = req.params;
   const TagModel = db.getModels().Tags;
 
-  const tag = await TagModel.findByPk(id, { 
+  const tag = await TagModel.findByPk(id, {
     include: [{
       model: db.getModels().Posts,
       as: "post",

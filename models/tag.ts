@@ -40,7 +40,7 @@ export function TagModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Model
       unique: true
     }
   };
-  
+
   // Create the model
   const Tag = sequelize.define<TagInstance>("tag", attributes, { underscored: true, tableName: TABLE_NAME });
 

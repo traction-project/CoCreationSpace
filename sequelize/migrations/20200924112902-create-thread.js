@@ -5,7 +5,7 @@ const TABLE_NAME = "threads";
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    // Model attributtes 
+    // Model attributtes
     const attributes = {
       id: {
         type: Sequelize.DataTypes.UUID,

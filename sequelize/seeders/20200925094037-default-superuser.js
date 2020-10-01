@@ -7,7 +7,7 @@ module.exports = {
     const username = process.env.SEED_SUPERUSER_USERNAME || "admin";
     let password = process.env.SEED_SUPERUSER_PASSWORD || "admin";
     const salt = crypto.randomBytes(16).toString("hex");
-    
+
     const keyPasswordLeng = 512;
     password = crypto.pbkdf2Sync(
       password, salt,

@@ -22,7 +22,7 @@ const Explore: React.FC<ExploreProps> = () => {
       setFilteredPosts(postsList);
       if (!tags || tags.length == 0) {
         getTags(postsList);
-      } 
+      }
     })();
   }, []);
 
@@ -63,7 +63,7 @@ const Explore: React.FC<ExploreProps> = () => {
       post.tags?.forEach((tag) => {
         if (tag.id === tagSelected.id) {
           postList.push(post);
-        } 
+        }
       });
     });
 
@@ -75,7 +75,7 @@ const Explore: React.FC<ExploreProps> = () => {
     setPosts(postsList);
     setFilteredPosts(postsList);
   };
-    
+
   return (
     <React.Fragment>
       <div>

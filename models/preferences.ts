@@ -27,7 +27,7 @@ export function PreferencesModelFactory(sequelize: Sequelize.Sequelize): Sequeli
       unique: true
     }
   };
-  
+
   // Create the model
   const Preferences = sequelize.define<PreferencesInstance>("preferences", attributes, { underscored: true, tableName: TABLE_NAME });
 

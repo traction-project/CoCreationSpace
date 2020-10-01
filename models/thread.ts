@@ -8,7 +8,7 @@ import { PostAttributes, PostInstance } from "./post";
 export interface ThreadAttributes extends commonAttributes{
     th_title: string;
     topic?: TopicAttributes | TopicAttributes["id"];
-    post?: PostAttributes | PostAttributes["id"]; 
+    post?: PostAttributes | PostAttributes["id"];
 }
 
 /**
@@ -37,7 +37,7 @@ export interface ThreadInstance extends Sequelize.Model<ThreadAttributes>, Threa
 export function ThreadModelFactory(sequelize: Sequelize.Sequelize): Sequelize.ModelCtor<ThreadInstance> {
   //  DB table name
   const TABLE_NAME = "threads";
-  // Model attributtes 
+  // Model attributtes
   const attributes = {
     th_title: {
       type: Sequelize.DataTypes.STRING,
@@ -49,6 +49,6 @@ export function ThreadModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mo
   const Thread = sequelize.define<ThreadInstance>("thread", attributes, { underscored: true, tableName: TABLE_NAME });
 
   Thread.beforeCreate(thread => { thread.id = uuid.v4(); });
-    
+
   return Thread;
 }

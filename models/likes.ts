@@ -30,7 +30,7 @@ export function LikesModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mod
       allowNull: false
     }
   };
-  
+
   // Create the model
   const Likes = sequelize.define<LikesInstance>("likes", attributes, { underscored: true, tableName: TABLE_NAME });
 

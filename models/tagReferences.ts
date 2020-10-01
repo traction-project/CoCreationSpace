@@ -30,7 +30,7 @@ export function TagReferencesModelFactory(sequelize: Sequelize.Sequelize): Seque
       allowNull: false
     }
   };
-  
+
   // Create the model
   const TagReferences = sequelize.define<TagReferencesInstance>("tagReferences", attributes, { underscored: true, tableName: TABLE_NAME });
 

@@ -9,8 +9,8 @@ const router = Router();
  */
 router.get("/all", async (req, res) => {
   const ThreadModel = db.getModels().Threads;
-  
-  const threads = await ThreadModel.findAll({ 
+
+  const threads = await ThreadModel.findAll({
     include: [{
       model: db.getModels().Posts,
       as: "post",
@@ -25,7 +25,7 @@ router.get("/id/:id", async (req, res) => {
   const { id } = req.params;
   const ThreadModel = db.getModels().Threads;
 
-  const thread = await ThreadModel.findByPk(id, { 
+  const thread = await ThreadModel.findByPk(id, {
     include: [{
       model: db.getModels().Posts,
       as: "post",

@@ -16,7 +16,7 @@ const Profile: React.FC<ProfileProps> = (props) => {
 
   useEffect(() => {
     fetch("/users/profile")
-      .then(async res => { 
+      .then(async res => {
         if (res.ok) {
           const data = await res.json();
           const { id, username, image } = data;
@@ -35,7 +35,7 @@ const Profile: React.FC<ProfileProps> = (props) => {
   const handleInputUsernameChange = (value: string) => {
     setName(value);
   };
-  
+
   const handleInputPasswordChange = (value: string) => {
     setPassword(value);
   };
@@ -44,12 +44,12 @@ const Profile: React.FC<ProfileProps> = (props) => {
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
 
-    fetch("/users", { 
+    fetch("/users", {
       method: "PUT",
       headers,
       body: JSON.stringify(data)
     })
-      .then(async res => { 
+      .then(async res => {
         if (res.ok) {
           const data = await res.json();
           const { id, username, image } = data;
@@ -75,7 +75,7 @@ const Profile: React.FC<ProfileProps> = (props) => {
 
   return (
     <div className="columns" style={{ marginTop: "5rem" }}>
-      {(name || photo) ? 
+      {(name || photo) ?
         (<div className="column is-8 is-offset-3">
           <div className="columns">
             <div className="column is-one-third">
@@ -87,8 +87,8 @@ const Profile: React.FC<ProfileProps> = (props) => {
                   </span>
                 </figure>
                 <label className="btn-file">
-                  <input 
-                    className="btn-file__input" 
+                  <input
+                    className="btn-file__input"
                     onChange={e => { e.target.files && handleButtonUploadClick(e.target.files); }}
                     type="file" />
                   <span className="btn btn-file__span">Upload File</span>
@@ -103,12 +103,12 @@ const Profile: React.FC<ProfileProps> = (props) => {
                     <div className="field">
                       <label className="label">Username</label>
                       <div className="control">
-                        <input 
-                          className="input-1" 
+                        <input
+                          className="input-1"
                           type="text"
-                          name="username" 
-                          value={name || ""} 
-                          onChange={(e) => handleInputUsernameChange(e.currentTarget.value)} 
+                          name="username"
+                          value={name || ""}
+                          onChange={(e) => handleInputUsernameChange(e.currentTarget.value)}
                           ref={register({
                             required: true
                           })} />
@@ -120,20 +120,20 @@ const Profile: React.FC<ProfileProps> = (props) => {
                     <div className="field">
                       <label className="label">New Password</label>
                       <div className="control">
-                        <input 
+                        <input
                           className="input-1"
                           name="password"
-                          onChange={(e) => handleInputPasswordChange(e.currentTarget.value)} 
+                          onChange={(e) => handleInputPasswordChange(e.currentTarget.value)}
                           type="password" />
                       </div>
                     </div>
                     <div className="field">
                       <label className="label">Confirm Password</label>
                       <div className="control">
-                        <input 
+                        <input
                           className="input-1"
-                          name="password_repeat" 
-                          type="password" 
+                          name="password_repeat"
+                          type="password"
                           ref={register({
                             validate: (value) => !password || value === password  || "The passwords do not match"
                           })}/>
@@ -147,7 +147,7 @@ const Profile: React.FC<ProfileProps> = (props) => {
             </div>
           </div>
         </div>)
-  
+
         : null}
     </div>
   );

@@ -54,7 +54,7 @@ export function MetadataModelFactory(sequelize: Sequelize.Sequelize): Sequelize.
       type: Sequelize.DataTypes.UUID
     }
   };
-  
+
   // Create the model
   const Metadata = sequelize.define<MetadataInstance>("metadata", attributes, { underscored: true, tableName: TABLE_NAME });
 

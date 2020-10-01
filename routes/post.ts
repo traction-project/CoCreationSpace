@@ -96,7 +96,7 @@ router.get("/all/user", authRequired, async (req, res) => {
       post.user.image = `${CLOUDFRONT_URL}/${post.user.image}`;
     }
   });
-  
+
   res.send(posts);
 });
 

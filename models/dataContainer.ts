@@ -44,7 +44,7 @@ export function DataContainerModelFactory(sequelize: Sequelize.Sequelize): Seque
       type: Sequelize.DataTypes.STRING
     }
   };
-  
+
   // Create the model
   const DataContainer = sequelize.define<DataContainerInstance>("DataContainer", attributes, { underscored: true, tableName: TABLE_NAME });
 

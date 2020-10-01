@@ -19,7 +19,7 @@ router.post("/image", authRequired, (req, res) => {
 
   busboy.on("file", async (fieldname, file, filename, encoding, mimetype) => {
     const newName = uuid4() + getExtension(filename);
-    
+
     try {
       await uploadToS3(newName, file, BUCKET_NAME);
       user.image = newName;
@@ -64,7 +64,7 @@ router.put("/", authRequired, async (req, res) => {
       const newUsername = body.username;
       if (user.username !== newUsername) {
         user.username = newUsername;
-        try { 
+        try {
           await user.save();
         } catch (err) {
           res.status(500);

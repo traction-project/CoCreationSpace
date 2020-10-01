@@ -13,7 +13,7 @@ const NewComment: React.FC<NewCommentProps> = (props) => {
   const [ files, setFiles ] = useState<Array<File>>([]);
   const [ multimedia, setMultimedia ] = useState<Array<number>>([]);
   const [ loading, setLoading ] = useState<boolean>(false);
-  
+
   const { handleSubmit, register, errors } = useForm();
 
   const addFile = (filesToUpload: FileList) => {
@@ -52,8 +52,8 @@ const NewComment: React.FC<NewCommentProps> = (props) => {
       <form onSubmit={handleClickComment}>
         <div className="form-group">
           <textarea
-            className={ errors.comment ? "textarea alert" : "textarea"} 
-            placeholder="Add a comment..." 
+            className={ errors.comment ? "textarea alert" : "textarea"}
+            placeholder="Add a comment..."
             rows={3}
             name="comment"
             style={{resize: "none"}}
@@ -61,7 +61,7 @@ const NewComment: React.FC<NewCommentProps> = (props) => {
               required: true
             })}>
           </textarea>
-          {errors.comment && <p className="message-warning">* Required</p>} 
+          {errors.comment && <p className="message-warning">* Required</p>}
         </div>
         {
           (files) ?
@@ -69,10 +69,10 @@ const NewComment: React.FC<NewCommentProps> = (props) => {
               <div className="columns">
                 {files.map(((file, index) => {
                   return(
-                    <FileUpload key={index} fileToUpload={file} addMultimedia={addMultimedia} setLoading={setLoading}></FileUpload>    
+                    <FileUpload key={index} fileToUpload={file} addMultimedia={addMultimedia} setLoading={setLoading}></FileUpload>
                   );
                 }))}
-                
+
               </div>
             ) : null
         }
@@ -80,7 +80,7 @@ const NewComment: React.FC<NewCommentProps> = (props) => {
           <button className="button is-info" disabled={loading}>
             Comment
           </button>
-          <button 
+          <button
             onClick={handleClickCancel}
             className="button"
             style={{marginLeft: "5px"}}>
@@ -88,10 +88,10 @@ const NewComment: React.FC<NewCommentProps> = (props) => {
           </button>
           <div className="file">
             <label className="file-label">
-              <input 
+              <input
                 onChange={e => { e.target.files && addFile(e.target.files); }}
-                className="file-input" 
-                type="file" 
+                className="file-input"
+                type="file"
                 name="resume"
               />
               <span className="file-cta">
