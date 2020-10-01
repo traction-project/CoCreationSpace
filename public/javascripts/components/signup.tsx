@@ -12,7 +12,6 @@ const Signup: React.FC<SignupProps> = (props) => {
   const [ password, setPassword ] = useState<string>(); 
 
   const handleButtonSubmitClick = handleSubmit(({ username, password, confirmation }) => {
-    console.log(username, password, confirmation);
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
 
@@ -23,7 +22,6 @@ const Signup: React.FC<SignupProps> = (props) => {
     })
       .then(async res => {
         if (res.ok) {
-          console.log("Registration complete!");
           history.push("/");
         }
       })
