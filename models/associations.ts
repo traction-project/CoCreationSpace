@@ -1,7 +1,7 @@
 import { DbInterface } from "util/typing/DbInterface";
 import { HasOne, HasMany } from "sequelize/types/lib/associations";
 import { PostInstance } from "./post";
-import { DataContainerInstance } from "./dataContainer";
+import { DataContainerInstance } from "./data_container";
 import { MultimediaInstance } from "./multimedia";
 
 type AssociationType = {

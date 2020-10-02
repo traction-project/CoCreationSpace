@@ -4,8 +4,8 @@ import * as uuid from "uuid";
 import { commonAttributes } from "util/typing/modelCommonAttributes";
 import { UsersAttributes, UserInstance } from "./users";
 import { TranscribeOutput } from "util/transcribe";
-import { DataContainerAttributes, DataContainerInstance } from "./dataContainer";
-import { AudioContentAttributes, AudioContentInstance } from "./audioContent";
+import { DataContainerAttributes, DataContainerInstance } from "./data_container";
+import { AudioContentAttributes, AudioContentInstance } from "./audio_content";
 import { MetadataAttributes, MetadataInstance } from "./metadata";
 import { SubtitlesAttributes, SubtitlesInstance } from "./subtitles";
 

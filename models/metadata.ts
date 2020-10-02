@@ -3,7 +3,7 @@ import * as uuid from "uuid";
 
 import { commonAttributes } from "util/typing/modelCommonAttributes";
 import { MultimediaAttributes, MultimediaInstance } from "./multimedia";
-import { AudioContentAttributes, AudioContentInstance } from "./audioContent";
+import { AudioContentAttributes, AudioContentInstance } from "./audio_content";
 
 export interface MetadataAttributes extends commonAttributes{
     metadata_type?: string;

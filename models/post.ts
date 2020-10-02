@@ -5,7 +5,7 @@ import { commonAttributes } from "util/typing/modelCommonAttributes";
 import { UsersAttributes, UserInstance } from "./users";
 import { ThreadAttributes, ThreadInstance } from "./thread";
 import { TagAttributes, TagInstance } from "./tag";
-import { DataContainerAttributes, DataContainerInstance } from "./dataContainer";
+import { DataContainerAttributes, DataContainerInstance } from "./data_container";
 
 export interface PostAttributes extends commonAttributes{
     title?: string;

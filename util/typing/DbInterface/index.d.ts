@@ -1,7 +1,7 @@
 import { ModelCtor } from "sequelize";
 
-import { AudioContentInstance } from "models/audioContent";
-import { DataContainerInstance } from "models/dataContainer";
+import { AudioContentInstance } from "models/audio_content";
+import { DataContainerInstance } from "models/data_container";
 import { MetadataInstance } from "models/metadata";
 import { MultimediaInstance } from "models/multimedia";
 import { PermissionsInstance } from "models/permissions";
@@ -9,12 +9,12 @@ import { PostInstance } from "models/post";
 import { PreferencesInstance } from "models/preferences";
 import { SubtitlesInstance } from "models/subtitles";
 import { TagInstance } from "models/tag";
-import { TagReferencesInstance } from "models/tagReferences";
+import { TagReferencesInstance } from "models/tag_references";
 import { ThreadInstance } from "models/thread";
 import { TopicInstance } from "models/topic";
 import { UserInstance } from "models/users";
-import { UserReferencesInstance } from "models/userReferences";
-import { PostReferencesInstance } from "models/postReferences";
+import { UserReferencesInstance } from "models/user_references";
+import { PostReferencesInstance } from "models/post_references";
 import { LikesInstance } from "models/likes";
 
 /**
