@@ -14,6 +14,17 @@ to install it before you get going. Moreover, make sure to install Docker and
 `docker-compose` (usually comes packaged with Docker) for running the system
 on your local machine
 
+## Tunnelling
+
+The application makes use of Amazon SNS (Simple Notification Service) to be
+notified about asynchronous events (such as status updates about video
+processing). In order to receive messages, the application needs to subscribe
+to the SNS channel using a public names where it is reachable.
+
+The best way to achieve this so far is to create a account with NGrok
+(https://www.ngrok.com), download their command line tool, start a tunnel and
+put the name of the tunnel into your `.env` file under `SNS_ENDPOINT`.
+
 ## Launching
 
 Before launching the application for the first time, make sure to rename the
