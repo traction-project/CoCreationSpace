@@ -9,6 +9,7 @@ import { DataContainerAttributes, DataContainerInstance } from "./data_container
 
 export interface PostAttributes extends commonAttributes{
     title?: string;
+    second?: number;
     parent_post_id?: string;
     user_id?: string;
     thread_id?: string;
@@ -113,6 +114,9 @@ export function PostModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mode
   const attributes = {
     title: {
       type: Sequelize.DataTypes.STRING
+    },
+    second: {
+      type: Sequelize.DataTypes.DECIMAL
     },
     karma_points: {
       type: Sequelize.DataTypes.INTEGER

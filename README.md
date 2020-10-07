@@ -96,7 +96,7 @@ If we do a change in the database schema, we must do the next steps:
 This will generate a new file XXXXXX-action_name.js in `migrations/` folder. To run this action, we must write the next command:
 
 ```bash
-    npx sequelize db:migration
+    npx sequelize db:migrate
 ```
 
 If we want to undo this actions, we can write the next command:

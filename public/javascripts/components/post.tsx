@@ -8,6 +8,7 @@ import Video from "./video";
 import NewComment from "./new_comment";
 import { useParams } from "react-router-dom";
 import { TagData } from "./post_list";
+import { VideoJsPlayer } from "video.js";
 
 type dataContainerType = {
   text_content?: string;
@@ -44,6 +45,7 @@ const Post: React.FC<PostProps> = (props) => {
   const [ showNewComment, setShowNewComment ] = useState<boolean>(false);
   const [ comments, setComments ] = useState<PostType[]>([]);
   const [ showComments, setShowComments ] = useState(false);
+  const [ player, setPlayer ] = useState<VideoJsPlayer>();
 
   useEffect(() => {
     fetch(`/posts/id/${idPost}`)
@@ -75,6 +77,20 @@ const Post: React.FC<PostProps> = (props) => {
 
   const handleClickReply = () => {
     setShowNewComment(true);
+  };
+
+  const getPlayer = async (newPlayer: VideoJsPlayer, manifest: string) => {
+    newPlayer.src({
+      src: manifest,
+      type: "application/dash+xml"
+    });
+
+    newPlayer.on("timeupdate", () => {
+      console.log(newPlayer.currentTime());
+    });
+
+    newPlayer.play();
+    await setPlayer(newPlayer);
   };
 
   const handleClickComments = () => {
@@ -128,7 +144,7 @@ const Post: React.FC<PostProps> = (props) => {
                     { post.dataContainer && post.dataContainer.multimedia &&
                       post.dataContainer.multimedia.map((multimedia,index) => {
                         return (
-                          <Video key={index} id={multimedia.id}></Video>
+                          <Video key={index} id={multimedia.id} setPlayer={getPlayer}></Video>
                         );
                       })
                     }

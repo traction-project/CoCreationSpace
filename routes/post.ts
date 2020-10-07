@@ -189,7 +189,7 @@ router.post("/", authRequired, async (req, res) => {
  */
 router.post("/id/:id", authRequired, async (req, res) => {
   const { id } = req.params;
-  const { text, multimedia } = req.body;
+  const { text, multimedia,  second } = req.body;
 
   if (!text) {
     return res.status(400).send({ message: "Field text not present"});
@@ -203,7 +203,8 @@ router.post("/id/:id", authRequired, async (req, res) => {
     user_id: user.id,
     dataContainer: {
       text_content: text
-    }
+    },
+    second
   }, {
     include: [ association.getAssociatons().postAssociations.PostDataContainer ]
   });

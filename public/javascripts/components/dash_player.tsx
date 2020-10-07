@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useEffect, useRef } from "react";
-import videojs from "video.js";
+import videojs, { VideoJsPlayer } from "video.js";
 
 import "videojs-contrib-dash";
 
@@ -8,11 +8,12 @@ interface DashPlayerProps {
   manifest: string;
   subtitles: Array<{ language: string, url: string }>;
   width: number;
+  setPlayer?: (v: VideoJsPlayer, m: string) => void;
 }
 
 const DashPlayer: React.FC<DashPlayerProps> = (props) => {
   const videoNode = useRef<HTMLVideoElement>(null);
-  const { manifest, width, subtitles } = props;
+  const { manifest, width, subtitles, setPlayer } = props;
 
   useEffect(() => {
     if (videoNode === null) {
@@ -20,14 +21,7 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
     }
 
     const player = videojs(videoNode.current, { width, autoplay: true, controls: true }, () => {
-      console.log("Video player ready");
-
-      player.src({
-        src: manifest,
-        type: "application/dash+xml"
-      });
-
-      player.play();
+      setPlayer && setPlayer(player, manifest);
     });
 
     return () => {
