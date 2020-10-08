@@ -507,3 +507,21 @@ a.header__item:hover {
 .red {
   color: #f96868;
 }
+
+.video-marker {
+  position: absolute;
+  display: block;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.video-marker:before {
+  content:"";
+  background-color: blue;
+  position: absolute;
+  right: -0.5em;
+  height: 100%;
+  width: .2rem;
+  z-index: 1;
+}

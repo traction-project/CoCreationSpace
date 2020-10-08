@@ -8,12 +8,14 @@ interface DashPlayerProps {
   manifest: string;
   subtitles: Array<{ language: string, url: string }>;
   width: number;
-  setPlayer?: (v: VideoJsPlayer, m: string) => void;
+  markers?: number[];
+  setPlayer?: (v: VideoJsPlayer) => void;
 }
 
 const DashPlayer: React.FC<DashPlayerProps> = (props) => {
+  const playerNode = useRef<HTMLDivElement>(null);
   const videoNode = useRef<HTMLVideoElement>(null);
-  const { manifest, width, subtitles, setPlayer } = props;
+  const { manifest, width, subtitles, markers, setPlayer } = props;
 
   useEffect(() => {
     if (videoNode === null) {
@@ -21,7 +23,18 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
     }
 
     const player = videojs(videoNode.current, { width, autoplay: true, controls: true }, () => {
-      setPlayer && setPlayer(player, manifest);
+      player.src({
+        src: manifest,
+        type: "application/dash+xml"
+      });
+
+      if (markers) {
+        player.on("loadedmetadata", () => {
+          createMarkers(player, markers);
+        });
+      }
+
+      setPlayer && setPlayer(player);
     });
 
     return () => {
@@ -29,9 +42,20 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
     };
   }, [manifest]);
 
+
+  const createMarkers = (player: VideoJsPlayer, seconds: number[]) => {
+    seconds.map(second => {
+      const marker = document.createElement("div");
+      marker.style.width = `${second * 100 / player.duration()}%`;
+      marker.className = "video-marker";
+
+      playerNode.current?.querySelector(".vjs-progress-holder")?.appendChild(marker);
+    });
+  };
+
   return (
     <div>
-      <div data-vjs-player>
+      <div ref={playerNode} data-vjs-player>
         <video ref={videoNode} className="video-js">
           {subtitles.map((s, i) => {
             return (

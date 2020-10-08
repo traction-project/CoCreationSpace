@@ -6,12 +6,13 @@ import { VideoJsPlayer } from "video.js";
 
 type VideoProps = {
   id?: number;
-  setPlayer?: (v: VideoJsPlayer, m: string) => void;
+  markers?: number[];
+  setPlayer?: (v: VideoJsPlayer) => void;
 }
 
 const Video: React.FC<VideoProps> = (props) => {
   const { id } = useParams<{ id: string }>();
-  const { id: idAttribute, setPlayer } = props;
+  const { id: idAttribute, setPlayer, markers } = props;
   const idVideo = idAttribute ? idAttribute : id;
 
   const [ videoUrl, setVideoUrl ] = useState<string | undefined>(undefined);
@@ -55,6 +56,7 @@ const Video: React.FC<VideoProps> = (props) => {
             width={700}
             manifest={videoUrl}
             subtitles={availableSubtitles}
+            markers={markers}
             setPlayer={setPlayer}
           />
         ) : (

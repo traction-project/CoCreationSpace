@@ -20,6 +20,7 @@ type dataContainerType = {
 
 export type PostType = {
   title?: string;
+  second?: number;
   dataContainer?: dataContainerType;
   comments?: PostType[];
   karma_points?: number;
@@ -44,7 +45,8 @@ const Post: React.FC<PostProps> = (props) => {
   const [ likes, setLikes ] = useState<number>(0);
   const [ showNewComment, setShowNewComment ] = useState<boolean>(false);
   const [ comments, setComments ] = useState<PostType[]>([]);
-  const [ showComments, setShowComments ] = useState(false);
+  const [ filteredComments, setFilteredComments ] = useState<PostType[]>([]);
+  const [ showComments, setShowComments ] = useState(true);
   const [ player, setPlayer ] = useState<VideoJsPlayer>();
 
   useEffect(() => {
@@ -53,6 +55,7 @@ const Post: React.FC<PostProps> = (props) => {
       .then((data) => {
         setPost(data);
         setComments(data.comments);
+        filterCommentsByTime(data.comments);
         if (data.isLiked) { setIsLike(data.isLiked); }
         if (data.likes) { setLikes(data.likes); }
       });
@@ -79,14 +82,10 @@ const Post: React.FC<PostProps> = (props) => {
     setShowNewComment(true);
   };
 
-  const getPlayer = async (newPlayer: VideoJsPlayer, manifest: string) => {
-    newPlayer.src({
-      src: manifest,
-      type: "application/dash+xml"
-    });
-
+  const getPlayer = async (newPlayer: VideoJsPlayer) => {
     newPlayer.on("timeupdate", () => {
-      console.log(newPlayer.currentTime());
+      const timeRounded = Math.floor(newPlayer.currentTime());
+      filterCommentsByTime(comments, timeRounded);
     });
 
     newPlayer.play();
@@ -105,6 +104,11 @@ const Post: React.FC<PostProps> = (props) => {
       ...(multimedia && multimedia.length > 0 && {multimedia})
     };
 
+    if (player) {
+      const second = player.currentTime();
+      Object.assign(bodyJson, { second });
+    }
+
     const body = JSON.stringify(bodyJson);
 
     fetch(`posts/id/${idPost}`,{
@@ -117,12 +121,27 @@ const Post: React.FC<PostProps> = (props) => {
         let commentsList = comments;
         commentsList.push(data);
         setComments(commentsList);
+        const timeRounded = player ? Math.floor(player.currentTime()) : 0;
+        filterCommentsByTime(commentsList, timeRounded);
         setShowNewComment(false);
       });
   };
 
   const handleClickCancel = () => {
     setShowNewComment(false);
+  };
+
+  const filterCommentsByTime = (comments: PostType[], second = 0): void => {
+    const list = comments.filter((comment) => !comment.second || Math.floor(comment.second) <= second);
+
+    list.sort((a, b) => {
+      if (!a.second || !b.second) {
+        return -1;
+      }
+      return Math.floor(b.second) - Math.floor(a.second);
+    });
+
+    setFilteredComments(list);
   };
 
   return (
@@ -144,7 +163,7 @@ const Post: React.FC<PostProps> = (props) => {
                     { post.dataContainer && post.dataContainer.multimedia &&
                       post.dataContainer.multimedia.map((multimedia,index) => {
                         return (
-                          <Video key={index} id={multimedia.id} setPlayer={getPlayer}></Video>
+                          <Video key={index} id={multimedia.id} setPlayer={getPlayer} markers={comments && comments.map(comment => comment.second ? comment.second : 0)}></Video>
                         );
                       })
                     }
@@ -165,8 +184,8 @@ const Post: React.FC<PostProps> = (props) => {
                   { showNewComment &&
                     <NewComment handleSubmitNewComment={handleSubmitNewComment} handleClickCancel={handleClickCancel}></NewComment>
                   }
-                  { !!comments && comments.length > 0 && <a className="text-comments" onClick={handleClickComments}><i className="fas fa-sort-down"></i> Show Comments ({comments?.length})</a>}
-                  { showComments && <CommentList posts={comments}></CommentList> }
+                  { !!filteredComments && filteredComments.length > 0 && <a className="text-comments" onClick={handleClickComments}><i className="fas fa-sort-down"></i> Show Comments ({filteredComments?.length})</a>}
+                  { showComments && <CommentList posts={filteredComments}></CommentList> }
                 </div>
               </article>
             </div>
