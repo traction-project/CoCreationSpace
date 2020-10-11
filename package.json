@@ -92,6 +92,6 @@
     "source-map-support": "^0.5.16",
     "ts-jest": "^26.0.0",
     "typedoc": "^0.17.6",
-    "webpack-node-externals": "^1.7.2"
+    "webpack-node-externals": "^2.5.2"
   }
 }
