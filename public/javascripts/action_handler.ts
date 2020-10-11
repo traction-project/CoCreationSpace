@@ -1,5 +1,3 @@
-import { Map } from "immutable";
-
 interface Action {
   type: string;
 }
@@ -47,7 +45,7 @@ export class ActionHandler<T> {
   constructor(initialState: T) {
     // Initialise initialState with given object and create empty callback map
     this.initialState = initialState;
-    this.handlers = Map();
+    this.handlers = new Map();
   }
 
   /**
@@ -60,7 +58,7 @@ export class ActionHandler<T> {
    */
   public addHandler(action: string, fn: ActionHandlerFunction<T>) {
     // Create new entry in handlers map with action name as key and callback as value
-    this.handlers = this.handlers.set(action, fn);
+    this.handlers.set(action, fn);
   }
 
   /**
