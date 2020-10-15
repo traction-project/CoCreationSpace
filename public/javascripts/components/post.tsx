@@ -163,7 +163,7 @@ const Post: React.FC<PostProps> = (props) => {
                     { post.dataContainer && post.dataContainer.multimedia &&
                       post.dataContainer.multimedia.map((multimedia,index) => {
                         return (
-                          <Video key={index} id={multimedia.id} setPlayer={getPlayer} markers={comments && comments.map(comment => comment.second ? comment.second : 0)}></Video>
+                          <Video key={index} id={multimedia.id} setPlayer={getPlayer} markers={comments && comments.map(comment => comment.second ? comment.second : 0)} comments={comments}></Video>
                         );
                       })
                     }

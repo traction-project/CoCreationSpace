@@ -3,16 +3,18 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import DashPlayer from "./dash_player";
 import { VideoJsPlayer } from "video.js";
+import { PostType } from "./post";
 
 type VideoProps = {
   id?: number;
   markers?: number[];
+  comments?: PostType[];
   setPlayer?: (v: VideoJsPlayer) => void;
 }
 
 const Video: React.FC<VideoProps> = (props) => {
   const { id } = useParams<{ id: string }>();
-  const { id: idAttribute, setPlayer, markers } = props;
+  const { id: idAttribute, setPlayer, markers, comments } = props;
   const idVideo = idAttribute ? idAttribute : id;
 
   const [ videoUrl, setVideoUrl ] = useState<string | undefined>(undefined);
@@ -58,6 +60,7 @@ const Video: React.FC<VideoProps> = (props) => {
             subtitles={availableSubtitles}
             markers={markers}
             setPlayer={setPlayer}
+            comments={comments}
           />
         ) : (
           null

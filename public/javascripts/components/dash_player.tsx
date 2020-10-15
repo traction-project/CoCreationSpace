@@ -1,21 +1,26 @@
 import * as React from "react";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import videojs, { VideoJsPlayer } from "video.js";
 
 import "videojs-contrib-dash";
+import { PostType } from "./post";
+import vjsReactionComments from "./videojs/reaction-comments";
 
 interface DashPlayerProps {
   manifest: string;
   subtitles: Array<{ language: string, url: string }>;
   width: number;
   markers?: number[];
+  comments?: PostType[];
   setPlayer?: (v: VideoJsPlayer) => void;
 }
 
 const DashPlayer: React.FC<DashPlayerProps> = (props) => {
   const playerNode = useRef<HTMLDivElement>(null);
   const videoNode = useRef<HTMLVideoElement>(null);
-  const { manifest, width, subtitles, markers, setPlayer } = props;
+  const [ video, setVideo ] = useState<VideoJsPlayer>();
+  const [ componentContainer, setComponentContainer ] = useState<vjsReactionComments>();
+  const { manifest, width, subtitles, markers, setPlayer, comments } = props;
 
   useEffect(() => {
     if (videoNode === null) {
@@ -28,9 +33,13 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
         type: "application/dash+xml"
       });
 
+      setVideo(player);
+
+      addComments(comments);
+
       if (markers) {
         player.on("loadedmetadata", () => {
-          createMarkers(player, markers);
+          createMarkers(markers);
         });
       }
 
@@ -42,15 +51,32 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
     };
   }, [manifest]);
 
+  useEffect(() => {
+    addComments(comments);
+    createMarkers(markers);
+  }, [comments?.length]);
 
-  const createMarkers = (player: VideoJsPlayer, seconds: number[]) => {
-    seconds.map(second => {
-      const marker = document.createElement("div");
-      marker.style.width = `${second * 100 / player.duration()}%`;
-      marker.className = "video-marker";
+  const addComments = (comments?: PostType[]) => {
+    if (video) {
+      if (componentContainer) {
+        video.removeChild(componentContainer);
+      }
+      const reactionContainer = new vjsReactionComments(video, { comments });
+      video.addChild(reactionContainer);
+      setComponentContainer(reactionContainer);
+    }
+  };
 
-      playerNode.current?.querySelector(".vjs-progress-holder")?.appendChild(marker);
-    });
+  const createMarkers = (seconds?: number[]) => {
+    if (video && seconds) {
+      seconds.map(second => {
+        const marker = document.createElement("div");
+        marker.style.width = `${second * 100 / video.duration()}%`;
+        marker.className = "video-marker";
+
+        playerNode.current?.querySelector(".vjs-progress-holder")?.appendChild(marker);
+      });
+    }
   };
 
   return (
