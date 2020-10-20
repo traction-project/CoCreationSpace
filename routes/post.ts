@@ -114,8 +114,13 @@ router.get("/id/:id", authRequired, async (req, res) => {
       {
         association: association.getAssociatons().postAssociations.PostDataContainer,
         include: [ association.getAssociatons().datacontainerAssociations.DatacontainerMultimedia ]
-      }, "comments", "postReference", "postReferenced", "user", "userReferenced", "tags"
-    ]
+      }, {
+        model: Posts,
+        as: "comments",
+        include: ["dataContainer", "user"],
+      }, "postReference", "postReferenced", "user", "userReferenced", "tags"
+    ],
+    order: [["comments","created_at", "desc"]],
   });
 
   if (post) {

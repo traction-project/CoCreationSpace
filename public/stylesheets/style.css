@@ -510,20 +510,12 @@ a.header__item:hover {
 
 .video-marker {
   position: absolute;
-  display: block;
-  height: 100%;
-  margin: 0;
-  padding: 0;
+  transform: translate(-50%, -30%);
+  color: rgb(64, 179, 64);
 }
 
-.video-marker:before {
-  content:"";
-  background-color: blue;
-  position: absolute;
-  right: -0.5em;
-  height: 100%;
-  width: .2rem;
-  z-index: 1;
+.video-marker:hover {
+  color: rgb(77, 224, 77);
 }
 
 .reaction-container {
@@ -693,13 +685,15 @@ a.header__item:hover {
 .tooltip-container {
   position: absolute;
   left: 0;
-  top: 0;
   overflow: auto;
   bottom: 0;
-  max-width: 240px;
   display: flex;
-  flex-direction: column-reverse;
   padding: 1em;
+  max-width: 100%;
+  width: 100%;
+  font-size: 1.5em;
+  letter-spacing: 1px;
+  background-color: rgba(80, 79, 79, 0.3);
 }
 
 .vjs-has-started.vjs-user-inactive.vjs-playing .tooltip-container {
@@ -707,14 +701,15 @@ a.header__item:hover {
 }
 
 .vjs-has-started .tooltip-container {
-  bottom: 3em;
+  bottom: 2em;
 }
 
-.tooltip-item {
-  background: white;
-  padding: .5em 1em;
-  color: black;
-  letter-spacing: 1px;
-  margin-bottom: 4px;
-  font-size: .8rem;
+.tooltip__username {
+  color: #39A0FF;
+  font-weight: 800;
+}
+
+.tooltip__text {
+  margin-left: 1rem;
+  word-break: break-word;
 }

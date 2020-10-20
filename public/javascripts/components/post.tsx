@@ -9,6 +9,7 @@ import NewComment from "./new_comment";
 import { useParams } from "react-router-dom";
 import { TagData } from "./post_list";
 import { VideoJsPlayer } from "video.js";
+import { getPostId, postComment, postLike } from "../services/post.service";
 
 type dataContainerType = {
   text_content?: string;
@@ -45,103 +46,69 @@ const Post: React.FC<PostProps> = (props) => {
   const [ likes, setLikes ] = useState<number>(0);
   const [ showNewComment, setShowNewComment ] = useState<boolean>(false);
   const [ comments, setComments ] = useState<PostType[]>([]);
-  const [ filteredComments, setFilteredComments ] = useState<PostType[]>([]);
-  const [ showComments, setShowComments ] = useState(true);
+  const [ showComments, setShowComments ] = useState(false);
   const [ player, setPlayer ] = useState<VideoJsPlayer>();
 
-  useEffect(() => {
-    fetch(`/posts/id/${idPost}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setPost(data);
-        setComments(data.comments);
-        filterCommentsByTime(data.comments);
-        if (data.isLiked) { setIsLike(data.isLiked); }
-        if (data.likes) { setLikes(data.likes); }
-      });
+  useEffect(() => {( async () => {
+    const response = await getPostId(idPost);
+
+    if (response.ok) {
+      const data = await response.json();
+      setPost(data);
+      setComments(data.comments);
+      if (!data.parent_post_id) {
+        setShowNewComment(true);
+        setShowComments(true);
+      }
+      if (data.isLiked) { setIsLike(data.isLiked); }
+      if (data.likes) { setLikes(data.likes); }
+    }
+  })();
   }, [idPost]);
-
-  const handleClickLike = () => {
-    const action = isLike ? "unlike" : "like";
-    postLike(action);
-    setIsLike(!isLike);
-  };
-
-  const postLike = (action: string) => {
-    action = action.toLowerCase();
-    fetch(`/posts/id/${idPost}/${action}`, { method: "POST" })
-      .then(res => res.json())
-      .then((data) => {
-        if (data.count || data.count === 0) {
-          setLikes(data.count);
-        }
-      });
-  };
 
   const handleClickReply = () => {
     setShowNewComment(true);
   };
 
-  const getPlayer = async (newPlayer: VideoJsPlayer) => {
-    newPlayer.on("timeupdate", () => {
-      const timeRounded = Math.floor(newPlayer.currentTime());
-      filterCommentsByTime(comments, timeRounded);
-    });
+  const handleClickLike = async () => {
+    const action = isLike ? "unlike" : "like";
+    const response = await postLike(idPost, action);
 
-    newPlayer.play();
-    await setPlayer(newPlayer);
+    if (response.ok) {
+      const data = await response.json();
+
+      if (data.count || data.count === 0) {
+        setLikes(data.count);
+      }
+    }
+    setIsLike(!isLike);
   };
 
   const handleClickComments = () => {
     setShowComments(!showComments);
   };
 
-  const handleSubmitNewComment = ({comment, multimedia}: {comment: string, multimedia?: Array<number>}) => {
-    const headers = new Headers();
-    headers.append("Content-Type", "application/json");
-    let bodyJson = {
-      text: comment,
-      ...(multimedia && multimedia.length > 0 && {multimedia})
-    };
+  const handleSubmitNewComment = async ({comment, multimedia}: {comment: string, multimedia?: Array<number>}) => {
+    const second = player ? player.currentTime() : 0;
+    const responseComment = await postComment(idPost, comment, multimedia, second);
 
-    if (player) {
-      const second = player.currentTime();
-      Object.assign(bodyJson, { second });
+    if (responseComment.ok) {
+      const responsePost = await getPostId(idPost);
+
+      if (responsePost.ok) {
+        const data = await responsePost.json();
+        setPost(data);
+        setComments(data.comments);
+      }
     }
-
-    const body = JSON.stringify(bodyJson);
-
-    fetch(`posts/id/${idPost}`,{
-      method: "POST",
-      headers,
-      body
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        let commentsList = comments;
-        commentsList.push(data);
-        setComments(commentsList);
-        const timeRounded = player ? Math.floor(player.currentTime()) : 0;
-        filterCommentsByTime(commentsList, timeRounded);
-        setShowNewComment(false);
-      });
   };
 
   const handleClickCancel = () => {
     setShowNewComment(false);
   };
 
-  const filterCommentsByTime = (comments: PostType[], second = 0): void => {
-    const list = comments.filter((comment) => !comment.second || Math.floor(comment.second) <= second);
-
-    list.sort((a, b) => {
-      if (!a.second || !b.second) {
-        return -1;
-      }
-      return Math.floor(b.second) - Math.floor(a.second);
-    });
-
-    setFilteredComments(list);
+  const callbackPlayer = async (newPlayer: VideoJsPlayer) => {
+    await setPlayer(newPlayer);
   };
 
   return (
@@ -163,7 +130,7 @@ const Post: React.FC<PostProps> = (props) => {
                     { post.dataContainer && post.dataContainer.multimedia &&
                       post.dataContainer.multimedia.map((multimedia,index) => {
                         return (
-                          <Video key={index} id={multimedia.id} setPlayer={getPlayer} markers={comments && comments.map(comment => comment.second ? comment.second : 0)} comments={comments}></Video>
+                          <Video key={index} id={multimedia.id} getPlayer={callbackPlayer} comments={comments}></Video>
                         );
                       })
                     }
@@ -184,8 +151,8 @@ const Post: React.FC<PostProps> = (props) => {
                   { showNewComment &&
                     <NewComment handleSubmitNewComment={handleSubmitNewComment} handleClickCancel={handleClickCancel}></NewComment>
                   }
-                  { !!filteredComments && filteredComments.length > 0 && <a className="text-comments" onClick={handleClickComments}><i className="fas fa-sort-down"></i> Show Comments ({filteredComments?.length})</a>}
-                  { showComments && <CommentList posts={filteredComments}></CommentList> }
+                  { !!comments && comments.length > 0 && <a className="text-comments" onClick={handleClickComments}><i className="fas fa-sort-down"></i> Show Comments ({comments?.length})</a>}
+                  { showComments && <CommentList posts={comments}></CommentList> }
                 </div>
               </article>
             </div>

@@ -2,79 +2,109 @@ import * as React from "react";
 import { useEffect, useRef, useState } from "react";
 import videojs, { VideoJsPlayer } from "video.js";
 
+import vjsTooltip from "./videojs/tooltip";
 import "videojs-contrib-dash";
 import { PostType } from "./post";
-import vjsReactionComments from "./videojs/reaction-comments";
 
 interface DashPlayerProps {
   manifest: string;
   subtitles: Array<{ language: string, url: string }>;
   width: number;
-  markers?: number[];
   comments?: PostType[];
-  setPlayer?: (v: VideoJsPlayer) => void;
+  getPlayer?: (v: VideoJsPlayer) => void;
 }
 
 const DashPlayer: React.FC<DashPlayerProps> = (props) => {
   const playerNode = useRef<HTMLDivElement>(null);
   const videoNode = useRef<HTMLVideoElement>(null);
-  const [ video, setVideo ] = useState<VideoJsPlayer>();
-  const [ componentContainer, setComponentContainer ] = useState<vjsReactionComments>();
-  const { manifest, width, subtitles, markers, setPlayer, comments } = props;
+  const [ player, setPlayer ] = useState<VideoJsPlayer>();
+  const { manifest, width, subtitles, comments, getPlayer } = props;
 
   useEffect(() => {
     if (videoNode === null) {
       return;
     }
 
-    const player = videojs(videoNode.current, { width, autoplay: true, controls: true }, () => {
-      player.src({
-        src: manifest,
-        type: "application/dash+xml"
-      });
-
-      setVideo(player);
-
-      addComments(comments);
-
-      if (markers) {
-        player.on("loadedmetadata", () => {
-          createMarkers(markers);
-        });
-      }
-
-      setPlayer && setPlayer(player);
-    });
+    const video = videojs(videoNode.current, { width, autoplay: true, controls: true }, () => {initPlayer(video);});
+    setPlayer(video);
+    getPlayer && getPlayer(video);
 
     return () => {
-      player.dispose();
+      player && player.dispose();
     };
   }, [manifest]);
 
   useEffect(() => {
-    addComments(comments);
-    createMarkers(markers);
-  }, [comments?.length]);
-
-  const addComments = (comments?: PostType[]) => {
-    if (video) {
-      if (componentContainer) {
-        video.removeChild(componentContainer);
+    if (player) {
+      const markers = getMarkers();
+      createMarkers(player, markers);
+      if (comments) {
+        player.off("timeupdate");
+        player.on("timeupdate", handlePlayerTimeUpdated);
       }
-      const reactionContainer = new vjsReactionComments(video, { comments });
-      video.addChild(reactionContainer);
-      setComponentContainer(reactionContainer);
+    }
+  }, [comments?.length, player]);
+
+  const initPlayer = (video: VideoJsPlayer) => {
+    if (video) {
+      video.src({
+        src: manifest,
+        type: "application/dash+xml"
+      });
+
+      const markers = getMarkers();
+      if (markers) {
+        video.on("loadedmetadata", () => {
+          createMarkers(video, markers);
+        });
+      }
+
+      video.play();
     }
   };
 
-  const createMarkers = (seconds?: number[]) => {
+  const handlePlayerTimeUpdated = () => {
+    console.log(comments);
+    if (player && comments) {
+      const time = player.currentTime();
+      const timeRounded = Math.floor(time);
+      const comment = comments.filter((comment) => comment.second && (Math.floor(comment.second) === timeRounded));
+      if (comment.length > 0) {
+        addTooltip(player, comment[0]);
+      }
+    }
+  };
+
+  const addTooltip = (video: VideoJsPlayer,reaction: PostType): void => {
+    if (video && reaction.dataContainer?.text_content) {
+      const currentTooltip = video.getChildById("vjsTooltip");
+
+      if (currentTooltip) {
+        video.removeChild(currentTooltip);
+      }
+      const tooltip = new vjsTooltip(video, { username: reaction.user.username, text: reaction.dataContainer.text_content});
+      video.addChild(tooltip);
+      setTimeout(() => video && video.removeChild(tooltip), 3000);
+    }
+  };
+
+  const getMarkers = () => {
+    let markers = comments?.map(comment => comment.second);
+    markers = markers?.filter(marker => marker !== undefined);
+    return markers;
+  };
+
+  const createMarkers = (video: VideoJsPlayer, seconds?: (number | undefined)[]) => {
     if (video && seconds) {
       seconds.map(second => {
-        const marker = document.createElement("div");
-        marker.style.width = `${second * 100 / video.duration()}%`;
-        marker.className = "video-marker";
-
-        playerNode.current?.querySelector(".vjs-progress-holder")?.appendChild(marker);
+        if (second) {
+          const marker = document.createElement("i");
+          marker.classList.add("fas");
+          marker.classList.add("fa-comment");
+          marker.classList.add("video-marker");
+          marker.style.left = `${second * 100 / video.duration()}%`;
+          playerNode.current?.querySelector(".vjs-progress-holder")?.appendChild(marker);
+        }
       });
     }
   };

@@ -9,12 +9,12 @@ type VideoProps = {
   id?: number;
   markers?: number[];
   comments?: PostType[];
-  setPlayer?: (v: VideoJsPlayer) => void;
+  getPlayer?: (v: VideoJsPlayer) => void;
 }
 
 const Video: React.FC<VideoProps> = (props) => {
   const { id } = useParams<{ id: string }>();
-  const { id: idAttribute, setPlayer, markers, comments } = props;
+  const { id: idAttribute, comments, getPlayer } = props;
   const idVideo = idAttribute ? idAttribute : id;
 
   const [ videoUrl, setVideoUrl ] = useState<string | undefined>(undefined);
@@ -58,9 +58,8 @@ const Video: React.FC<VideoProps> = (props) => {
             width={700}
             manifest={videoUrl}
             subtitles={availableSubtitles}
-            markers={markers}
-            setPlayer={setPlayer}
             comments={comments}
+            getPlayer={getPlayer}
           />
         ) : (
           null

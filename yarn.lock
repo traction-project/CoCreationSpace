@@ -1825,9 +1825,9 @@
   integrity sha512-xSQfNcvOiE5f9dyd4Kzxbof1aTrLobL278pGLKOZI6esGfZ7ts9Ka16CzIN6Y8hFHE1C7jIBZokULhK1bOgjRw==
 
 "@types/video.js@^7.3.9":
-  version "7.3.9"
-  resolved "https://registry.yarnpkg.com/@types/video.js/-/video.js-7.3.9.tgz#e129999d1f0e040296c1bc5756178e157ca19508"
-  integrity sha512-NH0ljXTYz16uCUu1AogGRy5vb63N+UxfS+yCRt5WeGLSmycfXG8LQhD//IPR3zvnZirpQbWDM+DXfiHleBQGhA==
+  version "7.3.11"
+  resolved "https://registry.yarnpkg.com/@types/video.js/-/video.js-7.3.11.tgz#b1749fcc733c608ede4d10c9a570ebafc4ec2486"
+  integrity sha512-9KpJkt6zsy6xRiHZjzjKxCEySqt3TgPgl0XegszwJfaLO4+n4rELS5rbsHUgLJxZaMgbJtyTPXk1HkCsJ5kRiA==
 
 "@types/yargs-parser@*":
   version "15.0.0"
