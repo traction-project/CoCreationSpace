@@ -24,6 +24,7 @@ class Associations {
   createAssociations(models: DbInterface) {
     audioContentAssociations(models);
     const datacontainerAssociations = dataContainerAssociations(models);
+    emojiReactionsAssociations(models);
     metadataAssociations(models);
     multimediaAssociations(models);
     permissionsAssociations(models);
@@ -65,6 +66,15 @@ function dataContainerAssociations(models: DbInterface) {
   return {
     DatacontainerMultimedia
   };
+}
+
+/**
+ *  Create all EmojiReactions table relationship with rest of tables
+ * @param models DbInterface
+ */
+function emojiReactionsAssociations(models: DbInterface) {
+  models.EmojiReactions.belongsTo(models.Posts, { as: "post", foreignKey: "post_id" });
+  models.EmojiReactions.belongsTo(models.Users, { as: "user", foreignKey: "user_id" });
 }
 
 /**
@@ -134,6 +144,10 @@ function postsAssociations(models: DbInterface) {
     },
     foreignKey: "post_id",
     as: "likesUsers"
+  });
+  models.Posts.hasMany(models.EmojiReactions, {
+    as: "emojiReactions",
+    foreignKey: "post_id"
   });
 
   return {
@@ -212,5 +226,9 @@ function userAssociations(models: DbInterface): void {
     },
     foreignKey: "user_id",
     as: "likesPosts"
+  });
+  models.Users.hasMany(models.EmojiReactions, {
+    foreignKey: "user_id",
+    as: "emojiReactions"
   });
 }

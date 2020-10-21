@@ -16,6 +16,7 @@ import { UserInstance } from "models/users";
 import { UserReferencesInstance } from "models/user_references";
 import { PostReferencesInstance } from "models/post_references";
 import { LikesInstance } from "models/likes";
+import { EmojiReactionsInstance } from "models/emoji_reactions";
 
 /**
  *  Interface for the objects that containes all models from database
@@ -23,6 +24,7 @@ import { LikesInstance } from "models/likes";
 export interface DbInterface {
     AudioContent: ModelCtor<AudioContentInstance>;
     DataContainer: ModelCtor<DataContainerInstance>;
+    EmojiReactions: ModelCtor<EmojiReactionsInstance>;
     Likes: ModelCtor<LikesInstance>;
     Metadata: ModelCtor<MetadataInstance>;
     Multimedia: ModelCtor<MultimediaInstance>;

@@ -9,6 +9,7 @@ import { MultimediaInstance, MultimediaAttributes } from "./multimedia";
 import { PreferencesAttributes, PreferencesInstance } from "./preferences";
 import { PermissionsInstance, PermissionsAttributes } from "./permissions";
 import { PostInstance, PostAttributes } from "./post";
+import { EmojiReactionsInstance } from "./emoji_reactions";
 
 const [SESSION_SECRET] = getFromEnvironment("SESSION_SECRET");
 
@@ -24,6 +25,7 @@ export interface UsersAttributes extends commonAttributes {
   permission?: PermissionsAttributes | PermissionsAttributes["id"];
   post?: PostAttributes | PostAttributes["id"];
   postReferenced?: PostAttributes | PostAttributes["id"];
+  emojiReactions?: EmojiReactionsInstance | EmojiReactionsInstance["id"];
 }
 
 type UserToken = {
@@ -87,6 +89,17 @@ export interface UserInstance extends Sequelize.Model<UsersAttributes>, UsersAtt
   hasPostReferenceds: Sequelize.BelongsToManyHasAssociationMixin<PostInstance, PostInstance["id"]>;
   hasPostReferenced: Sequelize.BelongsToManyHasAssociationsMixin<PostInstance, PostInstance["id"]>;
   countPostReferenceds: Sequelize.BelongsToManyCountAssociationsMixin;
+
+  getEmojiReactions: Sequelize.HasManyGetAssociationsMixin<EmojiReactionsInstance>;
+  setEmojiReactions: Sequelize.HasManySetAssociationsMixin<EmojiReactionsInstance, EmojiReactionsInstance["id"]>;
+  addEmojiReactions: Sequelize.HasManyAddAssociationsMixin<EmojiReactionsInstance, EmojiReactionsInstance["id"]>;
+  addEmojiReaction: Sequelize.HasManyAddAssociationMixin<EmojiReactionsInstance, EmojiReactionsInstance["id"]>;
+  removeEmojiReaction: Sequelize.HasManyRemoveAssociationMixin<EmojiReactionsInstance, EmojiReactionsInstance["id"]>;
+  removeEmojiReactions: Sequelize.HasManyRemoveAssociationsMixin<EmojiReactionsInstance, EmojiReactionsInstance["id"]>;
+  hasEmojiReaction: Sequelize.HasManyHasAssociationMixin<EmojiReactionsInstance, EmojiReactionsInstance["id"]>;
+  hasEmojiReactions: Sequelize.HasManyHasAssociationsMixin<EmojiReactionsInstance, EmojiReactionsInstance["id"]>;
+  countEmojiReactions: Sequelize.HasManyCountAssociationsMixin;
+
 }
 
 /**
