@@ -30,7 +30,6 @@ class vjsTooltip extends vjsComponent {
     this.on("dispose", () => {
       ReactDOM.unmountComponentAtNode(this.el());
     });
-    this.mount(username, text);
   }
 
   mount(username: string, text: string) {

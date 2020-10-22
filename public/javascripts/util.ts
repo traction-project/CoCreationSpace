@@ -73,3 +73,8 @@ export type commonType = {
   createdAt?: string;
   updatedAt?: string;
 }
+
+export type EmojiReaction = {
+  emoji: string;
+  second: number;
+}

@@ -2,15 +2,18 @@ import * as React from "react";
 import { useEffect, useRef, useState } from "react";
 import videojs, { VideoJsPlayer } from "video.js";
 
-import vjsTooltip from "./videojs/tooltip";
 import "videojs-contrib-dash";
 import { PostType } from "./post";
+import { EmojiReaction } from "../util";
+import { addEmojiAnimation, addTooltip, createMarkers } from "./videojs/util";
+import { Marker } from "./videojs/types";
 
 interface DashPlayerProps {
   manifest: string;
   subtitles: Array<{ language: string, url: string }>;
   width: number;
   comments?: PostType[];
+  emojis?: EmojiReaction[];
   getPlayer?: (v: VideoJsPlayer) => void;
 }
 
@@ -18,13 +21,14 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
   const playerNode = useRef<HTMLDivElement>(null);
   const videoNode = useRef<HTMLVideoElement>(null);
   const [ player, setPlayer ] = useState<VideoJsPlayer>();
-  const { manifest, width, subtitles, comments, getPlayer } = props;
+  const [ currentTime, setCurrentTime ] = useState<number>(0);
+  const [ currentTimeRounded, setCurrentTimeRounded ] = useState<number>(0);
+  const { manifest, width, subtitles, comments, getPlayer, emojis } = props;
 
   useEffect(() => {
     if (videoNode === null) {
       return;
     }
-
     const video = videojs(videoNode.current, { width, autoplay: true, controls: true }, () => {initPlayer(video);});
     setPlayer(video);
     getPlayer && getPlayer(video);
@@ -37,13 +41,21 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
   useEffect(() => {
     if (player) {
       const markers = getMarkers();
-      createMarkers(player, markers);
-      if (comments) {
+      createMarkers(player, markers, playerNode);
+      if (comments || emojis) {
         player.off("timeupdate");
         player.on("timeupdate", handlePlayerTimeUpdated);
       }
     }
-  }, [comments?.length, player]);
+  }, [comments?.length, player, emojis]);
+
+  useEffect(() => {
+    const timeRounded = Math.floor(currentTime);
+    if (currentTimeRounded !== timeRounded) {
+      setCurrentTimeRounded(timeRounded);
+      addReactions(timeRounded);
+    }
+  }, [currentTime]);
 
   const initPlayer = (video: VideoJsPlayer) => {
     if (video) {
@@ -55,7 +67,7 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
       const markers = getMarkers();
       if (markers) {
         video.on("loadedmetadata", () => {
-          createMarkers(video, markers);
+          createMarkers(video, markers, playerNode);
         });
       }
 
@@ -64,49 +76,44 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
   };
 
   const handlePlayerTimeUpdated = () => {
-    console.log(comments);
-    if (player && comments) {
-      const time = player.currentTime();
-      const timeRounded = Math.floor(time);
-      const comment = comments.filter((comment) => comment.second && (Math.floor(comment.second) === timeRounded));
-      if (comment.length > 0) {
-        addTooltip(player, comment[0]);
-      }
+    if (player) {
+      setCurrentTime(player.currentTime());
     }
   };
 
-  const addTooltip = (video: VideoJsPlayer,reaction: PostType): void => {
-    if (video && reaction.dataContainer?.text_content) {
-      const currentTooltip = video.getChildById("vjsTooltip");
-
-      if (currentTooltip) {
-        video.removeChild(currentTooltip);
-      }
-      const tooltip = new vjsTooltip(video, { username: reaction.user.username, text: reaction.dataContainer.text_content});
-      video.addChild(tooltip);
-      setTimeout(() => video && video.removeChild(tooltip), 3000);
-    }
-  };
-
-  const getMarkers = () => {
-    let markers = comments?.map(comment => comment.second);
-    markers = markers?.filter(marker => marker !== undefined);
-    return markers;
-  };
-
-  const createMarkers = (video: VideoJsPlayer, seconds?: (number | undefined)[]) => {
-    if (video && seconds) {
-      seconds.map(second => {
-        if (second) {
-          const marker = document.createElement("i");
-          marker.classList.add("fas");
-          marker.classList.add("fa-comment");
-          marker.classList.add("video-marker");
-          marker.style.left = `${second * 100 / video.duration()}%`;
-          playerNode.current?.querySelector(".vjs-progress-holder")?.appendChild(marker);
+  const addReactions = (timeRounded: number) => {
+    if (player) {
+      if (comments) {
+        const comment = comments.filter((comment) => comment.second && (Math.floor(comment.second) === timeRounded));
+        if (comment.length > 0) {
+          addTooltip(player, comment[0]);
         }
-      });
+      }
+      if (emojis) {
+        const items = emojis.filter((item) => item.second && (Math.floor(item.second) === timeRounded));
+        if (items.length > 0) {
+          items.forEach((item, index) => {
+            setTimeout(() => addEmojiAnimation(player, item), index * 100);
+          });
+        }
+      }
     }
+  };
+
+  const getMarkers = (): Marker[] => {
+    let secondsComment = comments?.map(comment => comment.second);
+    secondsComment = secondsComment?.filter(second => second !== undefined);
+    const markersComment: Marker[] = secondsComment ?
+      secondsComment?.map(second => { return { type: "comment", second: second ? second : 0 }; })
+      : [];
+    const markersEmojis: Marker[] = emojis ?
+      emojis?.map(item => { return { type: "emoji", second: item.second, emoji: item.emoji }; })
+      : [];
+    const markers: Marker[] = [
+      ...markersComment,
+      ...markersEmojis
+    ];
+    return markers;
   };
 
   return (
