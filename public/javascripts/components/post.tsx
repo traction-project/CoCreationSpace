@@ -1,7 +1,7 @@
 import * as React from "react";
 import Moment from "react-moment";
 import UserLogo, { UserType } from "./user_logo";
-import { commonType, EmojiReaction } from "../util";
+import { commonType, convertHMS, EmojiReaction } from "../util";
 import CommentList from "./comment_list";
 import { useState, useEffect, Fragment } from "react";
 import Video from "./video";
@@ -10,7 +10,7 @@ import { useParams } from "react-router-dom";
 import { TagData } from "./post_list";
 import { VideoJsPlayer } from "video.js";
 import { getPostId, postComment, postEmojiReaction, postLike } from "../services/post.service";
-import { addEmojiAnimation } from "./videojs/util";
+import { addEmojiAnimation, addTooltip } from "./videojs/util";
 
 type dataContainerType = {
   text_content?: string;
@@ -37,10 +37,12 @@ interface PostProps {
   post?: {
     id: number;
   };
+  callbackClickTime?: (s: number) => void;
 }
 const Post: React.FC<PostProps> = (props) => {
   const { id } = useParams<{ id: string }>();
   const idPost = props.post ? props.post.id : id;
+  const { callbackClickTime } = props;
   const [post, setPost] = useState<PostType>();
   const [isLike, setIsLike] = useState<boolean>(false);
   const [likes, setLikes] = useState<number>(0);
@@ -95,10 +97,14 @@ const Post: React.FC<PostProps> = (props) => {
   };
 
   const handleSubmitNewComment = async ({ comment, multimedia }: { comment: string, multimedia?: Array<number> }) => {
-    const second = player ? player.currentTime() : 0;
+    const second = player ? player.currentTime() : null;
     const responseComment = await postComment(idPost, comment, multimedia, second);
 
     if (responseComment.ok) {
+      if (player) {
+        const resJson = await responseComment.json();
+        addTooltip(player, resJson);
+      }
       const responsePost = await getPostId(idPost);
 
       if (responsePost.ok) {
@@ -119,7 +125,6 @@ const Post: React.FC<PostProps> = (props) => {
 
   const handleClickEmojiItem = async (emoji: string) => {
     setShowEmojis(false);
-    console.log(emoji);
     if (player) {
       const second = player.currentTime();
       const response = await postEmojiReaction(idPost, emoji, second);
@@ -137,6 +142,12 @@ const Post: React.FC<PostProps> = (props) => {
         ];
         setEmojiReactions(reactions);
       }
+    }
+  };
+
+  const handleClickTime = (second: number) => {
+    if (player) {
+      player.currentTime(second);
     }
   };
 
@@ -158,6 +169,11 @@ const Post: React.FC<PostProps> = (props) => {
                       <strong className="post-title">{post.title ? post.title : "Post"}</strong><small className="list-item__date"><Moment format="DD/MM/YYYY">{post.createdAt}</Moment></small>
                       <br />
                       <br />
+                      {post.second ?
+                        <a style={{marginRight: "5px"}} onClick={() => callbackClickTime && callbackClickTime(post.second ? post.second : 0)}>
+                          <strong>{convertHMS(post.second)}</strong>
+                        </a>
+                        : null}
                       {post.dataContainer?.text_content}
                     </p>
                     {post.dataContainer && post.dataContainer.multimedia &&
@@ -170,7 +186,7 @@ const Post: React.FC<PostProps> = (props) => {
                   </div>
                   <nav className="level is-mobile" style={{position: "relative"}}>
                     <div className="level-left">
-                      {player ?
+                      {(post.dataContainer?.multimedia && post.dataContainer?.multimedia.length > 0) ?
                         <Fragment>
                           <div className={`emoji-container ${showEmojis ? "" : "hidden"}`}>
                             {emojis.map((emoji, index) => {
@@ -201,7 +217,7 @@ const Post: React.FC<PostProps> = (props) => {
                     <NewComment handleSubmitNewComment={handleSubmitNewComment} handleClickCancel={handleClickCancel}></NewComment>
                   }
                   {!!comments && comments.length > 0 && <a className="text-comments" onClick={handleClickComments}><i className="fas fa-sort-down"></i> Show Comments ({comments?.length})</a>}
-                  {showComments && <CommentList posts={comments}></CommentList>}
+                  {showComments && <CommentList posts={comments} callbackClickTime={handleClickTime}></CommentList>}
                 </div>
               </article>
             </div>

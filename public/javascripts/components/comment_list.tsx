@@ -3,14 +3,15 @@ import Post, { PostType } from "./post";
 
 interface CommentListProps {
     posts?: PostType[];
+    callbackClickTime?: (s: number) => void;
 }
 
-const CommentList: React.FC<CommentListProps> = (props) => {
+const CommentList: React.FC<CommentListProps> = ({ posts, callbackClickTime }) => {
 
   return (
     <div>
-      {props.posts?.map((post, index) => {
-        return (<Post key={index} post={post}></Post>);
+      {posts?.map((post, index) => {
+        return (<Post key={index} post={post} callbackClickTime={callbackClickTime}></Post>);
       })}
     </div>
   );

@@ -78,3 +78,15 @@ export type EmojiReaction = {
   emoji: string;
   second: number;
 }
+
+// Conver seconds to hh:mm:ss format
+export const convertHMS = (second: number) => {
+  const hours   = Math.floor(second / 3600);
+  const minutes = Math.floor((second - (hours * 3600)) / 60);
+  const seconds = Math.floor(second - (hours * 3600) - (minutes * 60));
+
+  let time = hours !== 0 ? (hours < 10 ? `0${hours}:` : `${hours}:`) : "";
+  time = `${time}${minutes < 10 ? `0${minutes}:` : `${minutes}:`}`;
+  time = `${time}${seconds < 10 ? `0${seconds}` : `${seconds}`}`;
+  return time;
+};

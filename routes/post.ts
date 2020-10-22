@@ -215,13 +215,13 @@ router.post("/id/:id", authRequired, async (req, res) => {
   });
 
   const postSaved = await post.save();
-
   if (multimedia && multimedia.length > 0) {
     const dataContainer = await postSaved.getDataContainer();
     await dataContainer.setMultimedia(multimedia);
   }
 
-  return res.send(postSaved);
+  let result = Object.assign(postSaved.toJSON(), {user: user.toJSON()});
+  return res.send(result);
 });
 
 /**

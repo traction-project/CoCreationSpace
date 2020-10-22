@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useForm } from "react-hook-form";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import FileUpload from "./new_comment_file_upload";
 
 interface NewCommentProps {
@@ -10,6 +10,7 @@ interface NewCommentProps {
 }
 
 const NewComment: React.FC<NewCommentProps> = (props) => {
+  const textAreaRef = useRef<HTMLTextAreaElement>();
   const [ files, setFiles ] = useState<Array<File>>([]);
   const [ multimedia, setMultimedia ] = useState<Array<number>>([]);
   const [ loading, setLoading ] = useState<boolean>(false);
@@ -45,7 +46,17 @@ const NewComment: React.FC<NewCommentProps> = (props) => {
       ...(multimedia && multimedia.length > 0 && {multimedia})
     };
     props.handleSubmitNewComment(commentContent);
+    cleanUp();
   });
+
+  const cleanUp = () => {
+    setMultimedia([]);
+    setFiles([]);
+    setLoading(false);
+    if (textAreaRef.current) {
+      textAreaRef.current.value = "";
+    }
+  };
 
   return (
     <React.Fragment>
@@ -57,9 +68,14 @@ const NewComment: React.FC<NewCommentProps> = (props) => {
             rows={3}
             name="comment"
             style={{resize: "none"}}
-            ref={register({
-              required: true
-            })}>
+            ref={(e) => {
+              if (textAreaRef && e) {
+                textAreaRef.current = e;
+              }
+              register(e, {
+                required: true
+              });
+            }}>
           </textarea>
           {errors.comment && <p className="message-warning">* Required</p>}
         </div>
@@ -106,5 +122,7 @@ const NewComment: React.FC<NewCommentProps> = (props) => {
     </React.Fragment>
   );
 };
+
+NewComment.displayName = "NewComment";
 
 export default NewComment;
