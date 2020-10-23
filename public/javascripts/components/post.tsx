@@ -98,7 +98,7 @@ const Post: React.FC<PostProps> = (props) => {
 
   const handleSubmitNewComment = async ({ comment, multimedia }: { comment: string, multimedia?: Array<number> }) => {
     const second = player ? player.currentTime() : null;
-    const responseComment = await postComment(idPost, comment, multimedia, second);
+    const responseComment = second ? await postComment(idPost, comment, multimedia, second) : await postComment(idPost, comment, multimedia);
 
     if (responseComment.ok) {
       if (player) {
@@ -166,7 +166,7 @@ const Post: React.FC<PostProps> = (props) => {
                 <div className="media-content">
                   <div className="content">
                     <p>
-                      <strong className="post-title">{post.title ? post.title : "Post"}</strong><small className="list-item__date"><Moment format="DD/MM/YYYY">{post.createdAt}</Moment></small>
+                      {post.title ? <strong className="post-title">{post.title}</strong> : null}<small className="list-item__date"><Moment format="DD/MM/YYYY">{post.createdAt}</Moment></small>
                       <br />
                       <br />
                       {post.second ?

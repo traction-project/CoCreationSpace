@@ -109,7 +109,7 @@ textarea {
 
 .list-item__date {
   align-self: center;
-  padding: 2rem .5rem;
+  padding: 2rem 0;
 }
 
 .list-item {
@@ -147,6 +147,7 @@ textarea {
 
 .post-title {
   font-size: 1.2rem;
+  margin-right: .5rem;
 }
 
 .content {
