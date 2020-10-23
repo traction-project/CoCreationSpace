@@ -123,6 +123,4 @@ const NewComment: React.FC<NewCommentProps> = (props) => {
   );
 };
 
-NewComment.displayName = "NewComment";
-
 export default NewComment;
