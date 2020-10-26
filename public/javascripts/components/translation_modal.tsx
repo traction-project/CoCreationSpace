@@ -11,7 +11,7 @@ interface TranslationModalProps {
 
 const TranslationModal: React.FC<TranslationModalProps> = (props) => {
   const { id, onSuccess, onClose } = props;
-  const [ targetLanguage, setTargetLanguage ] = useState<string>("");
+  const [ targetLanguage, setTargetLanguage ] = useState<string>("en");
 
   const onDone = async () => {
     if (targetLanguage == "") {
