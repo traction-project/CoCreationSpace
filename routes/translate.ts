@@ -12,6 +12,15 @@ router.post("/:id/:target", authRequired, async (req, res) => {
   const video = await Multimedia.findByPk(id);
 
   if (video && video.transcript) {
+    const existingSubtitle = await Subtitles.findOne({
+      where: { language: target }
+    });
+
+    if (existingSubtitle) {
+      res.send("OK");
+      return;
+    }
+
     try {
       const cues = generateCues(video.transcript);
       const translatedCues = await translateCues(cues, target);
