@@ -3,6 +3,7 @@ const nodeExternals = require('webpack-node-externals');
 
 const frontend = {
   mode: "development",
+  target: "web",
   entry: {
     bundle: "./public/javascripts/main.ts",
   },
