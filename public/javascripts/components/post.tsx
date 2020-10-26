@@ -201,6 +201,13 @@ const Post: React.FC<PostProps> = (props) => {
                               <i className="fas fa-smile"></i>
                             </span>
                           </a>
+                          {(!post.parent_post_id) && (
+                            <a className="level-item">
+                              <span className="icon is-small">
+                                <i className="fas fa-language"/>
+                              </span>
+                            </a>
+                          )}
                         </Fragment>
                         : null}
                       <a className="level-item" onClick={handleClickReply}>
@@ -212,13 +219,6 @@ const Post: React.FC<PostProps> = (props) => {
                         </span>
                       </a>
                       <span className="level-item">{likes}</span>
-                      {(!post.parent_post_id) && (
-                        <a className="level-item">
-                          <span className="icon is-small">
-                            <i className="fas fa-language"/>
-                          </span>
-                        </a>
-                      )}
                     </div>
                   </nav>
                   {showNewComment &&
