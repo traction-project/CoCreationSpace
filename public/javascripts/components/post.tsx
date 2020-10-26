@@ -5,7 +5,7 @@ import Moment from "react-moment";
 import { VideoJsPlayer } from "video.js";
 import usePortal from "react-useportal";
 
-import { commonType, convertHMS, EmojiReaction } from "../util";
+import { activateSubtitleTrack, commonType, convertHMS, EmojiReaction } from "../util";
 
 import UserLogo, { UserType } from "./user_logo";
 import CommentList from "./comment_list";
@@ -154,13 +154,15 @@ const Post: React.FC<PostProps> = (props) => {
   };
 
   const handleTranslationSuccess = (languageCode: string, subtitleId: string) => {
-    const track = player?.addRemoteTextTrack({
-      kind: "subtitles",
-      srclang: languageCode,
-      src: `/video/subtitles/${subtitleId}`
-    }, true);
+    if (player) {
+      player.addRemoteTextTrack({
+        kind: "subtitles",
+        srclang: languageCode,
+        src: `/video/subtitles/${subtitleId}`
+      }, true);
 
-    console.log(track);
+      console.log(activateSubtitleTrack(player, languageCode));
+    }
   };
 
   const handleClickTime = (second: number) => {
