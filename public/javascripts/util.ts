@@ -1,4 +1,5 @@
 import { ThunkAction } from "redux-thunk";
+import { VideoJsPlayer } from "video.js";
 import { ApplicationState } from "./store";
 
 /**
@@ -151,3 +152,26 @@ export const availableLanguages = {
   "ur": "Urdu",
   "vi": "Vietnamese"
 };
+
+/**
+ * Activates the subtitle track for the given langauge in the given video.js
+ * player instance. If no such track if found, the function returns false.
+ *
+ * @param player A video.js player instance
+ * @param languageCode The language code of the track to activate
+ * @returns True if the track was activated, false otherwise
+ */
+export function activateSubtitleTrack(player: VideoJsPlayer, languageCode: string): boolean {
+  const tracks = player.textTracks();
+
+  for (let i=0; i<tracks.length; i++) {
+    console.log(tracks[i]);
+
+    if (tracks[i].language == languageCode) {
+      tracks[i].mode = "showing";
+      return true;
+    }
+  }
+
+  return false;
+}
