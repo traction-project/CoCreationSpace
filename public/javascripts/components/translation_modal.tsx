@@ -4,7 +4,7 @@ import { useState } from "react";
 import LanguageSelector from "./language_selector";
 
 interface TranslationModalProps {
-  id: string;
+  id: number;
   onClose: () => {};
 }
 
@@ -13,7 +13,12 @@ const TranslationModal: React.FC<TranslationModalProps> = (props) => {
   const [ targetLanguage, setTargetLanguage ] = useState<string>("");
 
   const onDone = async () => {
-    await fetch(`/translate/${id}/${targetLanguage}`, { method: "POST" });
+    try {
+      await fetch(`/translate/${id}/${targetLanguage}`, { method: "POST" });
+      onClose();
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   return (
