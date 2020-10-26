@@ -23,6 +23,7 @@ type dataContainerType = {
 export type PostType = {
   title?: string;
   second?: number;
+  parent_post_id: string;
   dataContainer?: dataContainerType;
   comments?: PostType[];
   karma_points?: number;
@@ -211,6 +212,13 @@ const Post: React.FC<PostProps> = (props) => {
                         </span>
                       </a>
                       <span className="level-item">{likes}</span>
+                      {(!post.parent_post_id) && (
+                        <a className="level-item">
+                          <span className="icon is-small">
+                            <i className="fas fa-language"/>
+                          </span>
+                        </a>
+                      )}
                     </div>
                   </nav>
                   {showNewComment &&
