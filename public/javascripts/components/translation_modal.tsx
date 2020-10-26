@@ -5,11 +5,12 @@ import LanguageSelector from "./language_selector";
 
 interface TranslationModalProps {
   id: number;
-  onClose: () => {};
+  onClose: () => void;
+  onSuccess: (languageCode: string) => void;
 }
 
 const TranslationModal: React.FC<TranslationModalProps> = (props) => {
-  const { id, onClose } = props;
+  const { id, onSuccess, onClose } = props;
   const [ targetLanguage, setTargetLanguage ] = useState<string>("");
 
   const onDone = async () => {
@@ -19,6 +20,8 @@ const TranslationModal: React.FC<TranslationModalProps> = (props) => {
 
     try {
       await fetch(`/translate/${id}/${targetLanguage}`, { method: "POST" });
+
+      onSuccess(targetLanguage);
       onClose();
     } catch (e) {
       console.error(e);
