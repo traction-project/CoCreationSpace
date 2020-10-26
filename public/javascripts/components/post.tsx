@@ -161,7 +161,7 @@ const Post: React.FC<PostProps> = (props) => {
         src: `/video/subtitles/${subtitleId}`
       }, true);
 
-      console.log(activateSubtitleTrack(player, languageCode));
+      activateSubtitleTrack(player, languageCode);
     }
   };
 

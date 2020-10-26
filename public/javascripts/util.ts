@@ -163,15 +163,16 @@ export const availableLanguages = {
  */
 export function activateSubtitleTrack(player: VideoJsPlayer, languageCode: string): boolean {
   const tracks = player.textTracks();
+  let found = false;
 
   for (let i=0; i<tracks.length; i++) {
-    console.log(tracks[i]);
-
     if (tracks[i].language == languageCode) {
       tracks[i].mode = "showing";
-      return true;
+      found = true;
+    } else {
+      tracks[i].mode = "hidden";
     }
   }
 
-  return false;
+  return found;
 }
