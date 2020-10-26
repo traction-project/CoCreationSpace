@@ -153,6 +153,16 @@ const Post: React.FC<PostProps> = (props) => {
     }
   };
 
+  const handleTranslationSuccess = (languageCode: string, subtitleId: string) => {
+    const track = player?.addRemoteTextTrack({
+      kind: "subtitles",
+      srclang: languageCode,
+      src: `/video/subtitles/${subtitleId}`
+    }, true);
+
+    console.log(track);
+  };
+
   const handleClickTime = (second: number) => {
     if (player) {
       player.currentTime(second);
@@ -218,8 +228,11 @@ const Post: React.FC<PostProps> = (props) => {
 
                           {isOpen && (
                             <Portal>
+                              {/* TODO Maybe it's worth thinking about this datacontainer thing again.
+                                  Can a post even have more than one multimedia item? */}
                               <TranslationModal
                                 id={post.dataContainer.multimedia[0].id!}
+                                onSuccess={handleTranslationSuccess}
                                 onClose={closePortal}
                               />
                             </Portal>
