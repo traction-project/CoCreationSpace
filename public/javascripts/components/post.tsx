@@ -1,16 +1,20 @@
 import * as React from "react";
-import Moment from "react-moment";
-import UserLogo, { UserType } from "./user_logo";
-import { commonType, convertHMS, EmojiReaction } from "../util";
-import CommentList from "./comment_list";
 import { useState, useEffect, Fragment } from "react";
+import { useParams } from "react-router-dom";
+import Moment from "react-moment";
+import { VideoJsPlayer } from "video.js";
+import usePortal from "react-useportal";
+
+import { commonType, convertHMS, EmojiReaction } from "../util";
+
+import UserLogo, { UserType } from "./user_logo";
+import CommentList from "./comment_list";
 import Video from "./video";
 import NewComment from "./new_comment";
-import { useParams } from "react-router-dom";
 import { TagData } from "./post_list";
-import { VideoJsPlayer } from "video.js";
 import { getPostId, postComment, postEmojiReaction, postLike } from "../services/post.service";
 import { addEmojiAnimation, addTooltip } from "./videojs/util";
+import TranslationModal from "./translation_modal";
 
 type dataContainerType = {
   text_content?: string;
@@ -40,10 +44,13 @@ interface PostProps {
   };
   callbackClickTime?: (s: number) => void;
 }
+
 const Post: React.FC<PostProps> = (props) => {
   const { id } = useParams<{ id: string }>();
   const idPost = props.post ? props.post.id : id;
   const { callbackClickTime } = props;
+  const { openPortal, closePortal, isOpen, Portal } = usePortal();
+
   const [post, setPost] = useState<PostType>();
   const [isLike, setIsLike] = useState<boolean>(false);
   const [likes, setLikes] = useState<number>(0);
@@ -202,11 +209,20 @@ const Post: React.FC<PostProps> = (props) => {
                             </span>
                           </a>
                           {(!post.parent_post_id) && (
-                            <a className="level-item">
+                            <a className="level-item" onClick={(e) => openPortal(e)}>
                               <span className="icon is-small">
                                 <i className="fas fa-language"/>
                               </span>
                             </a>
+                          )}
+
+                          {isOpen && (
+                            <Portal>
+                              <TranslationModal
+                                id={post.dataContainer.multimedia[0].id!}
+                                onClose={closePortal}
+                              />
+                            </Portal>
                           )}
                         </Fragment>
                         : null}
