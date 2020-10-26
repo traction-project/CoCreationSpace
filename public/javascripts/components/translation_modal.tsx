@@ -6,7 +6,7 @@ import LanguageSelector from "./language_selector";
 interface TranslationModalProps {
   id: number;
   onClose: () => void;
-  onSuccess: (languageCode: string) => void;
+  onSuccess: (languageCode: string, subtitleId: string) => void;
 }
 
 const TranslationModal: React.FC<TranslationModalProps> = (props) => {
@@ -19,9 +19,10 @@ const TranslationModal: React.FC<TranslationModalProps> = (props) => {
     }
 
     try {
-      await fetch(`/translate/${id}/${targetLanguage}`, { method: "POST" });
+      const res = await fetch(`/translate/${id}/${targetLanguage}`, { method: "POST" });
+      const data = await res.json();
 
-      onSuccess(targetLanguage);
+      onSuccess(targetLanguage, data.subtitleId);
       onClose();
     } catch (e) {
       console.error(e);
