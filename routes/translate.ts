@@ -17,8 +17,10 @@ router.post("/:id/:target", authRequired, async (req, res) => {
     });
 
     if (existingSubtitle) {
-      res.send("OK");
-      return;
+      return res.send({
+        status: "exists",
+        subtitleId: existingSubtitle.id
+      });
     }
 
     try {
@@ -33,7 +35,10 @@ router.post("/:id/:target", authRequired, async (req, res) => {
       await subtitles.save();
       subtitles.setMultimedia(video);
 
-      res.send("OK");
+      res.send({
+        status: "OK",
+        subtitleId: subtitles.id
+      });
     } catch (e) {
       res.status(400);
       res.send(e);
