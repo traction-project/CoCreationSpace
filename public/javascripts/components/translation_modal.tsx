@@ -13,6 +13,10 @@ const TranslationModal: React.FC<TranslationModalProps> = (props) => {
   const [ targetLanguage, setTargetLanguage ] = useState<string>("");
 
   const onDone = async () => {
+    if (targetLanguage == "") {
+      return;
+    }
+
     try {
       await fetch(`/translate/${id}/${targetLanguage}`, { method: "POST" });
       onClose();
