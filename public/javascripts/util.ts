@@ -69,8 +69,8 @@ export function postFile(endpoint: string, file: File, onProgress: (e: ProgressE
   return promise;
 }
 
-export type commonType = {
-  id: number;
+export interface CommonType {
+  id: string;
   createdAt?: string;
   updatedAt?: string;
 }
