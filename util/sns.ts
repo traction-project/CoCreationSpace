@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction,  } from "express";
 import { IncomingHttpHeaders } from "http";
-import * as aws from "aws-sdk";
+import aws from "aws-sdk";
 
 /**
  * Headers of an SNS subscription confirmation message

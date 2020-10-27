@@ -1,4 +1,4 @@
-import * as aws from "aws-sdk";
+import aws from "aws-sdk";
 
 /**
  * Starts a new video transcoding job in the given transcoding pipeline using

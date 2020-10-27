@@ -1,4 +1,4 @@
-import * as aws from "aws-sdk";
+import aws from "aws-sdk";
 
 /**
  * Uploads a file to S3 and assigns it the given name. The name is an S3 key

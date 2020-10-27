@@ -1,9 +1,9 @@
 import * as dotenv from "dotenv";
-import * as aws from "aws-sdk";
 import * as http from "http";
 import * as path from "path";
 import * as passport from "passport";
 
+import aws from "aws-sdk";
 import express from "express";
 import session from "express-session";
 import logger from "morgan";

@@ -1,5 +1,5 @@
-import * as sinon from "sinon";
-import * as aws from "aws-sdk";
+import sinon from "sinon";
+import aws from "aws-sdk";
 
 import * as s3 from "../util/s3";
 

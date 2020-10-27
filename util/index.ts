@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "express-jwt";
-import * as aws from "aws-sdk";
+import aws from "aws-sdk";
 
 import { ModelCtor, Model, Op } from "sequelize";
 import { UsersAttributes } from "models/users";
