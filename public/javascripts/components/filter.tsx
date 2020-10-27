@@ -1,6 +1,5 @@
 import * as React from "react";
-import { debounce } from "lodash";
-
+import debounce from "lodash.debounce";
 
 interface FilterProps {
   delay?: number;
