@@ -2,6 +2,7 @@
   "compilerOptions": {
     "outDir": ".",
     "noImplicitAny": true,
+    "esModuleInterop": true,
     "module": "commonjs",
     "sourceMap": true,
     "target": "es5",
