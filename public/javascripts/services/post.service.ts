@@ -32,7 +32,7 @@ export const postLike = async (id: string | number, action: string) => {
  * @param multimedia? Array of numbers that references multimedia files
  * @param second? Player time where the comment was written
  */
-export const postComment = async (id: string | number, text: string, multimedia?: Array<number>, second?: number) => {
+export const postComment = async (id: string | number, text: string, multimedia?: Array<string>, second?: number) => {
   const URL = `/posts/id/${id}`;
   const headers = new Headers();
   headers.append("Content-Type", "application/json");

@@ -19,7 +19,7 @@ import TranslationModal from "./translation_modal";
 type dataContainerType = {
   text_content?: string;
   multimedia?: [{
-    id?: number,
+    id?: string,
     status?: string
   }]
 }
@@ -40,7 +40,7 @@ export type PostType = {
 
 interface PostProps {
   post?: {
-    id: number;
+    id: string;
   };
   callbackClickTime?: (s: number) => void;
 }
@@ -104,7 +104,7 @@ const Post: React.FC<PostProps> = (props) => {
     setShowComments(!showComments);
   };
 
-  const handleSubmitNewComment = async ({ comment, multimedia }: { comment: string, multimedia?: Array<number> }) => {
+  const handleSubmitNewComment = async ({ comment, multimedia }: { comment: string, multimedia?: Array<string> }) => {
     const second = player ? player.currentTime() : null;
     const responseComment = second ? await postComment(idPost, comment, multimedia, second) : await postComment(idPost, comment, multimedia);
 

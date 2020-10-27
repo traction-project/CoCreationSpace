@@ -1,18 +1,18 @@
 import * as React from "react";
 import { useForm } from "react-hook-form";
-
 import { useState, useRef } from "react";
+
 import FileUpload from "./new_comment_file_upload";
 
 interface NewCommentProps {
-    handleSubmitNewComment: ({comment, multimedia}: {comment: string, multimedia?: Array<number>}) => void;
+    handleSubmitNewComment: ({comment, multimedia}: {comment: string, multimedia?: Array<string>}) => void;
     handleClickCancel: () => void;
 }
 
 const NewComment: React.FC<NewCommentProps> = (props) => {
   const textAreaRef = useRef<HTMLTextAreaElement>();
   const [ files, setFiles ] = useState<Array<File>>([]);
-  const [ multimedia, setMultimedia ] = useState<Array<number>>([]);
+  const [ multimedia, setMultimedia ] = useState<Array<string>>([]);
   const [ loading, setLoading ] = useState<boolean>(false);
 
   const { handleSubmit, register, errors } = useForm();
@@ -29,7 +29,7 @@ const NewComment: React.FC<NewCommentProps> = (props) => {
     }
   };
 
-  const addMultimedia = (multimediaId: number) => {
+  const addMultimedia = (multimediaId: string) => {
     const newMultimedia = multimedia;
 
     newMultimedia.push(multimediaId);
@@ -85,7 +85,7 @@ const NewComment: React.FC<NewCommentProps> = (props) => {
               <div className="columns">
                 {files.map(((file, index) => {
                   return(
-                    <FileUpload key={index} fileToUpload={file} addMultimedia={addMultimedia} setLoading={setLoading}></FileUpload>
+                    <FileUpload key={index} fileToUpload={file} addMultimedia={addMultimedia} setLoading={setLoading} />
                   );
                 }))}
 

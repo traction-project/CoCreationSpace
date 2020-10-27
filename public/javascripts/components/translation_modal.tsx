@@ -4,7 +4,7 @@ import { useState } from "react";
 import LanguageSelector from "./language_selector";
 
 interface TranslationModalProps {
-  id: number;
+  id: string;
   onClose: () => void;
   onSuccess: (languageCode: string, subtitleId: string) => void;
 }

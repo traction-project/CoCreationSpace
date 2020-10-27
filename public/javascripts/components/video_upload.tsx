@@ -1,10 +1,10 @@
 import * as React from "react";
 import { useState, ChangeEvent } from "react";
+import { useHistory } from "react-router-dom";
 
 import { postFile, ResponseUploadType } from "../util";
 import Dropzone from "./dropzone";
 import Video from "./video";
-import { useHistory } from "react-router-dom";
 import ProgressRing from "./progress_ring";
 
 interface VideoUploadProps {
@@ -12,8 +12,9 @@ interface VideoUploadProps {
 
 const VideoUpload: React.FC<VideoUploadProps> = () => {
   const history = useHistory();
+
   const [ title, setTitle ] = useState<string>();
-  const [ multimedia, setMultimedia ] = useState<number>();
+  const [ multimedia, setMultimedia ] = useState<string>();
   const [ progress, setProgress ] = useState<number>(0);
   const [ total, setTotal ] = useState<number>(0);
   const [ displayNotification, setDisplayNotification] = useState<"success" | "error">();

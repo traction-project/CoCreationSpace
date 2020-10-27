@@ -7,7 +7,7 @@ import { PostType } from "./post";
 import { EmojiReaction } from "../util";
 
 type VideoProps = {
-  id?: number;
+  id?: string;
   markers?: number[];
   comments?: PostType[];
   emojis?: EmojiReaction[];

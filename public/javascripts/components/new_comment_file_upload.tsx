@@ -5,7 +5,7 @@ import { postFile, ResponseUploadType } from "../util";
 
 type FileUploadProps = {
     fileToUpload: File;
-    addMultimedia: (id: number) => void;
+    addMultimedia: (id: string) => void;
     setLoading: (value: boolean) => void;
 }
 
