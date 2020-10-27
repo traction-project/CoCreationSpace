@@ -1,5 +1,5 @@
 import { Router } from "express";
-import * as Busboy from "busboy";
+import Busboy from "busboy";
 import { v4 as uuid4 } from "uuid";
 
 import { getExtension, authRequired, getFromEnvironment } from "../util";
