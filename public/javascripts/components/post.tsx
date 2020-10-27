@@ -5,7 +5,7 @@ import Moment from "react-moment";
 import { VideoJsPlayer } from "video.js";
 import usePortal from "react-useportal";
 
-import { activateSubtitleTrack, commonType, convertHMS, EmojiReaction } from "../util";
+import { activateSubtitleTrack, CommonType, convertHMS, EmojiReaction } from "../util";
 
 import UserLogo, { UserType } from "./user_logo";
 import CommentList from "./comment_list";
@@ -36,7 +36,7 @@ export type PostType = {
   user: UserType;
   userReferenced?: UserType[];
   tags?: TagData[];
-} & commonType;
+} & CommonType;
 
 interface PostProps {
   post?: {

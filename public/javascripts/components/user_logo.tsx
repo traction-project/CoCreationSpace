@@ -1,10 +1,10 @@
 import * as React from "react";
-import { commonType } from "../util";
+import { CommonType } from "../util";
 
 export type UserType = {
   username: string;
   image?: string;
-} & commonType;
+} & CommonType;
 
 interface UserLogoProps {
   user: UserType;

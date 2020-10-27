@@ -7,7 +7,6 @@ interface CommentListProps {
 }
 
 const CommentList: React.FC<CommentListProps> = ({ posts, callbackClickTime }) => {
-
   return (
     <div>
       {posts?.map((post, index) => {
