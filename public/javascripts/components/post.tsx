@@ -1,7 +1,6 @@
 import * as React from "react";
 import { useState, useEffect, Fragment } from "react";
 import { useParams } from "react-router-dom";
-import Moment from "react-moment";
 import { VideoJsPlayer } from "video.js";
 import usePortal from "react-useportal";
 
@@ -186,7 +185,8 @@ const Post: React.FC<PostProps> = (props) => {
                 <div className="media-content">
                   <div className="content">
                     <p>
-                      {post.title ? <strong className="post-title">{post.title}</strong> : null}<small className="list-item__date"><Moment format="DD/MM/YYYY">{post.createdAt}</Moment></small>
+                      {post.title ? <strong className="post-title">{post.title}</strong> : null}
+                      <small className="list-item__date">{new Date(post.createdAt!).toLocaleDateString()}</small>
                       <br />
                       <br />
                       {post.second ?

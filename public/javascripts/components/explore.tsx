@@ -1,7 +1,6 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
-import Moment from "react-moment";
 import { PostType } from "./post";
 import Filter from "./filter";
 import { TagData } from "./post_list";
@@ -102,7 +101,8 @@ const Explore: React.FC<ExploreProps> = () => {
                         <div className="media-content">
                           <div className="content">
                             <p>
-                              <strong className="post-title">{post.title ? post.title : "Post"}</strong><small className="list-item__date"><Moment format="DD/MM/YYYY">{post.createdAt}</Moment></small>
+                              <strong className="post-title">{post.title ? post.title : "Post"}</strong>
+                              <small className="list-item__date">{new Date(post.createdAt!).toLocaleDateString()}</small>
                               <br />
                               <br />
                               {post.dataContainer?.text_content}
