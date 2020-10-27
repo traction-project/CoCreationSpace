@@ -6,7 +6,7 @@ on:
 
 jobs:
   build:
-    name: Build docker image, lint code and run tests
+    name: Install dependencies, lint code and run tests
     runs-on: ubuntu-18.04
     env:
       IMAGE_NAME: traction-mediavault
