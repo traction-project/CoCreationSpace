@@ -186,7 +186,7 @@ const Post: React.FC<PostProps> = (props) => {
                   <div className="content">
                     <p>
                       {post.title ? <strong className="post-title">{post.title}</strong> : null}
-                      <small className="list-item__date">{new Date(post.createdAt!).toLocaleDateString()}</small>
+                      <small className="list-item__date">{post.createdAt && new Date(post.createdAt).toLocaleDateString()}</small>
                       <br />
                       <br />
                       {post.second ?

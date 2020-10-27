@@ -102,7 +102,7 @@ const Explore: React.FC<ExploreProps> = () => {
                           <div className="content">
                             <p>
                               <strong className="post-title">{post.title ? post.title : "Post"}</strong>
-                              <small className="list-item__date">{new Date(post.createdAt!).toLocaleDateString()}</small>
+                              <small className="list-item__date">{post.createdAt && new Date(post.createdAt).toLocaleDateString()}</small>
                               <br />
                               <br />
                               {post.dataContainer?.text_content}
