@@ -41,7 +41,7 @@ export type AsyncAction<R, A extends Action> = ThunkAction<R, ApplicationState, 
  */
 export type ResponseUploadType = {
   status: string;
-  id: number;
+  id: string;
 }
 
 export function postFile(endpoint: string, file: File, onProgress: (e: ProgressEvent) => void, field = "file"): Promise<string> {
