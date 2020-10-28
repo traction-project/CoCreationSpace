@@ -1,5 +1,5 @@
 import Sequelize from "sequelize";
-import uuid from "uuid";
+import { v4 as uuidv4} from "uuid";
 
 import { commonAttributes } from "util/typing/modelCommonAttributes";
 import { PostAttributes, PostInstance } from "./post";
@@ -48,7 +48,7 @@ export function DataContainerModelFactory(sequelize: Sequelize.Sequelize): Seque
   // Create the model
   const DataContainer = sequelize.define<DataContainerInstance>("DataContainer", attributes, { underscored: true, tableName: TABLE_NAME });
 
-  DataContainer.beforeCreate(dataContainer => { dataContainer.id = uuid.v4(); });
+  DataContainer.beforeCreate(dataContainer => { dataContainer.id = uuidv4(); });
 
   return DataContainer;
 }

@@ -1,5 +1,5 @@
 import Sequelize from "sequelize";
-import uuid from "uuid";
+import { v4 as uuidv4} from "uuid";
 
 import { commonAttributes } from "util/typing/modelCommonAttributes";
 import { PostAttributes, PostInstance } from "./post";
@@ -44,7 +44,7 @@ export function TagModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Model
   // Create the model
   const Tag = sequelize.define<TagInstance>("tag", attributes, { underscored: true, tableName: TABLE_NAME });
 
-  Tag.beforeCreate(tag => { tag.id = uuid.v4(); });
+  Tag.beforeCreate(tag => { tag.id = uuidv4(); });
 
   return Tag;
 }

@@ -1,5 +1,5 @@
 import Sequelize from "sequelize";
-import uuid from "uuid";
+import { v4 as uuidv4} from "uuid";
 
 import { commonAttributes } from "util/typing/modelCommonAttributes";
 import { MultimediaAttributes, MultimediaInstance } from "./multimedia";
@@ -55,7 +55,7 @@ export function AudioContentModelFactory(sequelize: Sequelize.Sequelize): Sequel
   // Create the model
   const AudioContent = sequelize.define<AudioContentInstance>("audioContent", attributes, { underscored: true, tableName: TABLE_NAME });
 
-  AudioContent.beforeCreate(audioContent => { audioContent.id = uuid.v4(); });
+  AudioContent.beforeCreate(audioContent => { audioContent.id = uuidv4(); });
 
   return AudioContent;
 }

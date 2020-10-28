@@ -1,5 +1,5 @@
 import Sequelize from "sequelize";
-import uuid from "uuid";
+import { v4 as uuidv4} from "uuid";
 
 import { commonAttributes } from "util/typing/modelCommonAttributes";
 import { UsersAttributes, UserInstance } from "./users";
@@ -134,7 +134,7 @@ export function MultimediaModelFactory(sequelize: Sequelize.Sequelize): Sequeliz
   // Create the model
   const Multimedia = sequelize.define<MultimediaInstance, MultimediaAttributes>("multimedia", attributes, { underscored: true, tableName: TABLE_NAME });
 
-  Multimedia.beforeCreate(multimedia => { multimedia.id = uuid.v4(); });
+  Multimedia.beforeCreate(multimedia => { multimedia.id = uuidv4(); });
 
   return Multimedia;
 }

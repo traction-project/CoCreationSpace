@@ -1,5 +1,5 @@
 import Sequelize from "sequelize";
-import uuid from "uuid";
+import { v4 as uuidv4 } from "uuid";
 
 import { commonAttributes } from "util/typing/modelCommonAttributes";
 
@@ -31,7 +31,7 @@ export function PreferencesModelFactory(sequelize: Sequelize.Sequelize): Sequeli
   // Create the model
   const Preferences = sequelize.define<PreferencesInstance>("preferences", attributes, { underscored: true, tableName: TABLE_NAME });
 
-  Preferences.beforeCreate(preference => { preference.id = uuid.v4(); });
+  Preferences.beforeCreate(preference => { preference.id = uuidv4(); });
 
   return Preferences;
 }

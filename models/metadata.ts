@@ -1,5 +1,5 @@
 import Sequelize from "sequelize";
-import uuid from "uuid";
+import { v4 as uuidv4 } from "uuid";
 
 import { commonAttributes } from "util/typing/modelCommonAttributes";
 import { MultimediaAttributes, MultimediaInstance } from "./multimedia";
@@ -58,7 +58,7 @@ export function MetadataModelFactory(sequelize: Sequelize.Sequelize): Sequelize.
   // Create the model
   const Metadata = sequelize.define<MetadataInstance>("metadata", attributes, { underscored: true, tableName: TABLE_NAME });
 
-  Metadata.beforeCreate(metadata => { metadata.id = uuid.v4(); });
+  Metadata.beforeCreate(metadata => { metadata.id = uuidv4(); });
 
   return Metadata;
 }

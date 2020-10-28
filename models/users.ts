@@ -1,7 +1,7 @@
 import crypto from "crypto";
 import jwt from "jsonwebtoken";
 import Sequelize from "sequelize";
-import uuid from "uuid";
+import { v4 as uuidv4 } from "uuid";
 
 import { commonAttributes } from "util/typing/modelCommonAttributes";
 import { getFromEnvironment } from "../util";
@@ -141,7 +141,7 @@ export function UsersModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mod
   // Create the model
   const Users = sequelize.define<UserInstance>("users", attributes, { underscored: true, tableName: "users" });
 
-  Users.beforeCreate(user => { user.id = uuid.v4(); });
+  Users.beforeCreate(user => { user.id = uuidv4(); });
 
   Users.prototype.setPassword = function (password: string): void {
     this.salt = crypto.randomBytes(16).toString("hex");

@@ -1,5 +1,5 @@
 import Sequelize from "sequelize";
-import uuid from "uuid";
+import { v4 as uuidv4} from "uuid";
 
 import { commonAttributes } from "util/typing/modelCommonAttributes";
 import { TopicAttributes, TopicInstance } from "./topic";
@@ -48,7 +48,7 @@ export function ThreadModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mo
   // Create the model
   const Thread = sequelize.define<ThreadInstance>("thread", attributes, { underscored: true, tableName: TABLE_NAME });
 
-  Thread.beforeCreate(thread => { thread.id = uuid.v4(); });
+  Thread.beforeCreate(thread => { thread.id = uuidv4(); });
 
   return Thread;
 }

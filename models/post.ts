@@ -1,5 +1,5 @@
 import Sequelize from "sequelize";
-import uuid from "uuid";
+import { v4 as uuidv4 } from "uuid";
 
 import { commonAttributes } from "util/typing/modelCommonAttributes";
 import { UsersAttributes, UserInstance } from "./users";
@@ -138,7 +138,7 @@ export function PostModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mode
   // Create the model
   const Post = sequelize.define<PostInstance>("post", attributes, { underscored: true, tableName: TABLE_NAME });
 
-  Post.beforeCreate(post => { post.id = uuid.v4(); });
+  Post.beforeCreate(post => { post.id = uuidv4(); });
 
   return Post;
 }

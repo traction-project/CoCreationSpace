@@ -1,5 +1,5 @@
 import Sequelize from "sequelize";
-import uuid from "uuid";
+import { v4 as uuidv4} from "uuid";
 
 import { commonAttributes } from "util/typing/modelCommonAttributes";
 import { UserInstance, UsersAttributes } from "./users";
@@ -54,7 +54,7 @@ export function EmojiReactionsModelFactory(sequelize: Sequelize.Sequelize): Sequ
   // Create the model
   const EmojiReactions = sequelize.define<EmojiReactionsInstance>("emoji_reactions", attributes, { underscored: true, tableName: TABLE_NAME });
 
-  EmojiReactions.beforeCreate(emoji => { emoji.id = uuid.v4(); });
+  EmojiReactions.beforeCreate(emoji => { emoji.id = uuidv4(); });
 
   return EmojiReactions;
 }

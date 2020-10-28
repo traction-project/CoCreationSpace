@@ -1,5 +1,5 @@
 import Sequelize from "sequelize";
-import uuid from "uuid";
+import { v4 as uuidv4} from "uuid";
 
 import { commonAttributes } from "util/typing/modelCommonAttributes";
 import { MultimediaAttributes, MultimediaInstance } from "./multimedia";
@@ -38,7 +38,7 @@ export function SubtitlesModelFactory(sequelize: Sequelize.Sequelize): Sequelize
   // Create the model
   const Subtitles = sequelize.define<SubtitlesInstance>("subtitles", attributes, { underscored: true, tableName: TABLE_NAME });
 
-  Subtitles.beforeCreate(subtitle => { subtitle.id = uuid.v4(); });
+  Subtitles.beforeCreate(subtitle => { subtitle.id = uuidv4(); });
 
   return Subtitles;
 }

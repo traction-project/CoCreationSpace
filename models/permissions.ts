@@ -1,5 +1,5 @@
 import Sequelize from "sequelize";
-import uuid from "uuid";
+import { v4 as uuidv4 } from "uuid";
 
 import { commonAttributes } from "util/typing/modelCommonAttributes";
 import { UsersAttributes, UserInstance } from "./users";
@@ -41,7 +41,7 @@ export function PermissionsModelFactory(sequelize: Sequelize.Sequelize): Sequeli
   // Create the model
   const Permissions = sequelize.define<PermissionsInstance>("permissions", attributes, { underscored: true, tableName: TABLE_NAME });
 
-  Permissions.beforeCreate(permission => { permission.id = uuid.v4(); });
+  Permissions.beforeCreate(permission => { permission.id = uuidv4(); });
 
   return Permissions;
 }
