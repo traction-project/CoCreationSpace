@@ -16,7 +16,7 @@ const UserLogo: React.FC<UserLogoProps> = (props) => {
       <span className="image is-64x64">
         { props.user.image ?
           <img src={props.user.image} alt="Logo"/>
-          : <img src="https://tecnoduero.com/wp-content/uploads/2017/02/h.png" alt="Logo"/>
+          : <img src="/images/default.png" alt="Logo"/>
         }
       </span>
       {props.user && props.user.username ?
