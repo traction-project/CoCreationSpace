@@ -176,3 +176,20 @@ export function activateSubtitleTrack(player: VideoJsPlayer, languageCode: strin
 
   return found;
 }
+
+/**
+ * Verify login status with server. Returns true if the user is logged in and
+ * false otherwise or if an error occurs.
+ *
+ * @returns True if user is logged in, false otherwise or in case of error
+ */
+export async function verifyLoginStatus(): Promise<boolean> {
+  try {
+    const res = await fetch("/loginstatus");
+    const { loggedIn } = await res.json();
+
+    return loggedIn;
+  } catch {
+    return false;
+  }
+}
