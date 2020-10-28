@@ -90,7 +90,7 @@
     "jest": "^26.0.1",
     "sinon": "^9.0.2",
     "source-map-support": "^0.5.16",
-    "ts-jest": "^26.0.0",
+    "ts-jest": "^26.4.3",
     "typedoc": "^0.17.6",
     "webpack-node-externals": "^2.5.2"
   }
