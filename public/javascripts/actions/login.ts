@@ -1,5 +1,5 @@
 import { ActionCreatorsMapObject } from "redux";
-import { BasicAction, PayloadAction } from "../util";
+import { AsyncAction, BasicAction, PayloadAction } from "../util";
 
 export type SET_LOGGED_IN_USER = PayloadAction<"SET_LOGGED_IN_USER", { id: string, username: string, image: string }>;
 function setLoggedInUser(id: string, username: string, image: string): SET_LOGGED_IN_USER {
@@ -18,12 +18,34 @@ function clearLoggedInUser(): CLEAR_LOGGED_IN_USER {
   };
 }
 
+export function performLogin(username: string, password: string): AsyncAction<void, SET_LOGGED_IN_USER> {
+  return async (dispatch) => {
+    const response = await fetch("/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password })
+    });
+
+    if (response.ok) {
+      const { user } = await response.json();
+
+      dispatch(setLoggedInUser(
+        user.id,
+        user.username,
+        user.image
+      ));
+    }
+  };
+}
+
 export interface LoginActions extends ActionCreatorsMapObject {
   setLoggedInUser: (id: string, username: string, image: string) => SET_LOGGED_IN_USER;
   clearLoggedInUser: () => CLEAR_LOGGED_IN_USER;
+  performLogin: (username: string, password: string) => AsyncAction<void, SET_LOGGED_IN_USER>;
 }
 
 export const actionCreators: LoginActions = {
   setLoggedInUser,
-  clearLoggedInUser
+  clearLoggedInUser,
+  performLogin,
 };
