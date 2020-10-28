@@ -18,20 +18,19 @@ const Signup: React.FC<SignupProps> = (props) => {
   const [ password, setPassword ] = useState<string>();
 
   const handleButtonSubmitClick = handleSubmit(({ username, password, confirmation }) => {
-    const headers = new Headers();
-    headers.append("Content-Type", "application/json");
-
     fetch("/register", {
       method: "POST",
-      headers,
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({username, password, confirmation})
-    })
-      .then(async res => {
-        if (res.ok) {
+    }).then(async (res) => {
+      if (res.ok) {
+        props.loginActions.performLogin(username, password, () => {
           history.push("/");
-        }
-      })
-      .catch(err => console.log(err));
+        });
+      }
+    }).catch((err) => {
+      console.log(err);
+    });
   });
 
   const handleInputUsernameChange = (value: string) => {
