@@ -1,14 +1,13 @@
-import * as dotenv from "dotenv";
-import * as http from "http";
-import * as path from "path";
-import * as passport from "passport";
-
-import aws from "aws-sdk";
+import dotenv from "dotenv";
 import express from "express";
 import session from "express-session";
 import logger from "morgan";
 import createError from "http-errors";
 import cookieParser from "cookie-parser";
+import http from "http";
+import path from "path";
+import passport from "passport";
+import aws from "aws-sdk";
 
 const SequelizeStore = require("connect-session-sequelize")(session.Store);
 

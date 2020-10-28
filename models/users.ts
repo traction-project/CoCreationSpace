@@ -1,7 +1,7 @@
-import * as crypto from "crypto";
-import * as jwt from "jsonwebtoken";
-import * as Sequelize from "sequelize";
-import * as uuid from "uuid";
+import crypto from "crypto";
+import jwt from "jsonwebtoken";
+import Sequelize from "sequelize";
+import uuid from "uuid";
 
 import { commonAttributes } from "util/typing/modelCommonAttributes";
 import { getFromEnvironment } from "../util";

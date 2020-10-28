@@ -1,5 +1,5 @@
-import * as Sequelize from "sequelize";
-import * as uuid from "uuid";
+import Sequelize from "sequelize";
+import uuid from "uuid";
 
 import { commonAttributes } from "util/typing/modelCommonAttributes";
 import { UsersAttributes, UserInstance } from "./users";

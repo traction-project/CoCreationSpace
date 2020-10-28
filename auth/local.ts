@@ -1,12 +1,12 @@
-import * as passport from "passport";
+import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 
 import { UserInstance } from "../models/users";
 import { db } from "../models";
 
-
 passport.use(new LocalStrategy((username, password, done) => {
   const User = db.getModels().Users;
+
   User.findOne( { where: { username } }).then((user: UserInstance) => {
     if (user && user.validatePassword(password)) {
       done(null, user);
@@ -26,7 +26,8 @@ passport.serializeUser((user: UserInstance, done) => {
 
 passport.deserializeUser((id: string, done) => {
   const User = db.getModels().Users;
+
   User.findOne({where : { id }}).then((user: UserInstance) => {
-    done(null,user);
+    done(null, user);
   }).catch(done);
 });
