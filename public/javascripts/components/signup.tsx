@@ -2,8 +2,14 @@ import * as React from "react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useHistory } from "react-router-dom";
+import { Dispatch, bindActionCreators } from "redux";
+import { connect } from "react-redux";
 
-interface SignupProps {}
+import { actionCreators as loginActionCreators, LoginActions } from "../actions/login";
+
+interface SignupProps {
+  loginActions: LoginActions;
+}
 
 const Signup: React.FC<SignupProps> = (props) => {
   const history = useHistory();
@@ -96,4 +102,14 @@ const Signup: React.FC<SignupProps> = (props) => {
   );
 };
 
-export default Signup;
+function mapStateToProps() {
+  return {};
+}
+
+function mapDispatchToProps(dispatch: Dispatch) {
+  return {
+    loginActions: bindActionCreators(loginActionCreators, dispatch)
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Signup);
