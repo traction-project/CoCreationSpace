@@ -4,6 +4,7 @@ import { Route, HashRouter as Router, Switch } from "react-router-dom";
 
 import store from "../store";
 
+import Startup from "./startup";
 import Login from "./login";
 import Video from "./video";
 import VideoUpload from "./video_upload";
@@ -23,39 +24,41 @@ interface AppProps {}
 const App: React.FC<AppProps> = () => {
   return (
     <Provider store={store}>
-      <Router>
-        <Header />
-        <Switch>
-          <Route path="/signup">
-            <Signup />
-          </Route>
-          <Route path="/login">
-            <Login />
-          </Route>
-          <PrivateRoute path="/upload" component={VideoUpload} />
-          <Route path="/videos">
-            <VideoStream />
-          </Route>
-          <Route path="/video/:id">
-            <Video />
-          </Route>
-          <Route path="/record">
-            <VideoRecorder />
-          </Route>
-          <Route path="/translate/:id">
-            <Translate />
-          </Route>
-          <PrivateRoute path="/posts" component={PostList} endpoint="/posts/all" />
-          <Route path="/post/:id">
-            <Post />
-          </Route>
-          <PrivateRoute path="/profile" component={Profile} />
-          <PrivateRoute path="/userPosts" component={PostList} endpoint="/posts/all/user" />
-          <Route path="/">
-            <Home />
-          </Route>
-        </Switch>
-      </Router>
+      <Startup>
+        <Router>
+          <Header />
+          <Switch>
+            <Route path="/signup">
+              <Signup />
+            </Route>
+            <Route path="/login">
+              <Login />
+            </Route>
+            <PrivateRoute path="/upload" component={VideoUpload} />
+            <Route path="/videos">
+              <VideoStream />
+            </Route>
+            <Route path="/video/:id">
+              <Video />
+            </Route>
+            <Route path="/record">
+              <VideoRecorder />
+            </Route>
+            <Route path="/translate/:id">
+              <Translate />
+            </Route>
+            <PrivateRoute path="/posts" component={PostList} endpoint="/posts/all" />
+            <Route path="/post/:id">
+              <Post />
+            </Route>
+            <PrivateRoute path="/profile" component={Profile} />
+            <PrivateRoute path="/userPosts" component={PostList} endpoint="/posts/all/user" />
+            <Route path="/">
+              <Home />
+            </Route>
+          </Switch>
+        </Router>
+      </Startup>
     </Provider>
   );
 };
