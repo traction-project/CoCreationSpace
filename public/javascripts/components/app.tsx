@@ -3,6 +3,8 @@ import { Provider } from "react-redux";
 import { Route, HashRouter as Router, Switch } from "react-router-dom";
 
 import store from "../store";
+import { actionCreators as loginActionCreators } from "../actions/login";
+import { verifyLoginStatus } from "../util";
 
 import Startup from "./startup";
 import Login from "./login";
@@ -19,12 +21,30 @@ import PostList from "./post_list";
 import Profile from "./profile";
 import Signup from "./signup";
 
+async function checkLogin() {
+  const loginStatus = await verifyLoginStatus();
+  const { loggedIn } = store.getState().login;
+
+  if (loginStatus == loggedIn) {
+    return;
+  }
+
+  if (loginStatus == true) {
+    const res = await fetch("/users/profile");
+    const { id, username, image } = await res.json();
+
+    store.dispatch(loginActionCreators.setLoggedInUser(id, username, image));
+  } else {
+    store.dispatch(loginActionCreators.clearLoggedInUser());
+  }
+}
+
 interface AppProps {}
 
 const App: React.FC<AppProps> = () => {
   return (
     <Provider store={store}>
-      <Startup>
+      <Startup condition={checkLogin}>
         <Router>
           <Header />
           <Switch>
