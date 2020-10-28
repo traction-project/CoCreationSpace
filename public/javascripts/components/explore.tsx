@@ -91,7 +91,11 @@ const Explore: React.FC<ExploreProps> = () => {
                       <article className="media">
                         <figure className="media-left" style={{width: "min-content", paddingRight: "1rem"}}>
                           <span className="image is-64x64">
-                            <img src="https://tecnoduero.com/wp-content/uploads/2017/02/h.png" alt="Logo"/>
+                            {(post.user.image) ? (
+                              <img src={post.user.image} alt="Logo"/>
+                            ) : (
+                              <img src="/images/default.png" alt="Logo"/>
+                            )}
                           </span>
                           {post.user && post.user.username ?
                             <p>{post.user.username}</p>
