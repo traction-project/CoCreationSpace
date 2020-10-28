@@ -726,3 +726,31 @@ a.header__item:hover {
 .level-item {
   font-size: 1.1rem;
 }
+
+.loader, .loader:after {
+  border-radius: 50%;
+  width: 5em;
+  height: 5em;
+}
+
+.loader {
+  margin: 60px auto;
+  font-size: 10px;
+  position: relative;
+  text-indent: -9999em;
+  border-top: 0.6em solid rgba(0, 0, 0, 0.4);
+  border-right: 0.6em solid rgba(0, 0, 0, 0.4);
+  border-bottom: 0.6em solid rgba(0, 0, 0, 0.4);
+  border-left: 0.6em solid #ffffff;
+  transform: translateZ(0);
+  animation: load-animation 1.1s infinite linear;
+}
+
+@keyframes load-animation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

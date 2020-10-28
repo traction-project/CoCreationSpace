@@ -18,7 +18,7 @@ const Startup: React.FC<StartupProps> = (props) => {
     (appInitialised) ? (
       <>{props.children}</>
     ) : (
-      <p>Loading...</p>
+      <div className="loader" />
     )
   );
 };
