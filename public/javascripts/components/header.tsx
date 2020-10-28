@@ -1,44 +1,28 @@
 import * as React from "react";
+import { Dispatch, bindActionCreators } from "redux";
 import { useLocation, Link, useHistory } from "react-router-dom";
-import { actionCreators } from "../actions/login";
-import store from "../store";
-import { useState, useEffect } from "react";
-import { Unsubscribe } from "redux";
+import { connect } from "react-redux";
 
-interface HeaderProps {}
+import { ApplicationState } from "../store";
+import { actionCreators as loginActionCreators, LoginActions } from "../actions/login";
+import { LoginState } from "../reducers/login";
 
-const Header: React.FC<HeaderProps> = () => {
-  const [ image, setImage ] = useState<string>();
-  const [ loggedIn, setLoggedIn ] = useState<boolean>(false);
+interface HeaderActionProps {
+  loginActions: LoginActions
+}
+
+interface HeaderConnectedProps {
+  login: LoginState;
+}
+
+type HeaderProps = HeaderActionProps & HeaderConnectedProps;
+
+const Header: React.FC<HeaderProps> = (props) => {
   const location = useLocation();
   const history = useHistory();
-  let subscription: Unsubscribe;
-
-  useEffect(() => {
-    let { login } = store.getState();
-
-    if (login) {
-      setLoggedIn(login.loggedIn);
-      if (login.user) {
-        setImage(login.user?.image);
-      }
-    }
-    if (!subscription) {
-      subscription = store.subscribe(() => {
-        const { login } = store.getState();
-
-        if (login) {
-          setLoggedIn(login.loggedIn);
-          if (login.user) {
-            setImage(login.user.image);
-          }
-        }
-      });
-    }
-  }, []);
 
   const logOut = () => {
-    store.dispatch(actionCreators.clearLoggedInUser());
+    props.loginActions.performLogout();
     history.push("/");
   };
 
@@ -56,10 +40,10 @@ const Header: React.FC<HeaderProps> = () => {
           <Link to={"/posts"}><span className={location.pathname === "/posts" ? "active" : ""}>Explore</span></Link>
         </div>
       </div>
-      { loggedIn
+      { props.login.loggedIn
         ? <figure className="header__item dropdown-btn" style={{width: "min-content"}}>
           <span className="image is-48x48">
-            <img src={image} alt="Logo"/>
+            <img src={props.login.user?.image} alt="Logo"/>
           </span>
           <ul className="box dropdown">
             <Link to={"/profile"}><li className="dropdown__item">Profile</li></Link>
@@ -76,4 +60,16 @@ const Header: React.FC<HeaderProps> = () => {
   );
 };
 
-export default Header;
+function mapStateToProps(state: ApplicationState): HeaderConnectedProps {
+  return {
+    login: state.login
+  };
+}
+
+function mapDispatchToProps(dispatch: Dispatch) {
+  return {
+    loginActions: bindActionCreators(loginActionCreators, dispatch)
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);
