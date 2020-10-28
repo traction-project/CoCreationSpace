@@ -1,12 +1,12 @@
 import * as React from "react";
 import { useState } from "react";
 import { Dispatch, bindActionCreators } from "redux";
+import { connect } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 import { actionCreators as loginActionCreators, LoginActions } from "../actions/login";
 import { LoginState } from "../reducers/login";
 import { ApplicationState } from "../store";
-import { connect } from "react-redux";
-import { useHistory } from "react-router-dom";
 
 interface LoginActionProps {
   loginActions: LoginActions;
@@ -23,23 +23,10 @@ const Login: React.FC<LoginProps> = (props) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const onSubmit = async () => {
-    const response = await fetch("/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, password })
-    });
-
-    if (response.ok) {
-      const { user } = await response.json();
-
-      props.loginActions.setLoggedInUser(
-        user.id,
-        user.username,
-        user.image
-      );
+  const onSubmit = () => {
+    props.loginActions.performLogin(username, password, () => {
       history.push("/");
-    }
+    });
   };
 
   return (
