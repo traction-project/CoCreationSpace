@@ -18,7 +18,7 @@ function clearLoggedInUser(): CLEAR_LOGGED_IN_USER {
   };
 }
 
-export function performLogin(username: string, password: string): AsyncAction<void, SET_LOGGED_IN_USER> {
+export function performLogin(username: string, password: string, success?: () => void): AsyncAction<void, SET_LOGGED_IN_USER> {
   return async (dispatch) => {
     const response = await fetch("/login", {
       method: "POST",
@@ -34,6 +34,8 @@ export function performLogin(username: string, password: string): AsyncAction<vo
         user.username,
         user.image
       ));
+
+      success?.();
     }
   };
 }
@@ -51,7 +53,7 @@ export function performLogout(): AsyncAction<void, CLEAR_LOGGED_IN_USER> {
 export interface LoginActions extends ActionCreatorsMapObject {
   setLoggedInUser: (id: string, username: string, image: string) => SET_LOGGED_IN_USER;
   clearLoggedInUser: () => CLEAR_LOGGED_IN_USER;
-  performLogin: (username: string, password: string) => AsyncAction<void, SET_LOGGED_IN_USER>;
+  performLogin: (username: string, password: string, success?: () => void) => AsyncAction<void, SET_LOGGED_IN_USER>;
   performLogout: () => AsyncAction<void, CLEAR_LOGGED_IN_USER>;
 }
 
