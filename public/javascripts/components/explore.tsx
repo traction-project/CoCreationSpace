@@ -118,7 +118,7 @@ const Explore: React.FC<ExploreProps> = () => {
                                 return (
                                   <div key={index}>
                                     <figure className="image is-24x24 list-item__files-item">
-                                      <img src="https://icons.iconarchive.com/icons/dtafalonso/android-lollipop/512/Docs-icon.png"/>
+                                      <img src="/images/docs.png" />
                                     </figure>
                                   </div>
                                 );

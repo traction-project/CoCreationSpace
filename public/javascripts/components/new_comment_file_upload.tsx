@@ -45,7 +45,7 @@ const FileUpload: React.FC<FileUploadProps> = ({ fileToUpload, addMultimedia, se
         <article className="media">
           <div className="media-left">
             <figure className="image is-24x24">
-              <img src="https://icons.iconarchive.com/icons/dtafalonso/android-lollipop/512/Docs-icon.png" />
+              <img src="/images/docs.png" />
             </figure>
           </div>
           <div className="media-content">
