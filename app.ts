@@ -41,6 +41,9 @@ const umzug = new Umzug({
       Sequelize
     ]
   },
+  logging: (msg: string) => {
+    console.log(msg);
+  },
   storage: "sequelize",
   storageOptions: {
     sequelize: sequelize
