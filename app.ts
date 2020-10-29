@@ -8,8 +8,9 @@ import http from "http";
 import path from "path";
 import passport from "passport";
 import aws from "aws-sdk";
+import Umzug from "umzug";
 
-const SequelizeStore = require("connect-session-sequelize")(session.Store);
+const SequelizeSessionStore = require("connect-session-sequelize")(session.Store);
 
 dotenv.config();
 aws.config.loadFromPath("./aws.json");
@@ -19,18 +20,6 @@ import { snsMiddleware } from "./util/sns";
 import indexRouter from "./routes/index";
 
 const [SESSION_SECRET, POSTGRES_DB, POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_HOST] = getFromEnvironment("SESSION_SECRET", "POSTGRES_DB", "POSTGRES_USER", "POSTGRES_PASSWORD", "POSTGRES_HOST");
-
-const app = express();
-
-// view engine setup
-app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "ejs");
-
-app.use(snsMiddleware);
-app.use(logger("dev"));
-app.use(express.json());
-
-import "./auth/local";
 
 // Connect to PostgreDB
 import { Sequelize, Options } from "sequelize";
@@ -44,14 +33,42 @@ const options: Options = {
 const url = `postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}/${POSTGRES_DB}`;
 
 const sequelize: Sequelize = new Sequelize(url, options);
+const umzug = new Umzug({
+  migrations: {
+    path: path.join(__dirname, "./sequelize/migrations"),
+    params: [
+      sequelize.getQueryInterface(),
+      Sequelize
+    ]
+  },
+  storage: "sequelize",
+  storageOptions: {
+    sequelize: sequelize
+  }
+});
+
+console.log("Running migrations...");
+umzug.up();
 db.createDB(sequelize);
+
+const app = express();
+
+// view engine setup
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "ejs");
+
+app.use(snsMiddleware);
+app.use(logger("dev"));
+app.use(express.json());
+
+import "./auth/local";
 
 app.use(session({
   secret: SESSION_SECRET,
   resave: false,
   saveUninitialized: true,
   cookie: { secure: false },
-  store: new SequelizeStore({
+  store: new SequelizeSessionStore({
     db: sequelize
   })
 }));
