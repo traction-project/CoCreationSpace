@@ -14,11 +14,17 @@ dotenv.config();
 aws.config.loadFromPath("./aws.json");
 
 import { getFromEnvironment } from "./util";
-import { snsMiddleware } from "./util/sns";
+import { snsMiddleware, subscribeToSNSTopic } from "./util/sns";
 import setupAuth from "./auth/local";
 import indexRouter from "./routes/index";
 
-const [SESSION_SECRET, POSTGRES_DB, POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_HOST] = getFromEnvironment("SESSION_SECRET", "POSTGRES_DB", "POSTGRES_USER", "POSTGRES_PASSWORD", "POSTGRES_HOST");
+const [
+  SESSION_SECRET, POSTGRES_DB, POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_HOST,
+  SNS_ENDPOINT, SNS_ARN
+] = getFromEnvironment(
+  "SESSION_SECRET", "POSTGRES_DB", "POSTGRES_USER", "POSTGRES_PASSWORD",
+  "POSTGRES_HOST", "SNS_ENDPOINT", "SNS_ARN"
+);
 
 // Connect to PostgreDB
 import { Sequelize, Options } from "sequelize";
@@ -139,9 +145,22 @@ async function setupServer() {
   });
 }
 
+async function setupSNSEndpoint() {
+  const endpointUrl = SNS_ENDPOINT + "/sns/receive";
+  console.log("Subscribing to", SNS_ARN, "with endpoint", endpointUrl);
+
+  try {
+    await subscribeToSNSTopic(SNS_ARN, endpointUrl);
+    console.log("Successfully sent SNS subscription request");
+  } catch (err) {
+    console.error("Could not subscribe to SNS channel:", err);
+  }
+}
+
 async function launch() {
   await setupDatabase();
   await setupServer();
+  await setupSNSEndpoint();
 }
 
 launch();

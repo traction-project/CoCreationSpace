@@ -2,19 +2,10 @@ import { Router } from "express";
 
 import { getFromEnvironment, Range } from "../util";
 import { fetchTranscript, transcribeOutputToVTT } from "../util/transcribe";
-import { subscribeToSNSTopic, confirmSubscription } from "../util/sns";
+import { confirmSubscription } from "../util/sns";
 import { db } from "../models";
 
-const [ SNS_ARN, SNS_ENDPOINT ] = getFromEnvironment("SNS_ARN", "SNS_ENDPOINT");
-
-const endpointUrl = SNS_ENDPOINT + "/sns/receive";
-console.log("Subscribing to", SNS_ARN, "with endpoint", endpointUrl);
-
-subscribeToSNSTopic(SNS_ARN, endpointUrl).then(() => {
-  console.log("Successfully sent SNS subscription request");
-}).catch((err) => {
-  console.error("Could not subscribe to SNS channel:", err);
-});
+const [ SNS_ARN ] = getFromEnvironment("SNS_ARN");
 
 const router = Router();
 
