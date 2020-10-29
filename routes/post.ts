@@ -39,14 +39,16 @@ router.get("/all", authRequired, async (req, res) => {
       attributes: ["id", "username", "image"]
     }, queryDataContainer, "comments", "tags", "emojiReactions"]
   });
+
   posts.forEach(post => {
     if (post.user && isUser(post.user)) {
       post.user.image = `${CLOUDFRONT_URL}/${post.user.image}`;
     }
   });
+
   const postsJSON = await Promise.all(posts.map(async (post) => {
     const likes = await post.countLikesUsers();
-    let postJSON = post.toJSON();
+    const postJSON = post.toJSON();
 
     return {
       likes,
@@ -126,11 +128,12 @@ router.get("/id/:id", authRequired, async (req, res) => {
   if (post) {
     const likes = await post.countLikesUsers();
     const isLiked = await post.hasLikesUser(user);
+
     if (post.user && isUser(post.user)) {
       post.user.image = `${CLOUDFRONT_URL}/${post.user.image}`;
     }
-    let postJSON = post.toJSON();
 
+    const postJSON = post.toJSON();
     const result = {
       likes,
       isLiked,
@@ -148,9 +151,12 @@ router.get("/id/:id", authRequired, async (req, res) => {
  */
 router.post("/", authRequired, async (req, res) => {
   const { text, title, multimedia, tags } = req.body;
-  if (!text) return res.status(400).send({ message: "Field text not present"});
-  const user = req.user as UserInstance;
 
+  if (!text) {
+    return res.status(400).send({ message: "Field text not present"});
+  }
+
+  const user = req.user as UserInstance;
   const { Posts, Tags } = db.getModels();
 
   const post = Posts.build({
@@ -220,7 +226,7 @@ router.post("/id/:id", authRequired, async (req, res) => {
     await dataContainer.setMultimedia(multimedia);
   }
 
-  let result = Object.assign(postSaved.toJSON(), {user: user.toJSON()});
+  const result = Object.assign(postSaved.toJSON(), {user: user.toJSON()});
   return res.send(result);
 });
 

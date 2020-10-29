@@ -5,9 +5,9 @@ import { UserInstance } from "../models/users";
 import { db } from "../models";
 
 passport.use(new LocalStrategy((username, password, done) => {
-  const User = db.getModels().Users;
+  const { Users } = db.getModels();
 
-  User.findOne( { where: { username } }).then((user: UserInstance) => {
+  Users.findOne( { where: { username } }).then((user: UserInstance) => {
     if (user && user.validatePassword(password)) {
       done(null, user);
     } else {
@@ -25,9 +25,9 @@ passport.serializeUser((user: UserInstance, done) => {
 });
 
 passport.deserializeUser((id: string, done) => {
-  const User = db.getModels().Users;
+  const { Users } = db.getModels();
 
-  User.findOne({where : { id }}).then((user: UserInstance) => {
+  Users.findOne({where : { id }}).then((user: UserInstance) => {
     done(null, user);
   }).catch(done);
 });

@@ -168,12 +168,12 @@ const castType = (value: string, type: string) => {
  * @param model Model where to do the query
  */
 export const buildCriteria = async ({ q }: { q?: string }, model: ModelCtor<Model>)  => {
-  let criteria = {};
+  const criteria = {};
 
   if (q) {
-    let where: {  where: {[key: string]: any}} = { where: {} };
+    const where: { where: { [key: string]: any } } = { where: {} };
+    const modelSchema: { [key: string]: any } = await model.describe();
 
-    const modelSchema: {[key: string]: any} = await model.describe();
     Object.keys(modelSchema).forEach((key) => {
       const castValue = castType(q, modelSchema[key].type);
       if (castValue) {
@@ -181,6 +181,7 @@ export const buildCriteria = async ({ q }: { q?: string }, model: ModelCtor<Mode
         where.where[key] = operator;
       }
     });
+
     Object.assign(criteria, where);
   }
   return criteria;

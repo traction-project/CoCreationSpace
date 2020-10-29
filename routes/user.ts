@@ -43,31 +43,36 @@ router.post("/image", authRequired, (req, res) => {
  * Get user information
  */
 router.get("/profile", authRequired, (req, res) => {
-  let { id, username, image} = req.user as UserInstance;
+  const { id, username, image } = req.user as UserInstance;
 
-  image = `${CLOUDFRONT_URL}/${image}`;
-  return res.send({id, username, image});
-
+  return res.send({
+    id, username,
+    image: `${CLOUDFRONT_URL}/${image}`
+  });
 });
 
 /**
  * Modify user account (username and password)
  */
 router.put("/", authRequired, async (req, res) => {
-  const userModel = db.getModels().Users;
-  let user = req.user as UserInstance;
+  const { Users } = db.getModels();
+  const user = req.user as UserInstance;
   const { body } = req;
 
   if (body.username) {
-    const existUser = await userModel.findOne({ where: { username: body.username }});
+    const existUser = await Users.findOne({ where: { username: body.username }});
+
     if (!existUser) {
       const newUsername = body.username;
+
       if (user.username !== newUsername) {
         user.username = newUsername;
+
         try {
           await user.save();
         } catch (err) {
           res.status(500);
+
           return res.send({
             status: "ERR",
             message: err.message
@@ -80,10 +85,12 @@ router.put("/", authRequired, async (req, res) => {
   }
   if (body.password) {
     user.setPassword(body.password);
+
     try {
       await user.save();
     } catch(err) {
       res.status(500);
+
       return res.send({
         status: "ERR",
         message: err.message
@@ -91,9 +98,12 @@ router.put("/", authRequired, async (req, res) => {
     }
   }
 
-  let { id, username, image} = user;
-  image = `${CLOUDFRONT_URL}/${image}`;
-  res.send({ id, username, image});
+  const { id, username, image } = user;
+
+  res.send({
+    id, username,
+    image: `${CLOUDFRONT_URL}/${image}`
+  });
 });
 
 export default router;

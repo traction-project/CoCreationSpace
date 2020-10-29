@@ -83,7 +83,7 @@ export async function insertVideoMetadata(data: any) {
     ) + ".png";
   });
 
-  const Multimedia = db.getModels().Multimedia;
+  const { Multimedia } = db.getModels();
   const video = await Multimedia.findOne({ where : { transcodingJobId: jobId } });
 
   if (video) {

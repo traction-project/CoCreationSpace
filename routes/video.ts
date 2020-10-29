@@ -14,7 +14,7 @@ const [ BUCKET_NAME, ETS_PIPELINE, CLOUDFRONT_URL ] = getFromEnvironment("BUCKET
 const router = Router();
 
 router.post("/upload", authRequired, (req, res) => {
-  const Multimedia = db.getModels().Multimedia;
+  const { Multimedia } = db.getModels();
   const busboy = new Busboy({ headers: req.headers });
 
   busboy.on("file", async (fieldname, file, filename, encoding, mimetype) => {
@@ -26,8 +26,7 @@ router.post("/upload", authRequired, (req, res) => {
       const jobId = await encodeDash(ETS_PIPELINE, newName);
 
       const userId: string | undefined = (req.user as UserInstance).id;
-
-      let video: MultimediaInstance = Multimedia.build();
+      const video: MultimediaInstance = Multimedia.build();
 
       video.title = filename;
       video.key = newName.split(".")[0];
@@ -46,6 +45,7 @@ router.post("/upload", authRequired, (req, res) => {
       res.send({ status: "OK", id: video.id });
     } catch (e) {
       console.error(e);
+
       res.status(500).send({
         status: "ERR",
         message: "Could not upload to S3"
@@ -57,7 +57,7 @@ router.post("/upload", authRequired, (req, res) => {
 });
 
 router.get("/all", async (req, res) => {
-  const Multimedia = db.getModels().Multimedia;
+  const { Multimedia } = db.getModels();
   const videos = await Multimedia.findAll({ order: [["created_at", "desc"]] });
 
   res.send(videos.map((video) => {
@@ -77,7 +77,8 @@ router.get("/all", async (req, res) => {
 
 router.get("/id/:id", async (req, res) => {
   const { id } = req.params;
-  const Multimedia = db.getModels().Multimedia;
+
+  const { Multimedia } = db.getModels();
   const video = await Multimedia.findOne({ where: { id } });
 
   if (video) {
