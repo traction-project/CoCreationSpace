@@ -51,91 +51,97 @@ async function setupDatabase() {
     }
   });
 
+  console.log("Running migrations...");
   await umzug.up();
+
+  console.log("Setting up models...");
   await db.createDB(sequelize);
 }
 
-function setupServer() {
-  const app = express();
+async function setupServer() {
+  return new Promise((resolve) => {
+    const app = express();
 
-  // view engine setup
-  app.set("views", path.join(__dirname, "views"));
-  app.set("view engine", "ejs");
+    // view engine setup
+    app.set("views", path.join(__dirname, "views"));
+    app.set("view engine", "ejs");
 
-  app.use(snsMiddleware);
-  app.use(logger("dev"));
-  app.use(express.json());
+    app.use(snsMiddleware);
+    app.use(logger("dev"));
+    app.use(express.json());
 
-  setupAuth();
+    setupAuth();
 
-  const SequelizeSessionStore = require("connect-session-sequelize")(session.Store);
-  const sessionStore = new SequelizeSessionStore({ db: sequelize });
+    const SequelizeSessionStore = require("connect-session-sequelize")(session.Store);
+    const sessionStore = new SequelizeSessionStore({ db: sequelize });
 
-  app.use(session({
-    secret: SESSION_SECRET,
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: false },
-    store: sessionStore
-  }));
+    app.use(session({
+      secret: SESSION_SECRET,
+      resave: false,
+      saveUninitialized: true,
+      cookie: { secure: false },
+      store: sessionStore
+    }));
 
-  sessionStore.sync();
+    sessionStore.sync();
 
-  app.use(passport.initialize());
-  app.use(passport.session());
+    app.use(passport.initialize());
+    app.use(passport.session());
 
-  app.use(express.urlencoded({ extended: false }));
-  app.use(cookieParser());
-  app.use(express.static(path.join(__dirname, "public")));
+    app.use(express.urlencoded({ extended: false }));
+    app.use(cookieParser());
+    app.use(express.static(path.join(__dirname, "public")));
 
-  app.use("/", indexRouter);
+    app.use("/", indexRouter);
 
-  // catch 404 and forward to error handler
-  app.use((req, res, next) => {
-    next(createError(404));
-  });
+    // catch 404 and forward to error handler
+    app.use((req, res, next) => {
+      next(createError(404));
+    });
 
-  // error handler
-  app.use((err: any, req: express.Request, res: express.Response) => {
-    // set locals, only providing error in development
-    res.locals.message = err.message;
-    res.locals.error = req.app.get("env") === "development" ? err : {};
+    // error handler
+    app.use((err: any, req: express.Request, res: express.Response) => {
+      // set locals, only providing error in development
+      res.locals.message = err.message;
+      res.locals.error = req.app.get("env") === "development" ? err : {};
 
-    // render the error page
-    res.status(err.status || 500);
-    res.render("error");
-  });
+      // render the error page
+      res.status(err.status || 500);
+      res.render("error");
+    });
 
-  const port = process.env.PORT || "3000";
-  app.set("port", port);
+    const port = process.env.PORT || "3000";
+    app.set("port", port);
 
-  const server = http.createServer(app);
-  server.listen(port);
+    const server = http.createServer(app);
+    server.listen(port);
 
-  server.on("error", (error: any) => {
-    if (error.syscall !== "listen") {
-      throw error;
-    }
+    server.on("error", (error: any) => {
+      if (error.syscall !== "listen") {
+        throw error;
+      }
 
-    // handle specific listen errors with friendly messages
-    switch (error.code) {
-    case "EADDRINUSE":
-      console.error(`Port ${port} is already in use`);
-      process.exit(1);
-      break;
-    default:
-      throw error;
-    }
-  });
+      // handle specific listen errors with friendly messages
+      switch (error.code) {
+      case "EADDRINUSE":
+        console.error(`Port ${port} is already in use`);
+        process.exit(1);
+        break;
+      default:
+        throw error;
+      }
+    });
 
-  server.on("listening", () => {
-    console.log(`Server listening on port ${port}`);
+    server.on("listening", () => {
+      console.log(`Server listening on port ${port}`);
+      resolve();
+    });
   });
 }
 
 async function launch() {
   await setupDatabase();
-  setupServer();
+  await setupServer();
 }
 
 launch();
