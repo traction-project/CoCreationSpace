@@ -64,6 +64,28 @@ async function setupDatabase() {
   await db.createDB(sequelize);
 }
 
+async function setupDatabaseSeeds() {
+  const umzug = new Umzug({
+    migrations: {
+      path: path.join(__dirname, "./sequelize/seeders"),
+      params: [
+        sequelize.getQueryInterface(),
+        Sequelize
+      ]
+    },
+    logging: (msg: string) => {
+      console.log(msg);
+    },
+    storage: "sequelize",
+    storageOptions: {
+      sequelize: sequelize
+    }
+  });
+
+  console.log("Running seeder migrations...");
+  await umzug.up();
+}
+
 async function setupServer() {
   return new Promise((resolve) => {
     const app = express();
@@ -159,6 +181,7 @@ async function setupSNSEndpoint() {
 
 async function launch() {
   await setupDatabase();
+  await setupDatabaseSeeds();
   await setupServer();
   await setupSNSEndpoint();
 }
