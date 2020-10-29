@@ -4,7 +4,7 @@ import { Strategy as LocalStrategy } from "passport-local";
 import { UserInstance } from "../models/users";
 import { db } from "../models";
 
-export default function setup() {
+export default async function setup() {
   passport.use(new LocalStrategy((username, password, done) => {
     const { Users } = db.getModels();
 

@@ -98,8 +98,6 @@ async function setupServer() {
     app.use(logger("dev"));
     app.use(express.json());
 
-    setupAuth();
-
     const SequelizeSessionStore = require("connect-session-sequelize")(session.Store);
     const sessionStore = new SequelizeSessionStore({ db: sequelize });
 
@@ -183,6 +181,7 @@ async function launch() {
   await setupDatabase();
   await setupDatabaseSeeds();
   await setupServer();
+  await setupAuth();
   await setupSNSEndpoint();
 }
 
