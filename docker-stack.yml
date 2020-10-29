@@ -16,7 +16,7 @@ services:
         delay: 5s
         max_attempts: 3
   postgres:
-    image: postgres
+    image: postgres:12
     volumes:
       - /home/ubuntu/containers/postgres:/var/lib/postgresql/data
     ports:
