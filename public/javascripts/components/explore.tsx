@@ -1,6 +1,8 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+
 import { PostType } from "./post";
 import Filter from "./filter";
 import { TagData } from "./post_list";
@@ -9,6 +11,8 @@ interface ExploreProps {}
 
 const Explore: React.FC<ExploreProps> = () => {
   const history = useHistory();
+  const { t } = useTranslation();
+
   const [ posts, setPosts ] = useState<Array<PostType>>([]);
   const [ filteredPosts, setFilteredPosts ] = useState<Array<PostType>>([]);
   const [ tags, setTags ] = useState<Array<TagData>>();
@@ -97,15 +101,16 @@ const Explore: React.FC<ExploreProps> = () => {
                               <img src="/images/default.png" alt="Logo"/>
                             )}
                           </span>
-                          {post.user && post.user.username ?
+                          {(post.user && post.user.username) ? (
                             <p>{post.user.username}</p>
-                            : <p>Anonymous</p>
-                          }
+                          ) : (
+                            <p>{t("Anonymous")}</p>
+                          )}
                         </figure>
                         <div className="media-content">
                           <div className="content">
                             <p>
-                              <strong className="post-title">{post.title ? post.title : "Post"}</strong>
+                              <strong className="post-title">{post.title ? post.title : t("Post")}</strong>
                               <small className="list-item__date">{post.createdAt && new Date(post.createdAt).toLocaleDateString()}</small>
                               <br />
                               <br />
@@ -128,7 +133,7 @@ const Explore: React.FC<ExploreProps> = () => {
                         </div>
                         <div className="media-right number-comments">
                           <i className="far fa-comment"></i>
-                          <p>{(post.comments && post.comments.length > 0) ? post.comments.length : 0} {(post.comments && post.comments.length == 1) ? "Comment" : "Comments" }</p>
+                          <p>{(post.comments && post.comments.length > 0) ? post.comments.length : 0} {(post.comments && post.comments.length == 1) ? t("Comment") : t("Comments") }</p>
                         </div>
                       </article>
                     </div>
@@ -140,8 +145,8 @@ const Explore: React.FC<ExploreProps> = () => {
         </div>
         <div className="column is-2">
           <ul className="lateral-menu">
-            <li><button className="btn" onClick={handleClickButtonNewPost}>New Post</button></li>
-            <li className="lateral-menu__item" onClick={handleClickAllPosts}>All posts</li>
+            <li><button className="btn" onClick={handleClickButtonNewPost}>{t("New post")}</button></li>
+            <li className="lateral-menu__item" onClick={handleClickAllPosts}>{t("All posts")}</li>
             <hr />
             { tags ?
               tags.map((tag, index) => {

@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 import { PostType } from "./post";
 import Filter from "./filter";
@@ -19,6 +20,8 @@ export type TagData = {
 
 const PostList: React.FC<PostListProps> = ({endpoint}) => {
   const history = useHistory();
+  const { t } = useTranslation();
+
   const [ posts, setPosts ] = useState<Array<PostType>>([]);
   const [ filteredPosts, setFilteredPosts ] = useState<Array<PostType>>([]);
   const [ tags, setTags ] = useState<Array<TagData>>();
@@ -95,7 +98,7 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
       <div className="columns" style={{ marginTop: 15 }}>
         <div className="column is-8 is-offset-1">
           <div>
-            {filteredPosts ?
+            {(filteredPosts) ? (
               filteredPosts.map((post, index) => {
                 return (
                   <div key={index}>
@@ -130,7 +133,7 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
                             </div>
                             <div className="media-right number-comments">
                               <i className="far fa-comment"></i>
-                              <p>{(post.comments && post.comments.length > 0) ? post.comments.length : 0} {(post.comments && post.comments.length == 1) ? "Comment" : "Comments" }</p>
+                              <p>{(post.comments && post.comments.length > 0) ? post.comments.length : 0} {(post.comments && post.comments.length == 1) ? t("Comment") : t("Comments") }</p>
                             </div>
                           </article>
                         </div>
@@ -139,19 +142,23 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
                   </div>
                 );
               })
-              : <p>This user has not posts</p>}
+            ) : (
+              <p>{t("This user has not posts")}</p>
+            )}
           </div>
         </div>
         <div className="column is-2">
           <ul className="lateral-menu">
-            <li><button className="btn" onClick={handleClickButtonNewPost}>New Post</button></li>
-            <li className="lateral-menu__item" onClick={handleClickAllPosts}>All posts</li>
+            <li><button className="btn" onClick={handleClickButtonNewPost}>{t("New Post")}</button></li>
+            <li className="lateral-menu__item" onClick={handleClickAllPosts}>{t("All posts")}</li>
             <hr />
-            { tags ?
+            {(tags) ? (
               tags.map((tag, index) => {
                 return (<li key={index} className="tag" onClick={() => handleClickTag(tag)}>{tag.tag_name}</li>);
               })
-              : null}
+            ) : (
+              null
+            )}
           </ul>
         </div>
       </div>

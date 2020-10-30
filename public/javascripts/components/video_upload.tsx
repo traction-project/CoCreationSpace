@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useState, ChangeEvent } from "react";
 import { useHistory } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 import { postFile, ResponseUploadType } from "../util";
 import Dropzone from "./dropzone";
@@ -12,6 +13,7 @@ interface VideoUploadProps {
 
 const VideoUpload: React.FC<VideoUploadProps> = () => {
   const history = useHistory();
+  const { t } = useTranslation();
 
   const [ title, setTitle ] = useState<string>();
   const [ multimedia, setMultimedia ] = useState<string>();
@@ -97,59 +99,60 @@ const VideoUpload: React.FC<VideoUploadProps> = () => {
         <div className="container">
           {(total > 0) ? (
             <ProgressRing radius={160} stroke={15} progress={progress} total={total}></ProgressRing>
-          ) : ( multimedia ?
-            (<Video id={multimedia}></Video>)
-            : (
-              <Dropzone size={["100%", 300]} onFileDropped={startUpload} />
-            )
+          ) : (multimedia) ? (
+            <Video id={multimedia}></Video>
+          ) : (
+            <Dropzone size={["100%", 300]} onFileDropped={startUpload} />
           )}
         </div>
 
-        { (total > 0 || multimedia) ?
-          (
-            <React.Fragment>
-              <br />
-              <div className="columns">
-                <div className="column is-2">
-                  <h1 className="title-2">Title</h1>
-                  <hr/>
-                  <input type="text" placeholder="Add title..." className="searcher-tag" onChange={(e) => handleChangeInputTitle(e.currentTarget.value)}/>
-                </div>
+        {(total > 0 || multimedia) ? (
+          <React.Fragment>
+            <br />
+            <div className="columns">
+              <div className="column is-2">
+                <h1 className="title-2">{t("Title")}</h1>
+                <hr/>
+                <input type="text" placeholder={`${t("Add title")}...`} className="searcher-tag" onChange={(e) => handleChangeInputTitle(e.currentTarget.value)}/>
               </div>
-              <br/>
-              <div className="columns">
-                <div className="column">
-                  <h1 className="title-2">Tags</h1>
-                  <hr/>
-                  <input type="text" placeholder="Add tag..." className="searcher-tag" onKeyDown={handleKeyInputTag}/>
-                  <ul className="list-tags">
-                    { tags ?
-                      tags.map((tag, index) => {
-                        return (
-                          <li key={index} className="tag">{tag}<a className="delete" onClick={(_) => handleClickRemoveTag(tag)}></a></li>);
-                      })
-                      : null}
-                  </ul>
-                </div>
-                <div className="column">
-                  <h1 className="title-2">Text</h1>
-                  <hr/>
-                  <textarea placeholder="Write summary..." className="summary" onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setSummary(e.currentTarget.value)}></textarea>
-                </div>
+            </div>
+            <br/>
+            <div className="columns">
+              <div className="column">
+                <h1 className="title-2">{t("Tags")}</h1>
+                <hr/>
+                <input type="text" placeholder={`${t("Add tag")}...`} className="searcher-tag" onKeyDown={handleKeyInputTag}/>
+                <ul className="list-tags">
+                  { tags ?
+                    tags.map((tag, index) => {
+                      return (
+                        <li key={index} className="tag">{tag}<a className="delete" onClick={(_) => handleClickRemoveTag(tag)}></a></li>);
+                    })
+                    : null}
+                </ul>
               </div>
-              <button className="btn" onClick={handleClickButton} disabled={(summary && multimedia) ? false : true}>Create content</button>
-            </React.Fragment>
-          )
-          : null}
+              <div className="column">
+                <h1 className="title-2">{t("Text")}</h1>
+                <hr/>
+                <textarea placeholder={`${t("Write summary")}...`} className="summary" onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setSummary(e.currentTarget.value)}></textarea>
+              </div>
+            </div>
+            <button className="btn" onClick={handleClickButton} disabled={(summary && multimedia) ? false : true}>
+              {t("Create content")}
+            </button>
+          </React.Fragment>
+        ) : (
+          null
+        )}
         {(displayNotification == "success") ? (
           <div className="notification is-success fixed-notification">
             <button className="delete" onClick={closeNotification}></button>
-            File successfully uploaded
+            {t("File successfully uploaded")}
           </div>
         ) : (displayNotification == "error") ? (
           <div className="notification is-error fixed-notification">
             <button className="delete" onClick={closeNotification}></button>
-            Could not upload file
+            {t("Could not upload file")}
           </div>
         ) : null}
       </div>

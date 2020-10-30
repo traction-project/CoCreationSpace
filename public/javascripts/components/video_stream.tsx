@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 interface VideoData {
   id: string;
@@ -15,6 +16,7 @@ interface VideoStreamProps {
 }
 
 const VideoStream: React.FC<VideoStreamProps> = (props) => {
+  const { t } = useTranslation();
   const [ videos, setVideos ] = useState<Array<VideoData>>([]);
 
   useEffect(() => {
@@ -31,7 +33,8 @@ const VideoStream: React.FC<VideoStreamProps> = (props) => {
   return (
     <div className="columns" style={{ marginTop: 15 }}>
       <div className="column is-8 is-offset-2">
-        <h1 className="title">Videos</h1>
+        <h1 className="title">{t("Videos")}</h1>
+
         {videos.map((v, i) => {
           return (
             <div key={i} className="box">
@@ -51,9 +54,9 @@ const VideoStream: React.FC<VideoStreamProps> = (props) => {
                       v.title
                     )}
                     <hr />
-                    <b>Available resolutions:</b> {v.resolutions && v.resolutions.join(", ")}<br />
-                    <b>Duration:</b> {v.duration || "?"}s<br />
-                    <b>Status:</b> {v.status}
+                    <b>{t("Available resolutions")}:</b> {v.resolutions && v.resolutions.join(", ")}<br />
+                    <b>{t("Duration")}:</b> {v.duration || "?"}s<br />
+                    <b>{t("Status")}:</b> {v.status}
                   </div>
                 </div>
               </article>

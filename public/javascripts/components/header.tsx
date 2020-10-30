@@ -2,6 +2,7 @@ import * as React from "react";
 import { Dispatch, bindActionCreators } from "redux";
 import { useLocation, Link, useHistory } from "react-router-dom";
 import { connect } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 import { ApplicationState } from "../store";
 import { actionCreators as loginActionCreators, LoginActions } from "../actions/login";
@@ -18,6 +19,7 @@ interface HeaderConnectedProps {
 type HeaderProps = HeaderActionProps & HeaderConnectedProps;
 
 const Header: React.FC<HeaderProps> = (props) => {
+  const { t } = useTranslation();
   const location = useLocation();
   const history = useHistory();
 
@@ -31,31 +33,32 @@ const Header: React.FC<HeaderProps> = (props) => {
       <h3 className="header__item header__logo">MediaVault</h3>
       <div className="menu-bar">
         <div className="menu-bar__item">
-          <Link to={"/"}><span className={location.pathname === "/" ? "active" : ""}>Home</span></Link>
+          <Link to={"/"}><span className={location.pathname === "/" ? "active" : ""}>{t("Home")}</span></Link>
         </div>
         <div className="menu-bar__item">
-          <Link to={"/userPosts"}><span className={location.pathname === "/userPosts" ? "active" : ""}>My Posts</span></Link>
+          <Link to={"/userPosts"}><span className={location.pathname === "/userPosts" ? "active" : ""}>{t("My Posts")}</span></Link>
         </div>
         <div className="menu-bar__item">
-          <Link to={"/posts"}><span className={location.pathname === "/posts" ? "active" : ""}>Explore</span></Link>
+          <Link to={"/posts"}><span className={location.pathname === "/posts" ? "active" : ""}>{t("Explore")}</span></Link>
         </div>
       </div>
-      { props.login.loggedIn
-        ? <figure className="header__item dropdown-btn" style={{width: "min-content"}}>
+      {(props.login.loggedIn) ? (
+        <figure className="header__item dropdown-btn" style={{width: "min-content"}}>
           <span className="image is-48x48">
             <img src={props.login.user?.image} alt="Logo"/>
           </span>
           <ul className="box dropdown">
-            <Link to={"/profile"}><li className="dropdown__item">Profile</li></Link>
+            <Link to={"/profile"}><li className="dropdown__item">{t("Profile")}</li></Link>
             <hr/>
-            <li className="dropdown__item red" onClick={() => logOut()}>Sign Out</li>
+            <li className="dropdown__item red" onClick={() => logOut()}>{t("Sign Out")}</li>
           </ul>
         </figure>
-        : <div>
-          <Link to={"/login"}><span className="header__item">Sign In</span></Link>
-          <Link to={"/signup"}><span className="header__item">Sign Up</span></Link>
+      ) : (
+        <div>
+          <Link to={"/login"}><span className="header__item">{t("Sign In")}</span></Link>
+          <Link to={"/signup"}><span className="header__item">{t("Sign Up")}</span></Link>
         </div>
-      }
+      )}
     </nav>
   );
 };

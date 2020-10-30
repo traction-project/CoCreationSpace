@@ -1,8 +1,10 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import DashPlayer from "./dash_player";
 import { VideoJsPlayer } from "video.js";
+import { useTranslation } from "react-i18next";
+
+import DashPlayer from "./dash_player";
 import { PostType } from "./post";
 import { EmojiReaction } from "../util";
 
@@ -15,6 +17,7 @@ type VideoProps = {
 }
 
 const Video: React.FC<VideoProps> = (props) => {
+  const { t } = useTranslation();
   const { id } = useParams<{ id: string }>();
   const { id: idAttribute, comments, getPlayer, emojis } = props;
   const idVideo = idAttribute ? idAttribute : id;
@@ -74,7 +77,7 @@ const Video: React.FC<VideoProps> = (props) => {
       <div style={{ display: "flex" }}>
         <div style={{ width: 700, height: 394, backgroundColor: "#000" }}>
           <p style={{ textAlign: "center", marginTop: "25%", color: "#FFF" }}>
-            {videoStatus}
+            {videoStatus && t(videoStatus)}
           </p>
         </div>
       </div>

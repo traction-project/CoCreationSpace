@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 import LanguageSelector from "./language_selector";
 
@@ -23,6 +24,7 @@ interface TranslateProps {
 
 const Translate: React.FC<TranslateProps> = () => {
   const { id } = useParams<{ id: string }>();
+  const { t } = useTranslation();
 
   const [ transcript, setTranscript ] = useState<Array<Cue>>([]);
   const [ translatedTranscript, setTranslatedTranscript ] = useState<Array<Cue>>([]);
@@ -88,8 +90,8 @@ const Translate: React.FC<TranslateProps> = () => {
   return (
     <div className="columns" style={{ marginTop: 15 }}>
       <div className="column is-8 is-offset-2">
-        <h1 className="title">Translate {id}</h1>
-        <h4 className="title is-4">Automatic Translation</h4>
+        <h1 className="title">{t("Translate")} {id}</h1>
+        <h4 className="title is-4">{t("Automatic Translation")}</h4>
         <LanguageSelector
           value={targetLanguage}
           onChange={(e) => setTargetLanguage(e.target.value)}
@@ -97,13 +99,13 @@ const Translate: React.FC<TranslateProps> = () => {
         <br/>
         <br/>
         <button className="button is-info" onClick={translateTranscript}>
-          Translate
+          {t("Translate")}
         </button>
 
         <br/>
         <br/>
 
-        <h4 className="title is-4">Manual Translation</h4>
+        <h4 className="title is-4">{t("Manual Translation")}</h4>
 
         {transcript.map(({ cueStart, cueEnd, cue }, i) => {
           return (
@@ -127,7 +129,7 @@ const Translate: React.FC<TranslateProps> = () => {
         <br/>
 
         <div className="field">
-          <label className="label">Language</label>
+          <label className="label">{t("Language")}</label>
           <div className="control">
             <input
               type="text"
@@ -138,18 +140,18 @@ const Translate: React.FC<TranslateProps> = () => {
           </div>
         </div>
         <button className="button is-info" disabled={manualTranslationLanguage.length == 0} onClick={saveTranscript}>
-          Save
+          {t("Save")}
         </button>
 
         {(displayNotification == "success") ? (
           <div className="notification is-success fixed-notification">
             <button className="delete" onClick={closeNotification}></button>
-            Text successfully translated
+            {t("Text successfully translated")}
           </div>
         ) : (displayNotification == "error") ? (
           <div className="notification is-error fixed-notification">
             <button className="delete" onClick={closeNotification}></button>
-            Could not translate text
+            {t("Could not translate text")}
           </div>
         ) : null}
       </div>

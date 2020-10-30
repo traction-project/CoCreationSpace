@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useState } from "react";
 import classNames from "classnames";
+import { useTranslation } from "react-i18next";
 
 interface DropzoneProps {
   onFileDropped: (f: File) => void;
@@ -9,6 +10,7 @@ interface DropzoneProps {
 
 const Dropzone: React.FC<DropzoneProps> = (props) => {
   const { onFileDropped, size: [width, height] } = props;
+  const { t } = useTranslation();
   const [ dropzoneEntered, setDropzoneEntered ] = useState(false);
 
   const parseFormData = (e: React.DragEvent<HTMLDivElement>) => {
@@ -32,7 +34,7 @@ const Dropzone: React.FC<DropzoneProps> = (props) => {
         onDragOver={(e) => e.preventDefault()}
         onDrop={parseFormData}
       >
-        <div>Drop a file here</div>
+        <div>{t("Drop a file here")}</div>
       </div>
     </React.Fragment>
   );

@@ -1,5 +1,6 @@
 import * as React from "react";
 import { useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { postFile } from "../util";
 
@@ -8,6 +9,7 @@ interface VideoRecorderProps {
 
 const VideoRecorder: React.FC<VideoRecorderProps> = () => {
   const video = useRef<HTMLVideoElement>(null);
+  const { t } = useTranslation();
 
   const [ recorderStatus, setRecorderStatus ] = useState<"recording" | "stopped">();
   const [ progress, setProgress ] = useState<number>(0);
@@ -100,7 +102,7 @@ const VideoRecorder: React.FC<VideoRecorderProps> = () => {
   return (
     <div className="columns" style={{ marginTop: 15 }}>
       <div className="column is-8 is-offset-2">
-        <h1 className="title">Record Video</h1>
+        <h1 className="title">{t("Record Video")}</h1>
 
         {(total > 0) ? (
           <div className="progresscontainer">
@@ -110,26 +112,28 @@ const VideoRecorder: React.FC<VideoRecorderProps> = () => {
           <div>
             <video ref={video} />
             <p>
-              Tap the video to stop recording and upload the video
+              {t("Tap the video to stop recording and upload the video")}
             </p>
           </div>
         ) : (
           <button className="button is-info" onClick={startRecording}>
-            Record
+            {t("Record")}
           </button>
         )}
 
         {(displayNotification == "success") ? (
           <div className="notification is-success fixed-notification">
             <button className="delete" onClick={closeNotification}></button>
-            File successfully uploaded
+            {t("File successfully uploaded")}
           </div>
         ) : (displayNotification == "error") ? (
           <div className="notification is-error fixed-notification">
             <button className="delete" onClick={closeNotification}></button>
-            Could not upload file
+            {t("Could not upload file")}
           </div>
-        ) : null}
+        ) : (
+          null
+        )}
       </div>
     </div>
   );

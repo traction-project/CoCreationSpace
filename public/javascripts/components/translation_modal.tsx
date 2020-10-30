@@ -1,5 +1,6 @@
 import * as React from "react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import LanguageSelector from "./language_selector";
 
@@ -11,6 +12,7 @@ interface TranslationModalProps {
 
 const TranslationModal: React.FC<TranslationModalProps> = (props) => {
   const { id, onSuccess, onClose } = props;
+  const { t } = useTranslation();
   const [ targetLanguage, setTargetLanguage ] = useState<string>("en");
 
   const onDone = async () => {
@@ -35,7 +37,7 @@ const TranslationModal: React.FC<TranslationModalProps> = (props) => {
       <div className="modal-content">
         <div className="box">
           <div className="field">
-            <label className="label">Language</label>
+            <label className="label">{t("Language")}</label>
             <div className="control">
               <LanguageSelector
                 value={targetLanguage}
@@ -46,10 +48,10 @@ const TranslationModal: React.FC<TranslationModalProps> = (props) => {
 
           <div className="field is-grouped">
             <div className="control">
-              <button className="button is-link" onClick={onDone}>Translate</button>
+              <button className="button is-link" onClick={onDone}>{t("Translate")}</button>
             </div>
             <div className="control">
-              <button className="button is-link is-light" onClick={onClose}>Cancel</button>
+              <button className="button is-link is-light" onClick={onClose}>{t("Cancel")}</button>
             </div>
           </div>
         </div>

@@ -3,6 +3,7 @@ import { useState, useEffect, Fragment } from "react";
 import { useParams } from "react-router-dom";
 import { VideoJsPlayer } from "video.js";
 import usePortal from "react-useportal";
+import { useTranslation } from "react-i18next";
 
 import { activateSubtitleTrack, CommonType, convertHMS, EmojiReaction } from "../util";
 
@@ -45,6 +46,7 @@ interface PostProps {
 }
 
 const Post: React.FC<PostProps> = (props) => {
+  const { t } = useTranslation();
   const { id } = useParams<{ id: string }>();
   const idPost = props.post ? props.post.id : id;
   const { callbackClickTime } = props;
@@ -67,15 +69,25 @@ const Post: React.FC<PostProps> = (props) => {
 
       if (response.ok) {
         const data = await response.json();
+
         setPost(data);
         setComments(data.comments);
-        setEmojiReactions(data.emojiReactions.map((item: EmojiReaction) => { return { emoji: item.emoji, second: item.second }; }));
+        setEmojiReactions(data.emojiReactions.map((item: EmojiReaction) => {
+          return { emoji: item.emoji, second: item.second };
+        }));
+
         if (!data.parent_post_id) {
           setShowNewComment(true);
           setShowComments(true);
         }
-        if (data.isLiked) { setIsLike(data.isLiked); }
-        if (data.likes) { setLikes(data.likes); }
+
+        if (data.isLiked) {
+          setIsLike(data.isLiked);
+        }
+
+        if (data.likes) {
+          setLikes(data.likes);
+        }
       }
     })();
   }, [idPost]);
@@ -105,7 +117,11 @@ const Post: React.FC<PostProps> = (props) => {
 
   const handleSubmitNewComment = async ({ comment, multimedia }: { comment: string, multimedia?: Array<string> }) => {
     const second = player ? player.currentTime() : null;
-    const responseComment = second ? await postComment(idPost, comment, multimedia, second) : await postComment(idPost, comment, multimedia);
+    const responseComment = (second) ? (
+      await postComment(idPost, comment, multimedia, second)
+    ) : (
+      await postComment(idPost, comment, multimedia)
+    );
 
     if (responseComment.ok) {
       if (player) {
@@ -132,6 +148,7 @@ const Post: React.FC<PostProps> = (props) => {
 
   const handleClickEmojiItem = async (emoji: string) => {
     setShowEmojis(false);
+
     if (player) {
       const second = player.currentTime();
       const response = await postEmojiReaction(idPost, emoji, second);
@@ -142,11 +159,14 @@ const Post: React.FC<PostProps> = (props) => {
           emoji: data.emoji,
           second: data.second
         };
+
         addEmojiAnimation(player, reaction);
+
         const reactions = [
           reaction,
           ...emojiReactions
         ];
+
         setEmojiReactions(reactions);
       }
     }
@@ -177,7 +197,7 @@ const Post: React.FC<PostProps> = (props) => {
   return (
     <div className="columns" style={{ marginTop: 15 }}>
       <div className="column is-8 is-offset-1">
-        {post ?
+        {(post) ? (
           <div>
             <div className="comment">
               <article className="media">
@@ -206,7 +226,7 @@ const Post: React.FC<PostProps> = (props) => {
                   </div>
                   <nav className="level is-mobile" style={{position: "relative"}}>
                     <div className="level-left">
-                      {(post.dataContainer?.multimedia && post.dataContainer?.multimedia.length > 0) ?
+                      {(post.dataContainer?.multimedia && post.dataContainer?.multimedia.length > 0) ? (
                         <Fragment>
                           <div className={`emoji-container ${showEmojis ? "" : "hidden"}`}>
                             {emojis.map((emoji, index) => {
@@ -240,7 +260,9 @@ const Post: React.FC<PostProps> = (props) => {
                             </Portal>
                           )}
                         </Fragment>
-                        : null}
+                      ) : (
+                        null
+                      )}
                       <a className="level-item" onClick={handleClickReply}>
                         <span className="icon is-small"><i className="fas fa-reply"></i></span>
                       </a>
@@ -252,16 +274,24 @@ const Post: React.FC<PostProps> = (props) => {
                       <span className="level-item">{likes}</span>
                     </div>
                   </nav>
-                  {showNewComment &&
+                  {(showNewComment) && (
                     <NewComment handleSubmitNewComment={handleSubmitNewComment} handleClickCancel={handleClickCancel}></NewComment>
-                  }
-                  {!!comments && comments.length > 0 && <a className="text-comments" onClick={handleClickComments}><i className="fas fa-sort-down"></i> Show Comments ({comments?.length})</a>}
-                  {showComments && <CommentList posts={comments} callbackClickTime={handleClickTime}></CommentList>}
+                  )}
+                  {(!!comments && comments.length > 0) && (
+                    <a className="text-comments" onClick={handleClickComments}>
+                      <i className="fas fa-sort-down"></i> {t("Show Comments")} ({comments?.length})
+                    </a>
+                  )}
+                  {(showComments) && (
+                    <CommentList posts={comments} callbackClickTime={handleClickTime} />
+                  )}
                 </div>
               </article>
             </div>
           </div>
-          : null}
+        ) : (
+          null
+        )}
       </div>
     </div>
   );

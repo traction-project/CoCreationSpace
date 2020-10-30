@@ -2,6 +2,8 @@ import * as React from "react";
 import { useStore } from "react-redux";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
+
 import { actionCreators } from "../actions/login";
 import { postFile } from "../util";
 
@@ -9,6 +11,8 @@ interface ProfileProps {}
 
 const Profile: React.FC<ProfileProps> = (props) => {
   const { handleSubmit, register, errors } = useForm({});
+  const { t } = useTranslation();
+
   const state = useStore();
   const [ name, setName ] = useState<string>();
   const [ photo, setPhoto ] = useState<string>();
@@ -75,12 +79,12 @@ const Profile: React.FC<ProfileProps> = (props) => {
 
   return (
     <div className="columns" style={{ marginTop: "5rem" }}>
-      {(name || photo) ?
-        (<div className="column is-8 is-offset-3">
+      {(name || photo) ? (
+        <div className="column is-8 is-offset-3">
           <div className="columns">
             <div className="column is-one-third">
               <div className="box box-flex">
-                <h1 className="title-box-1"><span>Edit Photo</span></h1>
+                <h1 className="title-box-1"><span>{t("Edit Photo")}</span></h1>
                 <figure style={{width: "min-content"}}>
                   <span className="image is-128x128">
                     <img src={photo} alt="Logo"/>
@@ -91,17 +95,17 @@ const Profile: React.FC<ProfileProps> = (props) => {
                     className="btn-file__input"
                     onChange={e => { e.target.files && handleButtonUploadClick(e.target.files); }}
                     type="file" />
-                  <span className="btn btn-file__span">Upload File</span>
+                  <span className="btn btn-file__span">{t("Upload File")}</span>
                 </label>
               </div>
             </div>
             <div className="column is-one-third">
               <div className="box box-flex">
-                <h1 className="title-box-1"><span>Edit Account</span></h1>
+                <h1 className="title-box-1"><span>{t("Edit Account")}</span></h1>
                 <form onSubmit={handleButtonApplyClick}>
                   <div className="form-group">
                     <div className="field">
-                      <label className="label">Username</label>
+                      <label className="label">{t("Username")}</label>
                       <div className="control">
                         <input
                           className="input-1"
@@ -113,12 +117,12 @@ const Profile: React.FC<ProfileProps> = (props) => {
                             required: true
                           })} />
                       </div>
-                      { errors.username && <p className="help is-danger">* It is required</p>}
+                      { errors.username && <p className="help is-danger">* {t("required")}</p>}
                     </div>
                   </div>
                   <div className="form-group">
                     <div className="field">
-                      <label className="label">New Password</label>
+                      <label className="label">{t("New Password")}</label>
                       <div className="control">
                         <input
                           className="input-1"
@@ -128,27 +132,28 @@ const Profile: React.FC<ProfileProps> = (props) => {
                       </div>
                     </div>
                     <div className="field">
-                      <label className="label">Confirm Password</label>
+                      <label className="label">{t("Confirm Password")}</label>
                       <div className="control">
                         <input
                           className="input-1"
                           name="password_repeat"
                           type="password"
                           ref={register({
-                            validate: (value) => !password || value === password  || "The passwords do not match"
+                            validate: (value) => !password || value === password
                           })}/>
-                        { errors.password_repeat && <p className="help is-danger">* {errors.password_repeat.message}</p>}
+                        { errors.password_repeat && <p className="help is-danger">* {t("The passwords do not match")}</p>}
                       </div>
                     </div>
                   </div>
-                  <button className="btn">Apply</button>
+                  <button className="btn">{t("Apply")}</button>
                 </form>
               </div>
             </div>
           </div>
-        </div>)
-
-        : null}
+        </div>
+      ) : (
+        null
+      )}
     </div>
   );
 };

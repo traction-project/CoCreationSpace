@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useForm } from "react-hook-form";
 import { useState, useRef } from "react";
+import { useTranslation } from "react-i18next";
 
 import FileUpload from "./new_comment_file_upload";
 
@@ -10,6 +11,7 @@ interface NewCommentProps {
 }
 
 const NewComment: React.FC<NewCommentProps> = (props) => {
+  const { t } = useTranslation();
   const textAreaRef = useRef<HTMLTextAreaElement>();
   const [ files, setFiles ] = useState<Array<File>>([]);
   const [ multimedia, setMultimedia ] = useState<Array<string>>([]);
@@ -64,7 +66,7 @@ const NewComment: React.FC<NewCommentProps> = (props) => {
         <div className="form-group">
           <textarea
             className={ errors.comment ? "textarea alert" : "textarea"}
-            placeholder="Add a comment..."
+            placeholder={t("Add a comment") + "..."}
             rows={3}
             name="comment"
             style={{resize: "none"}}
@@ -77,7 +79,7 @@ const NewComment: React.FC<NewCommentProps> = (props) => {
               });
             }}>
           </textarea>
-          {errors.comment && <p className="message-warning">* Required</p>}
+          {errors.comment && <p className="message-warning">* {t("required")}</p>}
         </div>
         {
           (files) ?
@@ -94,13 +96,14 @@ const NewComment: React.FC<NewCommentProps> = (props) => {
         }
         <div className="form-group" style={{padding: ".5em 0"}}>
           <button className="button is-info" disabled={loading}>
-            Comment
+            {t("Comment")}
           </button>
           <button
             onClick={handleClickCancel}
             className="button"
-            style={{marginLeft: "5px"}}>
-              Cancel
+            style={{marginLeft: "5px"}}
+          >
+            {t("Cancel")}
           </button>
           <div className="file">
             <label className="file-label">
