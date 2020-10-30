@@ -6,6 +6,8 @@ import App from "./components/app";
 import "bulma/css/bulma.css";
 import "../stylesheets/style.css";
 
+import "./i18n";
+
 /**
  * Callback triggered when the window is loaded. Renders the application to the
  * DOM and attaches it to the `react` DOM node.
