@@ -2,7 +2,7 @@ import * as React from "react";
 import { VideoJsPlayer } from "video.js";
 
 import { EmojiReaction } from "public/javascripts/util";
-import vjsEmojiAnimation from "./emoji-animation";
+import vjsEmojiAnimation from "./emoji_animation";
 import { PostType } from "../post";
 import vjsTooltip from "./tooltip";
 import { Marker } from "./types";
