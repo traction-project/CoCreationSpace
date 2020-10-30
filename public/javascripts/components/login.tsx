@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Dispatch, bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 import { actionCreators as loginActionCreators, LoginActions } from "../actions/login";
 import { LoginState } from "../reducers/login";
@@ -19,7 +20,9 @@ interface LoginConnectedProps {
 type LoginProps = LoginActionProps & LoginConnectedProps;
 
 const Login: React.FC<LoginProps> = (props) => {
+  const { t } = useTranslation();
   const history = useHistory();
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -34,14 +37,14 @@ const Login: React.FC<LoginProps> = (props) => {
       <div className="box column is-one-third is-offset-one-third" style={{ marginTop: "20vh" }}>
         <div>
           <div className="field">
-            <label className="label">Username</label>
+            <label className="label">{t("Username")}</label>
             <div className="control">
               <input className="input" type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
             </div>
           </div>
 
           <div className="field">
-            <label className="label">Password</label>
+            <label className="label">{t("Password")}</label>
             <div className="control">
               <input className="input" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
             </div>
@@ -54,7 +57,7 @@ const Login: React.FC<LoginProps> = (props) => {
                 disabled={username.length === 0 || password.length === 0}
                 onClick={onSubmit}
               >
-                Login
+                {t("Login")}
               </button>
             </div>
           </div>
