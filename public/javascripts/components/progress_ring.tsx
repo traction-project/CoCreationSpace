@@ -11,7 +11,7 @@ const ProgressRing: React.FC<ProgressRingProps> = ({ radius, stroke, progress, t
   const normalizedRadius = radius - stroke * 2;
   const circumference = normalizedRadius * 2 * Math.PI;
   const strokeDashoffset = circumference - progress / total * circumference;
-  const porcentage = `${(progress / total) * 100}%`;
+  const percentage = `${((progress / total) * 100).toFixed(2)}%`;
 
   return (
     <svg
@@ -37,7 +37,7 @@ const ProgressRing: React.FC<ProgressRingProps> = ({ radius, stroke, progress, t
         cx={ radius }
         cy={ radius }
       />
-      <text x="50%" y="50%" textAnchor="middle" stroke="#5DD2F6" dy=".3em">{porcentage}</text>
+      <text x="50%" y="50%" textAnchor="middle" stroke="#5DD2F6" dy=".3em">{percentage}</text>
     </svg>
   );
 };
