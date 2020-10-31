@@ -1,6 +1,8 @@
 import { ActionCreatorsMapObject } from "redux";
 import { AsyncAction, BasicAction, PayloadAction } from "../util";
 
+import i18n from "../i18n";
+
 export type SET_LOGGED_IN_USER = PayloadAction<"SET_LOGGED_IN_USER", { id: string, username: string, image: string }>;
 function setLoggedInUser(id: string, username: string, image: string): SET_LOGGED_IN_USER {
   return {
@@ -34,6 +36,10 @@ export function performLogin(username: string, password: string, success?: () =>
         user.username,
         user.image
       ));
+
+      if (user.preferredLanguage) {
+        i18n.changeLanguage(user.preferredLanguage);
+      }
 
       success?.();
     }
