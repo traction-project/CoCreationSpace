@@ -83,6 +83,7 @@ router.put("/", authRequired, async (req, res) => {
       return res.status(400).send({ message: "The username already exists"});
     }
   }
+
   if (body.password) {
     user.setPassword(body.password);
 
@@ -98,10 +99,25 @@ router.put("/", authRequired, async (req, res) => {
     }
   }
 
-  const { id, username, image } = user;
+  if (body.preferredLanguage) {
+    user.preferredLanguage = body.preferredLanguage;
+
+    try {
+      await user.save();
+    } catch (err) {
+      res.status(500);
+
+      return res.send({
+        status: "ERR",
+        message: err.message
+      });
+    }
+  }
+
+  const { id, username, image, preferredLanguage } = user;
 
   res.send({
-    id, username,
+    id, username, preferredLanguage,
     image: `${CLOUDFRONT_URL}/${image}`
   });
 });
