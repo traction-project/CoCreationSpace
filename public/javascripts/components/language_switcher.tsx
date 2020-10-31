@@ -22,11 +22,13 @@ function processDetectedLanguage() {
 
 interface LanguageSwitcherProps {
   onLangaugeChanged?: (selectedLanguage: string, languageName: string) => void;
+
   childRef?: (elem: HTMLSelectElement) => void;
+  childName?: string;
 }
 
 const LanguageSwitcher: React.FC<LanguageSwitcherProps> = (props) => {
-  const { onLangaugeChanged, childRef } = props;
+  const { onLangaugeChanged, childRef, childName } = props;
   const [ languageCode, setLanguageCode ] = useState(processDetectedLanguage());
 
   const onChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -39,7 +41,7 @@ const LanguageSwitcher: React.FC<LanguageSwitcherProps> = (props) => {
 
   return (
     <div className="select">
-      <select name="languageCode" value={languageCode} onChange={onChange} ref={childRef}>
+      <select name={childName || "languageCode"} value={languageCode} onChange={onChange} ref={childRef}>
         {Object.entries(availableTranslations).map(([languageCode, languageName]) => {
           return (
             <option key={languageCode} value={languageCode}>{languageName}</option>
