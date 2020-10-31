@@ -59,7 +59,7 @@ router.put("/", authRequired, async (req, res) => {
   const user = req.user as UserInstance;
   const { body } = req;
 
-  if (body.username) {
+  if (body.username && body.username != user.username) {
     const existUser = await Users.findOne({ where: { username: body.username }});
 
     if (!existUser) {
@@ -99,7 +99,7 @@ router.put("/", authRequired, async (req, res) => {
     }
   }
 
-  if (body.preferredLanguage) {
+  if (body.preferredLanguage && body.preferredLanguage != user.preferredLanguage) {
     user.preferredLanguage = body.preferredLanguage;
 
     try {
