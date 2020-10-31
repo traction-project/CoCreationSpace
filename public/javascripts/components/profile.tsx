@@ -1,13 +1,25 @@
 import * as React from "react";
 import { useStore } from "react-redux";
 import { useState, useEffect } from "react";
+import { Dispatch, bindActionCreators } from "redux";
+import { connect } from "react-redux";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
-import { actionCreators } from "../actions/login";
+import { ApplicationState } from "../store";
+import { actionCreators as loginActionCreators, LoginActions } from "../actions/login";
+import { LoginState } from "../reducers/login";
 import { postFile } from "../util";
 
-interface ProfileProps {}
+interface ProfileActionProps {
+  loginActions: LoginActions;
+}
+
+interface ProfileConnectedProps {
+  login: LoginState;
+}
+
+type ProfileProps = ProfileActionProps & ProfileConnectedProps;
 
 const Profile: React.FC<ProfileProps> = (props) => {
   const { handleSubmit, register, errors } = useForm({});
@@ -158,4 +170,16 @@ const Profile: React.FC<ProfileProps> = (props) => {
   );
 };
 
-export default Profile;
+function mapStateToProps(state: ApplicationState): ProfileConnectedProps {
+  return {
+    login: state.login
+  };
+}
+
+function mapDispatchToProps(dispatch: Dispatch) {
+  return {
+    loginActions: bindActionCreators(loginActionCreators, dispatch)
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);
