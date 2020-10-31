@@ -84,7 +84,7 @@ router.put("/", authRequired, async (req, res) => {
     }
   }
 
-  if (body.password) {
+  if (body.password && body.password.length > 0) {
     user.setPassword(body.password);
 
     try {
