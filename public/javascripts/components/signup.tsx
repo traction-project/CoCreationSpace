@@ -1,5 +1,4 @@
 import * as React from "react";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useHistory } from "react-router-dom";
 import { Dispatch, bindActionCreators } from "redux";
@@ -7,6 +6,7 @@ import { connect } from "react-redux";
 import { useTranslation } from "react-i18next";
 
 import { actionCreators as loginActionCreators, LoginActions } from "../actions/login";
+import LanguageSwitcher from "./language_switcher";
 
 interface SignupProps {
   loginActions: LoginActions;
@@ -15,10 +15,7 @@ interface SignupProps {
 const Signup: React.FC<SignupProps> = (props) => {
   const history = useHistory();
   const { t } = useTranslation();
-  const { handleSubmit, register, errors } = useForm({});
-
-  const [ username, setUsername ] = useState<string>();
-  const [ password, setPassword ] = useState<string>();
+  const { handleSubmit, register, errors, watch } = useForm({});
 
   const handleButtonSubmitClick = handleSubmit(({ username, password, confirmation }) => {
     fetch("/register", {
@@ -35,14 +32,6 @@ const Signup: React.FC<SignupProps> = (props) => {
       console.log(err);
     });
   });
-
-  const handleInputUsernameChange = (value: string) => {
-    setUsername(value);
-  };
-
-  const handleInputPasswordChange = (value: string) => {
-    setPassword(value);
-  };
 
   return (
     <div className="columns" style={{ marginTop: "5rem" }}>
@@ -61,8 +50,6 @@ const Signup: React.FC<SignupProps> = (props) => {
                     className="input-1"
                     type="text"
                     name="username"
-                    value={username || ""}
-                    onChange={(e) => handleInputUsernameChange(e.currentTarget.value)}
                     ref={register({
                       required: true
                     })} />
@@ -77,7 +64,6 @@ const Signup: React.FC<SignupProps> = (props) => {
                   <input
                     className="input-1"
                     name="password"
-                    onChange={(e) => handleInputPasswordChange(e.currentTarget.value)}
                     ref={register({
                       required: true
                     })}
