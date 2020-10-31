@@ -8,6 +8,7 @@ import { ApplicationState } from "../store";
 import { actionCreators as loginActionCreators, LoginActions } from "../actions/login";
 import { LoginState } from "../reducers/login";
 import { postFile } from "../util";
+import LanguageSwitcher from "./language_switcher";
 
 interface ProfileActionProps {
   loginActions: LoginActions;
@@ -123,6 +124,13 @@ const Profile: React.FC<ProfileProps> = (props) => {
                           })}/>
                         { errors.password_repeat && <p className="help is-danger">* {t("The passwords do not match")}</p>}
                       </div>
+                    </div>
+                  </div>
+
+                  <div className="field">
+                    <label className="label">{t("Preferred language")}</label>
+                    <div className="control">
+                      <LanguageSwitcher childName="preferredLanguage" childRef={register()} />
                     </div>
                   </div>
 
