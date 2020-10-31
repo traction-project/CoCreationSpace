@@ -19,6 +19,7 @@ export interface UsersAttributes extends commonAttributes {
   image?: string;
   salt?: string;
   role?: string;
+  preferredLanguage?: string;
   likesPosts?: PostAttributes | PostAttributes["id"];
   multimedia?: MultimediaAttributes | MultimediaAttributes["id"];
   preferences?: PreferencesAttributes | PreferencesAttributes["id"];
@@ -128,6 +129,9 @@ export function UsersModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mod
       type: Sequelize.DataTypes.STRING
     },
     role: {
+      type: Sequelize.DataTypes.STRING
+    },
+    preferredLangauge: {
       type: Sequelize.DataTypes.STRING
     },
     preferences_id: {
