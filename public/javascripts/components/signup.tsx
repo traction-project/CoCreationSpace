@@ -17,11 +17,11 @@ const Signup: React.FC<SignupProps> = (props) => {
   const { t } = useTranslation();
   const { handleSubmit, register, errors, watch } = useForm({});
 
-  const handleButtonSubmitClick = handleSubmit(({ username, password, confirmation }) => {
+  const handleButtonSubmitClick = handleSubmit(({ username, password, confirmation, languageCode }) => {
     fetch("/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({username, password, confirmation})
+      body: JSON.stringify({ username, password, confirmation, languageCode })
     }).then(async (res) => {
       if (res.ok) {
         props.loginActions.performLogin(username, password, () => {
@@ -87,7 +87,7 @@ const Signup: React.FC<SignupProps> = (props) => {
               <div className="field">
                 <label className="label">{t("Select preferred language")}</label>
                 <div className="control">
-                  <LanguageSwitcher childRef={register()} />
+                  <LanguageSwitcher childName="languageCode" childRef={register()} />
                 </div>
               </div>
             </div>
