@@ -46,13 +46,13 @@ router.post("/login", passport.authenticate("local"), (req, res) => {
 
 router.post("/register", async (req, res) => {
   const { Users } = db.getModels();
-  const { username, password, confirmation } = req.body;
+  const { username, password, confirmation, preferredLanguage } = req.body;
 
   if (password === confirmation) {
     const userExists = await Users.findOne({ where: { username } });
 
     if (!userExists) {
-      const newUser = Users.build({ username });
+      const newUser = Users.build({ username, preferredLanguage });
 
       newUser.setPassword(password);
       try {
