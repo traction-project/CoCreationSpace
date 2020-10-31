@@ -131,7 +131,7 @@ export function UsersModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mod
     role: {
       type: Sequelize.DataTypes.STRING
     },
-    preferredLangauge: {
+    preferredLanguage: {
       type: Sequelize.DataTypes.STRING
     },
     preferences_id: {
