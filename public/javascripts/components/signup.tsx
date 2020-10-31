@@ -85,7 +85,7 @@ const Signup: React.FC<SignupProps> = (props) => {
                 </div>
               </div>
               <div className="field">
-                <label className="label">{t("Select preferred language")}</label>
+                <label className="label">{t("Preferred language")}</label>
                 <div className="control">
                   <LanguageSwitcher childName="languageCode" childRef={register()} />
                 </div>

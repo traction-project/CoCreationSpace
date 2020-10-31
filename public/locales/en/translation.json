@@ -28,7 +28,7 @@
     "Edit Account": "Edit Account",
     "New Password": "New Password",
     "Confirm Password": "Confirm Password",
-    "The passwords do not match": "The passwords do not match",
+    "The passwords do not match": "the passwords do not match",
     "Apply": "Apply",
     "Submit": "Submit",
     "Translate": "Translate",
@@ -53,5 +53,6 @@
     "Add tag": "Add tag",
     "Text": "Text",
     "Write summary": "Write summary",
-    "Create content": "Create content"
+    "Create content": "Create content",
+    "Preferred language": "Preferred language"
 }

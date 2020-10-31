@@ -28,7 +28,7 @@
     "Edit Account": "Account bearbeiten",
     "New Password": "Neues Passwort",
     "Confirm Password": "Passwort bestätigen",
-    "The passwords do not match": "Die Passwörter stimmen nicht überein",
+    "The passwords do not match": "Passwörter stimmen nicht überein",
     "Apply": "Anwenden",
     "Submit": "Abschicken",
     "Translate": "Übersetzen",
@@ -53,5 +53,6 @@
     "Add tag": "Tag hinzufügen",
     "Text": "Text",
     "Write summary": "Schreibe Zusammenfassung",
-    "Create content": "Inhalt erstellen"
+    "Create content": "Inhalt erstellen",
+    "Preferred language": "Bevorzugte Sprache"
 }
