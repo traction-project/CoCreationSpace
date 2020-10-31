@@ -93,9 +93,15 @@ const Signup: React.FC<SignupProps> = (props) => {
                     name="confirmation"
                     type="password"
                     ref={register({
-                      validate: (value) => !password || value === password
+                      validate: (value) => value === watch("password")
                     })}/>
                   { errors.confirmation && <p className="help is-danger">* {t("The passwords do not match")}</p>}
+                </div>
+              </div>
+              <div className="field">
+                <label className="label">{t("Select preferred language")}</label>
+                <div className="control">
+                  <LanguageSwitcher childRef={register()} />
                 </div>
               </div>
             </div>
