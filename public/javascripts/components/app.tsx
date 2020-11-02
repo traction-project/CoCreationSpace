@@ -54,7 +54,9 @@ const App: React.FC<AppProps> = () => {
             <Route path="/login">
               <Login />
             </Route>
-            <PrivateRoute path="/upload" component={VideoUpload} />
+            <PrivateRoute path="/upload">
+              <VideoUpload />
+            </PrivateRoute>
             <Route path="/videos">
               <VideoStream />
             </Route>
@@ -67,12 +69,18 @@ const App: React.FC<AppProps> = () => {
             <Route path="/translate/:id">
               <Translate />
             </Route>
-            <PrivateRoute path="/posts" component={PostList} endpoint="/posts/all" />
+            <PrivateRoute path="/posts">
+              <PostList endpoint="/posts/all" />
+            </PrivateRoute>
             <Route path="/post/:id">
               <Post />
             </Route>
-            <PrivateRoute path="/profile" component={Profile} />
-            <PrivateRoute path="/userPosts" component={PostList} endpoint="/posts/all/user" />
+            <PrivateRoute path="/profile">
+              <Profile />
+            </PrivateRoute>
+            <PrivateRoute path="/userPosts">
+              <PostList endpoint="/posts/all/user" />
+            </PrivateRoute>
             <Route path="/">
               <Home />
             </Route>
