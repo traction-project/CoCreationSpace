@@ -3,22 +3,21 @@ import { Route, Redirect } from "react-router-dom";
 import store from "../store";
 
 interface PrivateRouteProps {
-    component: React.FC;
-    path: string;
-    endpoint?: string;
+  path: string;
 }
 
-const PrivateRoute: React.FC<PrivateRouteProps> = ({ component: Component, path, ...rest }) => {
-
+const PrivateRoute: React.FC<PrivateRouteProps> = ({ children, path, ...rest }) => {
   const isLoggedIn = (): boolean => {
     return store.getState().login.loggedIn;
   };
 
   return (
-    <Route path={path} {...rest} render={(props) => (
-      isLoggedIn()
-        ?  <Component {...rest}/>
-        : <Redirect to="/login" />
+    <Route path={path} {...rest} render={() => (
+      isLoggedIn() ? (
+        children
+      ) : (
+        <Redirect to="/login" />
+      )
     )}></Route>
   );
 };
