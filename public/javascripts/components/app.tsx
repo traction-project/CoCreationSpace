@@ -63,9 +63,9 @@ const App: React.FC<AppProps> = () => {
             <Route path="/video/:id">
               <Video />
             </Route>
-            <Route path="/record">
+            <PrivateRoute path="/record">
               <VideoRecorder />
-            </Route>
+            </PrivateRoute>
             <Route path="/translate/:id">
               <Translate />
             </Route>
