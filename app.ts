@@ -5,7 +5,9 @@ import logger from "morgan";
 import createError from "http-errors";
 import cookieParser from "cookie-parser";
 import http from "http";
+import https from "https";
 import path from "path";
+import fs from "fs";
 import passport from "passport";
 import aws from "aws-sdk";
 import Umzug from "umzug";
@@ -136,10 +138,27 @@ async function setupServer() {
       res.render("error");
     });
 
+    let server: http.Server;
     const port = process.env.PORT || "3000";
     app.set("port", port);
 
-    const server = http.createServer(app);
+    const [ key, cert ] = [
+      path.resolve("cert/server.key"),
+      path.resolve("cert/server.crt")
+    ];
+
+    if (process.env.NODE_ENV == "development" && fs.existsSync(key) && fs.existsSync(cert)) {
+      console.log("Starting HTTPS server...");
+
+      server = https.createServer({
+        key: fs.readFileSync(key),
+        cert: fs.readFileSync(cert)
+      }, app);
+    } else {
+      console.log("Starting HTTP server...");
+      server = http.createServer(app);
+    }
+
     server.listen(port);
 
     server.on("error", (error: any) => {
