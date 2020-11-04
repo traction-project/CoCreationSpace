@@ -10,6 +10,7 @@ import { PreferencesAttributes, PreferencesInstance } from "./preferences";
 import { PermissionsInstance, PermissionsAttributes } from "./permissions";
 import { PostInstance, PostAttributes } from "./post";
 import { EmojiReactionsInstance } from "./emoji_reactions";
+import { TopicInstance } from "./topic";
 
 const [SESSION_SECRET] = getFromEnvironment("SESSION_SECRET");
 
@@ -101,6 +102,15 @@ export interface UserInstance extends Sequelize.Model<UsersAttributes>, UsersAtt
   hasEmojiReactions: Sequelize.HasManyHasAssociationsMixin<EmojiReactionsInstance, EmojiReactionsInstance["id"]>;
   countEmojiReactions: Sequelize.HasManyCountAssociationsMixin;
 
+  getInterestsTopics: Sequelize.BelongsToManyGetAssociationsMixin<TopicInstance>;
+  setInterestsTopics: Sequelize.BelongsToManySetAssociationsMixin<TopicInstance, TopicInstance["id"]>;
+  addInterestsTopics: Sequelize.BelongsToManyAddAssociationsMixin<TopicInstance, TopicInstance["id"]>;
+  addInterestsTopic: Sequelize.BelongsToManyAddAssociationMixin<TopicInstance, TopicInstance["id"]>;
+  removeInterestsTopic: Sequelize.BelongsToManyRemoveAssociationMixin<TopicInstance, TopicInstance["id"]>;
+  removeInterestsTopics: Sequelize.BelongsToManyRemoveAssociationsMixin<TopicInstance, TopicInstance["id"]>;
+  hasInterestsTopic: Sequelize.BelongsToManyHasAssociationMixin<TopicInstance, TopicInstance["id"]>;
+  hasInterestsTopics: Sequelize.BelongsToManyHasAssociationsMixin<TopicInstance, TopicInstance["id"]>;
+  countInterestsTopics: Sequelize.BelongsToManyCountAssociationsMixin;
 }
 
 /**

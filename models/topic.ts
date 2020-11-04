@@ -3,6 +3,7 @@ import { v4 as uuidv4} from "uuid";
 
 import { commonAttributes } from "util/typing/modelCommonAttributes";
 import { ThreadAttributes, ThreadInstance } from "./thread";
+import { UserInstance } from "./users";
 
 export interface TopicAttributes extends commonAttributes{
     title: string;
@@ -23,6 +24,16 @@ export interface TopicInstance extends Sequelize.Model<TopicAttributes>, TopicAt
   hasThread: Sequelize.HasManyHasAssociationMixin<ThreadInstance, ThreadInstance["id"]>;
   hasThreads: Sequelize.HasManyHasAssociationsMixin<ThreadInstance, ThreadInstance["id"]>;
   countThreads: Sequelize.HasManyCountAssociationsMixin;
+
+  getInterestsUsers: Sequelize.BelongsToManyGetAssociationsMixin<UserInstance>;
+  setInterestsUsers: Sequelize.BelongsToManySetAssociationsMixin<UserInstance, UserInstance["id"]>;
+  addInterestsUsers: Sequelize.BelongsToManyAddAssociationsMixin<UserInstance, UserInstance["id"]>;
+  addInterestsUser: Sequelize.BelongsToManyAddAssociationMixin<UserInstance, UserInstance["id"]>;
+  removeInterestsUser: Sequelize.BelongsToManyRemoveAssociationMixin<UserInstance, UserInstance["id"]>;
+  removeInterestsUsers: Sequelize.BelongsToManyRemoveAssociationsMixin<UserInstance, UserInstance["id"]>;
+  hasInterestsUser: Sequelize.BelongsToManyHasAssociationMixin<UserInstance, UserInstance["id"]>;
+  hasInterestsUsers: Sequelize.BelongsToManyHasAssociationsMixin<UserInstance, UserInstance["id"]>;
+  countInterestsUsers: Sequelize.BelongsToManyCountAssociationsMixin;
 }
 
 /**
