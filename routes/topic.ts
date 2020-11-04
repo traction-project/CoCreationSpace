@@ -1,4 +1,7 @@
 import { Router } from "express";
+
+import { UserInstance } from "../models/users";
+import { authRequired } from "../util";
 import { db } from "../models";
 
 const router = Router();
@@ -28,6 +31,21 @@ router.get("/id/:id", async (req, res) => {
   });
 
   return res.send(topic);
+});
+
+router.post("/id/:id/interest", authRequired, async (req, res) => {
+  const { id } = req.params;
+  const user = req.user as UserInstance;
+  const { Topics } = db.getModels();
+
+  const topic = await Topics.findByPk(id);
+
+  if (topic) {
+    await topic.addInterestsUser(user);
+
+    const interests = await user.getInterestsTopics();
+    res.send({ interests });
+  }
 });
 
 export default router;
