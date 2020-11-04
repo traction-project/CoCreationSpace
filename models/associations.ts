@@ -191,6 +191,14 @@ function tagAssociations(models: DbInterface): void {
  */
 function topicAssociations(models: DbInterface): void {
   models.Topics.hasMany(models.Threads, { as: "thread", foreignKey: "topic_id" });
+  models.Topics.belongsToMany(models.Users, {
+    through: {
+      model: models.Interests,
+      unique: false
+    },
+    foreignKey: "topic_id",
+    as: "hasInterest"
+  });
 }
 
 /**
@@ -230,5 +238,13 @@ function userAssociations(models: DbInterface): void {
   models.Users.hasMany(models.EmojiReactions, {
     foreignKey: "user_id",
     as: "emojiReactions"
+  });
+  models.Users.belongsToMany(models.Topics, {
+    through: {
+      model: models.Interests,
+      unique: false
+    },
+    foreignKey: "user_id",
+    as: "interestedInTopic"
   });
 }
