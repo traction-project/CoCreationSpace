@@ -8,6 +8,7 @@ import VideoRouter from "./video";
 import PostRouter from "./post";
 import ThreadRouter from "./thread";
 import TagRouter from "./tag";
+import TopicRouter from "./topic";
 import TranslateRouter from "./translate";
 import UserRouter from "./user";
 
@@ -23,6 +24,7 @@ router.use("/sns", SNSRouter);
 router.use("/posts", PostRouter);
 router.use("/tags", TagRouter);
 router.use("/threads", ThreadRouter);
+router.use("/topics", TopicRouter);
 router.use("/translate", TranslateRouter);
 router.use("/users", UserRouter);
 router.use("/video", VideoRouter);
