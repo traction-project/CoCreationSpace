@@ -245,6 +245,6 @@ function userAssociations(models: DbInterface): void {
       unique: false
     },
     foreignKey: "user_id",
-    as: "interestedInTopic"
+    as: "interestedTopics"
   });
 }

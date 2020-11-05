@@ -25,15 +25,15 @@ export interface TopicInstance extends Sequelize.Model<TopicAttributes>, TopicAt
   hasThreads: Sequelize.HasManyHasAssociationsMixin<ThreadInstance, ThreadInstance["id"]>;
   countThreads: Sequelize.HasManyCountAssociationsMixin;
 
-  getInterestsUsers: Sequelize.BelongsToManyGetAssociationsMixin<UserInstance>;
-  setInterestsUsers: Sequelize.BelongsToManySetAssociationsMixin<UserInstance, UserInstance["id"]>;
-  addInterestsUsers: Sequelize.BelongsToManyAddAssociationsMixin<UserInstance, UserInstance["id"]>;
-  addInterestsUser: Sequelize.BelongsToManyAddAssociationMixin<UserInstance, UserInstance["id"]>;
-  removeInterestsUser: Sequelize.BelongsToManyRemoveAssociationMixin<UserInstance, UserInstance["id"]>;
-  removeInterestsUsers: Sequelize.BelongsToManyRemoveAssociationsMixin<UserInstance, UserInstance["id"]>;
-  hasInterestsUser: Sequelize.BelongsToManyHasAssociationMixin<UserInstance, UserInstance["id"]>;
-  hasInterestsUsers: Sequelize.BelongsToManyHasAssociationsMixin<UserInstance, UserInstance["id"]>;
-  countInterestsUsers: Sequelize.BelongsToManyCountAssociationsMixin;
+  getHasInterests: Sequelize.BelongsToManyGetAssociationsMixin<UserInstance>;
+  setHasInterests: Sequelize.BelongsToManySetAssociationsMixin<UserInstance, UserInstance["id"]>;
+  addHasInterests: Sequelize.BelongsToManyAddAssociationsMixin<UserInstance, UserInstance["id"]>;
+  addHasInterest: Sequelize.BelongsToManyAddAssociationMixin<UserInstance, UserInstance["id"]>;
+  removeHasInterest: Sequelize.BelongsToManyRemoveAssociationMixin<UserInstance, UserInstance["id"]>;
+  removeHasInterests: Sequelize.BelongsToManyRemoveAssociationsMixin<UserInstance, UserInstance["id"]>;
+  hasHasInterest: Sequelize.BelongsToManyHasAssociationMixin<UserInstance, UserInstance["id"]>;
+  hasHasInterests: Sequelize.BelongsToManyHasAssociationsMixin<UserInstance, UserInstance["id"]>;
+  countHasInterests: Sequelize.BelongsToManyCountAssociationsMixin;
 }
 
 /**
