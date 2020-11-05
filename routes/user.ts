@@ -130,4 +130,15 @@ router.get("/interests", authRequired, async (req, res) => {
   });
 });
 
+router.post("/interests", authRequired, async (req, res) => {
+  const user = req.user as UserInstance;
+  const { body } = req;
+
+  await user.addInterestedTopics(body.topics);
+
+  return res.send({
+    interests: await user.getInterestedTopics()
+  });
+});
+
 export default router;
