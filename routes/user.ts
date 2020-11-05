@@ -122,6 +122,9 @@ router.put("/", authRequired, async (req, res) => {
   });
 });
 
+/**
+ * Retrieve all topics that the current user is interested in.
+ */
 router.get("/interests", authRequired, async (req, res) => {
   const user = req.user as UserInstance;
 
@@ -130,6 +133,12 @@ router.get("/interests", authRequired, async (req, res) => {
   });
 });
 
+/**
+ * Add new topic interests to the current user. Data should be submitted as a
+ * JSON object through the request body, containing a key `topics` which
+ * specifies the ids of the topics that should be added as user interests.
+ * Returns an updated list of interests for the current user.
+ */
 router.post("/interests", authRequired, async (req, res) => {
   const user = req.user as UserInstance;
   const { body } = req;
@@ -141,6 +150,12 @@ router.post("/interests", authRequired, async (req, res) => {
   });
 });
 
+/**
+ * Deletes topic interests from the current user. Data should be submitted as a
+ * JSON object through the request body, containing a key `topics` which
+ * specifies the ids of the topics that should be removed from the user's
+ * interests. Returns an updated list of interests for the current user.
+ */
 router.delete("/interests", authRequired, async (req, res) => {
   const user = req.user as UserInstance;
   const { body } = req;
