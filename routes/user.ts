@@ -141,4 +141,15 @@ router.post("/interests", authRequired, async (req, res) => {
   });
 });
 
+router.delete("/interests", authRequired, async (req, res) => {
+  const user = req.user as UserInstance;
+  const { body } = req;
+
+  await user.removeInterestedTopics(body.topics);
+
+  return res.send({
+    interests: await user.getInterestedTopics()
+  });
+});
+
 export default router;
