@@ -82,6 +82,7 @@ export interface MultimediaInstance extends Sequelize.Model<MultimediaAttributes
 export function MultimediaModelFactory(sequelize: Sequelize.Sequelize): Sequelize.ModelCtor<MultimediaInstance> {
   //  DB table name
   const TABLE_NAME = "multimedia";
+
   // Model attributtes
   const attributes = {
     title: {
@@ -103,7 +104,7 @@ export function MultimediaModelFactory(sequelize: Sequelize.Sequelize): Sequeliz
       type: Sequelize.DataTypes.STRING
     },
     thumbnails: {
-      type: Sequelize.DataTypes.ARRAY(Sequelize.DataTypes.STRING)
+      type: Sequelize.DataTypes.JSON
     },
     key: {
       type: Sequelize.DataTypes.STRING
@@ -124,7 +125,7 @@ export function MultimediaModelFactory(sequelize: Sequelize.Sequelize): Sequeliz
       type: Sequelize.DataTypes.INTEGER
     },
     resolutions: {
-      type: Sequelize.DataTypes.ARRAY(Sequelize.DataTypes.INTEGER)
+      type: Sequelize.DataTypes.JSON
     },
     type: {
       type: Sequelize.DataTypes.STRING
