@@ -122,4 +122,12 @@ router.put("/", authRequired, async (req, res) => {
   });
 });
 
+router.get("/interests", authRequired, async (req, res) => {
+  const user = req.user as UserInstance;
+
+  return res.send({
+    interests: await user.getInterestedTopics()
+  });
+});
+
 export default router;
