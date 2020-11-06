@@ -1,10 +1,10 @@
 import Sequelize, { Optional } from "sequelize";
 import { v4 as uuidv4} from "uuid";
 
-import { commonAttributes } from "util/typing/modelCommonAttributes";
+import { CommonAttributes } from "util/typing/modelCommonAttributes";
 import { MultimediaAttributes, MultimediaInstance } from "./multimedia";
 
-export interface SubtitlesAttributes extends commonAttributes{
+export interface SubtitlesAttributes extends CommonAttributes{
     language?: string;
     content: string;
     multimedia?: MultimediaAttributes | MultimediaAttributes["id"];

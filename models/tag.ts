@@ -1,10 +1,10 @@
 import Sequelize, { Optional } from "sequelize";
 import { v4 as uuidv4} from "uuid";
 
-import { commonAttributes } from "util/typing/modelCommonAttributes";
+import { CommonAttributes } from "util/typing/modelCommonAttributes";
 import { PostAttributes, PostInstance } from "./post";
 
-export interface TagAttributes extends commonAttributes{
+export interface TagAttributes extends CommonAttributes{
     tag_name: string;
     post?: PostAttributes | PostAttributes["id"];
 }

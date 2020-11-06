@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import Sequelize, { Optional } from "sequelize";
 import { v4 as uuidv4 } from "uuid";
 
-import { commonAttributes } from "util/typing/modelCommonAttributes";
+import { CommonAttributes } from "util/typing/modelCommonAttributes";
 import { getFromEnvironment } from "../util";
 import { MultimediaInstance, MultimediaAttributes } from "./multimedia";
 import { PreferencesAttributes, PreferencesInstance } from "./preferences";
@@ -14,7 +14,7 @@ import { TopicInstance } from "./topic";
 
 const [SESSION_SECRET] = getFromEnvironment("SESSION_SECRET");
 
-export interface UsersAttributes extends commonAttributes {
+export interface UsersAttributes extends CommonAttributes {
   username: string;
   password?: string;
   image?: string;

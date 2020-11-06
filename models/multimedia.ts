@@ -1,7 +1,7 @@
 import Sequelize, { Optional } from "sequelize";
 import { v4 as uuidv4} from "uuid";
 
-import { commonAttributes } from "util/typing/modelCommonAttributes";
+import { CommonAttributes } from "util/typing/modelCommonAttributes";
 import { UsersAttributes, UserInstance } from "./users";
 import { TranscribeOutput } from "util/transcribe";
 import { DataContainerAttributes, DataContainerInstance } from "./data_container";
@@ -9,7 +9,7 @@ import { AudioContentAttributes, AudioContentInstance } from "./audio_content";
 import { MetadataAttributes, MetadataInstance } from "./metadata";
 import { SubtitlesAttributes, SubtitlesInstance } from "./subtitles";
 
-export interface MultimediaAttributes extends commonAttributes {
+export interface MultimediaAttributes extends CommonAttributes {
   title: string;
   file?: string;
   status?: string;

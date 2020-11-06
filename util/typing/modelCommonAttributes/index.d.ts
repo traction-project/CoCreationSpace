@@ -3,7 +3,7 @@ import { Optional } from "sequelize";
 /**
  * Common attributes of all models of database
  */
-export type commonAttributes = {
+export interface CommonAttributes {
     id: string;
     createdAt: Date;
     updatedAt: Date;

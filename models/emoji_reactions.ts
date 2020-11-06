@@ -1,11 +1,11 @@
 import Sequelize, { Optional } from "sequelize";
 import { v4 as uuidv4} from "uuid";
 
-import { commonAttributes } from "util/typing/modelCommonAttributes";
+import { CommonAttributes } from "util/typing/modelCommonAttributes";
 import { UserInstance, UsersAttributes } from "./users";
 import { PostAttributes, PostInstance } from "./post";
 
-export interface EmojiReactionsAttributes extends commonAttributes{
+export interface EmojiReactionsAttributes extends CommonAttributes{
     emoji: string;
     second?: number;
     post_id: string;

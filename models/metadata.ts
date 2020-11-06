@@ -1,11 +1,11 @@
 import Sequelize, { Optional } from "sequelize";
 import { v4 as uuidv4 } from "uuid";
 
-import { commonAttributes } from "util/typing/modelCommonAttributes";
+import { CommonAttributes } from "util/typing/modelCommonAttributes";
 import { MultimediaAttributes, MultimediaInstance } from "./multimedia";
 import { AudioContentAttributes, AudioContentInstance } from "./audio_content";
 
-export interface MetadataAttributes extends commonAttributes {
+export interface MetadataAttributes extends CommonAttributes {
     metadata_type?: string;
     value: string;
     roi?: string;

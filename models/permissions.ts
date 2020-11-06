@@ -1,10 +1,10 @@
 import Sequelize, { Optional } from "sequelize";
 import { v4 as uuidv4 } from "uuid";
 
-import { commonAttributes } from "util/typing/modelCommonAttributes";
+import { CommonAttributes } from "util/typing/modelCommonAttributes";
 import { UsersAttributes, UserInstance } from "./users";
 
-export interface PermissionsAttributes extends commonAttributes{
+export interface PermissionsAttributes extends CommonAttributes{
     type: string;
     user?: UsersAttributes | UsersAttributes["id"];
 }

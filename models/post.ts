@@ -1,14 +1,14 @@
 import Sequelize, { Optional } from "sequelize";
 import { v4 as uuidv4 } from "uuid";
 
-import { commonAttributes } from "util/typing/modelCommonAttributes";
+import { CommonAttributes } from "util/typing/modelCommonAttributes";
 import { UsersAttributes, UserInstance } from "./users";
 import { ThreadAttributes, ThreadInstance } from "./thread";
 import { TagAttributes, TagInstance } from "./tag";
 import { DataContainerAttributes, DataContainerInstance } from "./data_container";
 import { EmojiReactionsAttributes, EmojiReactionsInstance } from "./emoji_reactions";
 
-export interface PostAttributes extends commonAttributes{
+export interface PostAttributes extends CommonAttributes{
     title?: string;
     second?: number;
     parent_post_id?: string;

@@ -1,11 +1,11 @@
 import Sequelize, { Optional } from "sequelize";
 import { v4 as uuidv4} from "uuid";
 
-import { commonAttributes } from "util/typing/modelCommonAttributes";
+import { CommonAttributes } from "util/typing/modelCommonAttributes";
 import { TopicAttributes, TopicInstance } from "./topic";
 import { PostAttributes, PostInstance } from "./post";
 
-export interface ThreadAttributes extends commonAttributes{
+export interface ThreadAttributes extends CommonAttributes{
     th_title: string;
     topic?: TopicAttributes | TopicAttributes["id"];
     post?: PostAttributes | PostAttributes["id"];

@@ -1,9 +1,9 @@
 import Sequelize, { Optional } from "sequelize";
 import { v4 as uuidv4 } from "uuid";
 
-import { commonAttributes } from "util/typing/modelCommonAttributes";
+import { CommonAttributes } from "util/typing/modelCommonAttributes";
 
-export interface PreferencesAttributes extends commonAttributes{
+export interface PreferencesAttributes extends CommonAttributes{
     language: string;
 }
 

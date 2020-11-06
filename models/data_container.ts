@@ -1,11 +1,11 @@
 import Sequelize, { Optional } from "sequelize";
 import { v4 as uuidv4} from "uuid";
 
-import { commonAttributes } from "util/typing/modelCommonAttributes";
+import { CommonAttributes } from "util/typing/modelCommonAttributes";
 import { PostAttributes, PostInstance } from "./post";
 import { MultimediaAttributes, MultimediaInstance } from "./multimedia";
 
-export interface DataContainerAttributes extends commonAttributes{
+export interface DataContainerAttributes extends CommonAttributes{
     text_content?: string;
     post?: PostAttributes | PostAttributes["id"];
     multimedia?: MultimediaAttributes[] | MultimediaAttributes["id"][];

@@ -1,8 +1,8 @@
 import Sequelize, { Optional } from "sequelize";
 
-import { commonAttributes } from "util/typing/modelCommonAttributes";
+import { CommonAttributes } from "util/typing/modelCommonAttributes";
 
-export interface TagReferencesAttributes extends Omit<commonAttributes, "id"> {
+export interface TagReferencesAttributes extends Omit<CommonAttributes, "id"> {
     tag_id: number;
     post_id: number;
 }

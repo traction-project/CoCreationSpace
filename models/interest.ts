@@ -1,8 +1,8 @@
 import Sequelize, { Optional } from "sequelize";
 
-import { commonAttributes } from "util/typing/modelCommonAttributes";
+import { CommonAttributes } from "util/typing/modelCommonAttributes";
 
-export interface InterestAttributes extends Omit<commonAttributes, "id"> {
+export interface InterestAttributes extends Omit<CommonAttributes, "id"> {
     user_id: number;
     topic_id: number;
 }
