@@ -25,6 +25,30 @@ async function getUserInterests(userId: string): Promise<Array<string>> {
   return [];
 }
 
+export async function broadcastNotification(topicId: string, postId: string) {
+  const { Topics, Posts } = db.getModels();
+  const topic = await Topics.findByPk(topicId);
+
+  if (!topic) {
+    return;
+  }
+
+  clients.forEach(async (client) => {
+    const { socket, interests } = client;
+
+    if (interests.find((t) => t == topicId)) {
+      const post = await Posts.findByPk(postId);
+
+      if (post) {
+        socket.send(JSON.stringify({
+          topic: { id: topic.id, title: topic.title },
+          poast: { id: post.id, title: post.title }
+        }));
+      }
+    }
+  });
+}
+
 async function setupWebSocketServer(server: http.Server) {
   const wss = new WebSocket.Server({ server });
 
