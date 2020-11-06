@@ -1,6 +1,6 @@
 import crypto from "crypto";
 import jwt from "jsonwebtoken";
-import Sequelize from "sequelize";
+import Sequelize, { Optional } from "sequelize";
 import { v4 as uuidv4 } from "uuid";
 
 import { commonAttributes } from "util/typing/modelCommonAttributes";
@@ -30,6 +30,8 @@ export interface UsersAttributes extends commonAttributes {
   emojiReactions?: EmojiReactionsInstance | EmojiReactionsInstance["id"];
 }
 
+type UsersCreationAttributes = Optional<UsersAttributes, "id">;
+
 type UserToken = {
   _id: string;
   username: string;
@@ -39,7 +41,7 @@ type UserToken = {
 /**
  * Users instance object interface
  */
-export interface UserInstance extends Sequelize.Model<UsersAttributes>, UsersAttributes {
+export interface UserInstance extends Sequelize.Model<UsersAttributes, UsersCreationAttributes>, UsersAttributes {
   setPassword: (password: string) => void;
   validatePassword: (password: string) => boolean;
   generateToken: (validityInDays: number) => string;
