@@ -5,6 +5,7 @@ import { db } from "./models";
 
 interface InterestSubscription {
   socket: WebSocket;
+  userId: string;
   interests: Array<string>;
 }
 
@@ -90,6 +91,7 @@ async function setupWebSocketServer(server: http.Server) {
 
           clients.push({
             socket: ws,
+            userId: data.userId,
             interests
           });
         }
