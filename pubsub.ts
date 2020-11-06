@@ -96,6 +96,16 @@ async function setupWebSocketServer(server: http.Server) {
           });
         }
       }
+
+      if (data.command && data.command == "unsubscribe") {
+        const clientIndex = clients.findIndex((c) => {
+          return c.userId == data.userId;
+        });
+
+        if (clientIndex > -1) {
+          clients.splice(clientIndex, 1);
+        }
+      }
     });
 
     const removeClient = () => {
