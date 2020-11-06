@@ -11,7 +11,6 @@ import fs from "fs";
 import passport from "passport";
 import aws from "aws-sdk";
 import Umzug from "umzug";
-import WebSocket from "ws";
 
 dotenv.config();
 aws.config.loadFromPath("./aws.json");
@@ -19,6 +18,7 @@ aws.config.loadFromPath("./aws.json");
 import { getFromEnvironment } from "./util";
 import { snsMiddleware, subscribeToSNSTopic } from "./util/sns";
 import setupAuth from "./auth/local";
+import setupWebSocketServer from "./pubsub";
 import indexRouter from "./routes/index";
 
 const [
@@ -181,18 +181,6 @@ async function setupServer(): Promise<http.Server> {
     server.on("listening", () => {
       console.log(`Server listening on port ${port}`);
       resolve(server);
-    });
-  });
-}
-
-async function setupWebSocketServer(server: http.Server) {
-  const wss = new WebSocket.Server({ server });
-
-  wss.on("connection", (ws, req) => {
-    console.log("New connection:", ws, req);
-
-    ws.on("message", (data) => {
-      console.log("Message:", data);
     });
   });
 }
