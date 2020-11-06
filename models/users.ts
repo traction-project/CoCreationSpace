@@ -30,7 +30,7 @@ export interface UsersAttributes extends commonAttributes {
   emojiReactions?: EmojiReactionsInstance | EmojiReactionsInstance["id"];
 }
 
-type UsersCreationAttributes = Optional<UsersAttributes, "id">;
+type UsersCreationAttributes = Optional<UsersAttributes, "id" | "createdAt" | "updatedAt">;
 
 type UserToken = {
   _id: string;
@@ -158,7 +158,7 @@ export function UsersModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mod
   };
 
   // Create the model
-  const Users = sequelize.define<UserInstance>("users", attributes, { underscored: true, tableName: "users" });
+  const Users = sequelize.define<UserInstance, UsersCreationAttributes>("users", attributes, { underscored: true, tableName: "users" });
 
   Users.beforeCreate(user => { user.id = uuidv4(); });
 
