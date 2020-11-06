@@ -28,11 +28,23 @@ async function getUserInterests(userId: string): Promise<Array<string>> {
 async function setupWebSocketServer(server: http.Server) {
   const wss = new WebSocket.Server({ server });
 
-  wss.on("connection", (ws, req) => {
-    console.log("New connection:", ws, req);
+  wss.on("connection", (ws) => {
+    console.log("New ws connection accepted");
 
-    ws.on("message", (data) => {
-      console.log("Message:", data);
+    ws.on("message", async (msg: string) => {
+      const data = JSON.parse(msg);
+
+      if (data.command && data.command == "subscribe") {
+        const interests = await getUserInterests(data.userId);
+
+        if (interests.length > 0) {
+          console.log()
+          clients.push({
+            socket: ws,
+            interests
+          });
+        }
+      }
     });
   });
 }
