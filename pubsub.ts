@@ -38,7 +38,8 @@ async function setupWebSocketServer(server: http.Server) {
         const interests = await getUserInterests(data.userId);
 
         if (interests.length > 0) {
-          console.log()
+          console.log("Adding subscription to topics", interests, "for", data.userId);
+
           clients.push({
             socket: ws,
             interests
@@ -47,7 +48,7 @@ async function setupWebSocketServer(server: http.Server) {
       }
     });
 
-    ws.on("error", () => {
+    const removeClient = () => {
       const clientIndex = clients.findIndex((c) => {
         return c.socket == ws;
       });
@@ -55,7 +56,10 @@ async function setupWebSocketServer(server: http.Server) {
       if (clientIndex > -1) {
         clients.splice(clientIndex, 1);
       }
-    });
+    };
+
+    ws.on("error", removeClient);
+    ws.on("close", removeClient);
   });
 }
 
