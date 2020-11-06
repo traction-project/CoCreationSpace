@@ -1,4 +1,4 @@
-import Sequelize from "sequelize";
+import Sequelize, { Optional } from "sequelize";
 import { v4 as uuidv4} from "uuid";
 
 import { commonAttributes } from "util/typing/modelCommonAttributes";
@@ -31,10 +31,12 @@ export interface MultimediaAttributes extends commonAttributes {
   subtitle?: SubtitlesAttributes | SubtitlesAttributes["id"];
 }
 
+type MultimediaCreationAttributes = Optional<MultimediaAttributes, "id" | "createdAt" | "updatedAt">;
+
 /**
  * Multimedia instance object interface
  */
-export interface MultimediaInstance extends Sequelize.Model<MultimediaAttributes>, MultimediaAttributes {
+export interface MultimediaInstance extends Sequelize.Model<MultimediaAttributes, MultimediaCreationAttributes>, MultimediaAttributes {
   getUser: Sequelize.BelongsToGetAssociationMixin<UserInstance>; // Return the User that created the multimedia
   setUser: Sequelize.BelongsToSetAssociationMixin<UserInstance, UserInstance["id"]>; // Set the user that created the multimedia
 
@@ -133,7 +135,7 @@ export function MultimediaModelFactory(sequelize: Sequelize.Sequelize): Sequeliz
   };
 
   // Create the model
-  const Multimedia = sequelize.define<MultimediaInstance, MultimediaAttributes>("multimedia", attributes, { underscored: true, tableName: TABLE_NAME });
+  const Multimedia = sequelize.define<MultimediaInstance, MultimediaCreationAttributes>("multimedia", attributes, { underscored: true, tableName: TABLE_NAME });
 
   Multimedia.beforeCreate(multimedia => { multimedia.id = uuidv4(); });
 
