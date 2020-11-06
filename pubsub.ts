@@ -7,7 +7,6 @@ import { db } from "./models";
 interface InterestSubscription {
   socket: WebSocket;
   userId: string;
-  interests: Array<string>;
 }
 
 const clients: Array<InterestSubscription> = [];
@@ -47,15 +46,16 @@ export async function broadcastNotification(post: PostInstance) {
   const topic = await thread.getTopic();
 
   clients.forEach(async (client) => {
-    const { socket, interests } = client;
+    const { socket, userId } = client;
+    const interests = await getUserInterests(userId);
 
     if (interests.find((t) => t == topic.id)) {
-      if (post) {
-        socket.send(JSON.stringify({
-          topic: { id: topic.id, title: topic.title },
-          post: { id: post.id, title: post.title }
-        }));
-      }
+      console.log("Sending broadcast for", post.id, topic.id, "to", userId);
+
+      socket.send(JSON.stringify({
+        topic: { id: topic.id, title: topic.title },
+        post: { id: post.id, title: post.title }
+      }));
     }
   });
 }
@@ -79,17 +79,12 @@ async function setupWebSocketServer(server: http.Server) {
 
       switch (data.command) {
       case "subscribe": {
-        const interests = await getUserInterests(data.userId);
+        console.log("Adding subscription to topics for", data.userId);
 
-        if (interests.length > 0) {
-          console.log("Adding subscription to topics", interests, "for", data.userId);
-
-          clients.push({
-            socket: ws,
-            userId: data.userId,
-            interests
-          });
-        }
+        clients.push({
+          socket: ws,
+          userId: data.userId
+        });
 
         break;
       }
