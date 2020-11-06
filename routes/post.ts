@@ -157,14 +157,14 @@ router.post("/", authRequired, async (req, res) => {
   }
 
   const user = req.user as UserInstance;
-  const { Posts, Tags } = db.getModels();
+  const { Posts, Tags, DataContainer } = db.getModels();
 
   const post = Posts.build({
     title: title,
     user_id: user.id,
-    dataContainer: {
+    dataContainer: DataContainer.build({
       text_content: text
-    }
+    })
   }, {
     include: [ association.getAssociatons().postAssociations.PostDataContainer, "tags" ]
   });
@@ -207,14 +207,14 @@ router.post("/id/:id", authRequired, async (req, res) => {
   }
 
   const user = req.user as UserInstance;
-  const { Posts } = db.getModels();
+  const { Posts, DataContainer } = db.getModels();
 
   const post = Posts.build({
     parent_post_id: id,
     user_id: user.id,
-    dataContainer: {
+    dataContainer: DataContainer.build({
       text_content: text
-    },
+    }),
     second
   }, {
     include: [ association.getAssociatons().postAssociations.PostDataContainer ]
