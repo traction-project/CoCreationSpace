@@ -3,6 +3,13 @@ import WebSocket from "ws";
 
 import { db } from "./models";
 
+interface InterestSubscription {
+  socket: WebSocket;
+  interests: Array<string>;
+}
+
+const clients: Array<InterestSubscription> = [];
+
 async function getUserInterests(userId: string): Promise<Array<string>> {
   const { Users } = db.getModels();
   const user = await Users.findByPk(userId);
