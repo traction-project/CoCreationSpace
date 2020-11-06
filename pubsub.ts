@@ -1,7 +1,24 @@
 import http from "http";
 import WebSocket from "ws";
 
-export default async function setupWebSocketServer(server: http.Server) {
+import { db } from "./models";
+
+async function getUserInterests(userId: string): Promise<Array<string>> {
+  const { Users } = db.getModels();
+  const user = await Users.findByPk(userId);
+
+  if (user) {
+    const topics = await user.getInterestedTopics();
+
+    return topics.map((t) => {
+      return t.id;
+    });
+  }
+
+  return [];
+}
+
+async function setupWebSocketServer(server: http.Server) {
   const wss = new WebSocket.Server({ server });
 
   wss.on("connection", (ws, req) => {
@@ -12,3 +29,5 @@ export default async function setupWebSocketServer(server: http.Server) {
     });
   });
 }
+
+export default setupWebSocketServer;
