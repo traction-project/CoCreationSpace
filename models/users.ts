@@ -131,7 +131,10 @@ export function UsersModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mod
     username: {
       type: Sequelize.DataTypes.STRING,
       allowNull: false,
-      unique: true
+      unique: true,
+      validate: {
+        notEmpty: true
+      }
     },
     password: {
       type: Sequelize.DataTypes.STRING(keyPasswordLeng * 2),
