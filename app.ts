@@ -89,7 +89,7 @@ async function setupDatabaseSeeds() {
   await umzug.up();
 }
 
-async function setupServer() {
+async function setupServer(): Promise<http.Server> {
   return new Promise((resolve) => {
     const app = express();
 
@@ -160,16 +160,6 @@ async function setupServer() {
       server = http.createServer(app);
     }
 
-    const wss = new WebSocket.Server({ server });
-
-    wss.on("connection", (ws, req) => {
-      console.log("New connection:", ws, req);
-
-      ws.on("message", (data) => {
-        console.log("Message:", data);
-      });
-    });
-
     server.listen(port);
 
     server.on("error", (error: any) => {
@@ -190,7 +180,19 @@ async function setupServer() {
 
     server.on("listening", () => {
       console.log(`Server listening on port ${port}`);
-      resolve();
+      resolve(server);
+    });
+  });
+}
+
+async function setupWebSocketServer(server: http.Server) {
+  const wss = new WebSocket.Server({ server });
+
+  wss.on("connection", (ws, req) => {
+    console.log("New connection:", ws, req);
+
+    ws.on("message", (data) => {
+      console.log("Message:", data);
     });
   });
 }
@@ -210,7 +212,10 @@ async function setupSNSEndpoint() {
 async function launch() {
   await setupDatabase();
   await setupDatabaseSeeds();
-  await setupServer();
+
+  const httpServer = await setupServer();
+  await setupWebSocketServer(httpServer);
+
   await setupAuth();
   await setupSNSEndpoint();
 }
