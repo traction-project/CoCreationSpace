@@ -10,6 +10,11 @@ describe("Users model", () => {
     await db.createDB(sequelize);
   });
 
+  beforeEach(async () => {
+    const { Users } = db.getModels();
+    await Users.destroy({ truncate: true });
+  });
+
   it("should create a new user with just a username", async () => {
     const { Users } = db.getModels();
 
