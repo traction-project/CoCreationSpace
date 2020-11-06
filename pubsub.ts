@@ -1,4 +1,5 @@
 import http from "http";
+import { PostInstance } from "models/post";
 import WebSocket from "ws";
 
 import { db } from "./models";
@@ -36,26 +37,19 @@ async function getUserInterests(userId: string): Promise<Array<string>> {
 
 /**
  * Broadcasts a notification message to all clients which are subscribed to the
- * given topic ID. The message contains topic id and title and the id and title
- * of the new post.
+ * topic that the given post belongs to. The message contains topic id and
+ * title and the id and title of the post.
  *
- * @param topicId ID of the topic
- * @param postId ID of the new post for the topic
+ * @param post Post for whose topic a broadcast should be sent
  */
-export async function broadcastNotification(topicId: string, postId: string) {
-  const { Topics, Posts } = db.getModels();
-  const topic = await Topics.findByPk(topicId);
-
-  if (!topic) {
-    return;
-  }
+export async function broadcastNotification(post: PostInstance) {
+  const thread = await post.getThread();
+  const topic = await thread.getTopic();
 
   clients.forEach(async (client) => {
     const { socket, interests } = client;
 
-    if (interests.find((t) => t == topicId)) {
-      const post = await Posts.findByPk(postId);
-
+    if (interests.find((t) => t == topic.id)) {
       if (post) {
         socket.send(JSON.stringify({
           topic: { id: topic.id, title: topic.title },
