@@ -83,7 +83,8 @@ async function setupWebSocketServer(server: http.Server) {
     ws.on("message", async (msg: string) => {
       const data = JSON.parse(msg);
 
-      if (data.command && data.command == "subscribe") {
+      switch (data.command) {
+      case "subscribe": {
         const interests = await getUserInterests(data.userId);
 
         if (interests.length > 0) {
@@ -95,9 +96,10 @@ async function setupWebSocketServer(server: http.Server) {
             interests
           });
         }
-      }
 
-      if (data.command && data.command == "unsubscribe") {
+        break;
+      }
+      case "unsubscribe": {
         const clientIndex = clients.findIndex((c) => {
           return c.userId == data.userId;
         });
@@ -105,6 +107,11 @@ async function setupWebSocketServer(server: http.Server) {
         if (clientIndex > -1) {
           clients.splice(clientIndex, 1);
         }
+
+        break;
+      }
+      default:
+        console.log("Unrecognised message");
       }
     });
 
