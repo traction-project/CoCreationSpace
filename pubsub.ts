@@ -122,6 +122,13 @@ async function setupWebSocketServer(server: http.Server) {
     ws.on("error", removeClient);
     ws.on("close", removeClient);
   });
+
+  const { Posts } = db.getModels();
+
+  Posts.afterCreate(async (post) => {
+    console.log("Post created, sending broadcast...");
+    broadcastNotification(post);
+  });
 }
 
 export default setupWebSocketServer;
