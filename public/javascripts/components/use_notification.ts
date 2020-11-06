@@ -24,6 +24,11 @@ function useNotification(userId: string, onNotificationReceived: (notification: 
     };
 
     return () => {
+      ws.send(JSON.stringify({
+        command: "unsubscribe",
+        userId
+      }));
+
       ws.close();
     };
   }, [userId]);
