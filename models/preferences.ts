@@ -1,4 +1,4 @@
-import Sequelize from "sequelize";
+import Sequelize, { Optional } from "sequelize";
 import { v4 as uuidv4 } from "uuid";
 
 import { commonAttributes } from "util/typing/modelCommonAttributes";
@@ -7,10 +7,12 @@ export interface PreferencesAttributes extends commonAttributes{
     language: string;
 }
 
+type PreferencesCreationAttributes = Optional<PreferencesAttributes, "id" | "createdAt" | "updatedAt">;
+
 /**
  * Preferences instance object interface
  */
-export interface PreferencesInstance extends Sequelize.Model<PreferencesAttributes>, PreferencesAttributes {}
+export interface PreferencesInstance extends Sequelize.Model<PreferencesAttributes, PreferencesCreationAttributes>, PreferencesAttributes {}
 
 /**
  *  Build Preferencess Model object
@@ -36,7 +38,7 @@ export function PreferencesModelFactory(sequelize: Sequelize.Sequelize): Sequeli
   };
 
   // Create the model
-  const Preferences = sequelize.define<PreferencesInstance>("preferences", attributes, { underscored: true, tableName: TABLE_NAME });
+  const Preferences = sequelize.define<PreferencesInstance, PreferencesCreationAttributes>("preferences", attributes, { underscored: true, tableName: TABLE_NAME });
 
   Preferences.beforeCreate(preference => { preference.id = uuidv4(); });
 

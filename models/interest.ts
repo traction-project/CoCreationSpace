@@ -1,16 +1,18 @@
-import Sequelize from "sequelize";
+import Sequelize, { Optional } from "sequelize";
 
 import { commonAttributes } from "util/typing/modelCommonAttributes";
 
-export interface InterestAttributes extends commonAttributes{
+export interface InterestAttributes extends Omit<commonAttributes, "id"> {
     user_id: number;
     topic_id: number;
 }
 
+type InterestCreationAttributes = Optional<InterestAttributes, "createdAt" | "updatedAt">
+
 /**
  * Likes instance object interface
  */
-export interface InterestInstance extends Sequelize.Model<InterestAttributes>, InterestAttributes {}
+export interface InterestInstance extends Sequelize.Model<InterestAttributes, InterestCreationAttributes>, InterestAttributes {}
 
 /**
  *  Build Interest Model object
@@ -32,7 +34,7 @@ export function InterestModelFactory(sequelize: Sequelize.Sequelize): Sequelize.
   };
 
   // Create the model
-  const Interests = sequelize.define<InterestInstance>("interests", attributes, { underscored: true, tableName: TABLE_NAME });
+  const Interests = sequelize.define<InterestInstance, InterestCreationAttributes>("interests", attributes, { underscored: true, tableName: TABLE_NAME });
 
   return Interests;
 }

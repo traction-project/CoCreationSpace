@@ -1,4 +1,4 @@
-import Sequelize from "sequelize";
+import Sequelize, { Optional } from "sequelize";
 import { v4 as uuidv4 } from "uuid";
 
 import { commonAttributes } from "util/typing/modelCommonAttributes";
@@ -9,10 +9,12 @@ export interface PermissionsAttributes extends commonAttributes{
     user?: UsersAttributes | UsersAttributes["id"];
 }
 
+type PermissionsCreationAttributes = Optional<PermissionsAttributes, "id" | "createdAt" | "updatedAt">;
+
 /**
  * Permissions instance object interface
  */
-export interface PermissionsInstance extends Sequelize.Model<PermissionsAttributes>, PermissionsAttributes {
+export interface PermissionsInstance extends Sequelize.Model<PermissionsAttributes, PermissionsCreationAttributes>, PermissionsAttributes {
   getUsers: Sequelize.HasManyGetAssociationsMixin<UserInstance>;
   setUsers: Sequelize.HasManySetAssociationsMixin<UserInstance, UserInstance["id"]>;
   addUsers: Sequelize.HasManyAddAssociationsMixin<UserInstance, UserInstance["id"]>;
@@ -46,7 +48,7 @@ export function PermissionsModelFactory(sequelize: Sequelize.Sequelize): Sequeli
   };
 
   // Create the model
-  const Permissions = sequelize.define<PermissionsInstance>("permissions", attributes, { underscored: true, tableName: TABLE_NAME });
+  const Permissions = sequelize.define<PermissionsInstance, PermissionsCreationAttributes>("permissions", attributes, { underscored: true, tableName: TABLE_NAME });
 
   Permissions.beforeCreate(permission => { permission.id = uuidv4(); });
 

@@ -1,16 +1,18 @@
-import Sequelize from "sequelize";
+import Sequelize, { Optional } from "sequelize";
 
 import { commonAttributes } from "util/typing/modelCommonAttributes";
 
-export interface TagReferencesAttributes extends commonAttributes{
+export interface TagReferencesAttributes extends Omit<commonAttributes, "id"> {
     tag_id: number;
     post_id: number;
 }
 
+type TagReferencesCreationAttributes = Optional<TagReferencesAttributes, "createdAt" | "updatedAt">;
+
 /**
  * TagReferences instance object interface
  */
-export interface TagReferencesInstance extends Sequelize.Model<TagReferencesAttributes>, TagReferencesAttributes {}
+export interface TagReferencesInstance extends Sequelize.Model<TagReferencesAttributes, TagReferencesCreationAttributes>, TagReferencesAttributes {}
 
 /**
  *  Build TagReferencess Model object
@@ -32,7 +34,7 @@ export function TagReferencesModelFactory(sequelize: Sequelize.Sequelize): Seque
   };
 
   // Create the model
-  const TagReferences = sequelize.define<TagReferencesInstance>("tagReferences", attributes, { underscored: true, tableName: TABLE_NAME });
+  const TagReferences = sequelize.define<TagReferencesInstance, TagReferencesCreationAttributes>("tagReferences", attributes, { underscored: true, tableName: TABLE_NAME });
 
   return TagReferences;
 }

@@ -1,4 +1,4 @@
-import Sequelize from "sequelize";
+import Sequelize, { Optional } from "sequelize";
 import { v4 as uuidv4} from "uuid";
 
 import { commonAttributes } from "util/typing/modelCommonAttributes";
@@ -11,10 +11,12 @@ export interface DataContainerAttributes extends commonAttributes{
     multimedia?: MultimediaAttributes[] | MultimediaAttributes["id"][];
 }
 
+type DataContainerCreationAttributes = Optional<DataContainerAttributes, "id" | "createdAt" | "updatedAt">;
+
 /**
  * DataContainer instance object interface
  */
-export interface DataContainerInstance extends Sequelize.Model<DataContainerAttributes>, DataContainerAttributes {
+export interface DataContainerInstance extends Sequelize.Model<DataContainerAttributes, DataContainerCreationAttributes>, DataContainerAttributes {
   getPost: Sequelize.BelongsToGetAssociationMixin<PostInstance>;
   setPost: Sequelize.BelongsToSetAssociationMixin<PostInstance, PostInstance["id"]>;
   createPost: Sequelize.BelongsToCreateAssociationMixin<PostAttributes>;
@@ -53,7 +55,7 @@ export function DataContainerModelFactory(sequelize: Sequelize.Sequelize): Seque
   };
 
   // Create the model
-  const DataContainer = sequelize.define<DataContainerInstance>("DataContainer", attributes, { underscored: true, tableName: TABLE_NAME });
+  const DataContainer = sequelize.define<DataContainerInstance, DataContainerCreationAttributes>("DataContainer", attributes, { underscored: true, tableName: TABLE_NAME });
 
   DataContainer.beforeCreate(dataContainer => { dataContainer.id = uuidv4(); });
 

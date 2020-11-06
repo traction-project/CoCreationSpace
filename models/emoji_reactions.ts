@@ -1,4 +1,4 @@
-import Sequelize from "sequelize";
+import Sequelize, { Optional } from "sequelize";
 import { v4 as uuidv4} from "uuid";
 
 import { commonAttributes } from "util/typing/modelCommonAttributes";
@@ -14,10 +14,12 @@ export interface EmojiReactionsAttributes extends commonAttributes{
     post?: PostAttributes | PostAttributes["id"];
 }
 
+type EmojiReactionsCreationAttributes = Optional<EmojiReactionsAttributes, "id" | "createdAt" | "updatedAt">;
+
 /**
  * EmojiReactions instance object interface
  */
-export interface EmojiReactionsInstance extends Sequelize.Model<EmojiReactionsAttributes>, EmojiReactionsAttributes {
+export interface EmojiReactionsInstance extends Sequelize.Model<EmojiReactionsAttributes, EmojiReactionsCreationAttributes>, EmojiReactionsAttributes {
   getUser: Sequelize.BelongsToGetAssociationMixin<UserInstance>;
   setUser: Sequelize.BelongsToSetAssociationMixin<UserInstance, UserInstance["id"]>;
 
@@ -59,7 +61,7 @@ export function EmojiReactionsModelFactory(sequelize: Sequelize.Sequelize): Sequ
   };
 
   // Create the model
-  const EmojiReactions = sequelize.define<EmojiReactionsInstance>("emoji_reactions", attributes, { underscored: true, tableName: TABLE_NAME });
+  const EmojiReactions = sequelize.define<EmojiReactionsInstance, EmojiReactionsCreationAttributes>("emoji_reactions", attributes, { underscored: true, tableName: TABLE_NAME });
 
   EmojiReactions.beforeCreate(emoji => { emoji.id = uuidv4(); });
 

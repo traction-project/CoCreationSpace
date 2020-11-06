@@ -1,11 +1,11 @@
-import Sequelize from "sequelize";
+import Sequelize, { Optional } from "sequelize";
 import { v4 as uuidv4 } from "uuid";
 
 import { commonAttributes } from "util/typing/modelCommonAttributes";
 import { MultimediaAttributes, MultimediaInstance } from "./multimedia";
 import { AudioContentAttributes, AudioContentInstance } from "./audio_content";
 
-export interface MetadataAttributes extends commonAttributes{
+export interface MetadataAttributes extends commonAttributes {
     metadata_type?: string;
     value: string;
     roi?: string;
@@ -14,10 +14,12 @@ export interface MetadataAttributes extends commonAttributes{
     audioContent?: AudioContentAttributes | AudioContentAttributes["id"];
 }
 
+type MetadataCreationAttributes = Optional<MetadataAttributes, "id" | "createdAt" | "updatedAt">;
+
 /**
  * Metadata instance object interface
  */
-export interface MetadataInstance extends Sequelize.Model<MetadataAttributes>, MetadataAttributes {
+export interface MetadataInstance extends Sequelize.Model<MetadataAttributes, MetadataCreationAttributes>, MetadataAttributes {
   getMultimedia: Sequelize.BelongsToGetAssociationMixin<MultimediaInstance>;
   setMultimedia: Sequelize.BelongsToSetAssociationMixin<MultimediaInstance, MultimediaInstance["id"]>;
 
@@ -63,7 +65,7 @@ export function MetadataModelFactory(sequelize: Sequelize.Sequelize): Sequelize.
   };
 
   // Create the model
-  const Metadata = sequelize.define<MetadataInstance>("metadata", attributes, { underscored: true, tableName: TABLE_NAME });
+  const Metadata = sequelize.define<MetadataInstance, MetadataCreationAttributes>("metadata", attributes, { underscored: true, tableName: TABLE_NAME });
 
   Metadata.beforeCreate(metadata => { metadata.id = uuidv4(); });
 

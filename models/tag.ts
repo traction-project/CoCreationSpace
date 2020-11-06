@@ -1,4 +1,4 @@
-import Sequelize from "sequelize";
+import Sequelize, { Optional } from "sequelize";
 import { v4 as uuidv4} from "uuid";
 
 import { commonAttributes } from "util/typing/modelCommonAttributes";
@@ -9,10 +9,12 @@ export interface TagAttributes extends commonAttributes{
     post?: PostAttributes | PostAttributes["id"];
 }
 
+type TagCreationAttributes = Optional<TagAttributes, "id" | "createdAt" | "updatedAt">;
+
 /**
  * Tag instance object interface
  */
-export interface TagInstance extends Sequelize.Model<TagAttributes>, TagAttributes {
+export interface TagInstance extends Sequelize.Model<TagAttributes, TagCreationAttributes>, TagAttributes {
   getPost: Sequelize.BelongsToManyGetAssociationsMixin<PostInstance>;
   setPost: Sequelize.BelongsToManySetAssociationsMixin<PostInstance, PostInstance["id"]>;
   addPosts: Sequelize.BelongsToManyAddAssociationsMixin<PostInstance, PostInstance["id"]>;
@@ -49,7 +51,7 @@ export function TagModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Model
   };
 
   // Create the model
-  const Tag = sequelize.define<TagInstance>("tag", attributes, { underscored: true, tableName: TABLE_NAME });
+  const Tag = sequelize.define<TagInstance, TagCreationAttributes>("tag", attributes, { underscored: true, tableName: TABLE_NAME });
 
   Tag.beforeCreate(tag => { tag.id = uuidv4(); });
 

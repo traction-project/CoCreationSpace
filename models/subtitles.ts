@@ -1,4 +1,4 @@
-import Sequelize from "sequelize";
+import Sequelize, { Optional } from "sequelize";
 import { v4 as uuidv4} from "uuid";
 
 import { commonAttributes } from "util/typing/modelCommonAttributes";
@@ -10,10 +10,12 @@ export interface SubtitlesAttributes extends commonAttributes{
     multimedia?: MultimediaAttributes | MultimediaAttributes["id"];
 }
 
+type SubtitlesCreationAttributes = Optional<SubtitlesAttributes, "id" | "createdAt" | "updatedAt">;
+
 /**
  * Subtitles instance object interface
  */
-export interface SubtitlesInstance extends Sequelize.Model<SubtitlesAttributes>, SubtitlesAttributes {
+export interface SubtitlesInstance extends Sequelize.Model<SubtitlesAttributes, SubtitlesCreationAttributes>, SubtitlesAttributes {
   getMultimedia: Sequelize.BelongsToGetAssociationMixin<MultimediaInstance>;
   setMultimedia: Sequelize.BelongsToSetAssociationMixin<MultimediaInstance, MultimediaInstance["id"]>;
 }
@@ -43,7 +45,7 @@ export function SubtitlesModelFactory(sequelize: Sequelize.Sequelize): Sequelize
   };
 
   // Create the model
-  const Subtitles = sequelize.define<SubtitlesInstance>("subtitles", attributes, { underscored: true, tableName: TABLE_NAME });
+  const Subtitles = sequelize.define<SubtitlesInstance, SubtitlesCreationAttributes>("subtitles", attributes, { underscored: true, tableName: TABLE_NAME });
 
   Subtitles.beforeCreate(subtitle => { subtitle.id = uuidv4(); });
 

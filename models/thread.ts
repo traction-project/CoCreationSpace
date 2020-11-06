@@ -1,4 +1,4 @@
-import Sequelize from "sequelize";
+import Sequelize, { Optional } from "sequelize";
 import { v4 as uuidv4} from "uuid";
 
 import { commonAttributes } from "util/typing/modelCommonAttributes";
@@ -11,10 +11,12 @@ export interface ThreadAttributes extends commonAttributes{
     post?: PostAttributes | PostAttributes["id"];
 }
 
+type ThreadCreationAttributes = Optional<ThreadAttributes, "id" | "createdAt" | "updatedAt">;
+
 /**
  * Thread instance object interface
  */
-export interface ThreadInstance extends Sequelize.Model<ThreadAttributes>, ThreadAttributes {
+export interface ThreadInstance extends Sequelize.Model<ThreadAttributes, ThreadCreationAttributes>, ThreadAttributes {
   getTopic: Sequelize.BelongsToGetAssociationMixin<TopicInstance>;
   setTopic: Sequelize.BelongsToSetAssociationMixin<TopicInstance, TopicInstance["id"]>
 
@@ -53,7 +55,7 @@ export function ThreadModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mo
   };
 
   // Create the model
-  const Thread = sequelize.define<ThreadInstance>("thread", attributes, { underscored: true, tableName: TABLE_NAME });
+  const Thread = sequelize.define<ThreadInstance, ThreadCreationAttributes>("thread", attributes, { underscored: true, tableName: TABLE_NAME });
 
   Thread.beforeCreate(thread => { thread.id = uuidv4(); });
 

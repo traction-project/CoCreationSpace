@@ -1,4 +1,4 @@
-import Sequelize from "sequelize";
+import Sequelize, { Optional } from "sequelize";
 import { v4 as uuidv4} from "uuid";
 
 import { commonAttributes } from "util/typing/modelCommonAttributes";
@@ -13,10 +13,12 @@ export interface AudioContentAttributes extends commonAttributes{
     metadata?: MetadataAttributes | MetadataAttributes["id"];
 }
 
+type AudioContentCreationAttributes = Optional<AudioContentAttributes, "id" | "createdAt" | "updatedAt">;
+
 /**
  * AudioContent instance object interface
  */
-export interface AudioContentInstance extends Sequelize.Model<AudioContentAttributes>, AudioContentAttributes {
+export interface AudioContentInstance extends Sequelize.Model<AudioContentAttributes, AudioContentCreationAttributes>, AudioContentAttributes {
   getMultimedia: Sequelize.BelongsToGetAssociationMixin<MultimediaInstance>;
   setMultimedia: Sequelize.BelongsToSetAssociationMixin<MultimediaInstance, MultimediaInstance["id"]>;
 
@@ -60,7 +62,7 @@ export function AudioContentModelFactory(sequelize: Sequelize.Sequelize): Sequel
     }
   };
   // Create the model
-  const AudioContent = sequelize.define<AudioContentInstance>("audioContent", attributes, { underscored: true, tableName: TABLE_NAME });
+  const AudioContent = sequelize.define<AudioContentInstance, AudioContentCreationAttributes>("audioContent", attributes, { underscored: true, tableName: TABLE_NAME });
 
   AudioContent.beforeCreate(audioContent => { audioContent.id = uuidv4(); });
 

@@ -1,16 +1,18 @@
-import Sequelize from "sequelize";
+import Sequelize, { Optional } from "sequelize";
 
 import { commonAttributes } from "util/typing/modelCommonAttributes";
 
-export interface LikesAttributes extends commonAttributes{
+export interface LikesAttributes extends Omit<commonAttributes, "id"> {
     user_id: number;
     post_id: number;
 }
 
+export type LikesCreationAttributes = Optional<LikesAttributes, "createdAt" | "updatedAt">;
+
 /**
  * Likes instance object interface
  */
-export interface LikesInstance extends Sequelize.Model<LikesAttributes>, LikesAttributes {}
+export interface LikesInstance extends Sequelize.Model<LikesAttributes, LikesCreationAttributes>, LikesAttributes {}
 
 /**
  *  Build Likess Model object
@@ -32,7 +34,7 @@ export function LikesModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mod
   };
 
   // Create the model
-  const Likes = sequelize.define<LikesInstance>("likes", attributes, { underscored: true, tableName: TABLE_NAME });
+  const Likes = sequelize.define<LikesInstance, LikesCreationAttributes>("likes", attributes, { underscored: true, tableName: TABLE_NAME });
 
   return Likes;
 }

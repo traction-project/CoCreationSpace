@@ -1,4 +1,4 @@
-import Sequelize from "sequelize";
+import Sequelize, { Optional } from "sequelize";
 import { v4 as uuidv4} from "uuid";
 
 import { commonAttributes } from "util/typing/modelCommonAttributes";
@@ -10,10 +10,12 @@ export interface TopicAttributes extends commonAttributes{
     thread?: ThreadAttributes | ThreadAttributes["id"];
 }
 
+type TopicCreationAttributes = Optional<TopicAttributes, "id" | "createdAt" | "updatedAt">;
+
 /**
  * Topic instance object interface
  */
-export interface TopicInstance extends Sequelize.Model<TopicAttributes>, TopicAttributes {
+export interface TopicInstance extends Sequelize.Model<TopicAttributes, TopicCreationAttributes>, TopicAttributes {
   getThreads: Sequelize.HasManyGetAssociationsMixin<ThreadInstance>;
   setThreads: Sequelize.HasManySetAssociationsMixin<ThreadInstance, ThreadInstance["id"]>;
   addThreads: Sequelize.HasManyAddAssociationsMixin<ThreadInstance, ThreadInstance["id"]>;
@@ -60,7 +62,7 @@ export function TopicModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mod
   };
 
   // Create the model
-  const Topic = sequelize.define<TopicInstance>("topic", attributes, { underscored: true, tableName: TABLE_NAME });
+  const Topic = sequelize.define<TopicInstance, TopicCreationAttributes>("topic", attributes, { underscored: true, tableName: TABLE_NAME });
 
   Topic.beforeCreate(topic => { topic.id = uuidv4(); });
 

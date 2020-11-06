@@ -1,4 +1,4 @@
-import Sequelize from "sequelize";
+import Sequelize, { Optional } from "sequelize";
 import { v4 as uuidv4 } from "uuid";
 
 import { commonAttributes } from "util/typing/modelCommonAttributes";
@@ -28,10 +28,12 @@ export interface PostAttributes extends commonAttributes{
     tags?: TagAttributes | TagAttributes["id"];
 }
 
+type PostCreationAttributes = Optional<PostAttributes, "id" | "createdAt" | "updatedAt">;
+
 /**
  * Post instance object interface
  */
-export interface PostInstance extends Sequelize.Model<PostAttributes>, PostAttributes {
+export interface PostInstance extends Sequelize.Model<PostAttributes, PostCreationAttributes>, PostAttributes {
   getDataContainer: Sequelize.HasOneGetAssociationMixin<DataContainerInstance>;
   setDataContainer: Sequelize.HasOneSetAssociationMixin<DataContainerInstance, DataContainerInstance["id"]>;
   createDataContainer: Sequelize.HasOneCreateAssociationMixin<DataContainerInstance>;
@@ -143,7 +145,7 @@ export function PostModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mode
   };
 
   // Create the model
-  const Post = sequelize.define<PostInstance>("post", attributes, { underscored: true, tableName: TABLE_NAME });
+  const Post = sequelize.define<PostInstance, PostCreationAttributes>("post", attributes, { underscored: true, tableName: TABLE_NAME });
 
   Post.beforeCreate(post => { post.id = uuidv4(); });
 

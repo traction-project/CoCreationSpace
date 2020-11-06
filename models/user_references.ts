@@ -1,16 +1,18 @@
-import Sequelize from "sequelize";
+import Sequelize, { Optional } from "sequelize";
 
 import { commonAttributes } from "util/typing/modelCommonAttributes";
 
-export interface UserReferencesAttributes extends commonAttributes{
+export interface UserReferencesAttributes extends Omit<commonAttributes, "id"> {
     user_id: number;
     post_id: number;
 }
 
+type UserReferencesCreationAttribute = Optional<UserReferencesAttributes, "createdAt" | "updatedAt">;
+
 /**
  * UserReferences instance object interface
  */
-export interface UserReferencesInstance extends Sequelize.Model<UserReferencesAttributes>, UserReferencesAttributes {}
+export interface UserReferencesInstance extends Sequelize.Model<UserReferencesAttributes, UserReferencesCreationAttribute>, UserReferencesAttributes {}
 
 /**
  *  Build UserReferencess Model object
@@ -32,7 +34,7 @@ export function UserReferencesModelFactory(sequelize: Sequelize.Sequelize): Sequ
   };
 
   // Create the model
-  const UserReferences = sequelize.define<UserReferencesInstance>("userReferences", attributes, { underscored: true, tableName: TABLE_NAME });
+  const UserReferences = sequelize.define<UserReferencesInstance, UserReferencesCreationAttribute>("userReferences", attributes, { underscored: true, tableName: TABLE_NAME });
 
   return UserReferences;
 }
