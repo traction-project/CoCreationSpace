@@ -1,5 +1,3 @@
-import { Optional } from "sequelize";
-
 /**
  * Common attributes of all models of database
  */
