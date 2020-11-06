@@ -124,6 +124,13 @@ export function UsersModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mod
   const keyPasswordLeng = 512;
   // Model attributtes
   const attributes = {
+    id: {
+      type: Sequelize.DataTypes.UUID,
+      primaryKey: true,
+      defaultValue: Sequelize.DataTypes.UUIDV4,
+      allowNull: false,
+      autoIncrement: false
+    },
     image: {
       type: Sequelize.DataTypes.STRING,
       defaultValue: "717502c4-23d9-4ab7-bee9-171a92fb3842.png"
