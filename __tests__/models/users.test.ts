@@ -31,7 +31,7 @@ describe("Users model", () => {
     expect(user.createdAt).toEqual(user.updatedAt);
   });
 
-  it("username cannot be empty", async () => {
+  it("should not create a record with empty username", async () => {
     const { Users } = db.getModels();
 
     try {
@@ -40,5 +40,30 @@ describe("Users model", () => {
     } catch (e) {
       expect(e).toBeDefined();
     }
+  });
+
+  it("should hash the password when calling setPassword", async () => {
+    const { Users } = db.getModels();
+
+    const user = Users.build({ username: "admin" });
+    user.setPassword("secret");
+    await user.save();
+
+    expect(user.salt).toBeDefined();
+    expect(user.password).toBeDefined();
+
+    expect(user.password).not.toEqual("secret");
+    expect(user.password!.length).toEqual(1024);
+  });
+
+  it("should validate the password when calling validatePassword()", async () => {
+    const { Users } = db.getModels();
+
+    const user = Users.build({ username: "admin" });
+    user.setPassword("secret");
+    await user.save();
+
+    expect(user.validatePassword("wrongpassword")).toBeFalsy();
+    expect(user.validatePassword("secret")).toBeTruthy();
   });
 });
