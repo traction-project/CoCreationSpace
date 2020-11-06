@@ -10,6 +10,14 @@ interface InterestSubscription {
 
 const clients: Array<InterestSubscription> = [];
 
+/**
+ * Returns an array of the IDs of the topics that the user given by the ID is
+ * interested in. If there is no user with the given ID, an empty array is
+ * returned.
+ *
+ * @param userId ID of user to fetch interests for
+ * @returns A promise which resolves to an array of interest IDs
+ */
 async function getUserInterests(userId: string): Promise<Array<string>> {
   const { Users } = db.getModels();
   const user = await Users.findByPk(userId);
@@ -25,6 +33,14 @@ async function getUserInterests(userId: string): Promise<Array<string>> {
   return [];
 }
 
+/**
+ * Broadcasts a notification message to all clients which are subscribed to the
+ * given topic ID. The message contains topic id and title and the id and title
+ * of the new post.
+ *
+ * @param topicId ID of the topic
+ * @param postId ID of the new post for the topic
+ */
 export async function broadcastNotification(topicId: string, postId: string) {
   const { Topics, Posts } = db.getModels();
   const topic = await Topics.findByPk(topicId);
@@ -49,6 +65,14 @@ export async function broadcastNotification(topicId: string, postId: string) {
   });
 }
 
+/**
+ * Sets up a new websocket server and attaches it to the given HTTP server. It
+ * also listens for new connections and adds clients to a client list along
+ * with their interests. This function also ensures that broken or closed
+ * connections are removed from the client list.
+ *
+ * @param server HTTP server to attach this websocket server to
+ */
 async function setupWebSocketServer(server: http.Server) {
   const wss = new WebSocket.Server({ server });
 
