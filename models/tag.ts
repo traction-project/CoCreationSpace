@@ -34,6 +34,13 @@ export function TagModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Model
   const TABLE_NAME = "tags";
   // Model attributtes
   const attributes = {
+    id: {
+      type: Sequelize.DataTypes.UUID,
+      primaryKey: true,
+      defaultValue: Sequelize.DataTypes.UUIDV4,
+      allowNull: false,
+      autoIncrement: false
+    },
     tag_name: {
       type: Sequelize.DataTypes.STRING,
       allowNull: false,

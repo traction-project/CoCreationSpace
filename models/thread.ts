@@ -39,6 +39,13 @@ export function ThreadModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mo
   const TABLE_NAME = "threads";
   // Model attributtes
   const attributes = {
+    id: {
+      type: Sequelize.DataTypes.UUID,
+      primaryKey: true,
+      defaultValue: Sequelize.DataTypes.UUIDV4,
+      allowNull: false,
+      autoIncrement: false
+    },
     th_title: {
       type: Sequelize.DataTypes.STRING,
       allowNull: false

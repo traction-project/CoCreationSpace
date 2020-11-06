@@ -40,6 +40,13 @@ export function DataContainerModelFactory(sequelize: Sequelize.Sequelize): Seque
   const TABLE_NAME = "data_container";
   // Model attributtes
   const attributes = {
+    id: {
+      type: Sequelize.DataTypes.UUID,
+      primaryKey: true,
+      defaultValue: Sequelize.DataTypes.UUIDV4,
+      allowNull: false,
+      autoIncrement: false
+    },
     text_content: {
       type: Sequelize.DataTypes.STRING
     }

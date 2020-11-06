@@ -27,6 +27,13 @@ export function SubtitlesModelFactory(sequelize: Sequelize.Sequelize): Sequelize
   const TABLE_NAME = "subtitles";
   // Model attributtes
   const attributes = {
+    id: {
+      type: Sequelize.DataTypes.UUID,
+      primaryKey: true,
+      defaultValue: Sequelize.DataTypes.UUIDV4,
+      allowNull: false,
+      autoIncrement: false
+    },
     language: {
       type: Sequelize.DataTypes.STRING
     },

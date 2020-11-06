@@ -31,6 +31,13 @@ export function PermissionsModelFactory(sequelize: Sequelize.Sequelize): Sequeli
   const TABLE_NAME = "permissions";
   // Model attributtes
   const attributes = {
+    id: {
+      type: Sequelize.DataTypes.UUID,
+      primaryKey: true,
+      defaultValue: Sequelize.DataTypes.UUIDV4,
+      allowNull: false,
+      autoIncrement: false
+    },
     type: {
       type: Sequelize.DataTypes.STRING,
       allowNull: false,

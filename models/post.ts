@@ -124,6 +124,13 @@ export function PostModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mode
   const TABLE_NAME = "posts";
   // Model attributtes
   const attributes = {
+    id: {
+      type: Sequelize.DataTypes.UUID,
+      primaryKey: true,
+      defaultValue: Sequelize.DataTypes.UUIDV4,
+      allowNull: false,
+      autoIncrement: false
+    },
     title: {
       type: Sequelize.DataTypes.STRING
     },

@@ -45,6 +45,13 @@ export function TopicModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mod
   const TABLE_NAME = "topics";
   // Model attributtes
   const attributes = {
+    id: {
+      type: Sequelize.DataTypes.UUID,
+      primaryKey: true,
+      defaultValue: Sequelize.DataTypes.UUIDV4,
+      allowNull: false,
+      autoIncrement: false
+    },
     title: {
       type: Sequelize.DataTypes.STRING,
       allowNull: false,

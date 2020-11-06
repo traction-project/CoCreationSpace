@@ -41,6 +41,13 @@ export function AudioContentModelFactory(sequelize: Sequelize.Sequelize): Sequel
   const TABLE_NAME = "audio_content";
   // Model attributtes
   const attributes = {
+    id: {
+      type: Sequelize.DataTypes.UUID,
+      primaryKey: true,
+      defaultValue: Sequelize.DataTypes.UUIDV4,
+      allowNull: false,
+      autoIncrement: false
+    },
     file: {
       type: Sequelize.DataTypes.STRING,
       allowNull: false

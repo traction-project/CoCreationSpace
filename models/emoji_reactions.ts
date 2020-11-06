@@ -34,6 +34,13 @@ export function EmojiReactionsModelFactory(sequelize: Sequelize.Sequelize): Sequ
   const TABLE_NAME = "emoji_reactions";
   // Model attributtes
   const attributes = {
+    id: {
+      type: Sequelize.DataTypes.UUID,
+      primaryKey: true,
+      defaultValue: Sequelize.DataTypes.UUIDV4,
+      allowNull: false,
+      autoIncrement: false
+    },
     emoji : {
       type: Sequelize.DataTypes.STRING,
       allowNull: false

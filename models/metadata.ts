@@ -34,6 +34,13 @@ export function MetadataModelFactory(sequelize: Sequelize.Sequelize): Sequelize.
   const TABLE_NAME = "metadata";
   // Model attributtes
   const attributes = {
+    id: {
+      type: Sequelize.DataTypes.UUID,
+      primaryKey: true,
+      defaultValue: Sequelize.DataTypes.UUIDV4,
+      allowNull: false,
+      autoIncrement: false
+    },
     metadata_type: {
       type: Sequelize.DataTypes.STRING
     },

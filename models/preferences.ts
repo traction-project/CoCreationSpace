@@ -21,6 +21,13 @@ export function PreferencesModelFactory(sequelize: Sequelize.Sequelize): Sequeli
   const TABLE_NAME = "preferences";
   // Model attributtes
   const attributes = {
+    id: {
+      type: Sequelize.DataTypes.UUID,
+      primaryKey: true,
+      defaultValue: Sequelize.DataTypes.UUIDV4,
+      allowNull: false,
+      autoIncrement: false
+    },
     language: {
       type: Sequelize.DataTypes.STRING,
       allowNull: false,
