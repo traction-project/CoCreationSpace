@@ -58,7 +58,7 @@ export async function broadcastNotification(topicId: string, postId: string) {
       if (post) {
         socket.send(JSON.stringify({
           topic: { id: topic.id, title: topic.title },
-          poast: { id: post.id, title: post.title }
+          post: { id: post.id, title: post.title }
         }));
       }
     }
