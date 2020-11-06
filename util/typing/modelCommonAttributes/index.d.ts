@@ -2,7 +2,7 @@
  * Common attributes of all models of database
  */
 export type commonAttributes = {
-    id?: string;
+    id: string;
     createdAt?: Date;
     updatedAt?: Date;
 }
