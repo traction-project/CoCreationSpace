@@ -46,6 +46,16 @@ async function setupWebSocketServer(server: http.Server) {
         }
       }
     });
+
+    ws.on("error", () => {
+      const clientIndex = clients.findIndex((c) => {
+        return c.socket == ws;
+      });
+
+      if (clientIndex > -1) {
+        clients.splice(clientIndex, 1);
+      }
+    });
   });
 }
 
