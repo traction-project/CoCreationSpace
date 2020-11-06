@@ -11,6 +11,7 @@ import fs from "fs";
 import passport from "passport";
 import aws from "aws-sdk";
 import Umzug from "umzug";
+import WebSocket from "ws";
 
 dotenv.config();
 aws.config.loadFromPath("./aws.json");
@@ -158,6 +159,16 @@ async function setupServer() {
       console.log("Starting HTTP server...");
       server = http.createServer(app);
     }
+
+    const wss = new WebSocket.Server({ server });
+
+    wss.on("connection", (ws, req) => {
+      console.log("New connection:", ws, req);
+
+      ws.on("message", (data) => {
+        console.log("Message:", data);
+      });
+    });
 
     server.listen(port);
 
