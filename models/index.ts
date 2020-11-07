@@ -2,6 +2,7 @@ import { Sequelize } from "sequelize";
 
 import { DbInterface } from "util/typing/DbInterface";
 import association from "./associations";
+
 import { MultimediaModelFactory } from "./multimedia";
 import { TopicModelFactory } from "./topic";
 import { ThreadModelFactory } from "./thread";
@@ -20,6 +21,7 @@ import { SubtitlesModelFactory } from "./subtitles";
 import { LikesModelFactory } from "./likes";
 import { EmojiReactionsModelFactory } from "./emoji_reactions";
 import { InterestModelFactory } from "./interest";
+import { NotificationsModelFactory } from "./notifications";
 
 /**
  *  Class that contains all models created in the data base. Also, it is charge of
@@ -45,6 +47,7 @@ class DataBase {
     const Likes = LikesModelFactory(sequelize);
     const Metadata = MetadataModelFactory(sequelize);
     const Multimedia = MultimediaModelFactory(sequelize);
+    const Notifications = NotificationsModelFactory(sequelize);
     const Permissions = PermissionsModelFactory(sequelize);
     const Posts = PostModelFactory(sequelize);
     const PostReferences = PostReferencesModelFactory(sequelize);
@@ -65,6 +68,7 @@ class DataBase {
       Likes,
       Metadata,
       Multimedia,
+      Notifications,
       Permissions,
       Posts,
       PostReferences,

@@ -18,6 +18,7 @@ import { PostReferencesInstance } from "models/post_references";
 import { LikesInstance } from "models/likes";
 import { EmojiReactionsInstance } from "models/emoji_reactions";
 import { InterestInstance } from "models/interest";
+import { NotificationInstance } from "models/notifications";
 
 /**
  *  Interface for the objects that containes all models from database
@@ -30,6 +31,7 @@ export interface DbInterface {
     Likes: ModelCtor<LikesInstance>;
     Metadata: ModelCtor<MetadataInstance>;
     Multimedia: ModelCtor<MultimediaInstance>;
+    Notifications: ModelCtor<NotificationInstance>;
     Permissions: ModelCtor<PermissionsInstance>;
     Posts: ModelCtor<PostInstance>;
     PostReferences: ModelCtor<PostReferencesInstance>;
