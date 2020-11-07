@@ -34,6 +34,7 @@ class Associations {
     topicAssociations(models);
     threadAssociations(models);
     userAssociations(models);
+    notificationAssociations(models);
 
     this.associatons = {
       datacontainerAssociations,
@@ -219,6 +220,7 @@ function userAssociations(models: DbInterface): void {
   models.Users.belongsTo(models.Preferences, { as: "preferences", foreignKey: "preferences_id" });
   models.Users.belongsTo(models.Permissions, { as: "permissions", foreignKey: "permission_id" });
   models.Users.hasMany(models.Posts, { as: "post", foreignKey: "user_id" });
+  models.Users.hasMany(models.Notifications, { as: "notification", foreignKey: "user_id" });
   models.Users.belongsToMany(models.Posts, {
     through: {
       model: models.UserReferences,
@@ -247,4 +249,8 @@ function userAssociations(models: DbInterface): void {
     foreignKey: "user_id",
     as: "interestedTopics"
   });
+}
+
+function notificationAssociations(models: DbInterface) {
+  models.Notifications.belongsTo(models.Users, { as: "user", foreignKey: "user_id" });
 }
