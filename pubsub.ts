@@ -42,6 +42,8 @@ async function getUserInterests(userId: string): Promise<Array<string>> {
  * @param post Post for whose topic a broadcast should be sent
  */
 export async function broadcastNotification(post: PostInstance) {
+  const { Notifications } = db.getModels();
+
   const thread = await post.getThread();
   const topic = await thread.getTopic();
 
@@ -51,11 +53,15 @@ export async function broadcastNotification(post: PostInstance) {
 
     if (interests.find((t) => t == topic.id)) {
       console.log("Sending broadcast for", post.id, topic.id, "to", userId);
-
-      socket.send(JSON.stringify({
+      const data = {
         topic: { id: topic.id, title: topic.title },
         post: { id: post.id, title: post.title }
-      }));
+      };
+
+      const notification = await Notifications.create({ data });
+      await notification.setUser(userId);
+
+      socket.send(JSON.stringify(data));
     }
   });
 }
