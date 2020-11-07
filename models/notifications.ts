@@ -6,7 +6,7 @@ import { UserInstance, UsersAttributes } from "./users";
 
 export interface NotificationAttributes extends CommonAttributes {
   data: any;
-  seen: boolean;
+  seen?: boolean;
   user?: UsersAttributes | UsersAttributes["id"];
 }
 
