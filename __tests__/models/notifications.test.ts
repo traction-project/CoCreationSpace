@@ -74,6 +74,22 @@ describe("Notifications model", () => {
     expect(notificationUser.username).toEqual("admin");
   });
 
+  it("should create a notification and set the user through user id", async () => {
+    const { Notifications, Users } = db.getModels();
+
+    const user = (await Users.findOne({ where: { username: "admin" }}))!;
+    const notification = await Notifications.build({
+      data: { text: "Hello World" }
+    }).save();
+
+    await notification.setUser(user.id);
+    const notificationUser = await notification.getUser();
+
+    expect(notificationUser).toBeDefined();
+    expect(notificationUser.username).toEqual("admin");
+    expect(notificationUser.id).toEqual(user.id);
+  });
+
   it("should allow to query all notifications from an user instance", async () => {
     const { Notifications, Users } = db.getModels();
     const user = (await Users.findOne({ where: { username: "admin" }}))!;
