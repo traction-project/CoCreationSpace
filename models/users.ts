@@ -11,6 +11,7 @@ import { PermissionsInstance, PermissionsAttributes } from "./permissions";
 import { PostInstance, PostAttributes } from "./post";
 import { EmojiReactionsInstance } from "./emoji_reactions";
 import { TopicInstance } from "./topic";
+import { NotificationAttributes, NotificationInstance } from "./notifications";
 
 const [SESSION_SECRET] = getFromEnvironment("SESSION_SECRET");
 
@@ -26,6 +27,7 @@ export interface UsersAttributes extends CommonAttributes {
   preferences?: PreferencesAttributes | PreferencesAttributes["id"];
   permission?: PermissionsAttributes | PermissionsAttributes["id"];
   post?: PostAttributes | PostAttributes["id"];
+  notification?: NotificationAttributes | NotificationAttributes["id"];
   postReferenced?: PostAttributes | PostAttributes["id"];
   emojiReactions?: EmojiReactionsInstance | EmojiReactionsInstance["id"];
 }
@@ -113,6 +115,16 @@ export interface UserInstance extends Sequelize.Model<UsersAttributes, UsersCrea
   hasInterestedTopic: Sequelize.BelongsToManyHasAssociationMixin<TopicInstance, TopicInstance["id"]>;
   hasInterestedTopics: Sequelize.BelongsToManyHasAssociationsMixin<TopicInstance, TopicInstance["id"]>;
   countInterestedTopics: Sequelize.BelongsToManyCountAssociationsMixin;
+
+  getNotifications: Sequelize.BelongsToManyGetAssociationsMixin<NotificationInstance>;
+  setNotifications: Sequelize.BelongsToManySetAssociationsMixin<NotificationInstance, NotificationInstance["id"]>;
+  addNotifications: Sequelize.BelongsToManyAddAssociationsMixin<NotificationInstance, NotificationInstance["id"]>;
+  addNotification: Sequelize.BelongsToManyAddAssociationMixin<NotificationInstance, NotificationInstance["id"]>;
+  removeNotification: Sequelize.BelongsToManyRemoveAssociationMixin<NotificationInstance, NotificationInstance["id"]>;
+  removeNotifications: Sequelize.BelongsToManyRemoveAssociationsMixin<NotificationInstance, NotificationInstance["id"]>;
+  hasNotification: Sequelize.BelongsToManyHasAssociationMixin<NotificationInstance, NotificationInstance["id"]>;
+  hasNotifications: Sequelize.BelongsToManyHasAssociationsMixin<NotificationInstance, NotificationInstance["id"]>;
+  countNotifications: Sequelize.BelongsToManyCountAssociationsMixin;
 }
 
 /**

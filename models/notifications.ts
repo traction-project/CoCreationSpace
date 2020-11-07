@@ -2,7 +2,7 @@ import Sequelize, { Optional } from "sequelize";
 import { v4 as uuidv4 } from "uuid";
 
 import { CommonAttributes } from "util/typing/modelCommonAttributes";
-import { UsersAttributes } from "./users";
+import { UserInstance, UsersAttributes } from "./users";
 
 export interface NotificationAttributes extends CommonAttributes {
   data: any;
@@ -16,6 +16,8 @@ type NotificationCreationAttributes = Optional<NotificationAttributes, "id" | "c
  * Users instance object interface
  */
 export interface NotificationInstance extends Sequelize.Model<NotificationAttributes, NotificationCreationAttributes>, NotificationAttributes {
+  getUser: Sequelize.BelongsToGetAssociationMixin<UserInstance>;
+  setUser: Sequelize.BelongsToSetAssociationMixin<UserInstance, UserInstance["id"]>;
 }
 
 /**
