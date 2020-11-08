@@ -13,14 +13,18 @@ router.get("/", authRequired, async (req, res) => {
   const { Notifications } = db.getModels();
   const user = req.user as UserInstance;
 
+  // TODO Type definitions of models need to be adapted so this is possible
+  // without the cast to 'any'
   const notifications = await Notifications.findAll({
-    where: { user: user },
-    order: ["createdAt", "DESC"]
+    where: { user_id: user.id } as any,
+    order: [["createdAt", "DESC"]]
   });
 
-  res.send({
-    notifications
-  });
+  res.send(
+    notifications.map((n) => {
+      return n.data;
+    })
+  );
 });
 
 /**
@@ -30,14 +34,18 @@ router.get("/new", authRequired, async (req, res) => {
   const { Notifications } = db.getModels();
   const user = req.user as UserInstance;
 
+  // TODO Type definitions of models need to be adapted so this is possible
+  // without the cast to 'any'
   const notifications = await Notifications.findAll({
-    where: { user: user, seen: false },
-    order: ["createdAt", "DESC"]
+    where: { user_id: user.id, seen: false } as any,
+    order: [["createdAt", "DESC"]]
   });
 
-  res.send({
-    notifications
-  });
+  res.send(
+    notifications.map((n) => {
+      return n.data;
+    })
+  );
 });
 
 /**
