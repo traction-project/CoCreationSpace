@@ -35,6 +35,31 @@ async function getUserInterests(userId: string): Promise<Array<string>> {
 }
 
 /**
+ * Checks whether a notification with the given data content already exists for
+ * the user with the given ID.
+ *
+ * @param data Data in the notification
+ * @param userId ID of the user that the notification belongs to
+ * @returns true if the notification already exists, false otherwise
+ */
+async function isDuplicateNotification(data: any, userId: string) {
+  const { Notifications, Users } = db.getModels();
+
+  const isDuplicate = await Notifications.findOne({
+    where: {
+      data
+    },
+    include: {
+      model: Users,
+      as: "user",
+      where: { id: userId }
+    }
+  });
+
+  return isDuplicate != null;
+}
+
+/**
  * Broadcasts a notification message to all clients which are subscribed to the
  * topic that the given post belongs to. The message contains topic id and
  * title and the id and title of the post.
@@ -58,8 +83,10 @@ export async function broadcastNotification(post: PostInstance) {
         post: { id: post.id, title: post.title }
       };
 
-      const notification = await Notifications.create({ data });
-      await notification.setUser(userId);
+      if (!await isDuplicateNotification(data, userId)) {
+        const notification = await Notifications.create({ data });
+        await notification.setUser(userId);
+      }
 
       socket.send(JSON.stringify(data));
     }
