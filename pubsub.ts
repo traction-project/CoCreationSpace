@@ -70,7 +70,16 @@ export async function broadcastNotification(post: PostInstance) {
   const { Notifications } = db.getModels();
 
   const thread = await post.getThread();
+
+  if (!thread) {
+    return;
+  }
+
   const topic = await thread.getTopic();
+
+  if (!topic) {
+    return;
+  }
 
   clients.forEach(async (client) => {
     const { socket, userId } = client;
