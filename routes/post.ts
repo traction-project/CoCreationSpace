@@ -294,5 +294,3 @@ router.post("/id/:id/reaction", authRequired, async (req, res) => {
 });
 
 export default router;
-
-

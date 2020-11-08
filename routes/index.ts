@@ -11,6 +11,7 @@ import TagRouter from "./tag";
 import TopicRouter from "./topic";
 import TranslateRouter from "./translate";
 import UserRouter from "./user";
+import NotificationRouter from "./notification";
 
 import { UserInstance } from "../models/users";
 import { db } from "../models";
@@ -28,6 +29,7 @@ router.use("/topics", TopicRouter);
 router.use("/translate", TranslateRouter);
 router.use("/users", UserRouter);
 router.use("/video", VideoRouter);
+router.use("/notifications", NotificationRouter);
 
 router.get("/", (_, res) => {
   res.render("index", { title: "MediaVault" });
