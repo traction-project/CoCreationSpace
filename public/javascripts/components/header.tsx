@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import { ApplicationState } from "../store";
 import { actionCreators as loginActionCreators, LoginActions } from "../actions/login";
 import { LoginState } from "../reducers/login";
+import NotificationCounter from "./notification_counter";
 
 interface HeaderActionProps {
   loginActions: LoginActions
@@ -43,16 +44,21 @@ const Header: React.FC<HeaderProps> = (props) => {
         </div>
       </div>
       {(props.login.loggedIn) ? (
-        <figure className="header__item dropdown-btn" style={{width: "min-content"}}>
-          <span className="image is-48x48">
-            <img src={props.login.user?.image} alt="Logo"/>
-          </span>
-          <ul className="box dropdown">
-            <Link to={"/profile"}><li className="dropdown__item">{t("Profile")}</li></Link>
-            <hr/>
-            <li className="dropdown__item red" onClick={() => logOut()}>{t("Sign Out")}</li>
-          </ul>
-        </figure>
+        <>
+          <div className="header__item">
+            {props.login.user && <NotificationCounter userId={props.login.user.id} />}
+          </div>
+          <figure className="header__item dropdown-btn" style={{width: "min-content"}}>
+            <span className="image is-48x48">
+              <img src={props.login.user?.image} alt="Logo"/>
+            </span>
+            <ul className="box dropdown">
+              <Link to={"/profile"}><li className="dropdown__item">{t("Profile")}</li></Link>
+              <hr/>
+              <li className="dropdown__item red" onClick={() => logOut()}>{t("Sign Out")}</li>
+            </ul>
+          </figure>
+        </>
       ) : (
         <div>
           <Link to={"/login"}><span className="header__item">{t("Sign In")}</span></Link>
