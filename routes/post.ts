@@ -5,7 +5,6 @@ import { authRequired, buildCriteria, isUser, getFromEnvironment } from "../util
 import { UserInstance } from "models/users";
 import association from "../models/associations";
 import { TagInstance } from "models/tag";
-import Post from "public/javascripts/components/post";
 
 const [ CLOUDFRONT_URL ] = getFromEnvironment("CLOUDFRONT_URL");
 const router = Router();

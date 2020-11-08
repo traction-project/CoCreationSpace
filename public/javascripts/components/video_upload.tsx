@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState, ChangeEvent } from "react";
+import { useState, useEffect, ChangeEvent } from "react";
 import { useHistory } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
@@ -22,6 +22,19 @@ const VideoUpload: React.FC<VideoUploadProps> = () => {
   const [ displayNotification, setDisplayNotification] = useState<"success" | "error">();
   const [ summary, setSummary ] = useState<string>("");
   const [ tags, setTags ] = useState<Array<string>>([]);
+
+  const [ topics, setTopics ] = useState<Array<[string, string]>>([]);
+  const [ selectedTopic, setSelectedTopic ] = useState<string>();
+
+  useEffect(() => {
+    fetch("/topics/all").then((res) => {
+      return res.json();
+    }).then((topics) => {
+      setTopics(topics.map((t: { id: string, title: string }) => {
+        return [t.id, t.title];
+      }));
+    });
+  }, []);
 
   const startUpload = async (file: File) => {
     try {
@@ -52,7 +65,8 @@ const VideoUpload: React.FC<VideoUploadProps> = () => {
       title,
       text: summary,
       multimedia: [multimedia],
-      tags: tags.map((tag) => { return { tag_name: tag }; } )
+      tags: tags.map((tag) => { return { tag_name: tag }; } ),
+      topicId: selectedTopic
     };
     fetch("/posts", {
       headers,
@@ -114,6 +128,21 @@ const VideoUpload: React.FC<VideoUploadProps> = () => {
                 <h1 className="title-2">{t("Title")}</h1>
                 <hr/>
                 <input type="text" placeholder={`${t("Add title")}...`} className="searcher-tag" onChange={(e) => handleChangeInputTitle(e.currentTarget.value)}/>
+              </div>
+            </div>
+            <br/>
+            <div className="columns">
+              <div className="column">
+                <h1 className="title-2">{t("Topic")}</h1>
+                <hr/>
+                <select className="select list-topics" value={selectedTopic} onChange={(e) => setSelectedTopic(e.target.value)}>
+                  <option />
+                  {topics.map(([id, name]) => {
+                    return (
+                      <option key={id} value={id}>{name}</option>
+                    );
+                  })}
+                </select>
               </div>
             </div>
             <br/>
