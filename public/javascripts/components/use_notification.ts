@@ -1,37 +1,59 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 interface Notification {
   topic: { id: string, title: string },
   post: { id: string, title: string }
 }
 
-function useNotification(userId: string, onNotificationReceived: (notification: Notification) => void) {
+function useNotification(userId: string) {
+  const [ notifications, setNotifications ] = useState<Array<Notification>>([]);
+
+  const onNotificationReceived = (notification: Notification) => {
+    console.log("Notification received:", notification);
+
+    setNotifications([
+      ...notifications,
+      notification
+    ]);
+  };
+
   useEffect(() => {
-    const ws = new WebSocket(`ws://${location.host}/`);
+    fetch("/notifications/new").then((res) => {
+      return res.json();
+    }).then((data) => {
+      setNotifications(data);
+    }).then(() => {
+      console.log("Setting up websocket channel...");
+      const ws = new WebSocket(`ws://${location.host}/`);
 
-    ws.onopen = () => {
-      console.log("Websocket connection established");
+      ws.onopen = () => {
+        console.log("Websocket connection established");
 
-      ws.send(JSON.stringify({
-        command: "subscribe",
-        userId
-      }));
-    };
+        ws.send(JSON.stringify({
+          command: "subscribe",
+          userId
+        }));
+      };
 
-    ws.onmessage = (e) => {
-      const data = JSON.parse(e.data);
-      onNotificationReceived(data);
-    };
+      ws.onmessage = (e) => {
+        const data = JSON.parse(e.data);
+        onNotificationReceived(data);
+      };
 
-    return () => {
-      ws.send(JSON.stringify({
-        command: "unsubscribe",
-        userId
-      }));
+      return () => {
+        console.log("Closing channel...");
 
-      ws.close();
-    };
+        ws.send(JSON.stringify({
+          command: "unsubscribe",
+          userId
+        }));
+
+        ws.close();
+      };
+    });
   }, [userId]);
+
+  return notifications;
 }
 
 export default useNotification;
