@@ -1,3 +1,4 @@
+import { UsersAttributes } from "models/users";
 import { Sequelize } from "sequelize";
 
 process.env["SESSION_SECRET"] = "sessionsecret";
@@ -111,5 +112,32 @@ describe("Notifications model", () => {
 
     expect(userNotifications[0].data).toEqual({ text: "Hello World" });
     expect(userNotifications[1].data).toEqual({ text: "Hello Space" });
+  });
+
+  it("should allow user IDs in where statements", async () => {
+    const { Notifications, Users } = db.getModels();
+
+    const user = (await Users.findOne({ where: { username: "admin" }}))!;
+    const notification = await Notifications.build({
+      data: { text: "Hello World" }
+    }).save();
+
+    await notification.setUser(user.id);
+
+    const savedNotification = await Notifications.findOne({
+      where: {
+        data: { text: "Hello World" }
+      },
+      include: {
+        model: Users,
+        as: "user",
+        where: { id: user.id }
+      }
+    });
+
+    expect(savedNotification).not.toBeNull();
+
+    const savedUser = savedNotification!.user! as UsersAttributes;
+    expect(savedUser.username).toEqual("admin");
   });
 });
