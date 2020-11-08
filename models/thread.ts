@@ -7,6 +7,7 @@ import { PostAttributes, PostInstance } from "./post";
 
 export interface ThreadAttributes extends CommonAttributes{
     th_title: string;
+    topic_id?: string;
     topic?: TopicAttributes | TopicAttributes["id"];
     post?: PostAttributes | PostAttributes["id"];
 }

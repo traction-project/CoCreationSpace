@@ -5,6 +5,7 @@ import { authRequired, buildCriteria, isUser, getFromEnvironment } from "../util
 import { UserInstance } from "models/users";
 import association from "../models/associations";
 import { TagInstance } from "models/tag";
+import Post from "public/javascripts/components/post";
 
 const [ CLOUDFRONT_URL ] = getFromEnvironment("CLOUDFRONT_URL");
 const router = Router();
@@ -150,18 +151,24 @@ router.get("/id/:id", authRequired, async (req, res) => {
  * Create new Post
  */
 router.post("/", authRequired, async (req, res) => {
-  const { text, title, multimedia, tags } = req.body;
+  const { text, title, multimedia, tags, topicId } = req.body;
 
   if (!text) {
     return res.status(400).send({ message: "Field text not present"});
   }
 
   const user = req.user as UserInstance;
-  const { Posts, Tags, DataContainer } = db.getModels();
+  const { Posts, Tags, Threads, DataContainer } = db.getModels();
+
+  const thread = await Threads.create({
+    th_title: title,
+    topic_id: topicId
+  });
 
   const post = Posts.build({
     title: title,
     user_id: user.id,
+    thread_id: thread.id,
     dataContainer: DataContainer.build({
       text_content: text
     })
@@ -209,9 +216,16 @@ router.post("/id/:id", authRequired, async (req, res) => {
   const user = req.user as UserInstance;
   const { Posts, DataContainer } = db.getModels();
 
+  const parentPost = await Posts.findByPk(id);
+
+  if (!parentPost) {
+    return res.status(400).send({ message: "Parent post not found" });
+  }
+
   const post = Posts.build({
     parent_post_id: id,
     user_id: user.id,
+    thread_id: parentPost.thread_id,
     dataContainer: DataContainer.build({
       text_content: text
     }),
