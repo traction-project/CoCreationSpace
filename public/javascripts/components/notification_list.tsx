@@ -1,5 +1,6 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
+import { Trans } from "react-i18next";
 
 import { NotificationData } from "./use_notification";
 
@@ -27,14 +28,18 @@ const NotificationList: React.FC<NotificationListProps> = (props) => {
       <div className="column is-6 is-offset-3">
         <h3 className="title is-3">Notifications</h3>
 
-        {notifications.map((notification, i) => {
+        {notifications.map(({ data: { topic, post }}, i) => {
           return (
             <div className="box" key={i}>
               <h5 className="title is-5">
-                New post in topic {notification.data.topic.title}
+                <Trans i18nKey="notification-title">
+                  New post in topic {{ topicTitle: topic.title }}
+                </Trans>
               </h5>
               <p>
-                A new post titled <i>{notification.data.post.title}</i> was submitted to the topic <i>{notification.data.topic.title}</i>
+                <Trans i18nKey="notification-text">
+                  A new post titled <i>{{ postTitle: post.title}}</i> was submitted to the topic <i>{{ topicTitle: topic.title}}</i>
+                </Trans>
               </p>
             </div>
           );
