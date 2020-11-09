@@ -1,6 +1,6 @@
 const fs = require("fs");
 const path = require("path");
-const typescript = require("typescript");
+const typescriptTransform = require('i18next-scanner-typescript');
 
 module.exports = {
   input: [
@@ -35,38 +35,10 @@ module.exports = {
     removeUnusedKeys: true,
   },
 
-  transform: function customTransform(file, enc, done) {
-    const {ext} = path.parse(file.path);
-    const content = fs.readFileSync(file.path, enc);
-
-    if (ext === ".ts" || ext == ".tsx") {
-      const {outputText} = typescript.transpileModule(content.toString(), {
-        compilerOptions: {
-          target: "es2018",
-        },
-        fileName: path.basename(file.path),
-      });
-
-      this.parser.parseFuncFromString(outputText, {list: ["i18next.t", "i18next.tr", "this.i18n.tr", "t"]});
-    } else if (ext === ".html") {
-      this.parser.parseAttrFromString(content, {list: ["data-i18n", "data-t", "t", "i18n"] });
-
-      // We extra behaviours `${ 'myKey' | t }` and `${ 'myKey' & t }` from the file.
-      const extractBehaviours = /\${ *'([a-zA-Z0-9]+)' *[&|] *t *}/g;
-      const strContent = content.toString();
-      let group;
-
-      for (;;) {
-        group = extractBehaviours.exec(strContent);
-
-        if (group === null) {
-          break;
-        }
-
-        this.parser.set(group[1]);
-      }
-    }
-
-    done();
-  },
+  transform: typescriptTransform({
+    extensions: [".ts", ".tsx"],
+    tsOptions: {
+      target: "es2017",
+    },
+  }),
 };
