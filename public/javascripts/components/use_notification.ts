@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 
-interface Notification {
+export interface NotificationData {
   topic: { id: string, title: string },
   post: { id: string, title: string }
 }
 
 function useNotification(userId: string) {
-  const [ notifications, setNotifications ] = useState<Array<Notification>>([]);
+  const [ notifications, setNotifications ] = useState<Array<NotificationData>>([]);
 
-  const onNotificationReceived = (notification: Notification) => {
+  const onNotificationReceived = (notification: NotificationData) => {
     console.log("Notification received:", notification);
 
     setNotifications(notifications => [

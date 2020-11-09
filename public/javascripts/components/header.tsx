@@ -46,7 +46,7 @@ const Header: React.FC<HeaderProps> = (props) => {
       {(props.login.loggedIn) ? (
         <>
           <div className="header__item">
-            {props.login.user && <NotificationCounter userId={props.login.user.id} />}
+            {props.login.user && <Link to="/notifications"><NotificationCounter userId={props.login.user.id} /></Link>}
           </div>
           <figure className="header__item dropdown-btn" style={{width: "min-content"}}>
             <span className="image is-48x48">

@@ -20,6 +20,7 @@ import Header from "./header";
 import PostList from "./post_list";
 import Profile from "./profile";
 import Signup from "./signup";
+import NotificationList from "./notification_list";
 
 async function checkLogin() {
   const loginStatus = await verifyLoginStatus();
@@ -62,6 +63,9 @@ const App: React.FC<AppProps> = () => {
             </Route>
             <Route path="/video/:id">
               <Video />
+            </Route>
+            <Route path="/notifications">
+              <NotificationList />
             </Route>
             <PrivateRoute path="/record">
               <VideoRecorder />
