@@ -89,6 +89,7 @@
     "eslint": "^6.8.0",
     "eslint-plugin-react": "^7.18.3",
     "i18next-scanner": "^2.11.0",
+    "i18next-scanner-typescript": "^1.0.6",
     "jest": "^26.0.1",
     "sinon": "^9.0.2",
     "source-map-support": "^0.5.16",

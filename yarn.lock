@@ -3785,6 +3785,13 @@ i18next-http-backend@^1.0.21:
   dependencies:
     node-fetch "2.6.1"
 
+i18next-scanner-typescript@^1.0.6:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/i18next-scanner-typescript/-/i18next-scanner-typescript-1.0.6.tgz#1b4d4c27bd47cef68bfa89be543fcff563ea2f0e"
+  integrity sha512-v6kULnsv32OlFM9pnWTH+wNtRXf5owmFUNBYcX78jbZxQBFnTCUo3w99JjnxuzuXA9ch4UKNQBnt2P/o94eyeQ==
+  dependencies:
+    typescript "^3.0.0"
+
 i18next-scanner@^2.11.0:
   version "2.11.0"
   resolved "https://registry.yarnpkg.com/i18next-scanner/-/i18next-scanner-2.11.0.tgz#58c7ffadd5192cdb2b1b2a6c743b1314050ccb4c"
@@ -7809,6 +7816,11 @@ typedoc@^0.17.6:
     progress "^2.0.3"
     shelljs "^0.8.4"
     typedoc-default-themes "^0.10.1"
+
+typescript@^3.0.0:
+  version "3.9.7"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.9.7.tgz#98d600a5ebdc38f40cb277522f12dc800e9e25fa"
+  integrity sha512-BLbiRkiBzAwsjut4x/dsibSTB6yWpwT5qWmC2OfuCg3GgVQCSgMs4vEctYPhsaGtd0AeuuHMkjZ2h2WG8MSzRw==
 
 typescript@^4.0.5:
   version "4.0.5"
