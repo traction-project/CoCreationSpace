@@ -55,5 +55,7 @@
     "Write summary": "Schreibe Zusammenfassung",
     "Create content": "Inhalt erstellen",
     "Preferred language": "Bevorzugte Sprache",
-    "Topic": "Thema"
+    "Topic": "Thema",
+    "notification-title": "Neuer Beitrag zum Thema <1>{{topicTitle}}</1>",
+    "notification-text": "Ein neuer Beitrag mit dem Titel <1><0>{{postTitle}}</0></1> wurde zum Thema <3><0>{{topicTitle}}</0></3> hinzugefügt"
 }
