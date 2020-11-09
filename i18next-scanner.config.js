@@ -1,6 +1,6 @@
 const fs = require("fs");
 const path = require("path");
-const typescriptTransform = require('i18next-scanner-typescript');
+const typescriptTransform = require("i18next-scanner-typescript");
 
 module.exports = {
   input: [
