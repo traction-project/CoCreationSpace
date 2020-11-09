@@ -11,7 +11,7 @@ function useNotification(userId: string) {
   const onNotificationReceived = (notification: Notification) => {
     console.log("Notification received:", notification);
 
-    setNotifications([
+    setNotifications(notifications => [
       ...notifications,
       notification
     ]);

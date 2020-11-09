@@ -86,7 +86,7 @@ export async function broadcastNotification(post: PostInstance) {
     const interests = await getUserInterests(userId);
 
     if (interests.find((t) => t == topic.id)) {
-      console.log("Sending broadcast for", post.id, topic.id, "to", userId);
+      console.log("Sending broadcast for", post.id, post.title, topic.id, topic.title, "to", userId);
       const data = {
         topic: { id: topic.id, title: topic.title },
         post: { id: post.id, title: post.title }
