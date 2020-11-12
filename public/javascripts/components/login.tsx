@@ -24,10 +24,12 @@ const Login: React.FC<LoginProps> = (props) => {
   const { t } = useTranslation();
   const history = useHistory();
 
+  if (props.login.user) {
+    history.push("/");
+  }
+
   const onSubmit = handleSubmit(({ username, password }) => {
-    props.loginActions.performLogin(username, password, () => {
-      history.push("/");
-    });
+    props.loginActions.performLogin(username, password);
   });
 
   const submitDisabled = (watch("username") || "").length == 0 || (watch("password") || "").length == 0;
