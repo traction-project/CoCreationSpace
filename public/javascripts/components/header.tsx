@@ -39,7 +39,7 @@ const Header: React.FC<HeaderProps> = (props) => {
     <nav className="navbar" role="navigation" aria-label="main navigation">
       <div className="navbar-brand">
         <a className="navbar-item" href="/">
-          <img src="/images/traction-logo-white.png" alt="traction-logo" />
+          <img src="/images/header-logo.png" alt="traction-logo" />
         </a>
 
         <a
@@ -84,7 +84,7 @@ const Header: React.FC<HeaderProps> = (props) => {
             <div className="navbar-item">
               <div className="buttons">
                 <Link className="button navbar-item is-info" to={"/login"}>{t("Sign In")}</Link>
-                <Link className="button navbar-item" to={"/signup"}>{t("Sign Up")}</Link>
+                <Link className="button navbar-item is-light" to={"/signup"}>{t("Sign Up")}</Link>
               </div>
             </div>
           )}
