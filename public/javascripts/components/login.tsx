@@ -2,7 +2,7 @@ import * as React from "react";
 import { Dispatch, bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useForm } from "react-hook-form";
 
 import { actionCreators as loginActionCreators, LoginActions } from "../actions/login";
@@ -41,6 +41,16 @@ const Login: React.FC<LoginProps> = (props) => {
           <div className="columns is-centered">
             <div className="column is-6-tablet is-5-desktop is-5-widescreen">
               <form onSubmit={onSubmit} className="box">
+                {props.login.loginError && (
+                  <article className="message is-danger">
+                    <div className="message-body">
+                      <Trans i18nKey="login-error">
+                        <strong>Login failed!</strong> Username or password are incorrect.
+                      </Trans>
+                    </div>
+                  </article>
+                )}
+
                 <div className="field">
                   <label htmlFor="" className="label">{t("Username")}</label>
                   <div className="control has-icons-left">
@@ -75,7 +85,7 @@ const Login: React.FC<LoginProps> = (props) => {
                 </div>
                 <div className="field">
                   <button type="submit" disabled={submitDisabled} className="button is-info">
-                    Login
+                    {t("Login")}
                   </button>
                 </div>
               </form>
