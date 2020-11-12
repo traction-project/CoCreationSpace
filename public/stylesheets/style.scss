@@ -23,16 +23,6 @@ body {
   color: #E2E2E2;
 }
 
-.container {
-  height: 30rem;
-  min-height: max-content;
-  display: flex;
-  position: relative;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
 .fixed-notification {
   position: fixed;
   top: 25px;
