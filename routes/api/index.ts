@@ -4,7 +4,7 @@ import Busboy from "busboy";
 import { v4 as uuid4 } from "uuid";
 
 import { getExtension, getFromEnvironment, tokenRequired } from "../../util";
-import { uploadToS3 } from "../../util/s3";
+import { uploadToS3, deleteFromS3 } from "../../util/s3";
 import { UserInstance } from "../../models/users";
 
 const [ BUCKET_NAME ] = getFromEnvironment("BUCKET_NAME");
@@ -67,7 +67,32 @@ router.post("/upload/raw", tokenRequired, (req, res) => {
   });
 
   req.pipe(busboy);
+});
 
+router.delete("/upload/raw", tokenRequired, async (req, res) => {
+  const { key } = req.body;
+
+  if (!key) {
+    res.status(400).send({
+      status: "ERR",
+      message: "No key specified"
+    });
+  }
+
+  try {
+    await deleteFromS3(key, BUCKET_NAME);
+
+    res.send({
+      status: "OK"
+    });
+  } catch (e) {
+    console.error(e);
+
+    res.status(500).send({
+      status: "ERR",
+      message: "Could not delete from S3"
+    });
+  }
 });
 
 export default router;
