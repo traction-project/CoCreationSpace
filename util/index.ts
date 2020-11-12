@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response, NextFunction, RequestHandler } from "express";
 import passport from "passport";
 import aws from "aws-sdk";
 
@@ -106,7 +106,7 @@ export function translateText(input: string, targetLanguage: string, sourceLangu
  *
  * @returns a JWT request handler which can be used as middleware function
  */
-export function tokenRequired(req: Request, res: Response, next: NextFunction) {
+export function tokenRequired(req: Request, res: Response, next: NextFunction): RequestHandler {
   return passport.authenticate("jwt", { session: false })(req, res, next);
 }
 
