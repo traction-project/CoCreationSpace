@@ -174,18 +174,6 @@ describe("Utility function translateText()", () => {
   });
 });
 
-describe("Utility function tokenRequired()", () => {
-  it("should return a function", () => {
-    process.env = {
-      SESSION_SECRET: "secret"
-    };
-
-    expect(
-      util.tokenRequired()
-    ).toBeInstanceOf(Function);
-  });
-});
-
 describe("Utility function findTerm()", () => {
 
   const text = "hello world";
