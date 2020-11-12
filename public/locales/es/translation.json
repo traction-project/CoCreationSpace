@@ -57,5 +57,6 @@
     "Preferred language": "__STRING_NOT_TRANSLATED__",
     "Topic": "__STRING_NOT_TRANSLATED__",
     "notification-title": "New post in topic <1>{{topicTitle}}</1>",
-    "notification-text": "A new post titled <1><0>{{postTitle}}</0></1> was submitted to the topic <3><0>{{topicTitle}}</0></3>"
+    "notification-text": "A new post titled <1><0>{{postTitle}}</0></1> was submitted to the topic <3><0>{{topicTitle}}</0></3>",
+    "Notifications": "__STRING_NOT_TRANSLATED__"
 }
