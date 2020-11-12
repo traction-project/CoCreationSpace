@@ -1,5 +1,6 @@
 import { Router } from "express";
 import passport from "passport";
+import { tokenRequired } from "../../util";
 
 import { UserInstance } from "../../models/users";
 
@@ -35,6 +36,10 @@ router.post("/login", (req, res, next) => {
       ...msg
     });
   })(req, res, next);
+});
+
+router.post("/upload/raw", tokenRequired, (req, res) => {
+
 });
 
 export default router;
