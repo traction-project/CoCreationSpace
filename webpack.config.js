@@ -24,12 +24,6 @@ const frontend = {
         test: /\.tsx?$/,
         use: "ts-loader"
       }, {
-        test: /\.css$/,
-        use: [
-          "style-loader",
-          "css-loader"
-        ]
-      }, {
         test: /\.s[ac]ss$/,
         use: [
           "style-loader",
