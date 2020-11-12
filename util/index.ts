@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import jwt from "express-jwt";
+import passport from "passport";
 import aws from "aws-sdk";
 
 import { ModelCtor, Model, Op } from "sequelize";
@@ -106,12 +106,8 @@ export function translateText(input: string, targetLanguage: string, sourceLangu
  *
  * @returns a JWT request handler which can be used as middleware function
  */
-export function tokenRequired(): jwt.RequestHandler {
-  const [ SESSION_SECRET ] = getFromEnvironment("SESSION_SECRET");
-
-  return jwt({
-    secret: SESSION_SECRET,
-  });
+export function tokenRequired(req: Request, res: Response, next: NextFunction) {
+  return passport.authenticate("jwt", { session: false })(req, res, next);
 }
 
 /**
