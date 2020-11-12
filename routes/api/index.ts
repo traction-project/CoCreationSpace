@@ -1,8 +1,14 @@
 import { Router } from "express";
 import passport from "passport";
-import { tokenRequired } from "../../util";
+import Busboy from "busboy";
+import { v4 as uuid4 } from "uuid";
 
+import { getExtension, getFromEnvironment, tokenRequired } from "../../util";
+import { uploadToS3 } from "../../util/s3";
 import { UserInstance } from "../../models/users";
+
+const [ BUCKET_NAME ] = getFromEnvironment("BUCKET_NAME");
+const UPLOAD_PREFIX = "upload/";
 
 const router = Router();
 
@@ -39,6 +45,28 @@ router.post("/login", (req, res, next) => {
 });
 
 router.post("/upload/raw", tokenRequired, (req, res) => {
+  const busboy = new Busboy({ headers: req.headers });
+
+  busboy.on("file", async (_, file, filename) => {
+    try {
+      const newName = UPLOAD_PREFIX + uuid4() + getExtension(filename);
+      await uploadToS3(newName, file, BUCKET_NAME);
+
+      res.send({
+        status: "OK",
+        name: newName
+      });
+    } catch (e) {
+      console.error(e);
+
+      res.status(500).send({
+        status: "ERR",
+        message: "Could not upload to S3"
+      });
+    }
+  });
+
+  req.pipe(busboy);
 
 });
 
