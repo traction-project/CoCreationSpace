@@ -754,3 +754,8 @@ a.header__item:hover {
     transform: rotate(360deg);
   }
 }
+
+.navbar-dropdown .navbar-item {
+  color: hsl(0, 0%, 4%);
+  font-size: 1rem;
+}
