@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useState } from "react";
 import { Dispatch, bindActionCreators } from "redux";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useHistory, useLocation } from "react-router-dom";
 import { connect } from "react-redux";
 import { useTranslation } from "react-i18next";
 import classnames from "classnames";
@@ -24,6 +24,7 @@ type HeaderProps = HeaderActionProps & HeaderConnectedProps;
 const Header: React.FC<HeaderProps> = (props) => {
   const { t } = useTranslation();
   const history = useHistory();
+  const location = useLocation();
   const [ burgerActive, setBurgerActive ] = useState(false);
 
   const logOut = () => {
@@ -58,9 +59,22 @@ const Header: React.FC<HeaderProps> = (props) => {
 
       <div id="mainNavbar" className={classnames("navbar-menu", { "is-active": burgerActive })}>
         <div className="navbar-start">
-          <Link className="navbar-item" to={"/"}>{t("Home")}</Link>
-          <Link className="navbar-item" to={"/userPosts"}>{t("My Posts")}</Link>
-          <Link className="navbar-item" to={"/posts"}>{t("Explore")}</Link>
+          <Link
+            className={classnames("navbar-item", { "is-active": location.pathname == "/" })}
+            to={"/"}
+          >
+            {t("Home")}
+          </Link>
+          <Link
+            className={classnames("navbar-item", { "is-active": location.pathname == "/userPosts" })}
+            to={"/userPosts"}>
+            {t("My Posts")}
+          </Link>
+          <Link
+            className={classnames("navbar-item", { "is-active": location.pathname == "/posts" })}
+            to={"/posts"}>
+            {t("Explore")}
+          </Link>
         </div>
 
         <div className="navbar-end">
