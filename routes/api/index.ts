@@ -44,6 +44,12 @@ router.post("/login", (req, res, next) => {
   })(req, res, next);
 });
 
+router.get("/loginstatus", tokenRequired, (_, res) => {
+  res.send({
+    status: "OK"
+  });
+});
+
 router.post("/upload/raw", tokenRequired, (req, res) => {
   const busboy = new Busboy({ headers: req.headers });
 
