@@ -92,6 +92,8 @@
     "i18next-scanner": "^2.11.0",
     "i18next-scanner-typescript": "^1.0.6",
     "jest": "^26.0.1",
+    "sass": "^1.29.0",
+    "sass-loader": "^10.1.0",
     "sinon": "^9.0.2",
     "source-map-support": "^0.5.16",
     "sqlite3": "^5.0.0",
