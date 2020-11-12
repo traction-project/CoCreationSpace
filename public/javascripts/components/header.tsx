@@ -78,21 +78,22 @@ const Header: React.FC<HeaderProps> = (props) => {
         </div>
 
         <div className="navbar-end">
-          {(props.login.loggedIn) ? (
+          {(props.login.loggedIn && props.login.user) ? (
             <>
-              <div className="navbar-item">
-                {props.login.user && <Link to="/notifications"><NotificationCounter userId={props.login.user.id} /></Link>}
+              <Link to="/notifications" className="navbar-item">
+                <NotificationCounter userId={props.login.user.id} />
+              </Link>
+
+              <div className="navbar-item has-dropdown is-hoverable">
+                <a className="navbar-link">
+                  <img src={props.login.user.image} alt="User profile picture"/>
+                </a>
+                <div className="navbar-dropdown is-right">
+                  <Link className="navbar-item" to="/profile">Profile</Link>
+                  <hr className="navbar-divider" />
+                  <a className="navbar-item" onClick={logOut}>Sign Out</a>
+                </div>
               </div>
-              <figure className="header__item dropdown-btn" style={{width: "min-content"}}>
-                <span className="image is-48x48">
-                  <img src={props.login.user?.image} alt="Logo"/>
-                </span>
-                <ul className="box dropdown">
-                  <Link to={"/profile"}><li className="dropdown__item">{t("Profile")}</li></Link>
-                  <hr/>
-                  <li className="dropdown__item red" onClick={() => logOut()}>{t("Sign Out")}</li>
-                </ul>
-              </figure>
             </>
           ) : (
             <div className="navbar-item">
