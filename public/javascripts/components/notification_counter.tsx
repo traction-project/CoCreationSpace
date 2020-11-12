@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useTranslation } from "react-i18next";
 import useNotification from "./use_notification";
 
 interface NotificationCounterProps {
@@ -7,12 +8,13 @@ interface NotificationCounterProps {
 
 const NotificationCounter: React.FC<NotificationCounterProps> = (props) => {
   const { userId } = props;
+  const { t } = useTranslation();
   const notifications = useNotification(userId);
 
   return (
     <div>
       <i className="far fa-bell" />
-      &nbsp;{notifications.length} Notifications
+      &nbsp;{notifications.length} {t("Notifications")}
     </div>
   );
 };

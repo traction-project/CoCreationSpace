@@ -89,9 +89,9 @@ const Header: React.FC<HeaderProps> = (props) => {
                   <img src={props.login.user.image} alt="User profile picture"/>
                 </a>
                 <div className="navbar-dropdown is-right">
-                  <Link className="navbar-item" to="/profile">Profile</Link>
+                  <Link className="navbar-item" to="/profile">{t("Profile")}</Link>
                   <hr className="navbar-divider" />
-                  <a className="navbar-item" onClick={logOut}>Sign Out</a>
+                  <a className="navbar-item" onClick={logOut}>{t("Sign Out")}</a>
                 </div>
               </div>
             </>
