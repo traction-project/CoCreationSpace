@@ -27,7 +27,7 @@ function clearLoggedInUser(): CLEAR_LOGGED_IN_USER {
   };
 }
 
-export function performLogin(username: string, password: string): AsyncAction<void, SET_LOGGED_IN_USER> {
+export function performLogin(username: string, password: string): AsyncAction<void, SET_LOGGED_IN_USER | SET_LOGIN_ERROR> {
   return async (dispatch) => {
     const response = await fetch("/login", {
       method: "POST",
@@ -47,6 +47,8 @@ export function performLogin(username: string, password: string): AsyncAction<vo
       if (user.preferredLanguage) {
         i18n.changeLanguage(user.preferredLanguage);
       }
+    } else {
+      dispatch(setLoginError());
     }
   };
 }
