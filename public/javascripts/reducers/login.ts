@@ -31,4 +31,11 @@ actionHandler.addHandler("CLEAR_LOGGED_IN_USER", (state, action) => {
   };
 });
 
+actionHandler.addHandler("SET_LOGIN_ERROR", (state, action: actions.SET_LOGIN_ERROR) => {
+  return {
+    ...state,
+    loginError: true
+  };
+});
+
 export default actionHandler.getReducer();
