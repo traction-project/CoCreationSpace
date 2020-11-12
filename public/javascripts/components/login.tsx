@@ -72,7 +72,7 @@ const Login: React.FC<LoginProps> = (props) => {
                   </div>
                 </div>
                 <div className="field">
-                  <button type="submit" disabled={submitDisabled} className="button is-success">
+                  <button type="submit" disabled={submitDisabled} className="button is-info">
                     Login
                   </button>
                 </div>
