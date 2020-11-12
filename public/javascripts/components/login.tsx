@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Dispatch, bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import { Trans, useTranslation } from "react-i18next";
 import { useForm } from "react-hook-form";
 
@@ -22,10 +22,11 @@ type LoginProps = LoginActionProps & LoginConnectedProps;
 const Login: React.FC<LoginProps> = (props) => {
   const { register, watch, handleSubmit } = useForm();
   const { t } = useTranslation();
-  const history = useHistory();
 
   if (props.login.user) {
-    history.push("/");
+    return (
+      <Redirect to="/" />
+    );
   }
 
   const onSubmit = handleSubmit(({ username, password }) => {
