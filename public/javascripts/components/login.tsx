@@ -33,38 +33,41 @@ const Login: React.FC<LoginProps> = (props) => {
   };
 
   return (
-    <div className="columns">
-      <div className="box column is-one-third is-offset-one-third" style={{ marginTop: "20vh" }}>
-        <div>
-          <div className="field">
-            <label className="label">{t("Username")}</label>
-            <div className="control">
-              <input className="input" type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
+    <section className="hero is-fullheight-with-navbar">
+      <div className="hero-body">
+        <div className="container">
+          <div className="columns is-centered">
+            <div className="column is-6-tablet is-5-desktop is-5-widescreen">
+              <form action="" className="box">
+                <div className="field">
+                  <label htmlFor="" className="label">Username</label>
+                  <div className="control has-icons-left">
+                    <input type="text" placeholder="Username" className="input" required={true} />
+                    <span className="icon is-small is-left">
+                      <i className="fa fa-envelope" />
+                    </span>
+                  </div>
+                </div>
+                <div className="field">
+                  <label htmlFor="" className="label">Password</label>
+                  <div className="control has-icons-left">
+                    <input type="password" placeholder="Password" className="input" required={true} />
+                    <span className="icon is-small is-left">
+                      <i className="fa fa-lock"></i>
+                    </span>
+                  </div>
+                </div>
+                <div className="field">
+                  <button className="button is-success">
+                    Login
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
-
-          <div className="field">
-            <label className="label">{t("Password")}</label>
-            <div className="control">
-              <input className="input" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-            </div>
-          </div>
-
-          <div className="field">
-            <div className="control">
-              <button
-                className="button is-info"
-                disabled={username.length === 0 || password.length === 0}
-                onClick={onSubmit}
-              >
-                {t("Login")}
-              </button>
-            </div>
-          </div>
-
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 
