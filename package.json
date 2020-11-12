@@ -21,7 +21,6 @@
     "dotenv": "^8.2.0",
     "ejs": "~2.6.1",
     "express": "~4.16.1",
-    "express-jwt": "^5.3.3",
     "express-session": "^1.17.0",
     "http-errors": "~1.6.3",
     "i18next": "^19.8.3",
