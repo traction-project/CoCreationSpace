@@ -1,8 +1,10 @@
 import * as React from "react";
+import { useState } from "react";
 import { Dispatch, bindActionCreators } from "redux";
 import { Link, useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import { useTranslation } from "react-i18next";
+import classnames from "classnames";
 
 import { ApplicationState } from "../store";
 import { actionCreators as loginActionCreators, LoginActions } from "../actions/login";
@@ -22,10 +24,15 @@ type HeaderProps = HeaderActionProps & HeaderConnectedProps;
 const Header: React.FC<HeaderProps> = (props) => {
   const { t } = useTranslation();
   const history = useHistory();
+  const [ burgerActive, setBurgerActive ] = useState(false);
 
   const logOut = () => {
     props.loginActions.performLogout();
     history.push("/");
+  };
+
+  const onBurgerClicked = () => {
+    setBurgerActive(!burgerActive);
   };
 
   return (
@@ -35,14 +42,21 @@ const Header: React.FC<HeaderProps> = (props) => {
           <img src="/images/traction-logo-white.png" alt="traction-logo" />
         </a>
 
-        <a role="button" className="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="mainNavbar">
+        <a
+          role="button"
+          onClick={onBurgerClicked}
+          className={classnames("navbar-burger", "burger", { "is-active": burgerActive })}
+          aria-label="menu"
+          aria-expanded="false"
+          data-target="mainNavbar"
+        >
           <span aria-hidden="true" />
           <span aria-hidden="true" />
           <span aria-hidden="true" />
         </a>
       </div>
 
-      <div id="mainNavbar" className="navbar-menu">
+      <div id="mainNavbar" className={classnames("navbar-menu", { "is-active": burgerActive })}>
         <div className="navbar-start">
           <Link className="navbar-item" to={"/"}>{t("Home")}</Link>
           <Link className="navbar-item" to={"/userPosts"}>{t("My Posts")}</Link>
