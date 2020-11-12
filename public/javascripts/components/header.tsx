@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Dispatch, bindActionCreators } from "redux";
-import { useLocation, Link, useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import { useTranslation } from "react-i18next";
 
@@ -21,7 +21,6 @@ type HeaderProps = HeaderActionProps & HeaderConnectedProps;
 
 const Header: React.FC<HeaderProps> = (props) => {
   const { t } = useTranslation();
-  const location = useLocation();
   const history = useHistory();
 
   const logOut = () => {
@@ -30,41 +29,53 @@ const Header: React.FC<HeaderProps> = (props) => {
   };
 
   return (
-    <nav className="header">
-      <h3 className="header__item header__logo">MediaVault</h3>
-      <div className="menu-bar">
-        <div className="menu-bar__item">
-          <Link to={"/"}><span className={location.pathname === "/" ? "active" : ""}>{t("Home")}</span></Link>
+    <nav className="navbar" role="navigation" aria-label="main navigation">
+      <div className="navbar-brand">
+        <a className="navbar-item" href="/">
+          <img src="/images/traction-logo-white.png" alt="traction-logo" />
+        </a>
+
+        <a role="button" className="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="mainNavbar">
+          <span aria-hidden="true" />
+          <span aria-hidden="true" />
+          <span aria-hidden="true" />
+        </a>
+      </div>
+
+      <div id="mainNavbar" className="navbar-menu">
+        <div className="navbar-start">
+          <Link className="navbar-item" to={"/"}>{t("Home")}</Link>
+          <Link className="navbar-item" to={"/userPosts"}>{t("My Posts")}</Link>
+          <Link className="navbar-item" to={"/posts"}>{t("Explore")}</Link>
         </div>
-        <div className="menu-bar__item">
-          <Link to={"/userPosts"}><span className={location.pathname === "/userPosts" ? "active" : ""}>{t("My Posts")}</span></Link>
-        </div>
-        <div className="menu-bar__item">
-          <Link to={"/posts"}><span className={location.pathname === "/posts" ? "active" : ""}>{t("Explore")}</span></Link>
+
+        <div className="navbar-end">
+          {(props.login.loggedIn) ? (
+            <>
+              <div className="navbar-item">
+                {props.login.user && <Link to="/notifications"><NotificationCounter userId={props.login.user.id} /></Link>}
+              </div>
+              <figure className="header__item dropdown-btn" style={{width: "min-content"}}>
+                <span className="image is-48x48">
+                  <img src={props.login.user?.image} alt="Logo"/>
+                </span>
+                <ul className="box dropdown">
+                  <Link to={"/profile"}><li className="dropdown__item">{t("Profile")}</li></Link>
+                  <hr/>
+                  <li className="dropdown__item red" onClick={() => logOut()}>{t("Sign Out")}</li>
+                </ul>
+              </figure>
+            </>
+          ) : (
+            <div className="navbar-item">
+              <div className="buttons">
+                <Link className="button navbar-item is-info" to={"/login"}>{t("Sign In")}</Link>
+                <Link className="button navbar-item" to={"/signup"}>{t("Sign Up")}</Link>
+              </div>
+            </div>
+          )}
         </div>
       </div>
-      {(props.login.loggedIn) ? (
-        <>
-          <div className="header__item">
-            {props.login.user && <Link to="/notifications"><NotificationCounter userId={props.login.user.id} /></Link>}
-          </div>
-          <figure className="header__item dropdown-btn" style={{width: "min-content"}}>
-            <span className="image is-48x48">
-              <img src={props.login.user?.image} alt="Logo"/>
-            </span>
-            <ul className="box dropdown">
-              <Link to={"/profile"}><li className="dropdown__item">{t("Profile")}</li></Link>
-              <hr/>
-              <li className="dropdown__item red" onClick={() => logOut()}>{t("Sign Out")}</li>
-            </ul>
-          </figure>
-        </>
-      ) : (
-        <div>
-          <Link to={"/login"}><span className="header__item">{t("Sign In")}</span></Link>
-          <Link to={"/signup"}><span className="header__item">{t("Sign Up")}</span></Link>
-        </div>
-      )}
     </nav>
   );
 };
