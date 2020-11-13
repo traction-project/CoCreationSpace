@@ -108,20 +108,24 @@ function postsAssociations(models: DbInterface) {
   models.Posts.hasMany(models.Posts, { as: "comments", foreignKey: "parent_post_id" });
   models.Posts.belongsTo(models.Users, { as: "user", foreignKey: "user_id" });
   models.Posts.belongsTo(models.Threads, { as: "thread", foreignKey: "thread_id" });
+
   const optionsPostsPosts = {
     through: {
       model: models.PostReferences,
       unique: false
     }
   };
+
   models.Posts.belongsToMany(models.Posts, Object.assign(optionsPostsPosts, {
     foreignKey: "post_references_id",
     as: "postReference"
   }));
+
   models.Posts.belongsToMany(models.Posts, Object.assign(optionsPostsPosts, {
     foreignKey: "post_referenced_id",
     as: "postReferenced"
   }));
+
   models.Posts.belongsToMany(models.Users, {
     through: {
       model: models.UserReferences,
@@ -130,6 +134,7 @@ function postsAssociations(models: DbInterface) {
     foreignKey: "post_id",
     as: "userReferenced"
   });
+
   models.Posts.belongsToMany(models.Tags,{
     through: {
       model: models.TagReferences,
@@ -138,6 +143,7 @@ function postsAssociations(models: DbInterface) {
     foreignKey: "post_id",
     as: "tags"
   });
+
   models.Posts.belongsToMany(models.Users, {
     through: {
       model: models.Likes,
@@ -146,6 +152,7 @@ function postsAssociations(models: DbInterface) {
     foreignKey: "post_id",
     as: "likesUsers"
   });
+
   models.Posts.hasMany(models.EmojiReactions, {
     as: "emojiReactions",
     foreignKey: "post_id"
@@ -160,7 +167,9 @@ function postsAssociations(models: DbInterface) {
  * @param models DbInterface
  */
 function permissionsAssociations(models: DbInterface): void {
-  models.Permissions.hasMany(models.Users, { as: "user", foreignKey: "permission_id" });
+  models.Permissions.belongsToMany(models.Users, {
+    through: "user_permissions"
+  });
 }
 
 /**
@@ -218,9 +227,13 @@ function threadAssociations(models: DbInterface): void {
 function userAssociations(models: DbInterface): void {
   models.Users.hasMany(models.Multimedia, { as: "multimedia", foreignKey: "user_id" });
   models.Users.belongsTo(models.Preferences, { as: "preferences", foreignKey: "preferences_id" });
-  models.Users.belongsTo(models.Permissions, { as: "permissions", foreignKey: "permission_id" });
   models.Users.hasMany(models.Posts, { as: "post", foreignKey: "user_id" });
   models.Users.hasMany(models.Notifications, { as: "notifications", foreignKey: "user_id" });
+
+  models.Users.belongsToMany(models.Permissions, {
+    through: "user_permissions"
+  });
+
   models.Users.belongsToMany(models.Posts, {
     through: {
       model: models.UserReferences,
@@ -229,6 +242,7 @@ function userAssociations(models: DbInterface): void {
     foreignKey: "user_id",
     as: "postReferenced"
   });
+
   models.Users.belongsToMany(models.Posts, {
     through: {
       model: models.Likes,
@@ -237,10 +251,12 @@ function userAssociations(models: DbInterface): void {
     foreignKey: "user_id",
     as: "likesPosts"
   });
+
   models.Users.hasMany(models.EmojiReactions, {
     foreignKey: "user_id",
     as: "emojiReactions"
   });
+
   models.Users.belongsToMany(models.Topics, {
     through: {
       model: models.Interests,
