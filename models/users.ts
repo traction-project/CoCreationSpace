@@ -170,9 +170,6 @@ export function UsersModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mod
     },
     preferences_id: {
       type: Sequelize.DataTypes.UUID
-    },
-    permission_id: {
-      type: Sequelize.DataTypes.UUID
     }
   };
 
