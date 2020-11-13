@@ -3,7 +3,8 @@ import Busboy from "busboy";
 import { v4 as uuid4 } from "uuid";
 
 import { db } from "../models";
-import { getExtension, getFromEnvironment, authRequired } from "../util";
+import { getExtension, getFromEnvironment } from "../util";
+import { authRequired } from "../util/middleware";
 import { encodeDash } from "../util/transcode";
 import { uploadToS3 } from "../util/s3";
 import { transcribeMediaFile } from "../util/transcribe";

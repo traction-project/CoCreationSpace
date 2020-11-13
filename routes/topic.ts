@@ -1,7 +1,7 @@
 import { Router } from "express";
 
 import { UserInstance } from "../models/users";
-import { authRequired } from "../util";
+import { authRequired } from "../util/middleware";
 import { db } from "../models";
 
 const router = Router();

@@ -2,7 +2,8 @@ import { Router } from "express";
 import Busboy from "busboy";
 import { v4 as uuid4 } from "uuid";
 
-import { getExtension, authRequired, getFromEnvironment } from "../util";
+import { getExtension, getFromEnvironment } from "../util";
+import { authRequired } from "../util/middleware";
 import { uploadToS3 } from "../util/s3";
 import { UserInstance } from "models/users";
 import { db } from "../models";

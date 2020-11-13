@@ -1,7 +1,8 @@
 import { Router } from "express";
 
 import { db } from "../models";
-import { authRequired, buildCriteria, isUser, getFromEnvironment } from "../util";
+import { buildCriteria, isUser, getFromEnvironment } from "../util";
+import { authRequired } from "../util/middleware";
 import { UserInstance } from "models/users";
 import association from "../models/associations";
 import { TagInstance } from "models/tag";

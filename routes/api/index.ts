@@ -3,7 +3,8 @@ import passport from "passport";
 import Busboy from "busboy";
 import { v4 as uuid4 } from "uuid";
 
-import { getExtension, getFromEnvironment, tokenRequired } from "../../util";
+import { getExtension, getFromEnvironment } from "../../util";
+import { tokenRequired } from "../../util/middleware";
 import { uploadToS3, deleteFromS3 } from "../../util/s3";
 import { UserInstance } from "../../models/users";
 

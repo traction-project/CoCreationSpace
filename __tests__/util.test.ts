@@ -1,7 +1,10 @@
 import sinon from "sinon";
 import aws from "aws-sdk";
 
+process.env["SESSION_SECRET"] = "sessionsecret";
+
 import * as util from "../util";
+import { authRequired } from "../util/middleware";
 
 describe("Utility function Range()", () => {
   it("should return and empty array is start is equal to end", () => {
@@ -32,7 +35,7 @@ describe("Utility function Range()", () => {
 describe("Utility function authRequired()", () => {
   it("calls the next() callback function if the request contains the property .user", () => {
     const next = sinon.fake();
-    util.authRequired({ user: "something" } as any, {} as any, next);
+    authRequired({ user: "something" } as any, {} as any, next);
 
     expect(next.called).toBeTruthy();
   });
@@ -44,7 +47,7 @@ describe("Utility function authRequired()", () => {
       send: sinon.spy()
     };
 
-    util.authRequired({} as any, res as any, next);
+    authRequired({} as any, res as any, next);
 
     expect(next.called).toBeFalsy();
 

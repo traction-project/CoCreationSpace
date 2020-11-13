@@ -103,8 +103,13 @@ describe("Users model", () => {
     await user.addPermissions([permission1, permission2, permission3]);
 
     expect(await user.countPermissions()).toEqual(3);
+
     expect(await user.hasPermissions([
       permission1.id, permission2.id, permission3.id
+    ])).toBeTruthy();
+
+    expect(await user.hasPermissions([
+      permission1, permission2, permission3
     ])).toBeTruthy();
   });
 
