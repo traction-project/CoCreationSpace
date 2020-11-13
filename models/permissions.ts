@@ -15,13 +15,16 @@ type PermissionsCreationAttributes = Optional<PermissionsAttributes, "id" | "cre
  * Permissions instance object interface
  */
 export interface PermissionsInstance extends Sequelize.Model<PermissionsAttributes, PermissionsCreationAttributes>, PermissionsAttributes {
-  getUsers: Sequelize.HasManyGetAssociationsMixin<UserInstance>;
-  setUsers: Sequelize.HasManySetAssociationsMixin<UserInstance, UserInstance["id"]>;
-  addUsers: Sequelize.HasManyAddAssociationsMixin<UserInstance, UserInstance["id"]>;
-  addUser: Sequelize.HasManyAddAssociationMixin<UserInstance, UserInstance["id"]>;
-  hasUser: Sequelize.HasManyHasAssociationMixin<UserInstance, UserInstance["id"]>;
-  hasUsers: Sequelize.HasManyHasAssociationsMixin<UserInstance, UserInstance["id"]>;
-  countUsers: Sequelize.HasManyCountAssociationsMixin;
+  getUsers: Sequelize.BelongsToManyGetAssociationsMixin<UserInstance>;
+  countUsers: Sequelize.BelongsToManyCountAssociationsMixin;
+  hasUser: Sequelize.BelongsToManyHasAssociationMixin<UserInstance, UserInstance["id"]>;
+  hasUsers: Sequelize.BelongsToManyHasAssociationsMixin<UserInstance, UserInstance["id"]>;
+  setUsers: Sequelize.BelongsToManySetAssociationsMixin<UserInstance, UserInstance["id"]>;
+  addUser: Sequelize.BelongsToManyAddAssociationMixin<UserInstance, UserInstance["id"]>
+  addUsers: Sequelize.BelongsToManyAddAssociationsMixin<UserInstance, UserInstance["id"]>
+  removeUser: Sequelize.BelongsToManyRemoveAssociationMixin<UserInstance, UserInstance["id"]>
+  removeUsers: Sequelize.BelongsToManyRemoveAssociationsMixin<UserInstance, UserInstance["id"]>
+  createUser: Sequelize.BelongsToManyCreateAssociationMixin<UserInstance>
 }
 
 /**
