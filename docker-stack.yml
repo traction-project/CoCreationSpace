@@ -3,7 +3,7 @@ services:
   web:
     image: registry.dis.cwi.nl/traction-mediavault
     ports:
-      - "80:3000"
+      - "3000:3000"
     command: sh -c "/wait && yarn start"
     environment:
       - WAIT_HOSTS=postgres:5432
