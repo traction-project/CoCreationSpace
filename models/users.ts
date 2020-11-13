@@ -69,8 +69,16 @@ export interface UserInstance extends Sequelize.Model<UsersAttributes, UsersCrea
   hasMultimedias: Sequelize.HasManyHasAssociationsMixin<MultimediaInstance, MultimediaInstance["id"]>;
   countMultimedias: Sequelize.HasManyCountAssociationsMixin;
 
-  getPermissions: Sequelize.BelongsToGetAssociationMixin<PermissionsInstance>;
-  setPermissions: Sequelize.BelongsToSetAssociationMixin<PermissionsInstance, PermissionsInstance["id"]>;
+  getPermissions: Sequelize.BelongsToManyGetAssociationsMixin<PermissionsInstance>;
+  countPermissions: Sequelize.BelongsToManyCountAssociationsMixin;
+  hasPermission: Sequelize.BelongsToManyHasAssociationMixin<PermissionsInstance, PermissionsInstance["id"]>;
+  hasPermissions: Sequelize.BelongsToManyHasAssociationsMixin<PermissionsInstance, PermissionsInstance["id"]>;
+  setPermissions: Sequelize.BelongsToManySetAssociationsMixin<PermissionsInstance, PermissionsInstance["id"]>;
+  addPermission: Sequelize.BelongsToManyAddAssociationMixin<PermissionsInstance, PermissionsInstance["id"]>
+  addPermissions: Sequelize.BelongsToManyAddAssociationsMixin<PermissionsInstance, PermissionsInstance["id"]>
+  removePermission: Sequelize.BelongsToManyRemoveAssociationMixin<PermissionsInstance, PermissionsInstance["id"]>
+  removePermissions: Sequelize.BelongsToManyRemoveAssociationsMixin<PermissionsInstance, PermissionsInstance["id"]>
+  createPermission: Sequelize.BelongsToManyCreateAssociationMixin<PermissionsInstance>
 
   getPreferences: Sequelize.BelongsToGetAssociationMixin<PreferencesInstance>;
   setPreferences: Sequelize.BelongsToSetAssociationMixin<PreferencesInstance, PreferencesInstance["id"]>;
