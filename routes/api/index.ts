@@ -4,7 +4,7 @@ import Busboy from "busboy";
 import { v4 as uuid4 } from "uuid";
 
 import { getExtension, getFromEnvironment } from "../../util";
-import { tokenRequired } from "../../util/middleware";
+import { tokenRequired, permissionRequired } from "../../util/middleware";
 import { uploadToS3, deleteFromS3 } from "../../util/s3";
 import { UserInstance } from "../../models/users";
 
@@ -51,7 +51,7 @@ router.get("/loginstatus", tokenRequired, (_, res) => {
   });
 });
 
-router.post("/upload/raw", tokenRequired, (req, res) => {
+router.post("/upload/raw", tokenRequired, permissionRequired("upload_raw"), (req, res) => {
   const busboy = new Busboy({ headers: req.headers });
 
   busboy.on("file", async (_, file, filename) => {
@@ -76,7 +76,7 @@ router.post("/upload/raw", tokenRequired, (req, res) => {
   req.pipe(busboy);
 });
 
-router.delete("/upload/raw", tokenRequired, async (req, res) => {
+router.delete("/upload/raw", tokenRequired, permissionRequired( "upload_raw"), async (req, res) => {
   const { key } = req.body;
 
   if (!key) {
