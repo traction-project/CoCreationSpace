@@ -1,6 +1,9 @@
 import { Request, Response, NextFunction, RequestHandler } from "express";
 import passport from "passport";
 
+import { UserInstance } from "../models/users";
+import { db } from "../models/index";
+
 /**
  * Middleware function which makes routes which it is applied to require a
  * means of authentication. This authentication needs to be supplied as a JSON
@@ -28,4 +31,43 @@ export function authRequired(req: Request, res: Response, next: NextFunction) {
       message: "Authorisation required"
     });
   }
+}
+
+/**
+ * Middleware functions which requires the current user to have the permissions
+ * passed in as arguments. If the user object is not set, error 401 is returned
+ * to the client and if the user does not have the required permissions, error
+ * 403 is returned.
+ * If the user is set and has the required permissions, the request is
+ * forwarded to the next request handler.
+ *
+ * @param permissionNames Permission names required for the route
+ */
+export function permissionRequired(...permissionNames: Array<string>) {
+  return (req: Request, res: Response, next: NextFunction) => {
+    const { Permissions } = db.getModels();
+    const user = req.user as UserInstance;
+
+    if (!user) {
+      res.status(401).send({
+        status: "ERR",
+        message: "Authorisation required"
+      });
+    } else {
+      Permissions.findAll({
+        where: { type: permissionNames }
+      }).then(async (permissions) => {
+        const foundAllPermissions = permissions.length == permissionNames.length;
+
+        if (foundAllPermissions && await user.hasPermissions(permissions)) {
+          next();
+        } else {
+          res.status(403).send({
+            status: "ERR",
+            message: "Permission failure"
+          });
+        }
+      });
+    }
+  };
 }
