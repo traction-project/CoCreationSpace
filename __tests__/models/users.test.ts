@@ -11,8 +11,10 @@ describe("Users model", () => {
   });
 
   beforeEach(async () => {
-    const { Users } = db.getModels();
+    const { Users, Permissions } = db.getModels();
+
     await Users.destroy({ truncate: true });
+    await Permissions.destroy({ truncate: true });
   });
 
   it("should create a new user with just a username", async () => {
@@ -65,5 +67,61 @@ describe("Users model", () => {
 
     expect(user.validatePassword("wrongpassword")).toBeFalsy();
     expect(user.validatePassword("secret")).toBeTruthy();
+  });
+
+  it("should return true when user has a certain permission", async () => {
+    const { Users, Permissions } = db.getModels();
+
+    const user = await Users.create({ username: "admin" });
+    const permission = await Permissions.create({ type: "upload_raw" });
+
+    await user.addPermission(permission);
+    expect(await user.hasPermission(permission.id)).toBeTruthy();
+  });
+
+  it("should count a user's permissions", async () => {
+    const { Users, Permissions } = db.getModels();
+
+    const user = await Users.create({ username: "admin" });
+    expect(await user.countPermissions()).toEqual(0);
+
+    const permission = await Permissions.create({ type: "some_permission" });
+    await user.addPermission(permission);
+
+    expect(await user.countPermissions()).toEqual(1);
+  });
+
+  it("should return true when user has a certain series of permissions", async () => {
+    const { Users, Permissions } = db.getModels();
+
+    const user = await Users.create({ username: "admin" });
+
+    const permission1 = await Permissions.create({ type: "upload_raw" });
+    const permission2 = await Permissions.create({ type: "other_permission" });
+    const permission3 = await Permissions.create({ type: "another_permission" });
+
+    await user.addPermissions([permission1, permission2, permission3]);
+
+    expect(await user.countPermissions()).toEqual(3);
+    expect(await user.hasPermissions([
+      permission1.id, permission2.id, permission3.id
+    ])).toBeTruthy();
+  });
+
+  it("should return false when user is missing a permission in a series", async () => {
+    const { Users, Permissions } = db.getModels();
+
+    const user = await Users.create({ username: "admin" });
+
+    const permission1 = await Permissions.create({ type: "upload_raw" });
+    const permission2 = await Permissions.create({ type: "other_permission" });
+    const permission3 = await Permissions.create({ type: "another_permission" });
+
+    await user.addPermissions([permission1, permission2]);
+
+    expect(await user.countPermissions()).toEqual(2);
+    expect(await user.hasPermissions([
+      permission1.id, permission2.id, permission3.id
+    ])).toBeFalsy();
   });
 });
