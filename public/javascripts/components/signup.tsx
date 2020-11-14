@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useForm } from "react-hook-form";
-import { useHistory } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import { Dispatch, bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { useTranslation } from "react-i18next";
@@ -22,24 +22,33 @@ interface SignupConnectedProps {
 type SignupProps = SignupActionProps & SignupConnectedProps;
 
 const Signup: React.FC<SignupProps> = (props) => {
-  const history = useHistory();
   const { t } = useTranslation();
   const { handleSubmit, register, errors, watch } = useForm({});
 
-  const handleButtonSubmitClick = handleSubmit(({ username, password, preferredLanguage }) => {
-    fetch("/register", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, password, preferredLanguage })
-    }).then(async (res) => {
+  if (props.login.user) {
+    return (
+      <Redirect to="/" />
+    );
+  }
+
+  const handleButtonSubmitClick = handleSubmit(async ({ username, password, preferredLanguage }) => {
+    try {
+      const res = await fetch("/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password, preferredLanguage })
+      });
+
       if (res.ok) {
-        props.loginActions.performLogin(username, password, () => {
-          history.push("/");
-        });
+        props.loginActions.performLogin(username, password);
+      } else {
+        const data = await res.json();
+        props.loginActions.setRegistrationError(data.message);
       }
-    }).catch((err) => {
+    } catch (err) {
       console.log(err);
-    });
+      props.loginActions.setRegistrationError(err);
+    }
   });
 
   return (
