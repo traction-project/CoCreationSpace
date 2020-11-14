@@ -6,11 +6,20 @@ import { connect } from "react-redux";
 import { useTranslation } from "react-i18next";
 
 import { actionCreators as loginActionCreators, LoginActions } from "../actions/login";
+import { LoginState } from "../reducers/login";
+import { ApplicationState } from "../store";
+
 import LanguageSwitcher from "./language_switcher";
 
-interface SignupProps {
+interface SignupActionProps {
   loginActions: LoginActions;
 }
+
+interface SignupConnectedProps {
+  login: LoginState;
+}
+
+type SignupProps = SignupActionProps & SignupConnectedProps;
 
 const Signup: React.FC<SignupProps> = (props) => {
   const history = useHistory();
@@ -122,8 +131,10 @@ const Signup: React.FC<SignupProps> = (props) => {
   );
 };
 
-function mapStateToProps() {
-  return {};
+function mapStateToProps(state: ApplicationState) {
+  return {
+    login: state.login
+  };
 }
 
 function mapDispatchToProps(dispatch: Dispatch) {
