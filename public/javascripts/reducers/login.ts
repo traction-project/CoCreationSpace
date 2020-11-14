@@ -42,4 +42,13 @@ actionHandler.addHandler("SET_LOGIN_ERROR", (state, action: actions.SET_LOGIN_ER
   };
 });
 
+actionHandler.addHandler("SET_REGISTRATION_ERROR", (state, action: actions.SET_REGISTRATION_ERROR) => {
+  const { payload } = action;
+
+  return {
+    ...state,
+    registrationError: payload.message
+  };
+});
+
 export default actionHandler.getReducer();
