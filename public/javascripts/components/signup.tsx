@@ -26,11 +26,11 @@ const Signup: React.FC<SignupProps> = (props) => {
   const { t } = useTranslation();
   const { handleSubmit, register, errors, watch } = useForm({});
 
-  const handleButtonSubmitClick = handleSubmit(({ username, password, confirmation, preferredLanguage }) => {
+  const handleButtonSubmitClick = handleSubmit(({ username, password, preferredLanguage }) => {
     fetch("/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, password, confirmation, preferredLanguage })
+      body: JSON.stringify({ username, password, preferredLanguage })
     }).then(async (res) => {
       if (res.ok) {
         props.loginActions.performLogin(username, password, () => {
@@ -66,7 +66,7 @@ const Signup: React.FC<SignupProps> = (props) => {
                       <i className="fa fa-envelope" />
                     </span>
                   </div>
-                  { errors.username && <p className="help is-danger">* {t("required")}</p>}
+                  {errors.username && <p className="help is-danger">{t("required")}</p>}
                 </div>
 
                 <div className="field">
@@ -86,7 +86,7 @@ const Signup: React.FC<SignupProps> = (props) => {
                       <i className="fa fa-lock"></i>
                     </span>
                   </div>
-                  { errors.password && <p className="help is-danger">* {t("required")}</p>}
+                  {errors.password && <p className="help is-danger">{t("required")}</p>}
                 </div>
 
                 <div className="field">
@@ -107,7 +107,7 @@ const Signup: React.FC<SignupProps> = (props) => {
                       <i className="fa fa-lock"></i>
                     </span>
                   </div>
-                  { errors.confirmation && <p className="help is-danger">* {t("The passwords do not match")}</p>}
+                  {errors.confirmation && <p className="help is-danger">{t("The passwords do not match")}</p>}
                 </div>
 
                 <div className="field">

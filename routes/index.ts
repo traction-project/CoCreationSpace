@@ -51,37 +51,30 @@ router.post("/login", passport.authenticate("local"), (req, res) => {
 
 router.post("/register", async (req, res) => {
   const { Users } = db.getModels();
-  const { username, password, confirmation, preferredLanguage } = req.body;
+  const { username, password, preferredLanguage } = req.body;
 
-  if (password === confirmation) {
-    const userExists = await Users.findOne({ where: { username } });
+  const userExists = await Users.findOne({ where: { username } });
 
-    if (!userExists) {
-      const newUser = Users.build({ username, preferredLanguage });
+  if (!userExists) {
+    const newUser = Users.build({ username, preferredLanguage });
+    newUser.setPassword(password);
 
-      newUser.setPassword(password);
-      try {
-        await newUser.save();
-        res.send({ status: "OK" });
-      } catch(err) {
-        res.status(500);
-        res.send({
-          status: "ERR",
-          message: err.message
-        });
-      }
-    } else {
-      res.status(400);
+    try {
+      await newUser.save();
+
       res.send({
+        status: "OK"
+      });
+    } catch(err) {
+      res.status(500).send({
         status: "ERR",
-        message: "Username exists"
+        message: err.message
       });
     }
   } else {
-    res.status(400);
-    res.send({
+    res.status(400).send({
       status: "ERR",
-      message: "Password does not match confirmation"
+      message: "Username exists"
     });
   }
 });
