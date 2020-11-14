@@ -20,6 +20,16 @@ function setLoginError(): SET_LOGIN_ERROR {
   };
 }
 
+export type SET_REGISTRATION_ERROR = PayloadAction<"SET_REGISTRATION_ERROR", { message: string }>;
+function setRegistrationError(message: string): SET_REGISTRATION_ERROR {
+  return {
+    type: "SET_REGISTRATION_ERROR",
+    payload: {
+      message
+    }
+  };
+}
+
 export type CLEAR_LOGGED_IN_USER = BasicAction<"CLEAR_LOGGED_IN_USER">;
 function clearLoggedInUser(): CLEAR_LOGGED_IN_USER {
   return {
@@ -66,14 +76,16 @@ export function performLogout(): AsyncAction<void, CLEAR_LOGGED_IN_USER> {
 export interface LoginActions extends ActionCreatorsMapObject {
   setLoggedInUser: (id: string, username: string, image: string) => SET_LOGGED_IN_USER;
   setLoginError: () => SET_LOGIN_ERROR;
+  setRegistrationError: (message: string) => SET_REGISTRATION_ERROR;
   clearLoggedInUser: () => CLEAR_LOGGED_IN_USER;
-  performLogin: (username: string, password: string, success?: () => void) => AsyncAction<void, SET_LOGGED_IN_USER>;
+  performLogin: (username: string, password: string) => AsyncAction<void, SET_LOGGED_IN_USER>;
   performLogout: () => AsyncAction<void, CLEAR_LOGGED_IN_USER>;
 }
 
 export const actionCreators: LoginActions = {
   setLoggedInUser,
   setLoginError,
+  setRegistrationError,
   clearLoggedInUser,
   performLogin,
   performLogout
