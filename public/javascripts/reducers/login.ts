@@ -4,12 +4,14 @@ import * as actions from "../actions/login";
 export interface LoginState {
   loggedIn: boolean;
   loginError: boolean;
+  registrationError: string | null;
   user?: { id: string, username: string, image?: string };
 }
 
 export const initialState: LoginState = {
   loggedIn: false,
-  loginError: false
+  loginError: false,
+  registrationError: null
 };
 
 const actionHandler = new ActionHandler<LoginState>(initialState);
@@ -20,6 +22,7 @@ actionHandler.addHandler("SET_LOGGED_IN_USER", (state, action: actions.SET_LOGGE
   return {
     loggedIn: true,
     loginError: false,
+    registrationError: null,
     user: payload
   };
 });
@@ -27,7 +30,8 @@ actionHandler.addHandler("SET_LOGGED_IN_USER", (state, action: actions.SET_LOGGE
 actionHandler.addHandler("CLEAR_LOGGED_IN_USER", (state, action) => {
   return {
     loggedIn: false,
-    loginError: false
+    loginError: false,
+    registrationError: null,
   };
 });
 
