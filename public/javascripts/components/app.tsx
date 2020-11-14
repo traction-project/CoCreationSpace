@@ -19,7 +19,7 @@ import PrivateRoute from "./private_route";
 import Header from "./header";
 import PostList from "./post_list";
 import Profile from "./profile";
-import Signup from "./signup";
+import Signup from "./signup/signup";
 import NotificationList from "./notification_list";
 
 async function checkLogin() {
