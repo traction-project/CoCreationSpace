@@ -34,68 +34,91 @@ const Signup: React.FC<SignupProps> = (props) => {
   });
 
   return (
-    <div className="columns" style={{ marginTop: "5rem" }}>
-      <div className="column is-half is-offset-one-quarter">
-        <div className="box box-flex" style={{ width: "max-content", margin: "0 auto", padding: "1rem 4rem"}}>
-          <h1 className="title-box-1">
-            <span>{t("Sign Up")}</span>
-          </h1>
+    <section className="hero is-fullheight-with-navbar">
+      <div className="hero-body">
+        <div className="container">
+          <div className="columns is-centered">
+            <div className="column is-6-tablet is-5-desktop is-5-widescreen">
+              <form onSubmit={handleButtonSubmitClick} className="box">
+                <div className="field">
+                  <label htmlFor="" className="label">{t("Username")}</label>
+                  <div className="control has-icons-left">
+                    <input
+                      type="text"
+                      placeholder={t("Username")}
+                      name="username"
+                      className="input"
+                      required={true}
+                      ref={register({
+                        required: true
+                      })}
+                    />
+                    <span className="icon is-small is-left">
+                      <i className="fa fa-envelope" />
+                    </span>
+                  </div>
+                  { errors.username && <p className="help is-danger">* {t("required")}</p>}
+                </div>
 
-          <form onSubmit={handleButtonSubmitClick}>
-            <div className="form-group">
-              <div className="field">
-                <label className="label">{t("Username")}</label>
-                <div className="control">
-                  <input
-                    className="input-1"
-                    type="text"
-                    name="username"
-                    ref={register({
-                      required: true
-                    })} />
+                <div className="field">
+                  <label htmlFor="" className="label">{t("Password")}</label>
+                  <div className="control has-icons-left">
+                    <input
+                      type="password"
+                      placeholder={t("Password")}
+                      name="password"
+                      className="input"
+                      required={true}
+                      ref={register({
+                        required: true
+                      })}
+                    />
+                    <span className="icon is-small is-left">
+                      <i className="fa fa-lock"></i>
+                    </span>
+                  </div>
+                  { errors.password && <p className="help is-danger">* {t("required")}</p>}
                 </div>
-                { errors.username && <p className="help is-danger">* {t("required")}</p>}
-              </div>
-            </div>
-            <div className="form-group">
-              <div className="field">
-                <label className="label">{t("Password")}</label>
-                <div className="control">
-                  <input
-                    className="input-1"
-                    name="password"
-                    ref={register({
-                      required: true
-                    })}
-                    type="password" />
-                </div>
-                { errors.password && <p className="help is-danger">* {t("required")}</p>}
-              </div>
-              <div className="field">
-                <label className="label">{t("Confirm Password")}</label>
-                <div className="control">
-                  <input
-                    className="input-1"
-                    name="confirmation"
-                    type="password"
-                    ref={register({
-                      validate: (value) => value === watch("password")
-                    })}/>
+
+                <div className="field">
+                  <label htmlFor="" className="label">{t("Confirm Password")}</label>
+                  <div className="control has-icons-left">
+                    <input
+                      type="password"
+                      placeholder={t("Confirm Password")}
+                      name="confirmation"
+                      className="input"
+                      required={true}
+                      ref={register({
+                        required: true,
+                        validate: (value) => value == watch("password")
+                      })}
+                    />
+                    <span className="icon is-small is-left">
+                      <i className="fa fa-lock"></i>
+                    </span>
+                  </div>
                   { errors.confirmation && <p className="help is-danger">* {t("The passwords do not match")}</p>}
                 </div>
-              </div>
-              <div className="field">
-                <label className="label">{t("Preferred language")}</label>
-                <div className="control">
-                  <LanguageSwitcher childName="preferredLanguage" childRef={register()} />
+
+                <div className="field">
+                  <label className="label">{t("Preferred language")}</label>
+                  <div className="control">
+                    <LanguageSwitcher childName="preferredLanguage" childRef={register} />
+                  </div>
                 </div>
-              </div>
+
+                <div className="field">
+                  <button type="submit" className="button is-info">
+                    {t("Submit")}
+                  </button>
+                </div>
+              </form>
             </div>
-            <button className="btn">{t("Submit")}</button>
-          </form>
+          </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 
