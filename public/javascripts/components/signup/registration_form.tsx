@@ -1,19 +1,16 @@
 import * as React from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation, Trans } from "react-i18next";
-
-import { LoginActions } from "../../actions/login";
-import { LoginState } from "../../reducers/login";
 
 import LanguageSwitcher from "../language_switcher";
 
 interface RegistrationFormProps {
-  loginActions: LoginActions;
-  login: LoginState;
-  onComplete: () => void;
+  onComplete: (username: string, password: string) => void;
 }
 
 const RegistrationForm: React.FC<RegistrationFormProps> = (props) => {
+  const [ error, setError ] = useState<string>();
   const { t } = useTranslation();
   const { handleSubmit, register, errors, watch } = useForm({});
 
@@ -26,24 +23,23 @@ const RegistrationForm: React.FC<RegistrationFormProps> = (props) => {
       });
 
       if (res.ok) {
-        props.loginActions.performLogin(username, password);
-        props.onComplete();
+        props.onComplete(username, password);
       } else {
         const data = await res.json();
-        props.loginActions.setRegistrationError(data.message);
+        setError(data.message);
       }
     } catch (err) {
       console.log(err);
-      props.loginActions.setRegistrationError(err);
+      setError(err);
     }
   });
 
   return (
     <form onSubmit={handleButtonSubmitClick} className="box">
-      {props.login.registrationError && (
+      {error && (
         <article className="message is-danger">
           <div className="message-body">
-            {(props.login.registrationError == "Username exists") ? (
+            {(error == "Username exists") ? (
               <Trans i18nKey="registration-error-username-exists">
                 <strong>Registration failed!</strong> Username already exists.
               </Trans>

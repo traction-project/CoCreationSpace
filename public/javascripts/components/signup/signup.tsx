@@ -30,9 +30,10 @@ const Signup: React.FC<SignupProps> = (props) => {
             <div className="column is-6-tablet is-5-desktop is-5-widescreen">
               {(step == 1) ? (
                 <RegistrationForm
-                  login={props.login}
-                  loginActions={props.loginActions}
-                  onComplete={() => setStep(step + 1)}
+                  onComplete={(username, password) => {
+                    props.loginActions.performLogin(username, password);
+                    setStep(step + 1);
+                  }}
                 />
               ) : (
                 <p>Next step</p>
