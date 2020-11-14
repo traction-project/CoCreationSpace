@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { Redirect } from "react-router-dom";
 import { Dispatch, bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { useTranslation } from "react-i18next";
+import { useTranslation, Trans } from "react-i18next";
 
 import { actionCreators as loginActionCreators, LoginActions } from "../actions/login";
 import { LoginState } from "../reducers/login";
@@ -58,6 +58,22 @@ const Signup: React.FC<SignupProps> = (props) => {
           <div className="columns is-centered">
             <div className="column is-6-tablet is-5-desktop is-5-widescreen">
               <form onSubmit={handleButtonSubmitClick} className="box">
+                {props.login.registrationError && (
+                  <article className="message is-danger">
+                    <div className="message-body">
+                      {(props.login.registrationError == "Username exists") ? (
+                        <Trans i18nKey="registration-error-username-exists">
+                          <strong>Registration failed!</strong> Username already exists.
+                        </Trans>
+                      ) : (
+                        <Trans i18nKey="registration-error-unknown">
+                          <strong>Registration failed!</strong> An onknown error occurred.
+                        </Trans>
+                      )}
+                    </div>
+                  </article>
+                )}
+
                 <div className="field">
                   <label htmlFor="" className="label">{t("Username")}</label>
                   <div className="control has-icons-left">
