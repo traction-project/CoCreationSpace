@@ -10,7 +10,7 @@ interface Interest {
 }
 
 interface InterestSelectFormProps {
-  onComplete: () => void;
+  onComplete?: () => void;
 }
 
 const InterestSelectForm: React.FC<InterestSelectFormProps> = (props) => {
@@ -51,7 +51,7 @@ const InterestSelectForm: React.FC<InterestSelectFormProps> = (props) => {
         })
       });
 
-      onComplete();
+      onComplete?.();
     } catch (err) {
       setError(err);
     }

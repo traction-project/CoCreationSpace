@@ -6,7 +6,7 @@ import { postFile } from "../../util";
 
 interface ProfilePictureUploadFormProps {
   currentImage: string;
-  onComplete: (newImage: string) => void;
+  onComplete?: (newImage: string) => void;
 }
 
 const ProfilePictureUploadForm: React.FC<ProfilePictureUploadFormProps> = (props) => {
@@ -29,7 +29,7 @@ const ProfilePictureUploadForm: React.FC<ProfilePictureUploadFormProps> = (props
           const { image } = responseJson;
 
           setIsLoading(false);
-          onComplete(image);
+          onComplete?.(image);
         } catch (err) {
           setIsLoading(false);
           setError(err);

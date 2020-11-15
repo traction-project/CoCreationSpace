@@ -6,10 +6,12 @@ import { useTranslation, Trans } from "react-i18next";
 import LanguageSwitcher from "../language_switcher";
 
 interface RegistrationFormProps {
-  onComplete: (username: string, password: string, image: string) => void;
+  onComplete?: (username: string, password: string, image: string) => void;
 }
 
 const RegistrationForm: React.FC<RegistrationFormProps> = (props) => {
+  const { onComplete } = props;
+
   const [ error, setError ] = useState<string>();
   const { t } = useTranslation();
   const { handleSubmit, register, errors, watch } = useForm({});
@@ -31,7 +33,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = (props) => {
 
         if (res.ok) {
           const { user } = await res.json();
-          props.onComplete(user.username, user.password, user.image);
+          onComplete?.(user.username, user.password, user.image);
         } else {
           const data = await res.json();
           setError(data.message);
