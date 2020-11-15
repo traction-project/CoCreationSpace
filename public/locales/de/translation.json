@@ -58,6 +58,14 @@
     "Topic": "Thema",
     "notification-title": "Neuer Beitrag zum Thema <1>{{topicTitle}}</1>",
     "notification-text": "Ein neuer Beitrag mit dem Titel <1><0>{{postTitle}}</0></1> wurde zum Thema <3><0>{{topicTitle}}</0></3> hinzugefügt",
-    "Notifications": "Benachrichtigung",
-    "login-error": "<0>Login gescheitert!</0> Benutzername oder Passwort sind inkorrekt"
+    "Notifications": "Benachrichtigungen",
+    "login-error": "<0>Login gescheitert!</0> Benutzername oder Passwort sind inkorrekt",
+    "interests-error-unknown": "<0>Auswahl gescheitert!</0> Ein unbekannter Fehler ist aufgetreten.",
+    "Select Interests": "__STRING_NOT_TRANSLATED__",
+    "image-upload-error": "<0>Bildupload gescheitert!</0> Ein unbekannter Fehler ist aufgetreten.",
+    "Upload Profile Picture": "Profilbild hochladen",
+    "Choose an image": "Wähle ein Bild aus",
+    "registration-error-username-exists": "<0>Registrierung gescheitert!</0> Benutzername existiert bereits.",
+    "registration-error-unknown": "<0>Registrierung gescheitert!</0> Ein unbekannter Fehler ist aufgetreten.",
+    "Create Account": "Account erstellen"
 }
