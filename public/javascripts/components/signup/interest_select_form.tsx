@@ -11,10 +11,11 @@ interface Interest {
 
 interface InterestSelectFormProps {
   onComplete?: () => void;
+  deleteUnselectedInterests?: boolean;
 }
 
 const InterestSelectForm: React.FC<InterestSelectFormProps> = (props) => {
-  const { onComplete } = props;
+  const { onComplete, deleteUnselectedInterests } = props;
 
   const { t } = useTranslation();
   const [ interests, setInterests ] = useState<Array<Interest>>([]);
@@ -50,6 +51,18 @@ const InterestSelectForm: React.FC<InterestSelectFormProps> = (props) => {
           topics: interests.filter((i) => i.selected).map((i) => i.id)
         })
       });
+
+      if (deleteUnselectedInterests) {
+        console.log("Deleting unselected interests...");
+
+        await fetch("/users/interests", {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            topics: interests.filter((i) => !i.selected).map((i) => i.id)
+          })
+        });
+      }
 
       onComplete?.();
     } catch (err) {
