@@ -67,5 +67,6 @@
     "Choose an image": "Wähle ein Bild aus",
     "registration-error-username-exists": "<0>Registrierung gescheitert!</0> Benutzername existiert bereits.",
     "registration-error-unknown": "<0>Registrierung gescheitert!</0> Ein unbekannter Fehler ist aufgetreten.",
-    "Create Account": "Account erstellen"
+    "Create Account": "Account erstellen",
+    "Choose a file": "Datei auswählen"
 }

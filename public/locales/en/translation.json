@@ -67,5 +67,6 @@
     "Choose an image": "__STRING_NOT_TRANSLATED__",
     "registration-error-username-exists": "<0>Registration failed!</0> Username already exists.",
     "registration-error-unknown": "<0>Registration failed!</0> An onknown error occurred.",
-    "Create Account": "__STRING_NOT_TRANSLATED__"
+    "Create Account": "Create Account",
+    "Choose a file": "Choose a file"
 }
