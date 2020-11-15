@@ -8,16 +8,30 @@ const Home: React.FC<HomeProps> = () => {
   const { t } = useTranslation();
 
   return (
-    <div className="columns" style={{ marginTop: 15 }}>
-      <div className="column is-8 is-offset-2">
-        <h1 className="home__title">MediaVault</h1>
-        <ul className="home__menu">
-          <Link to={"userPosts"}><li className="home__menu-item">{t("My Posts")}</li></Link>
-          <Link to={"posts"}><li className="home__menu-item">{t("Explore")}</li></Link>
-          <Link to={"upload"}><li className="home__menu-item">{t("Create")}</li></Link>
-        </ul>
+    <section className="hero is-fullheight-with-navbar">
+      <div className="hero-body opera-background">
+        <div className="container">
+          <div className="columns is-centered is-mobile">
+            <div className="column is-4-desktop is-6-tablet is-6-mobile">
+              <figure className="image is-square no-border">
+                <img src="/images/traction-logo-white-big.png"  />
+              </figure>
+            </div>
+          </div>
+          <div className="columns is-centered">
+            <div className="column">
+              <Link className="button" to={"userPosts"}>{t("My Posts")}</Link>
+            </div>
+            <div className="column">
+              <Link className="button" to={"userPosts"}>{t("Explore")}</Link>
+            </div>
+            <div className="column">
+              <Link className="button" to={"userPosts"}>{t("Create")}</Link>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
+    </section>
   );
 };
 
