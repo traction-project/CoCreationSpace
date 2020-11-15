@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslation, Trans } from "react-i18next";
 import classNames from "classnames";
 
 interface Interest {
@@ -18,6 +18,7 @@ const InterestSelectForm: React.FC<InterestSelectFormProps> = (props) => {
 
   const { t } = useTranslation();
   const [ interests, setInterests ] = useState<Array<Interest>>([]);
+  const [ error, setError ] = useState<string>();
 
   useEffect(() => {
     Promise.all([
@@ -35,6 +36,8 @@ const InterestSelectForm: React.FC<InterestSelectFormProps> = (props) => {
           selected: !!interests.find((i) => i.id == t.id)
         };
       }));
+    }).catch((err) => {
+      setError(err);
     });
   }, []);
 
@@ -66,6 +69,16 @@ const InterestSelectForm: React.FC<InterestSelectFormProps> = (props) => {
   return (
     <div className="box">
       <h4 className="title is-4">{t("Select Interests")}</h4>
+
+      {error && (
+        <article className="message is-danger">
+          <div className="message-body">
+            <Trans i18nKey="interests-error-unknown">
+              <strong>Selection failed!</strong> An onknown error occurred.
+            </Trans>
+          </div>
+        </article>
+      )}
 
       <hr/>
 
