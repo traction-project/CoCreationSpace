@@ -32,33 +32,35 @@ const Signup: React.FC<SignupProps> = (props) => {
         <div className="container">
           <div className="columns is-centered">
             <div className="column is-6-tablet is-5-desktop is-5-widescreen">
-              {(step == 1) ? (
-                <RegistrationForm
-                  onComplete={(username, password, image) => {
-                    props.loginActions.setLoggedInUser(username, password, image);
-                    setStep(step + 1);
-                  }}
-                />
-              ) : (step == 2 && user) ? (
-                <ProfilePictureUploadForm
-                  currentImage={user.image!}
-                  onComplete={(image) => {
-                    props.loginActions.setLoggedInUser(
-                      user.id, user.username, image
-                    );
+              <div className="box">
+                {(step == 1) ? (
+                  <RegistrationForm
+                    onComplete={(username, password, image) => {
+                      props.loginActions.setLoggedInUser(username, password, image);
+                      setStep(step + 1);
+                    }}
+                  />
+                ) : (step == 2 && user) ? (
+                  <ProfilePictureUploadForm
+                    currentImage={user.image!}
+                    onComplete={(image) => {
+                      props.loginActions.setLoggedInUser(
+                        user.id, user.username, image
+                      );
 
-                    setStep(step + 1);
-                  }}
-                />
-              ) : (step == 3) ? (
-                <InterestSelectForm
-                  onComplete={() => {
-                    setStep(step + 1);
-                  }}
-                />
-              ) : (
-                <Redirect to="/" />
-              )}
+                      setStep(step + 1);
+                    }}
+                  />
+                ) : (step == 3) ? (
+                  <InterestSelectForm
+                    onComplete={() => {
+                      setStep(step + 1);
+                    }}
+                  />
+                ) : (
+                  <Redirect to="/" />
+                )}
+              </div>
             </div>
           </div>
         </div>

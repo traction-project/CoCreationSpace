@@ -39,7 +39,7 @@ const ProfilePictureUploadForm: React.FC<ProfilePictureUploadFormProps> = (props
   };
 
   return (
-    <div className="box">
+    <React.Fragment>
       <h4 className="title is-4">{t("Upload Profile Picture")}</h4>
 
       {error && (
@@ -84,7 +84,7 @@ const ProfilePictureUploadForm: React.FC<ProfilePictureUploadFormProps> = (props
           </label>
         </div>
       </div>
-    </div>
+    </React.Fragment>
   );
 };
 

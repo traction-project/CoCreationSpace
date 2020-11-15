@@ -71,7 +71,7 @@ const InterestSelectForm: React.FC<InterestSelectFormProps> = (props) => {
   };
 
   return (
-    <div className="box">
+    <React.Fragment>
       <h4 className="title is-4">{t("Select Interests")}</h4>
 
       {error && (
@@ -103,7 +103,7 @@ const InterestSelectForm: React.FC<InterestSelectFormProps> = (props) => {
       <button className="button is-info" onClick={onSubmitInterests}>
         {t("Submit")}
       </button>
-    </div>
+    </React.Fragment>
   );
 };
 
