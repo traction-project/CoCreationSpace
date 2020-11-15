@@ -9,6 +9,7 @@ import { ApplicationState } from "../../store";
 
 import RegistrationForm from "./registration_form";
 import ProfilePictureUploadForm from "./profile_picture_upload_form";
+import InterestSelectForm from "./interest_select_form";
 
 interface SignupActionProps {
   loginActions: LoginActions;
@@ -45,6 +46,12 @@ const Signup: React.FC<SignupProps> = (props) => {
                       user.id, user.username, image
                     );
 
+                    setStep(step + 1);
+                  }}
+                />
+              ) : (step == 3) ? (
+                <InterestSelectForm
+                  onComplete={() => {
                     setStep(step + 1);
                   }}
                 />
