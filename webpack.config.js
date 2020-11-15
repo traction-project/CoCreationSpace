@@ -30,6 +30,10 @@ const frontend = {
           "css-loader",
           "sass-loader"
         ]
+      },
+      {
+        test: /\.(png|jpg)$/,
+        loader: 'ignore-loader'
       }
     ]
   }
