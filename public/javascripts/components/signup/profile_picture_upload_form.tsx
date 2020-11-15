@@ -1,5 +1,6 @@
 import * as React from "react";
-import { useTranslation } from "react-i18next";
+import { useState } from "react";
+import { useTranslation, Trans } from "react-i18next";
 
 import { postFile } from "../../util";
 
@@ -10,6 +11,7 @@ interface ProfilePictureUploadFormProps {
 
 const ProfilePictureUploadForm: React.FC<ProfilePictureUploadFormProps> = (props) => {
   const { currentImage, onComplete } = props;
+  const [ error, setError ] = useState<string>();
   const { t } = useTranslation();
 
   const handleButtonUploadClick = async (filesToUpload: FileList) => {
@@ -17,19 +19,33 @@ const ProfilePictureUploadForm: React.FC<ProfilePictureUploadFormProps> = (props
       const file = filesToUpload.item(0);
 
       if (file) {
-        const response: string = await postFile("/users/image", file, () => {});
+        try {
+          const response: string = await postFile("/users/image", file, () => {});
 
-        const responseJson = JSON.parse(response);
-        const { image } = responseJson;
+          const responseJson = JSON.parse(response);
+          const { image } = responseJson;
 
-        onComplete(image);
+          onComplete(image);
+        } catch (err) {
+          setError(err);
+        }
       }
     }
   };
 
   return (
     <div className="box">
-      <h4 className="title is-4">{t("Edit Photo")}</h4>
+      <h4 className="title is-4">{t("Upload Profile Picture")}</h4>
+
+      {error && (
+        <article className="message is-danger">
+          <div className="message-body">
+            <Trans i18nKey="image-upload-error">
+              <strong>Image upload failed!</strong> An onknown error occurred.
+            </Trans>
+          </div>
+        </article>
+      )}
 
       <div className="box-flex">
         <figure style={{ width: "min-content" }}>
