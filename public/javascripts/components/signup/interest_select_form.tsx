@@ -42,15 +42,19 @@ const InterestSelectForm: React.FC<InterestSelectFormProps> = (props) => {
   }, []);
 
   const onSubmitInterests = async () => {
-    await fetch("/users/interests", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        topics: interests.filter((i) => i.selected).map((i) => i.id)
-      })
-    });
+    try {
+      await fetch("/users/interests", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          topics: interests.filter((i) => i.selected).map((i) => i.id)
+        })
+      });
 
-    onComplete();
+      onComplete();
+    } catch (err) {
+      setError(err);
+    }
   };
 
   const onInterestSelected = (id: string) => {
