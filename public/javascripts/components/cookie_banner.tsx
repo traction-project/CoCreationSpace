@@ -1,8 +1,26 @@
 import * as React from "react";
+import { useState } from "react";
+
+function getCookieConsentStatus() {
+  const hasConsented = localStorage.getItem("gdprCookieConsent");
+
+  if (hasConsented != null && hasConsented == "true") {
+    return true;
+  }
+
+  return false;
+}
 
 const CookieBanner: React.FC = () => {
+  const [ cookiesConsented, setCookiesConsented ] = useState(getCookieConsentStatus());
+
+  if (cookiesConsented) {
+    return null;
+  }
+
   const onAccept = () => {
     localStorage.setItem("gdprCookieConsent", "true");
+    setCookiesConsented(true);
   };
 
   return (
