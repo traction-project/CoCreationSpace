@@ -68,5 +68,7 @@
     "registration-error-username-exists": "<0>Registrierung gescheitert!</0> Benutzername existiert bereits.",
     "registration-error-unknown": "<0>Registrierung gescheitert!</0> Ein unbekannter Fehler ist aufgetreten.",
     "Create Account": "Account erstellen",
-    "Choose a file": "Datei auswählen"
+    "Choose a file": "Datei auswählen",
+    "cookie-notice": "Die Cookies auf dieser Webseite werden benutzt um Inhalte zu personalisieren, Sessiondaten zu speichern und deinen Aufenthalt zu verbessern. Wir teilen keine deiner Daten mit Drittanbietern",
+    "Accept": "Akzeptieren"
 }

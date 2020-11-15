@@ -68,5 +68,7 @@
     "registration-error-username-exists": "<0>Registration failed!</0> Username already exists.",
     "registration-error-unknown": "<0>Registration failed!</0> An onknown error occurred.",
     "Create Account": "Create Account",
-    "Choose a file": "Choose a file"
+    "Choose a file": "Choose a file",
+    "cookie-notice": "The cookies on this website are used to personalize content, store session data and improve your browsing experience. We do not share your data with any third party.",
+    "Accept": "Accept"
 }
