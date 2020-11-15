@@ -128,6 +128,7 @@ const Profile: React.FC<ProfileProps> = (props) => {
           <div className="column">
             <h5 className="title is-5">{t("Update Interests")}</h5>
             <InterestSelectForm
+              deleteUnselectedInterests={true}
               onComplete={() => {
                 setDisplayNotification("success");
                 setTimeout(() => setDisplayNotification(undefined), 3000);
