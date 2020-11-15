@@ -129,9 +129,9 @@ router.put("/", authRequired, async (req, res) => {
 router.get("/interests", authRequired, async (req, res) => {
   const user = req.user as UserInstance;
 
-  return res.send({
-    interests: await user.getInterestedTopics()
-  });
+  return res.send(
+    await user.getInterestedTopics()
+  );
 });
 
 /**
@@ -146,9 +146,9 @@ router.post("/interests", authRequired, async (req, res) => {
 
   await user.addInterestedTopics(body.topics);
 
-  return res.send({
-    interests: await user.getInterestedTopics()
-  });
+  return res.send(
+    await user.getInterestedTopics()
+  );
 });
 
 /**
@@ -163,9 +163,9 @@ router.delete("/interests", authRequired, async (req, res) => {
 
   await user.removeInterestedTopics(body.topics);
 
-  return res.send({
-    interests: await user.getInterestedTopics()
-  });
+  return res.send(
+    await user.getInterestedTopics()
+  );
 });
 
 export default router;
