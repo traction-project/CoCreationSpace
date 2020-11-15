@@ -50,8 +50,6 @@ const RegistrationForm: React.FC<RegistrationFormProps> = (props) => {
 
   return (
     <form onSubmit={handleButtonSubmitClick}>
-      <h4 className="title is-4">{t("Create Account")}</h4>
-
       {error && (
         <article className="message is-danger">
           <div className="message-body">

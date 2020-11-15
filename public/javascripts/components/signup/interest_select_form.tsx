@@ -72,8 +72,6 @@ const InterestSelectForm: React.FC<InterestSelectFormProps> = (props) => {
 
   return (
     <React.Fragment>
-      <h4 className="title is-4">{t("Select Interests")}</h4>
-
       {error && (
         <article className="message is-danger">
           <div className="message-body">

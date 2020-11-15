@@ -40,8 +40,6 @@ const ProfilePictureUploadForm: React.FC<ProfilePictureUploadFormProps> = (props
 
   return (
     <React.Fragment>
-      <h4 className="title is-4">{t("Upload Profile Picture")}</h4>
-
       {error && (
         <article className="message is-danger">
           <div className="message-body">
@@ -77,6 +75,7 @@ const ProfilePictureUploadForm: React.FC<ProfilePictureUploadFormProps> = (props
               <span className="file-icon">
                 <i className="fas fa-upload"></i>
               </span>
+              &nbsp;
               <span className="file-label">
                 {t("Choose an image")}…
               </span>
