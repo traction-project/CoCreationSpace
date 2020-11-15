@@ -21,6 +21,7 @@ import PostList from "./post_list";
 import Profile from "./profile";
 import Signup from "./signup/signup";
 import NotificationList from "./notification_list";
+import CookieBanner from "./cookie_banner";
 
 async function checkLogin() {
   const loginStatus = await verifyLoginStatus();
@@ -90,6 +91,7 @@ const App: React.FC<AppProps> = () => {
             </Route>
           </Switch>
         </Router>
+        <CookieBanner />
       </Startup>
     </Provider>
   );
