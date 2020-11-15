@@ -14,16 +14,25 @@ interface InterestSelectFormProps {
 }
 
 const InterestSelectForm: React.FC<InterestSelectFormProps> = (props) => {
+  const { onComplete } = props;
+
   const { t } = useTranslation();
   const [ interests, setInterests ] = useState<Array<Interest>>([]);
 
   useEffect(() => {
-    fetch("/topics/all").then((res) => {
-      return res.json();
-    }).then((topics: Array<Interest>) => {
+    Promise.all([
+      fetch("/topics/all"),
+      fetch("/users/interests")
+    ]).then(([topics, interests]) => {
+      return Promise.all([
+        topics.json(),
+        interests.json()
+      ]);
+    }).then(([topics, interests]: [Array<Interest>, Array<Interest>]) => {
       setInterests(topics.map((t) => {
         return {
-          ...t, selected: false
+          ...t,
+          selected: !!interests.find((i) => i.id == t.id)
         };
       }));
     });
@@ -34,9 +43,11 @@ const InterestSelectForm: React.FC<InterestSelectFormProps> = (props) => {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        topics: interests.map((i) => i.id)
+        topics: interests.filter((i) => i.selected).map((i) => i.id)
       })
     });
+
+    onComplete();
   };
 
   const onInterestSelected = (id: string) => {
