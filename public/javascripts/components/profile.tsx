@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useState } from "react";
 import { Dispatch, bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { useForm } from "react-hook-form";
@@ -23,6 +24,7 @@ interface ProfileConnectedProps {
 type ProfileProps = ProfileActionProps & ProfileConnectedProps;
 
 const Profile: React.FC<ProfileProps> = (props) => {
+  const [ displayNotification, setDisplayNotification ] = useState<"success" | "error">();
   const { handleSubmit, register, errors, watch } = useForm({});
   const { t } = useTranslation();
 
@@ -33,16 +35,18 @@ const Profile: React.FC<ProfileProps> = (props) => {
       body: JSON.stringify(data)
     }).then(async res => {
       if (res.ok) {
-        const data = await res.json();
-        const { id, username, image } = data;
-
-        props.loginActions.setLoggedInUser(id, username, image);
+        setDisplayNotification("success");
+        setTimeout(() => setDisplayNotification(undefined), 3000);
       }
-    }).catch((error) => {
-      console.log(error);
+    }).catch(() => {
+      setDisplayNotification("error");
+      setTimeout(() => setDisplayNotification(undefined), 3000);
     });
   });
 
+  const closeNotification = () => {
+    setDisplayNotification(undefined);
+  };
 
   if (!props.login.user) {
     return null;
@@ -57,6 +61,10 @@ const Profile: React.FC<ProfileProps> = (props) => {
           <div className="column is-one-quarter">
             <ProfilePictureUploadForm
               currentImage={props.login.user.image!}
+              onComplete={() => {
+                setDisplayNotification("success");
+                setTimeout(() => setDisplayNotification(undefined), 3000);
+              }}
             />
           </div>
 
@@ -119,10 +127,27 @@ const Profile: React.FC<ProfileProps> = (props) => {
         <div className="columns">
           <div className="column">
             <h5 className="title is-5">{t("Update Interests")}</h5>
-            <InterestSelectForm />
+            <InterestSelectForm
+              onComplete={() => {
+                setDisplayNotification("success");
+                setTimeout(() => setDisplayNotification(undefined), 3000);
+              }}
+            />
           </div>
         </div>
       </div>
+
+      {(displayNotification == "success") ? (
+        <div className="notification is-success fixed-notification">
+          <button className="delete" onClick={closeNotification}></button>
+          {t("Data saved successfully")}
+        </div>
+      ) : (displayNotification == "error") ? (
+        <div className="notification is-error fixed-notification">
+          <button className="delete" onClick={closeNotification}></button>
+          {t("Could not save data")}
+        </div>
+      ) : null}
     </section>
   );
 };
