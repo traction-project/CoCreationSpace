@@ -129,4 +129,23 @@ describe("Users model", () => {
       permission1.id, permission2.id, permission3.id
     ])).toBeFalsy();
   });
+
+  it("should not fail when trying to remove an interest that the user does not have", async () => {
+    const { Users, Topics } = db.getModels();
+
+    const user = await Users.create({ username: "admin" });
+
+    const topic1 = await Topics.create({ title: "topic1" });
+    const topic2 = await Topics.create({ title: "topic2" });
+    const topic3 = await Topics.create({ title: "topic3" });
+
+    await user.addInterestedTopics([topic1, topic2]);
+    expect(await user.countInterestedTopics()).toEqual(2);
+
+    await user.removeInterestedTopic(topic3);
+    expect(await user.countInterestedTopics()).toEqual(2);
+
+    await user.removeInterestedTopic(topic2);
+    expect(await user.countInterestedTopics()).toEqual(1);
+  });
 });
