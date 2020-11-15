@@ -33,8 +33,8 @@ const Signup: React.FC<SignupProps> = (props) => {
             <div className="column is-6-tablet is-5-desktop is-5-widescreen">
               {(step == 1) ? (
                 <RegistrationForm
-                  onComplete={(username, password) => {
-                    props.loginActions.performLogin(username, password);
+                  onComplete={(username, password, image) => {
+                    props.loginActions.setLoggedInUser(username, password, image);
                     setStep(step + 1);
                   }}
                 />
