@@ -2,6 +2,18 @@ body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
+.cookie-banner {
+  position: absolute;
+  right: 1rem;
+  left: 1rem;
+  bottom: 1rem;
+}
+
+.cookie-banner p {
+  padding-bottom: 1rem;
+  text-align: justify;
+}
+
 .dropzone {
   border: 4px dashed #999999;
   border-radius: 7px;
