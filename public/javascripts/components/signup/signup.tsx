@@ -30,7 +30,7 @@ const Signup: React.FC<SignupProps> = (props) => {
 
   return (
     <section className="hero is-fullheight-with-navbar">
-      <div className="hero-body">
+      <div className="hero-body opera-background">
         <div className="container">
           <div className="columns is-centered">
             <div className="column is-6-tablet is-5-desktop is-5-widescreen">
