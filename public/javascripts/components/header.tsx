@@ -86,7 +86,9 @@ const Header: React.FC<HeaderProps> = (props) => {
 
               <div className="navbar-item has-dropdown is-hoverable">
                 <a className="navbar-link">
-                  <img src={props.login.user.image} alt="User profile picture"/>
+                  <figure className="image is-32x32">
+                    <img className="is-rounded" src={props.login.user.image} alt="User profile picture"/>
+                  </figure>
                 </a>
                 <div className="navbar-dropdown is-right">
                   <Link className="navbar-item" to="/profile">{t("Profile")}</Link>
