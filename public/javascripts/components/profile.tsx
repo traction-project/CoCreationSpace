@@ -52,6 +52,8 @@ const Profile: React.FC<ProfileProps> = (props) => {
     return null;
   }
 
+  const { login: { user } } = props;
+
   return (
     <section className="section">
       <div className="container">
@@ -60,8 +62,12 @@ const Profile: React.FC<ProfileProps> = (props) => {
         <div className="columns is-vcentered">
           <div className="column is-one-quarter">
             <ProfilePictureUploadForm
-              currentImage={props.login.user.image!}
-              onComplete={() => {
+              currentImage={user.image!}
+              onComplete={(newImage) => {
+                props.loginActions.setLoggedInUser(
+                  user.id, user.username, newImage
+                );
+
                 setDisplayNotification("success");
                 setTimeout(() => setDisplayNotification(undefined), 3000);
               }}
