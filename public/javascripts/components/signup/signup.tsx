@@ -2,6 +2,7 @@ import * as React from "react";
 import { useState } from "react";
 import { Dispatch, bindActionCreators } from "redux";
 import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
 
 import { actionCreators as loginActionCreators, LoginActions } from "../../actions/login";
 import { LoginState } from "../../reducers/login";
@@ -56,7 +57,7 @@ const Signup: React.FC<SignupProps> = (props) => {
                   }}
                 />
               ) : (
-                <p>Next step</p>
+                <Redirect to="/" />
               )}
             </div>
           </div>
