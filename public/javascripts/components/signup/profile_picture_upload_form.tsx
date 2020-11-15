@@ -11,12 +11,15 @@ interface ProfilePictureUploadFormProps {
 
 const ProfilePictureUploadForm: React.FC<ProfilePictureUploadFormProps> = (props) => {
   const { currentImage, onComplete } = props;
-  const [ error, setError ] = useState<string>();
   const { t } = useTranslation();
+
+  const [ error, setError ] = useState<string>();
+  const [ isLoading, setIsLoading ] = useState(false);
 
   const handleButtonUploadClick = async (filesToUpload: FileList) => {
     if (filesToUpload.length > 0) {
       const file = filesToUpload.item(0);
+      setIsLoading(true);
 
       if (file) {
         try {
@@ -25,8 +28,10 @@ const ProfilePictureUploadForm: React.FC<ProfilePictureUploadFormProps> = (props
           const responseJson = JSON.parse(response);
           const { image } = responseJson;
 
+          setIsLoading(false);
           onComplete(image);
         } catch (err) {
+          setIsLoading(false);
           setError(err);
         }
       }
@@ -48,11 +53,15 @@ const ProfilePictureUploadForm: React.FC<ProfilePictureUploadFormProps> = (props
       )}
 
       <div className="box-flex">
-        <figure style={{ width: "min-content" }}>
-          <span className="image is-128x128">
-            <img src={currentImage} alt="Logo" />
-          </span>
-        </figure>
+        {(isLoading) ? (
+          <progress className="progress is-primary" />
+        ) : (
+          <figure style={{ width: "min-content" }}>
+            <span className="image is-128x128">
+              <img src={currentImage} alt="Logo" />
+            </span>
+          </figure>
+        )}
 
         <br />
 
