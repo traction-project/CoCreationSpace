@@ -7,8 +7,10 @@ import { useTranslation } from "react-i18next";
 import { ApplicationState } from "../store";
 import { actionCreators as loginActionCreators, LoginActions } from "../actions/login";
 import { LoginState } from "../reducers/login";
-import { postFile } from "../util";
+
 import LanguageSwitcher from "./language_switcher";
+import ProfilePictureUploadForm from "./signup/profile_picture_upload_form";
+import InterestSelectForm from "./signup/interest_select_form";
 
 interface ProfileActionProps {
   loginActions: LoginActions;
@@ -41,109 +43,87 @@ const Profile: React.FC<ProfileProps> = (props) => {
     });
   });
 
-  const handleButtonUploadClick = async (filesToUpload: FileList) => {
-    if (filesToUpload && filesToUpload.length > 0) {
-      const file = filesToUpload.item(0);
 
-      if (file) {
-        const response: string = await postFile("/users/image", file, () => {});
-
-        const responseJson = JSON.parse(response);
-        const { id, username, image } = responseJson;
-
-        props.loginActions.setLoggedInUser(id, username, image);
-      }
-    }
-  };
+  if (!props.login.user) {
+    return null;
+  }
 
   return (
-    <div className="columns" style={{ marginTop: "5rem" }}>
-      {(props.login.user) ? (
-        <div className="column is-8 is-offset-3">
-          <div className="columns">
-            <div className="column is-one-third">
-              <div className="box box-flex">
-                <h1 className="title-box-1"><span>{t("Edit Photo")}</span></h1>
+    <section className="section">
+      <div className="container">
+        <h1 className="title">{t("Edit Profile")}</h1>
 
-                <figure style={{width: "min-content"}}>
-                  <span className="image is-128x128">
-                    <img src={props.login.user.image} alt="Logo"/>
-                  </span>
-                </figure>
+        <div className="columns is-vcentered">
+          <div className="column is-one-quarter">
+            <ProfilePictureUploadForm
+              currentImage={props.login.user.image!}
+            />
+          </div>
 
-                <label className="btn-file">
+          <div className="column is-half is-offset-1">
+            <h5 className="title is-5">{t("Change Settings")}</h5>
+
+            <form onSubmit={handleButtonApplyClick}>
+              <div className="field">
+                <label htmlFor="" className="label">{t("Password")}</label>
+                <div className="control has-icons-left">
                   <input
-                    className="btn-file__input"
-                    onChange={e => { e.target.files && handleButtonUploadClick(e.target.files); }}
-                    type="file" />
-                  <span className="btn btn-file__span">{t("Upload File")}</span>
-                </label>
+                    type="password"
+                    placeholder={t("Password")}
+                    name="password"
+                    className="input"
+                    ref={register()}
+                  />
+                  <span className="icon is-small is-left">
+                    <i className="fa fa-lock"></i>
+                  </span>
+                </div>
+                {errors.password && <p className="help is-danger">{t("required")}</p>}
               </div>
-            </div>
-            <div className="column is-one-third">
-              <div className="box box-flex">
-                <h1 className="title-box-1"><span>{t("Edit Account")}</span></h1>
 
-                <form onSubmit={handleButtonApplyClick}>
-                  <div className="form-group">
-                    <div className="field">
-                      <label className="label">{t("Username")}</label>
-                      <div className="control">
-                        <input
-                          className="input-1"
-                          type="text"
-                          name="username"
-                          defaultValue={props.login.user.username}
-                          ref={register({
-                            required: true
-                          })} />
-                      </div>
-                      { errors.username && <p className="help is-danger">* {t("required")}</p>}
-                    </div>
-
-                    <div className="field">
-                      <label className="label">{t("New Password")}</label>
-                      <div className="control">
-                        <input
-                          className="input-1"
-                          name="password"
-                          ref={register()}
-                          type="password" />
-                      </div>
-                    </div>
-
-                    <div className="field">
-                      <label className="label">{t("Confirm Password")}</label>
-                      <div className="control">
-                        <input
-                          className="input-1"
-                          name="password_repeat"
-                          type="password"
-                          ref={register({
-                            validate: (value) => value === watch("password")
-                          })}/>
-                        { errors.password_repeat && <p className="help is-danger">* {t("The passwords do not match")}</p>}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="field">
-                    <label className="label">{t("Preferred language")}</label>
-                    <div className="control">
-                      <LanguageSwitcher childName="preferredLanguage" childRef={register()} />
-                    </div>
-                  </div>
-
-                  <button className="btn">{t("Apply")}</button>
-                </form>
+              <div className="field">
+                <label htmlFor="" className="label">{t("Confirm Password")}</label>
+                <div className="control has-icons-left">
+                  <input
+                    type="password"
+                    placeholder={t("Confirm Password")}
+                    name="confirmation"
+                    className="input"
+                    ref={register({
+                      validate: (value) => value == watch("password")
+                    })}
+                  />
+                  <span className="icon is-small is-left">
+                    <i className="fa fa-lock"></i>
+                  </span>
+                </div>
+                {errors.confirmation && <p className="help is-danger">{t("The passwords do not match")}</p>}
               </div>
-            </div>
+
+              <div className="field">
+                <label className="label">{t("Preferred language")}</label>
+                <div className="control">
+                  <LanguageSwitcher childName="preferredLanguage" childRef={register()} />
+                </div>
+              </div>
+
+              <div className="field">
+                <button type="submit" className="button is-info">
+                  {t("Submit")}
+                </button>
+              </div>
+            </form>
           </div>
         </div>
-      ) : (
-        null
-      )}
-    </div>
+
+        <div className="columns">
+          <div className="column">
+            <h5 className="title is-5">{t("Update Interests")}</h5>
+            <InterestSelectForm />
+          </div>
+        </div>
+      </div>
+    </section>
   );
 };
 
