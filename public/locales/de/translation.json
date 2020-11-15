@@ -23,13 +23,8 @@
     "This user has not posts": "Dieser Benutzer hat keine Beiträge",
     "New Post": "Neuer Beitrag",
     "Show Comments": "Zeige Kommentare",
-    "Edit Photo": "Foto bearbeiten",
-    "Upload File": "Datei hochladen",
-    "Edit Account": "Account bearbeiten",
-    "New Password": "Neues Passwort",
     "Confirm Password": "Passwort bestätigen",
     "The passwords do not match": "Passwörter stimmen nicht überein",
-    "Apply": "Anwenden",
     "Submit": "Abschicken",
     "Translate": "Übersetzen",
     "Automatic Translation": "Automatische Übersetzung",
@@ -70,5 +65,10 @@
     "Create Account": "Account erstellen",
     "Choose a file": "Datei auswählen",
     "cookie-notice": "Die Cookies auf dieser Webseite werden benutzt um Inhalte zu personalisieren, Sessiondaten zu speichern und deinen Aufenthalt zu verbessern. Wir teilen keine deiner Daten mit Drittanbietern",
-    "Accept": "Akzeptieren"
+    "Accept": "Akzeptieren",
+    "Edit Profile": "Profil anpassen",
+    "Change Settings": "Einstellungen ändern",
+    "Update Interests": "Interessen bearbeiten",
+    "Data saved successfully": "Daten erfolgreich gespeichert",
+    "Could not save data": "Konnte Daten nicht speichern"
 }

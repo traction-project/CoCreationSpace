@@ -23,13 +23,8 @@
     "This user has not posts": "This user has not posts",
     "New Post": "New Post",
     "Show Comments": "Show Comments",
-    "Edit Photo": "Edit Photo",
-    "Upload File": "Upload File",
-    "Edit Account": "Edit Account",
-    "New Password": "New Password",
     "Confirm Password": "Confirm Password",
     "The passwords do not match": "the passwords do not match",
-    "Apply": "Apply",
     "Submit": "Submit",
     "Translate": "Translate",
     "Automatic Translation": "Automatic Translation",
@@ -70,5 +65,10 @@
     "Create Account": "Create Account",
     "Choose a file": "Choose a file",
     "cookie-notice": "The cookies on this website are used to personalize content, store session data and improve your browsing experience. We do not share your data with any third party.",
-    "Accept": "Accept"
+    "Accept": "Accept",
+    "Edit Profile": "Edit Profile",
+    "Change Settings": "Change Settings",
+    "Update Interests": "Update Interests",
+    "Data saved successfully": "Data saved successfully",
+    "Could not save data": "Could not save data"
 }

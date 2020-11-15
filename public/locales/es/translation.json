@@ -23,13 +23,8 @@
     "This user has not posts": "__STRING_NOT_TRANSLATED__",
     "New Post": "__STRING_NOT_TRANSLATED__",
     "Show Comments": "__STRING_NOT_TRANSLATED__",
-    "Edit Photo": "__STRING_NOT_TRANSLATED__",
-    "Upload File": "__STRING_NOT_TRANSLATED__",
-    "Edit Account": "__STRING_NOT_TRANSLATED__",
-    "New Password": "__STRING_NOT_TRANSLATED__",
     "Confirm Password": "__STRING_NOT_TRANSLATED__",
     "The passwords do not match": "__STRING_NOT_TRANSLATED__",
-    "Apply": "__STRING_NOT_TRANSLATED__",
     "Submit": "__STRING_NOT_TRANSLATED__",
     "Translate": "__STRING_NOT_TRANSLATED__",
     "Automatic Translation": "__STRING_NOT_TRANSLATED__",
@@ -70,5 +65,10 @@
     "Create Account": "__STRING_NOT_TRANSLATED__",
     "Choose a file": "__STRING_NOT_TRANSLATED__",
     "cookie-notice": "The cookies on this website are used to personalize content, store session data and improve your browsing experience. We do not share your data with any third party.",
-    "Accept": "__STRING_NOT_TRANSLATED__"
+    "Accept": "__STRING_NOT_TRANSLATED__",
+    "Edit Profile": "__STRING_NOT_TRANSLATED__",
+    "Change Settings": "__STRING_NOT_TRANSLATED__",
+    "Update Interests": "__STRING_NOT_TRANSLATED__",
+    "Data saved successfully": "__STRING_NOT_TRANSLATED__",
+    "Could not save data": "__STRING_NOT_TRANSLATED__"
 }
