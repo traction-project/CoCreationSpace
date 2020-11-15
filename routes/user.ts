@@ -6,7 +6,6 @@ import { getExtension, getFromEnvironment } from "../util";
 import { authRequired } from "../util/middleware";
 import { uploadToS3 } from "../util/s3";
 import { UserInstance } from "models/users";
-import { db } from "../models";
 
 const [ BUCKET_NAME, CLOUDFRONT_URL ] = getFromEnvironment("BUCKET_NAME", "CLOUDFRONT_URL");
 const router = Router();
@@ -56,34 +55,8 @@ router.get("/profile", authRequired, (req, res) => {
  * Modify user account (username and password)
  */
 router.put("/", authRequired, async (req, res) => {
-  const { Users } = db.getModels();
   const user = req.user as UserInstance;
   const { body } = req;
-
-  if (body.username && body.username != user.username) {
-    const existUser = await Users.findOne({ where: { username: body.username }});
-
-    if (!existUser) {
-      const newUsername = body.username;
-
-      if (user.username !== newUsername) {
-        user.username = newUsername;
-
-        try {
-          await user.save();
-        } catch (err) {
-          res.status(500);
-
-          return res.send({
-            status: "ERR",
-            message: err.message
-          });
-        }
-      }
-    } else {
-      return res.status(400).send({ message: "The username already exists"});
-    }
-  }
 
   if (body.password && body.password.length > 0) {
     user.setPassword(body.password);
