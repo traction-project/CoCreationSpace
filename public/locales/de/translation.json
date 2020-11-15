@@ -61,7 +61,7 @@
     "Notifications": "Benachrichtigungen",
     "login-error": "<0>Login gescheitert!</0> Benutzername oder Passwort sind inkorrekt",
     "interests-error-unknown": "<0>Auswahl gescheitert!</0> Ein unbekannter Fehler ist aufgetreten.",
-    "Select Interests": "__STRING_NOT_TRANSLATED__",
+    "Select Interests": "Interessen auswählen",
     "image-upload-error": "<0>Bildupload gescheitert!</0> Ein unbekannter Fehler ist aufgetreten.",
     "Upload Profile Picture": "Profilbild hochladen",
     "Choose an image": "Wähle ein Bild aus",
