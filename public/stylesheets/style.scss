@@ -14,6 +14,12 @@ body {
   text-align: justify;
 }
 
+.opera-background {
+  background-image: url("/images/background.jpg");
+  background-position: center;
+  background-size: cover;
+}
+
 .dropzone {
   border: 4px dashed #999999;
   border-radius: 7px;
