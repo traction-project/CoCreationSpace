@@ -11,7 +11,7 @@ import UserLogo, { UserType } from "./user_logo";
 import CommentList from "./comment_list";
 import Video from "./video";
 import NewComment from "./new_comment";
-import { TagData } from "./post_list";
+import { TagData } from "./post_list/post_list";
 import { getPostId, postComment, postEmojiReaction, postLike } from "../services/post.service";
 import { addEmojiAnimation, addTooltip } from "./videojs/util";
 import TranslationModal from "./translation_modal";

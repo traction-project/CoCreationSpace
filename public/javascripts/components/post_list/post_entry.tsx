@@ -27,7 +27,7 @@ const PostEntry: React.FC<PostEntryProps> = (props) => {
       <div className="media-content">
         <div className="content">
           <div className="block">
-            <strong className="post-title">{post.title ? post.title : "Post"}</strong>
+            <strong className="post-title">{post.title ? post.title : t("Post")}</strong>
             <small className="list-item__date">{post.createdAt && new Date(post.createdAt).toLocaleDateString()}</small>
           </div>
 
