@@ -25,6 +25,10 @@ body {
   border-radius: 0;
 }
 
+.is-clickable {
+  cursor: pointer;
+}
+
 .dropzone {
   border: 4px dashed #999999;
   border-radius: 7px;
