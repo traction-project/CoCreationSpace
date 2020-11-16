@@ -102,12 +102,15 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
         <hr/>
 
         <div className="columns" style={{ marginTop: 15 }}>
-          <div className="column is-8 is-offset-1">
+          <div className="column is-9">
             <div>
               {(filteredPosts) ? (
                 filteredPosts.map((post, index) => {
                   return (
-                    <PostEntry key={index} post={post} />
+                    <>
+                      <PostEntry key={index} post={post} />
+                      <hr/>
+                    </>
                   );
                 })
               ) : (
@@ -116,7 +119,7 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
             </div>
           </div>
 
-          <div className="column is-2">
+          <div className="column is-2 is-offset-1">
             <ul className="lateral-menu">
               <li><button className="btn" onClick={handleClickButtonNewPost}>{t("New Post")}</button></li>
               <li className="lateral-menu__item" onClick={handleClickAllPosts}>{t("All posts")}</li>
