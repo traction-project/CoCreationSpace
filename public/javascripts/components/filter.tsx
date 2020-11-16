@@ -1,5 +1,6 @@
 import * as React from "react";
 import debounce from "lodash.debounce";
+import { useTranslation } from "react-i18next";
 
 interface FilterProps {
   delay?: number;
@@ -9,6 +10,8 @@ interface FilterProps {
 }
 
 const Filter: React.FC<FilterProps> = ({ searchValueChange, delay=500, placeholder="Search...", onKeyDown }) => {
+  const { t } = useTranslation();
+
   const handleChange = debounce((value: string) => {
     searchValueChange(value);
   }, delay);
@@ -26,7 +29,7 @@ const Filter: React.FC<FilterProps> = ({ searchValueChange, delay=500, placehold
       </div>
       <div className="control">
         <a className="button is-info">
-          Search
+          {t("Search")}
         </a>
       </div>
     </div>
