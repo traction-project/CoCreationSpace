@@ -57,10 +57,9 @@ const Video: React.FC<VideoProps> = (props) => {
 
   if (videoStatus === "done") {
     return (
-      <div style={{ display: "flex" }}>
+      <div>
         {videoUrl ? (
           <DashPlayer
-            width={700}
             manifest={videoUrl}
             subtitles={availableSubtitles}
             comments={comments}

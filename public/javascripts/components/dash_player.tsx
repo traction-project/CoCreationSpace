@@ -1,8 +1,10 @@
 import * as React from "react";
 import { useEffect, useRef, useState } from "react";
 import videojs, { VideoJsPlayer } from "video.js";
+import classNames from "classnames";
 
 import "videojs-contrib-dash";
+
 import { PostType } from "./post/post";
 import { EmojiReaction } from "../util";
 import { addEmojiAnimation, addTooltip, createMarkers } from "./videojs/util";
@@ -11,7 +13,7 @@ import { Marker } from "./videojs/types";
 interface DashPlayerProps {
   manifest: string;
   subtitles: Array<{ language: string, url: string }>;
-  width: number;
+  width?: number;
   comments?: PostType[];
   emojis?: EmojiReaction[];
   getPlayer?: (v: VideoJsPlayer) => void;
@@ -117,16 +119,14 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
   };
 
   return (
-    <div>
-      <div ref={playerNode} data-vjs-player>
-        <video ref={videoNode} className="video-js">
-          {subtitles.map((s, i) => {
-            return (
-              <track key={i} src={s.url} label={s.language} srcLang={s.language} default={true} />
-            );
-          })}
-        </video>
-      </div>
+    <div ref={playerNode} data-vjs-player>
+      <video ref={videoNode} className={classNames("video-js", "vjs-16-9", { "vjs-fill": width == undefined })}>
+        {subtitles.map((s, i) => {
+          return (
+            <track key={i} src={s.url} label={s.language} srcLang={s.language} default={true} />
+          );
+        })}
+      </video>
     </div>
   );
 };
