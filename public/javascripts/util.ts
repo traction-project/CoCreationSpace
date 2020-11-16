@@ -154,7 +154,7 @@ export const availableLanguages = {
 };
 
 /**
- * Activates the subtitle track for the given langauge in the given video.js
+ * Activates the subtitle track for the given language in the given video.js
  * player instance. If no such track if found, the function returns false.
  *
  * @param player A video.js player instance
