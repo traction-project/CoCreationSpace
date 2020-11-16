@@ -120,18 +120,30 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
           </div>
 
           <div className="column is-2 is-offset-1">
-            <ul className="lateral-menu">
-              <li><button className="btn" onClick={handleClickButtonNewPost}>{t("New Post")}</button></li>
-              <li className="lateral-menu__item" onClick={handleClickAllPosts}>{t("All posts")}</li>
-              <hr />
-              {(tags) ? (
-                tags.map((tag, index) => {
-                  return (<li key={index} className="tag" onClick={() => handleClickTag(tag)}>{tag.tag_name}</li>);
-                })
-              ) : (
-                null
-              )}
-            </ul>
+            <button className="button is-info is-fullwidth" onClick={handleClickButtonNewPost}>
+              {t("New Post")}
+            </button>
+
+            <hr />
+            <h6 className="title is-6">{t("Filter by tag")}</h6>
+
+            <div>
+              {tags?.map((tag, index) => {
+                return (
+                  <span
+                    key={index}
+                    className="tag"
+                    onClick={() => handleClickTag(tag)}
+                  >
+                    {tag.tag_name}
+                  </span>
+                );
+              })}
+            </div>
+
+            <a className="is-size-7" onClick={handleClickAllPosts}>
+              {t("Clear filter")}
+            </a>
           </div>
         </div>
       </div>
