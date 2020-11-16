@@ -1,11 +1,8 @@
 {
     "Drop a file here": "__STRING_NOT_TRANSLATED__",
     "Anonymous": "__STRING_NOT_TRANSLATED__",
-    "Post": "__STRING_NOT_TRANSLATED__",
     "Comment": "__STRING_NOT_TRANSLATED__",
     "Comments": "__STRING_NOT_TRANSLATED__",
-    "New post": "__STRING_NOT_TRANSLATED__",
-    "All posts": "__STRING_NOT_TRANSLATED__",
     "Home": "__STRING_NOT_TRANSLATED__",
     "My Posts": "__STRING_NOT_TRANSLATED__",
     "Explore": "__STRING_NOT_TRANSLATED__",
@@ -70,5 +67,9 @@
     "Change Settings": "__STRING_NOT_TRANSLATED__",
     "Update Interests": "__STRING_NOT_TRANSLATED__",
     "Data saved successfully": "__STRING_NOT_TRANSLATED__",
-    "Could not save data": "__STRING_NOT_TRANSLATED__"
+    "Could not save data": "__STRING_NOT_TRANSLATED__",
+    "Search": "__STRING_NOT_TRANSLATED__",
+    "Filter by tag": "__STRING_NOT_TRANSLATED__",
+    "Clear filter": "__STRING_NOT_TRANSLATED__",
+    "Post": "__STRING_NOT_TRANSLATED__"
 }

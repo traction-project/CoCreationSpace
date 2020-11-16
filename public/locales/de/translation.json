@@ -1,11 +1,8 @@
 {
     "Drop a file here": "Datei hier ablegen",
     "Anonymous": "Anonym",
-    "Post": "Beitrag",
     "Comment": "Kommentar",
     "Comments": "Kommentare",
-    "New post": "Neuer Beitrag",
-    "All posts": "Alle Beiträge",
     "Home": "Home",
     "My Posts": "Meine Beiträge",
     "Explore": "Entdecke",
@@ -70,5 +67,9 @@
     "Change Settings": "Einstellungen ändern",
     "Update Interests": "Interessen bearbeiten",
     "Data saved successfully": "Daten erfolgreich gespeichert",
-    "Could not save data": "Konnte Daten nicht speichern"
+    "Could not save data": "Konnte Daten nicht speichern",
+    "Search": "Suche",
+    "Filter by tag": "Nach Tag filtern",
+    "Clear filter": "Filter löschen",
+    "Post": "Beitrag"
 }
