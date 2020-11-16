@@ -5,7 +5,7 @@ import { VideoJsPlayer } from "video.js";
 import { useTranslation } from "react-i18next";
 
 import DashPlayer from "./dash_player";
-import { PostType } from "./post";
+import { PostType } from "./post/post";
 import { EmojiReaction } from "../util";
 
 interface VideoProps {

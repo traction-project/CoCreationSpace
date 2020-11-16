@@ -8,12 +8,11 @@ import { verifyLoginStatus } from "../util";
 
 import Startup from "./startup";
 import Login from "./login";
-import Video from "./video";
 import VideoUpload from "./video_upload";
 import VideoStream from "./video_stream";
 import VideoRecorder from "./video_recorder";
 import Translate from "./translate";
-import Post from "./post";
+import Post from "./post/post";
 import Home from "./home";
 import PrivateRoute from "./private_route";
 import Header from "./header";
@@ -61,9 +60,6 @@ const App: React.FC<AppProps> = () => {
             </PrivateRoute>
             <Route path="/videos">
               <VideoStream />
-            </Route>
-            <Route path="/video/:id">
-              <Video />
             </Route>
             <Route path="/notifications">
               <NotificationList />

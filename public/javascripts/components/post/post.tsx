@@ -5,15 +5,15 @@ import { VideoJsPlayer } from "video.js";
 import usePortal from "react-useportal";
 import { useTranslation } from "react-i18next";
 
-import { activateSubtitleTrack, CommonType, convertHMS, EmojiReaction } from "../util";
+import { activateSubtitleTrack, CommonType, convertHMS, EmojiReaction } from "../../util";
 
-import UserLogo, { UserType } from "./user_logo";
+import UserLogo, { UserType } from "../user_logo";
 import CommentList from "./comment_list";
-import Video from "./video";
+import Video from "../video";
 import NewComment from "./new_comment";
-import { TagData } from "./post_list/post_list";
-import { getPostId, postComment, postEmojiReaction, postLike } from "../services/post.service";
-import { addEmojiAnimation, addTooltip } from "./videojs/util";
+import { TagData } from "../post_list/post_list";
+import { getPostId, postComment, postEmojiReaction, postLike } from "../../services/post.service";
+import { addEmojiAnimation, addTooltip } from "../videojs/util";
 import TranslationModal from "./translation_modal";
 
 interface dataContainerType {
@@ -250,8 +250,6 @@ const Post: React.FC<PostProps> = (props) => {
 
                           {isOpen && (
                             <Portal>
-                              {/* TODO Maybe it's worth thinking about this datacontainer thing again.
-                                  Can a post even have more than one multimedia item? */}
                               <TranslationModal
                                 id={post.dataContainer.multimedia[0].id!}
                                 onSuccess={handleTranslationSuccess}

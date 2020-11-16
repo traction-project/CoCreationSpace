@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useHistory } from "react-router-dom";
-import { PostType } from "../post";
+import { PostType } from "../post/post";
 import { useTranslation } from "react-i18next";
 
 import UserLogo from "../user_logo";

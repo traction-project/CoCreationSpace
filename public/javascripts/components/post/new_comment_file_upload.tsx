@@ -1,7 +1,7 @@
 import * as React from "react";
-
 import { useState, useEffect } from "react";
-import { postFile, ResponseUploadType } from "../util";
+
+import { postFile, ResponseUploadType } from "../../util";
 
 interface FileUploadProps {
     fileToUpload: File;

@@ -4,7 +4,7 @@ import { useHistory } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import classNames from "classnames";
 
-import { PostType } from "../post";
+import { PostType } from "../post/post";
 import Filter from "./filter";
 import PostEntry from "./post_entry";
 

@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import videojs, { VideoJsPlayer } from "video.js";
 
 import "videojs-contrib-dash";
-import { PostType } from "./post";
+import { PostType } from "./post/post";
 import { EmojiReaction } from "../util";
 import { addEmojiAnimation, addTooltip, createMarkers } from "./videojs/util";
 import { Marker } from "./videojs/types";
