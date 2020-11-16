@@ -2,6 +2,7 @@ import * as React from "react";
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import classNames from "classnames";
 
 import { PostType } from "../post";
 import Filter from "./filter";
@@ -25,6 +26,7 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
   const [ posts, setPosts ] = useState<Array<PostType>>([]);
   const [ filteredPosts, setFilteredPosts ] = useState<Array<PostType>>([]);
   const [ tags, setTags ] = useState<Array<TagData>>();
+  const [ selectedTag, setSelectedTag ] = useState<number>();
 
   useEffect(() => {
     (async () => {
@@ -69,10 +71,12 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
 
   const handleClickAllPosts = () => {
     setFilteredPosts(posts);
+    setSelectedTag(undefined);
   };
 
   const handleClickTag = (tagSelected: TagData) => {
     const postList: Array<PostType> = [];
+
     posts.forEach((post) => {
       post.tags?.forEach((tag) => {
         if (tag.id === tagSelected.id) {
@@ -82,6 +86,7 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
     });
 
     setFilteredPosts(postList);
+    setSelectedTag(tagSelected.id);
   };
 
   const handleChange = async (value: string) => {
@@ -132,7 +137,7 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
                 return (
                   <span
                     key={index}
-                    className="tag"
+                    className={classNames("tag", { "is-primary": tag.id == selectedTag })}
                     onClick={() => handleClickTag(tag)}
                   >
                     {tag.tag_name}
