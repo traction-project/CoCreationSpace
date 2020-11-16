@@ -42,6 +42,9 @@ function useNotification(userId: string) {
         case "message":
           onNotificationReceived(message.data);
           break;
+        case "ping":
+          ws.send(JSON.stringify({ command: "pong" }));
+          break;
         default:
           console.log("Unrecognised WebSocket message received:", message);
         }

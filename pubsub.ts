@@ -7,6 +7,7 @@ import { db } from "./models";
 interface InterestSubscription {
   socket: WebSocket;
   userId: string;
+  interval: NodeJS.Timer;
 }
 
 const clients: Array<InterestSubscription> = [];
@@ -126,9 +127,16 @@ async function setupWebSocketServer(server: http.Server) {
       case "subscribe": {
         console.log("Adding subscription to topics for", data.userId);
 
+        const interval = setInterval(() => {
+          ws.send(JSON.stringify({
+            type: "ping"
+          }));
+        }, 5000);
+
         clients.push({
           socket: ws,
-          userId: data.userId
+          userId: data.userId,
+          interval
         });
 
         break;
@@ -144,23 +152,29 @@ async function setupWebSocketServer(server: http.Server) {
 
         break;
       }
+      case "pong":
+        break;
       default:
         console.log("Unrecognised message");
       }
     });
 
     const removeClient = () => {
+      console.log("Removing dead client...");
+
       const clientIndex = clients.findIndex((c) => {
         return c.socket == ws;
       });
 
       if (clientIndex > -1) {
+        clearInterval(clients[clientIndex].interval);
         clients.splice(clientIndex, 1);
       }
     };
 
     ws.on("error", removeClient);
     ws.on("close", removeClient);
+
   });
 
   const { Posts } = db.getModels();
