@@ -3,7 +3,7 @@ import * as React from "react";
 import { useState, useEffect } from "react";
 import { postFile, ResponseUploadType } from "../util";
 
-type FileUploadProps = {
+interface FileUploadProps {
     fileToUpload: File;
     addMultimedia: (id: string) => void;
     setLoading: (value: boolean) => void;

@@ -4,9 +4,10 @@ import videojs, { VideoJsPlayer } from "video.js";
 
 const vjsComponent = videojs.getComponent("Component");
 
-type EmojiAnimationProps = {
+interface EmojiAnimationProps {
     emoji: string;
 }
+
 const EmojiAnimation: React.FC<EmojiAnimationProps> = ({ emoji }) => {
   return(
     <span className="emoji-animation">{emoji}</span>

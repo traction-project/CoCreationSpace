@@ -3,10 +3,10 @@ import { useTranslation } from "react-i18next";
 
 import { CommonType } from "../util";
 
-export type UserType = {
+export interface UserType extends CommonType {
   username: string;
   image?: string;
-} & CommonType;
+}
 
 interface UserLogoProps {
   user: UserType;

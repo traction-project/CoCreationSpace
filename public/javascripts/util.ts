@@ -39,7 +39,7 @@ export type AsyncAction<R, A extends Action> = ThunkAction<R, ApplicationState, 
 /**
  * Type alias from upload file response
  */
-export type ResponseUploadType = {
+export interface ResponseUploadType {
   status: string;
   id: string;
 }
@@ -75,7 +75,7 @@ export interface CommonType {
   updatedAt?: string;
 }
 
-export type EmojiReaction = {
+export interface EmojiReaction {
   emoji: string;
   second: number;
 }

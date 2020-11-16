@@ -4,7 +4,7 @@ import { PostInstance } from "./post";
 import { DataContainerInstance } from "./data_container";
 import { MultimediaInstance } from "./multimedia";
 
-type AssociationType = {
+interface AssociationType {
   datacontainerAssociations: {
     DatacontainerMultimedia: HasMany<DataContainerInstance, MultimediaInstance>
   },

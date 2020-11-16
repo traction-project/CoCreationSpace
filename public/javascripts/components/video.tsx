@@ -8,7 +8,7 @@ import DashPlayer from "./dash_player";
 import { PostType } from "./post";
 import { EmojiReaction } from "../util";
 
-type VideoProps = {
+interface VideoProps {
   id?: string;
   markers?: number[];
   comments?: PostType[];

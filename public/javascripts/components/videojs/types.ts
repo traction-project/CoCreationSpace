@@ -1,8 +1,8 @@
 /**
  * Marker reactions in the player progress bar
  */
-export type Marker = {
+export interface Marker {
     type: "emoji" | "comment";
     second: number;
     emoji?: string;
-};
+}

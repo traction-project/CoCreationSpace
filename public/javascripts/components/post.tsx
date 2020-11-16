@@ -16,7 +16,7 @@ import { getPostId, postComment, postEmojiReaction, postLike } from "../services
 import { addEmojiAnimation, addTooltip } from "./videojs/util";
 import TranslationModal from "./translation_modal";
 
-type dataContainerType = {
+interface dataContainerType {
   text_content?: string;
   multimedia?: [{
     id?: string,
@@ -24,7 +24,7 @@ type dataContainerType = {
   }]
 }
 
-export type PostType = {
+export interface PostType extends CommonType {
   title?: string;
   second?: number;
   parent_post_id: string;
@@ -36,7 +36,7 @@ export type PostType = {
   user: UserType;
   userReferenced?: UserType[];
   tags?: TagData[];
-} & CommonType;
+}
 
 interface PostProps {
   post?: {

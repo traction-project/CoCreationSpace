@@ -11,7 +11,7 @@ interface PostListProps {
   endpoint: string;
 }
 
-export type TagData = {
+export interface TagData {
   id: number;
   tag_name: string;
   createdAt: string;

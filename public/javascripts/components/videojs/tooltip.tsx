@@ -4,10 +4,11 @@ import videojs, { VideoJsPlayer } from "video.js";
 
 const vjsComponent = videojs.getComponent("Component");
 
-type TooltipComponentProps = {
+interface TooltipComponentProps {
     username: string;
     text: string;
 }
+
 const TooltipComponent: React.FC<TooltipComponentProps> = ({ username, text }) => {
   return(
     <div className="tooltip-container">

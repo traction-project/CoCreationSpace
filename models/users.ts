@@ -13,7 +13,7 @@ import { EmojiReactionsInstance } from "./emoji_reactions";
 import { TopicInstance } from "./topic";
 import { NotificationAttributes, NotificationInstance } from "./notifications";
 
-const [SESSION_SECRET] = getFromEnvironment("SESSION_SECRET");
+const [ SESSION_SECRET ] = getFromEnvironment("SESSION_SECRET");
 
 export interface UsersAttributes extends CommonAttributes {
   username: string;
@@ -34,7 +34,7 @@ export interface UsersAttributes extends CommonAttributes {
 
 type UsersCreationAttributes = Optional<UsersAttributes, "id" | "createdAt" | "updatedAt">;
 
-type UserToken = {
+interface UserToken {
   _id: string;
   username: string;
   token: string;
