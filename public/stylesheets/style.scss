@@ -22,6 +22,7 @@ body {
 
 .image.no-border {
   border: none;
+  border-radius: 0;
 }
 
 .dropzone {
@@ -251,9 +252,8 @@ textarea {
   box-shadow: 0 0.5em 1em -0.125em rgba(10, 10, 10, 0.1), 0 0px 0 1px rgba(10, 10, 10, 0.02);
   color: #4a4a4a;
   display: block;
-  width: 40%;
   text-align: center;
-  padding: 1.85rem 0;
+  padding: 1.5rem 0;
   margin: .5rem auto;
   cursor: pointer;
   font-weight: 600;

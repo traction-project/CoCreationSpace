@@ -18,15 +18,25 @@ const Home: React.FC<HomeProps> = () => {
               </figure>
             </div>
           </div>
-          <div className="columns is-centered">
-            <div className="column">
-              <Link className="button" to={"userPosts"}>{t("My Posts")}</Link>
-            </div>
-            <div className="column">
-              <Link className="button" to={"userPosts"}>{t("Explore")}</Link>
-            </div>
-            <div className="column">
-              <Link className="button" to={"userPosts"}>{t("Create")}</Link>
+          <div className="columns is-centered is-mobile">
+            <div className="column is-5-desktop is-6-tablet is-10-mobile">
+              <ul className="home__menu">
+                <li className="home__menu-item">
+                  <Link to={"userPosts"}>
+                    {t("My Posts")}
+                  </Link>
+                </li>
+                <li className="home__menu-item">
+                  <Link to={"posts"}>
+                    {t("Explore")}
+                  </Link>
+                </li>
+                <li className="home__menu-item">
+                  <Link to={"upload"}>
+                    {t("Create")}
+                  </Link>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
