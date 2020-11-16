@@ -3,9 +3,9 @@ import { useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
-import { PostType } from "./post";
+import { PostType } from "../post";
 import Filter from "./filter";
-import UserLogo from "./user_logo";
+import UserLogo from "../user_logo";
 
 interface PostListProps {
   endpoint: string;
