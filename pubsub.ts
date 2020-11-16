@@ -97,7 +97,10 @@ export async function broadcastNotification(post: PostInstance) {
         await notification.setUser(userId);
       }
 
-      socket.send(JSON.stringify(data));
+      socket.send(JSON.stringify({
+        type: "message",
+        data
+      }));
     }
   });
 }

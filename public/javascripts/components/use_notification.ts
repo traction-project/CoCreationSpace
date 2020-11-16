@@ -36,8 +36,15 @@ function useNotification(userId: string) {
       };
 
       ws.onmessage = (e) => {
-        const data = JSON.parse(e.data);
-        onNotificationReceived(data);
+        const message = JSON.parse(e.data);
+
+        switch (message.type) {
+        case "message":
+          onNotificationReceived(message.data);
+          break;
+        default:
+          console.log("Unrecognised WebSocket message received:", message);
+        }
       };
 
       return () => {
