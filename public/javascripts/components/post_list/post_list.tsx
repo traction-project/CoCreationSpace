@@ -93,11 +93,14 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
   return (
     <section className="section">
       <div className="container">
-        <div className="columns">
-          <div className="column">
-            <Filter searchValueChange={handleChange}></Filter>
+        <div className="columns is-centered">
+          <div className="column is-6-desktop is-8-tablet">
+            <Filter searchValueChange={handleChange} />
           </div>
         </div>
+
+        <hr/>
+
         <div className="columns" style={{ marginTop: 15 }}>
           <div className="column is-8 is-offset-1">
             <div>
@@ -150,6 +153,7 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
               )}
             </div>
           </div>
+
           <div className="column is-2">
             <ul className="lateral-menu">
               <li><button className="btn" onClick={handleClickButtonNewPost}>{t("New Post")}</button></li>
