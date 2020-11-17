@@ -24,28 +24,32 @@ const NotificationList: React.FC<NotificationListProps> = (props) => {
   }, []);
 
   return (
-    <div className="columns" style={{ marginTop: 15 }}>
-      <div className="column is-6 is-offset-3">
-        <h3 className="title is-3">Notifications</h3>
+    <section className="section">
+      <div className="container">
+        <div className="columns" style={{ marginTop: 15 }}>
+          <div className="column is-6 is-offset-3">
+            <h3 className="title is-3">Notifications</h3>
 
-        {notifications.map(({ data: { topic, post }}, i) => {
-          return (
-            <div className="box" key={i}>
-              <h5 className="title is-5">
-                <Trans i18nKey="notification-title">
-                  New post in topic {{ topicTitle: topic.title }}
-                </Trans>
-              </h5>
-              <p>
-                <Trans i18nKey="notification-text">
-                  A new post titled <i>{{ postTitle: post.title}}</i> was submitted to the topic <i>{{ topicTitle: topic.title}}</i>
-                </Trans>
-              </p>
-            </div>
-          );
-        })}
+            {notifications.map(({ data: { topic, post }}, i) => {
+              return (
+                <div className="box" key={i}>
+                  <h5 className="title is-5">
+                    <Trans i18nKey="notification-title">
+                      New post in topic {{ topicTitle: topic.title }}
+                    </Trans>
+                  </h5>
+                  <p>
+                    <Trans i18nKey="notification-text">
+                      A new post titled <i>{{ postTitle: post.title}}</i> was submitted to the topic <i>{{ topicTitle: topic.title}}</i>
+                    </Trans>
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
       </div>
-    </div>
+    </section>
   );
 };
 
