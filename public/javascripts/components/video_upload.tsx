@@ -58,9 +58,7 @@ const VideoUpload: React.FC<VideoUploadProps> = () => {
     setDisplayNotification(undefined);
   };
 
-  const handleClickButton = () => {
-    const headers = new Headers();
-    headers.append("Content-Type", "application/json");
+  const handleClickButton = async () => {
     const body = {
       title,
       text: summary,
@@ -68,24 +66,27 @@ const VideoUpload: React.FC<VideoUploadProps> = () => {
       tags: tags.map((tag) => { return { tag_name: tag }; } ),
       topicId: selectedTopic
     };
-    fetch("/posts", {
-      headers,
-      method: "POST",
-      body: JSON.stringify(body)
-    })
-      .then(res => {
-        if (res.ok) {
-          return res.json();
-        } else {
-          const err = new Error("HTTP status code: " + res.status);
-          throw err;
-        }
-      })
-      .then(_ => {
+
+    try {
+      const res = await fetch("/posts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body)
+      });
+
+      if (res.ok) {
         history.push("/userPosts");
-      })
-      .catch(_ => setDisplayNotification("error"))
-      .finally(() => setTimeout(() => setDisplayNotification(undefined), 3000));
+      } else {
+        throw new Error("HTTP status code: " + res.status);
+      }
+    } catch (err) {
+      console.error(err);
+
+      setDisplayNotification("error");
+      setTimeout(() => {
+        setDisplayNotification(undefined);
+      }, 3000);
+    }
   };
 
   const handleClickRemoveTag = (tagToRemove: string) => {
