@@ -9,15 +9,13 @@ import Dropzone from "./dropzone";
 import Video from "./video";
 import ProgressRing from "./progress_ring";
 
-const ENTER_KEY = 13;
-
 interface VideoUploadProps {
 }
 
 const VideoUpload: React.FC<VideoUploadProps> = () => {
   const history = useHistory();
   const { t } = useTranslation();
-  const { handleSubmit, register } = useForm();
+  const { handleSubmit, register, reset, watch } = useForm();
 
   const [ multimedia, setMultimedia ] = useState<string>();
   const [ progress, setProgress ] = useState<number>(0);
@@ -90,19 +88,12 @@ const VideoUpload: React.FC<VideoUploadProps> = () => {
   });
 
   const handleClickRemoveTag = (tagToRemove: string) => {
-    const tagsFiltered = tags.filter(tag => tag !== tagToRemove);
-    setTags(tagsFiltered);
+    setTags(tags.filter(tag => tag !== tagToRemove));
   };
 
-  const handleKeyInputTag = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.keyCode === ENTER_KEY && e.currentTarget.value) {
-      const value = e.currentTarget.value;
-
-      if (tags.indexOf(value) === -1) {
-        setTags([...tags, value]);
-      }
-
-      e.currentTarget.value = "";
+  const addTag = (value: string) => {
+    if (value.length > 0 && tags.indexOf(value) === -1) {
+      setTags([...tags, value]);
     }
   };
 
@@ -154,7 +145,7 @@ const VideoUpload: React.FC<VideoUploadProps> = () => {
                 </div>
 
                 <div className="field">
-                  <label className="label">Topic</label>
+                  <label className="label">{t("Topic")}</label>
                   <div className="control">
                     <div className="select">
                       <select name="topic" ref={register}>
@@ -177,14 +168,22 @@ const VideoUpload: React.FC<VideoUploadProps> = () => {
                         <input
                           className="input"
                           type="text"
+                          name="tagName"
                           placeholder={`${t("Add tag")}...`}
-                          onKeyDown={handleKeyInputTag}
+                          ref={register}
                         />
                       </div>
                       <div className="control">
-                        <a className="button is-info">
+                        <button
+                          type="button"
+                          className="button is-info"
+                          onClick={() => {
+                            addTag(watch("tagName"));
+                            reset({ tagName: "" });
+                          }}
+                        >
                           {t("Add")}
-                        </a>
+                        </button>
                       </div>
                     </div>
                   </div>
