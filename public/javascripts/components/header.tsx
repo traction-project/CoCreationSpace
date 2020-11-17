@@ -9,7 +9,7 @@ import classnames from "classnames";
 import { ApplicationState } from "../store";
 import { actionCreators as loginActionCreators, LoginActions } from "../actions/login";
 import { LoginState } from "../reducers/login";
-import NotificationCounter from "./notification_counter";
+import NotificationCounter from "./notifications/notification_counter";
 
 interface HeaderActionProps {
   loginActions: LoginActions

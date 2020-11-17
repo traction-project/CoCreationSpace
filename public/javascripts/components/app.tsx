@@ -19,7 +19,7 @@ import Header from "./header";
 import PostList from "./post_list/post_list";
 import Profile from "./profile";
 import Signup from "./signup/signup";
-import NotificationList from "./notification_list";
+import NotificationList from "./notifications/notification_list";
 import CookieBanner from "./cookie_banner";
 
 async function checkLogin() {
