@@ -234,10 +234,10 @@ const Post: React.FC<PostProps> = (props) => {
           </div>
         </div>
 
-        <div className="columns is-centered">
-          <div className="column is-8-desktop is-10-tablet">
-            {post.dataContainer && post.dataContainer.multimedia &&
-              post.dataContainer.multimedia.map((multimedia, index) => {
+        {(post?.dataContainer?.multimedia && post.dataContainer.multimedia.length > 0) && (
+          <div className="columns is-centered">
+            <div className="column is-8-desktop is-10-tablet">
+              {post.dataContainer.multimedia.map((multimedia, index) => {
                 return (
                   <Video
                     key={index}
@@ -247,10 +247,10 @@ const Post: React.FC<PostProps> = (props) => {
                     emojis={emojiReactions}
                   />
                 );
-              })
-            }
+              })}
+            </div>
           </div>
-        </div>
+        )}
 
         <div className="columns">
           <div className="column">
