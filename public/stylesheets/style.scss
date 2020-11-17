@@ -217,9 +217,16 @@ textarea {
 
 .list-tags {
   width: 100%;
-  overflow: hidden;
-  margin-top: 0.5rem;
-  min-height: 7.5rem;
+  margin: 1rem 0;
+  padding-top: 1rem;
+  border-top: 1px solid #F5F5F5;
+  border-bottom: 1px solid #F5F5F5;
+}
+
+.list-tags p {
+  padding-bottom: 1rem;
+  text-align:center;
+  color: #555555;
 }
 
 .list-tags__item {

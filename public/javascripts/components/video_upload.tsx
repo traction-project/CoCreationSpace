@@ -1,7 +1,8 @@
 import * as React from "react";
-import { useState, useEffect, ChangeEvent } from "react";
+import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useForm } from "react-hook-form";
 
 import { postFile, ResponseUploadType } from "../util";
 import Dropzone from "./dropzone";
@@ -16,17 +17,14 @@ interface VideoUploadProps {
 const VideoUpload: React.FC<VideoUploadProps> = () => {
   const history = useHistory();
   const { t } = useTranslation();
+  const { handleSubmit, register } = useForm();
 
-  const [ title, setTitle ] = useState<string>();
   const [ multimedia, setMultimedia ] = useState<string>();
   const [ progress, setProgress ] = useState<number>(0);
   const [ total, setTotal ] = useState<number>(0);
   const [ displayNotification, setDisplayNotification] = useState<"success" | "error">();
-  const [ summary, setSummary ] = useState<string>("");
   const [ tags, setTags ] = useState<Array<string>>([]);
-
   const [ topics, setTopics ] = useState<Array<[string, string]>>([]);
-  const [ selectedTopic, setSelectedTopic ] = useState<string>();
 
   useEffect(() => {
     fetch("/topics/all").then((res) => {
@@ -60,13 +58,13 @@ const VideoUpload: React.FC<VideoUploadProps> = () => {
     setDisplayNotification(undefined);
   };
 
-  const handleClickButton = async () => {
+  const handleFormSubmission = handleSubmit(async ({ title, description, topic }) => {
     const body = {
       title,
-      text: summary,
+      text: description,
       multimedia: [multimedia],
       tags: tags.map((tag) => { return { tag_name: tag }; } ),
-      topicId: selectedTopic
+      topicId: topic
     };
 
     try {
@@ -89,7 +87,7 @@ const VideoUpload: React.FC<VideoUploadProps> = () => {
         setDisplayNotification(undefined);
       }, 3000);
     }
-  };
+  });
 
   const handleClickRemoveTag = (tagToRemove: string) => {
     const tagsFiltered = tags.filter(tag => tag !== tagToRemove);
@@ -106,86 +104,116 @@ const VideoUpload: React.FC<VideoUploadProps> = () => {
 
       e.currentTarget.value = "";
     }
-
   };
 
-  const handleChangeInputTitle = (text: string) => {
-    setTitle(text);
-  };
 
   return (
     <section className="section">
       <div className="container">
-        <div className="columns">
-          <div className="column is-8 is-offset-2">
-            <div className="container">
-              {(total > 0) ? (
-                <ProgressRing radius={160} stroke={15} progress={progress} total={total}></ProgressRing>
-              ) : (multimedia) ? (
-                <Video id={multimedia}></Video>
-              ) : (
-                <Dropzone size={["100%", 300]} onFileDropped={startUpload} />
-              )}
-            </div>
+        <div className="columns is-centered">
+          <div className="column is-8">
+            {(total > 0) ? (
+              <ProgressRing radius={160} stroke={15} progress={progress} total={total} />
+            ) : (multimedia) ? (
+              <Video id={multimedia}></Video>
+            ) : (
+              <Dropzone size={["100%", 300]} onFileDropped={startUpload} />
+            )}
+          </div>
+        </div>
 
-            {(total > 0 || multimedia) ? (
-              <React.Fragment>
-                <br />
-                <div className="columns">
-                  <div className="column is-2">
-                    <h1 className="title-2">{t("Title")}</h1>
-                    <hr/>
-                    <input type="text" placeholder={`${t("Add title")}...`} className="searcher-tag" onChange={(e) => handleChangeInputTitle(e.currentTarget.value)}/>
-                  </div>
-                </div>
-                <br/>
+        <hr/>
 
-                <div className="columns">
-                  <div className="column">
-                    <h1 className="title-2">{t("Topic")}</h1>
-                    <hr/>
-                    <select className="select list-topics" value={selectedTopic} onChange={(e) => setSelectedTopic(e.target.value)}>
-                      <option />
-                      {topics.map(([id, name]) => {
-                        return (
-                          <option key={id} value={id}>{name}</option>
-                        );
-                      })}
-                    </select>
-                  </div>
-                </div>
-                <br/>
-
-                <div className="columns">
-                  <div className="column">
-                    <h1 className="title-2">{t("Tags")}</h1>
-                    <hr/>
-                    <input type="text" placeholder={`${t("Add tag")}...`} className="searcher-tag" onKeyDown={handleKeyInputTag}/>
-                    <ul className="list-tags">
-                      { tags ?
-                        tags.map((tag, index) => {
-                          return (
-                            <li key={index} className="tag">{tag}<a className="delete" onClick={(_) => handleClickRemoveTag(tag)}></a></li>);
-                        })
-                        : null}
-                    </ul>
-                  </div>
-                  <div className="column">
-                    <h1 className="title-2">{t("Text")}</h1>
-                    <hr/>
-                    <textarea
-                      placeholder={`${t("Write summary")}...`}
-                      className="summary"
-                      onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setSummary(e.currentTarget.value)}
+        <div className="columns is-centered">
+          <div className="column is-10">
+            {(total > 0 || multimedia) && (
+              <form onSubmit={handleFormSubmission}>
+                <div className="field">
+                  <label className="label">{t("Title")}</label>
+                  <div className="control">
+                    <input
+                      className="input"
+                      type="text"
+                      placeholder={`${t("Add title")}...`}
+                      name="title"
+                      ref={register}
                     />
                   </div>
                 </div>
-                <button className="btn" onClick={handleClickButton} disabled={(summary && multimedia) ? false : true}>
-                  {t("Create content")}
-                </button>
-              </React.Fragment>
-            ) : (
-              null
+
+                <div className="field">
+                  <label className="label">{t("Description")}</label>
+                  <div className="control">
+                    <textarea
+                      placeholder={`${t("Description")}...`}
+                      className="textarea"
+                      name="description"
+                      ref={register}
+                    />
+                  </div>
+                </div>
+
+                <div className="field">
+                  <label className="label">Topic</label>
+                  <div className="control">
+                    <div className="select">
+                      <select name="topic" ref={register}>
+                        {topics.map(([id, name]) => {
+                          return (
+                            <option key={id} value={id}>{name}</option>
+                          );
+                        })}
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="field">
+                  <label className="label">{t("Tags")}</label>
+
+                  <div className="control">
+                    <div className="field has-addons">
+                      <div className="control">
+                        <input
+                          className="input"
+                          type="text"
+                          placeholder={`${t("Add tag")}...`}
+                          onKeyDown={handleKeyInputTag}
+                        />
+                      </div>
+                      <div className="control">
+                        <a className="button is-info">
+                          {t("Add")}
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="list-tags">
+                    {(tags.length > 0) ? (
+                      <ul>
+                        {tags.map((tag, index) => {
+                          return (
+                            <li key={index} className="tag is-medium is-primary">
+                              {tag} <a className="delete" onClick={handleClickRemoveTag.bind(null, tag)}></a>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    ) : (
+                      <p>{t("No tags added yet")}</p>
+                    )}
+                  </div>
+                </div>
+
+                <div className="field pt-4">
+                  <div className="control">
+                    <button type="submit" className="button is-link is-fullwidth">
+                      Submit
+                    </button>
+                  </div>
+                </div>
+              </form>
             )}
 
             {(displayNotification == "success") ? (
