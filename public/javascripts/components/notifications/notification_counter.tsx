@@ -13,8 +13,8 @@ const NotificationCounter: React.FC<NotificationCounterProps> = (props) => {
 
   return (
     <div>
-      <i className="far fa-bell" />
-      &nbsp;{notifications.length} {t("Notifications")}
+      <i className="far fa-bell" />&nbsp;
+      {notifications.length} {t("Notification", { count: notifications.length })}
     </div>
   );
 };
