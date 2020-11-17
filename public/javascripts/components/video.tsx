@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import DashPlayer from "./dash_player";
 import { PostType } from "./post/post";
 import { EmojiReaction } from "../util";
+import BlankVideo from "./blank_video";
 
 interface VideoProps {
   id?: string;
@@ -67,19 +68,13 @@ const Video: React.FC<VideoProps> = (props) => {
             emojis={emojis}
           />
         ) : (
-          null
+          <BlankVideo />
         )}
       </div>
     );
   } else {
     return (
-      <div style={{ display: "flex" }}>
-        <div style={{ width: 700, height: 394, backgroundColor: "#000" }}>
-          <p style={{ textAlign: "center", marginTop: "25%", color: "#FFF" }}>
-            {videoStatus && t(videoStatus)}
-          </p>
-        </div>
-      </div>
+      <BlankVideo message={videoStatus && t(videoStatus)} />
     );
   }
 };
