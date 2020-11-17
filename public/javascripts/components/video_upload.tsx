@@ -8,6 +8,8 @@ import Dropzone from "./dropzone";
 import Video from "./video";
 import ProgressRing from "./progress_ring";
 
+const ENTER_KEY = 13;
+
 interface VideoUploadProps {
 }
 
@@ -95,13 +97,16 @@ const VideoUpload: React.FC<VideoUploadProps> = () => {
   };
 
   const handleKeyInputTag = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    const enterCode = 13;
-    if (e.keyCode === enterCode && e.currentTarget.value) {
+    if (e.keyCode === ENTER_KEY && e.currentTarget.value) {
       const value = e.currentTarget.value;
-      if (tags.indexOf(value) === -1 ) {
+
+      if (tags.indexOf(value) === -1) {
         setTags([...tags, value]);
       }
+
+      e.currentTarget.value = "";
     }
+
   };
 
   const handleChangeInputTitle = (text: string) => {
@@ -111,7 +116,7 @@ const VideoUpload: React.FC<VideoUploadProps> = () => {
   return (
     <section className="section">
       <div className="container">
-        <div className="columns" style={{ marginTop: 15 }}>
+        <div className="columns">
           <div className="column is-8 is-offset-2">
             <div className="container">
               {(total > 0) ? (
@@ -134,6 +139,7 @@ const VideoUpload: React.FC<VideoUploadProps> = () => {
                   </div>
                 </div>
                 <br/>
+
                 <div className="columns">
                   <div className="column">
                     <h1 className="title-2">{t("Topic")}</h1>
@@ -149,6 +155,7 @@ const VideoUpload: React.FC<VideoUploadProps> = () => {
                   </div>
                 </div>
                 <br/>
+
                 <div className="columns">
                   <div className="column">
                     <h1 className="title-2">{t("Tags")}</h1>
@@ -166,7 +173,11 @@ const VideoUpload: React.FC<VideoUploadProps> = () => {
                   <div className="column">
                     <h1 className="title-2">{t("Text")}</h1>
                     <hr/>
-                    <textarea placeholder={`${t("Write summary")}...`} className="summary" onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setSummary(e.currentTarget.value)}></textarea>
+                    <textarea
+                      placeholder={`${t("Write summary")}...`}
+                      className="summary"
+                      onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setSummary(e.currentTarget.value)}
+                    />
                   </div>
                 </div>
                 <button className="btn" onClick={handleClickButton} disabled={(summary && multimedia) ? false : true}>
@@ -176,6 +187,7 @@ const VideoUpload: React.FC<VideoUploadProps> = () => {
             ) : (
               null
             )}
+
             {(displayNotification == "success") ? (
               <div className="notification is-success fixed-notification">
                 <button className="delete" onClick={closeNotification}></button>
