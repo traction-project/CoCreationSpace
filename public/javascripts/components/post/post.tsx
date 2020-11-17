@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { VideoJsPlayer } from "video.js";
 import usePortal from "react-useportal";
 import { useTranslation } from "react-i18next";
+import classNames from "classnames";
 
 import { activateSubtitleTrack, CommonType, convertHMS, EmojiReaction } from "../../util";
 
@@ -199,7 +200,7 @@ const Post: React.FC<PostProps> = (props) => {
   }
 
   return (
-    <section className="section">
+    <section className={classNames("section", { "is-comment": post.parent_post_id != undefined })}>
       <div className="container">
         <div className="columns">
           <div className="column">
