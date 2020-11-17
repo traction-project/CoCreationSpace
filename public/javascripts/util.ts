@@ -193,3 +193,22 @@ export async function verifyLoginStatus(): Promise<boolean> {
     return false;
   }
 }
+
+/**
+ * Checks whether the client is a mobile device using the user agent string.
+ * This is achieved by matching the user agent string against a regex which
+ * matches the names of the most common mobile operating systems/browsers.
+ * Note that while this will work in the most common cases, it is not
+ * completely without fail (e.g. UA-spoofing or obscure devices).
+ *
+ * @returns true if the client is a mobile device, false otherwise
+ */
+export function isMobile() {
+  const uaRegex = /Android|iPhone|iPad|iPod|IEMobile|Opera Mini/i;
+
+  if(uaRegex.test(navigator.userAgent)){
+    return true;
+  }
+
+  return false;
+}
