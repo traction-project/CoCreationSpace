@@ -97,7 +97,6 @@ const VideoUpload: React.FC<VideoUploadProps> = () => {
     }
   };
 
-
   return (
     <section className="section">
       <div className="container">
@@ -113,8 +112,6 @@ const VideoUpload: React.FC<VideoUploadProps> = () => {
           </div>
         </div>
 
-        <hr/>
-
         <div className="columns is-centered">
           <div className="column is-10">
             {(total > 0 || multimedia) && (
@@ -127,7 +124,10 @@ const VideoUpload: React.FC<VideoUploadProps> = () => {
                       type="text"
                       placeholder={`${t("Add title")}...`}
                       name="title"
-                      ref={register}
+                      required={true}
+                      ref={register({
+                        required: true
+                      })}
                     />
                   </div>
                 </div>
@@ -207,7 +207,11 @@ const VideoUpload: React.FC<VideoUploadProps> = () => {
 
                 <div className="field pt-4">
                   <div className="control">
-                    <button type="submit" className="button is-link is-fullwidth">
+                    <button
+                      type="submit"
+                      className="button is-link is-fullwidth"
+                      disabled={watch("title")?.length == 0}
+                    >
                       Submit
                     </button>
                   </div>
