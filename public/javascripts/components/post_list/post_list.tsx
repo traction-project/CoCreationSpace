@@ -112,10 +112,10 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
               {(filteredPosts) ? (
                 filteredPosts.map((post, index) => {
                   return (
-                    <>
+                    <React.Fragment key={index}>
                       <PostEntry key={index} post={post} />
                       <hr/>
-                    </>
+                    </React.Fragment>
                   );
                 })
               ) : (

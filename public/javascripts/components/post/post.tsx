@@ -244,7 +244,7 @@ const Post: React.FC<PostProps> = (props) => {
 
                       <nav className="level is-mobile" style={{position: "relative"}}>
                         <div className="level-left">
-                          {(post.dataContainer?.multimedia && post.dataContainer?.multimedia.length > 0) ? (
+                          {(post.dataContainer?.multimedia && post.dataContainer?.multimedia.length > 0) && (
                             <Fragment>
                               <div className={`emoji-container ${showEmojis ? "" : "hidden"}`}>
                                 {emojis.map((emoji, index) => {
@@ -278,8 +278,6 @@ const Post: React.FC<PostProps> = (props) => {
                                 </Portal>
                               )}
                             </Fragment>
-                          ) : (
-                            null
                           )}
 
                           <a className="level-item" onClick={handleClickReply}>
