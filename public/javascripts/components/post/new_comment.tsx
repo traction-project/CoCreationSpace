@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useForm } from "react-hook-form";
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import FileUpload from "./new_comment_file_upload";
@@ -12,12 +12,12 @@ interface NewCommentProps {
 
 const NewComment: React.FC<NewCommentProps> = (props) => {
   const { t } = useTranslation();
-  const textAreaRef = useRef<HTMLTextAreaElement>();
+
   const [ files, setFiles ] = useState<Array<File>>([]);
   const [ multimedia, setMultimedia ] = useState<Array<string>>([]);
   const [ loading, setLoading ] = useState<boolean>(false);
 
-  const { handleSubmit, register, errors } = useForm();
+  const { handleSubmit, register, errors, reset } = useForm();
 
   const addFile = (filesToUpload: FileList) => {
     if (filesToUpload && filesToUpload.length > 0) {
@@ -55,9 +55,7 @@ const NewComment: React.FC<NewCommentProps> = (props) => {
     setMultimedia([]);
     setFiles([]);
     setLoading(false);
-    if (textAreaRef.current) {
-      textAreaRef.current.value = "";
-    }
+    reset();
   };
 
   return (
@@ -70,30 +68,21 @@ const NewComment: React.FC<NewCommentProps> = (props) => {
             rows={3}
             name="comment"
             style={{resize: "none"}}
-            ref={(e) => {
-              if (textAreaRef && e) {
-                textAreaRef.current = e;
-              }
-              register(e, {
-                required: true
-              });
-            }}>
-          </textarea>
+            ref={register({
+              required: true
+            })}
+          />
           {errors.comment && <p className="message-warning">* {t("required")}</p>}
         </div>
-        {
-          (files) ?
-            (
-              <div className="columns">
-                {files.map(((file, index) => {
-                  return(
-                    <FileUpload key={index} fileToUpload={file} addMultimedia={addMultimedia} setLoading={setLoading} />
-                  );
-                }))}
-
-              </div>
-            ) : null
-        }
+        {(files) && (
+          <div className="columns">
+            {files.map(((file, index) => {
+              return(
+                <FileUpload key={index} fileToUpload={file} addMultimedia={addMultimedia} setLoading={setLoading} />
+              );
+            }))}
+          </div>
+        )}
         <div className="form-group" style={{padding: ".5em 0"}}>
           <button className="button is-info" disabled={loading}>
             {t("Comment")}
