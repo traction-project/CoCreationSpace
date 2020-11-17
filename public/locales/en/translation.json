@@ -43,9 +43,6 @@
     "Add title": "Add title",
     "Tags": "Tags",
     "Add tag": "Add tag",
-    "Text": "Text",
-    "Write summary": "Write summary",
-    "Create content": "Create content",
     "Preferred language": "Preferred language",
     "Topic": "Topic",
     "notification-title": "New post in topic <1>{{topicTitle}}</1>",
@@ -71,5 +68,8 @@
     "Search": "Search",
     "Filter by tag": "Filter by tag",
     "Clear filter": "Clear filter",
-    "Post": "Post"
+    "Post": "Post",
+    "Description": "Description",
+    "Add": "Add",
+    "No tags added yet": "No tags added yet"
 }

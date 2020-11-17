@@ -43,9 +43,6 @@
     "Add title": "Title hinzufügen",
     "Tags": "Tags",
     "Add tag": "Tag hinzufügen",
-    "Text": "Text",
-    "Write summary": "Schreibe Zusammenfassung",
-    "Create content": "Inhalt erstellen",
     "Preferred language": "Bevorzugte Sprache",
     "Topic": "Thema",
     "notification-title": "Neuer Beitrag zum Thema <1>{{topicTitle}}</1>",
@@ -71,5 +68,8 @@
     "Search": "Suche",
     "Filter by tag": "Nach Tag filtern",
     "Clear filter": "Filter löschen",
-    "Post": "Beitrag"
+    "Post": "Beitrag",
+    "Description": "Beschreibung",
+    "Add": "Hinzufügen",
+    "No tags added yet": "Noch keine Tags hinzugefügt"
 }
