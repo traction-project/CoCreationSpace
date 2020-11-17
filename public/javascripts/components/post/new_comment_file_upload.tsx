@@ -4,9 +4,9 @@ import { useState, useEffect } from "react";
 import { postFile, ResponseUploadType } from "../../util";
 
 interface FileUploadProps {
-    fileToUpload: File;
-    addMultimedia: (id: string) => void;
-    setLoading: (value: boolean) => void;
+  fileToUpload: File;
+  addMultimedia: (id: string) => void;
+  setLoading: (value: boolean) => void;
 }
 
 const FileUpload: React.FC<FileUploadProps> = ({ fileToUpload, addMultimedia, setLoading }) => {
@@ -21,17 +21,19 @@ const FileUpload: React.FC<FileUploadProps> = ({ fileToUpload, addMultimedia, se
   }, [fileToUpload]);
 
   const startUpload = async (fileUpload: File) => {
-
     if (fileUpload) {
       try {
         setLoading(true);
+
         const response: string = await postFile("/video/upload", fileUpload, async (progress) => {
-          await setLoaded(progress.loaded);
-          await setTotal(progress.total);
+          setLoaded(progress.loaded);
+          setTotal(progress.total);
         });
+
         const responseJson: ResponseUploadType = JSON.parse(response);
-        await setFile(fileUpload);
-        await addMultimedia(responseJson.id);
+
+        setFile(fileUpload);
+        addMultimedia(responseJson.id);
       } finally {
         setLoading(false);
         setTotal(0);
@@ -48,25 +50,22 @@ const FileUpload: React.FC<FileUploadProps> = ({ fileToUpload, addMultimedia, se
               <img src="/images/docs.png" />
             </figure>
           </div>
+
           <div className="media-content">
             <div className="content is-small">
-              {(total > 0) ?
-                (
-                  <progress className="progress is-primary" value={loaded} max={total} />
-                ) :
-                (
-                  file && file.name && <span className="is-small">{file.name}</span>
-                )
-              }
+              {(total > 0) ? (
+                <progress className="progress is-primary" value={loaded} max={total} />
+              ) : (
+                file?.name && <span className="is-small">{file.name}</span>
+              )}
             </div>
           </div>
-          {(total > 0 && file && file.name) ?
-            (<div className="media-right">
-              <a className="delete"></a>
-            </div>)
-            : null
-          }
 
+          {(total > 0 && file?.name) && (
+            <div className="media-right">
+              <a className="delete"></a>
+            </div>
+          )}
         </article>
       </div>
     </div>
