@@ -194,111 +194,115 @@ const Post: React.FC<PostProps> = (props) => {
     await setPlayer(newPlayer);
   };
 
+  if (!post) {
+    return null;
+  }
+
   return (
     <section className="section">
       <div className="container">
         <div className="columns">
           <div className="column">
-            {(post) && (
-              <div>
-                <div className="comment">
-                  <article className="media">
-                    <UserLogo user={post.user} />
+            <article className="media">
+              <UserLogo user={post.user} />
 
-                    <div className="media-content">
-                      <div className="content">
-                        <p>
-                          {(post.title) && (
-                            <strong className="post-title">{post.title}</strong>
-                          )}
+              <div className="media-content">
+                <div className="content">
+                  <p>
+                    {(post.title) && (
+                      <strong className="post-title">{post.title}</strong>
+                    )}
 
-                          <small className="list-item__date">
-                            {post.createdAt && new Date(post.createdAt).toLocaleDateString()}
-                          </small>
-                          <br />
-                          <br />
+                    <small className="list-item__date">
+                      {post.createdAt && new Date(post.createdAt).toLocaleDateString()}
+                    </small>
+                    <br />
+                    <br />
 
-                          {(post.second) && (
-                            <a style={{marginRight: "5px"}} onClick={() => callbackClickTime && callbackClickTime(post.second ? post.second : 0)}>
-                              <strong>{convertHMS(post.second)}</strong>
-                            </a>
-                          )}
+                    {(post.second) && (
+                      <a style={{marginRight: "5px"}} onClick={() => callbackClickTime && callbackClickTime(post.second ? post.second : 0)}>
+                        <strong>{convertHMS(post.second)}</strong>
+                      </a>
+                    )}
 
-                          {post.dataContainer?.text_content}
-                        </p>
-
-                        {post.dataContainer && post.dataContainer.multimedia &&
-                          post.dataContainer.multimedia.map((multimedia, index) => {
-                            return (
-                              <Video
-                                key={index}
-                                id={multimedia.id}
-                                getPlayer={callbackPlayer}
-                                comments={comments}
-                                emojis={emojiReactions}
-                              />
-                            );
-                          })
-                        }
-                      </div>
-
-                      <nav className="level is-mobile" style={{position: "relative"}}>
-                        <div className="level-left">
-                          {(post.dataContainer?.multimedia && post.dataContainer?.multimedia.length > 0) && (
-                            <Fragment>
-                              <div className={`emoji-container ${showEmojis ? "" : "hidden"}`}>
-                                {emojis.map((emoji, index) => {
-                                  return (
-                                    <button key={index} className="emoji-item" onClick={() => handleClickEmojiItem(emoji)}>{emoji}</button>
-                                  );
-                                })}
-                              </div>
-
-                              <a className="level-item button is-info is-small" onClick={handleClickEmojiButton}>
-                                <span className="icon is-small">
-                                  <i className="fas fa-smile"></i>
-                                </span>
-                              </a>
-
-                              {(!post.parent_post_id) && (
-                                <a className="level-item" onClick={(e) => openPortal(e)}>
-                                  <span className="icon is-small">
-                                    <i className="fas fa-language"/>
-                                  </span>
-                                </a>
-                              )}
-
-                              {isOpen && (
-                                <Portal>
-                                  <TranslationModal
-                                    id={post.dataContainer.multimedia[0].id!}
-                                    onSuccess={handleTranslationSuccess}
-                                    onClose={closePortal}
-                                  />
-                                </Portal>
-                              )}
-                            </Fragment>
-                          )}
-
-                          <a className="level-item" onClick={handleClickReply}>
-                            <span className="icon is-small"><i className="fas fa-reply"></i></span>
-                          </a>
-
-                          <a className="level-item" onClick={handleClickLike}>
-                            <span key="unique" className="icon is-small">
-                              <i className={ isLike ? "fas fa-heart" : "far fa-heart"} />
-                            </span>
-                          </a>
-                          <span className="level-item">
-                            {likes}
-                          </span>
-                        </div>
-                      </nav>
-                    </div>
-                  </article>
+                    {post.dataContainer?.text_content}
+                  </p>
                 </div>
               </div>
-            )}
+            </article>
+          </div>
+        </div>
+
+        <div className="columns is-centered">
+          <div className="column is-8-desktop is-10-tablet">
+            {post.dataContainer && post.dataContainer.multimedia &&
+              post.dataContainer.multimedia.map((multimedia, index) => {
+                return (
+                  <Video
+                    key={index}
+                    id={multimedia.id}
+                    getPlayer={callbackPlayer}
+                    comments={comments}
+                    emojis={emojiReactions}
+                  />
+                );
+              })
+            }
+
+            <div className="block">
+              <nav className="level is-mobile" style={{position: "relative"}}>
+                <div className="level-left">
+                  {(post.dataContainer?.multimedia && post.dataContainer?.multimedia.length > 0) && (
+                    <Fragment>
+                      <div className={`emoji-container ${showEmojis ? "" : "hidden"}`}>
+                        {emojis.map((emoji, index) => {
+                          return (
+                            <button key={index} className="emoji-item" onClick={() => handleClickEmojiItem(emoji)}>{emoji}</button>
+                          );
+                        })}
+                      </div>
+
+                      <a className="level-item button is-info is-small" onClick={handleClickEmojiButton}>
+                        <span className="icon is-small">
+                          <i className="fas fa-smile"></i>
+                        </span>
+                      </a>
+
+                      {(!post.parent_post_id) && (
+                        <a className="level-item" onClick={(e) => openPortal(e)}>
+                          <span className="icon is-small">
+                            <i className="fas fa-language"/>
+                          </span>
+                        </a>
+                      )}
+
+                      {isOpen && (
+                        <Portal>
+                          <TranslationModal
+                            id={post.dataContainer.multimedia[0].id!}
+                            onSuccess={handleTranslationSuccess}
+                            onClose={closePortal}
+                          />
+                        </Portal>
+                      )}
+                    </Fragment>
+                  )}
+
+                  <a className="level-item" onClick={handleClickReply}>
+                    <span className="icon is-small"><i className="fas fa-reply"></i></span>
+                  </a>
+
+                  <a className="level-item" onClick={handleClickLike}>
+                    <span key="unique" className="icon is-small">
+                      <i className={ isLike ? "fas fa-heart" : "far fa-heart"} />
+                    </span>
+                  </a>
+                  <span className="level-item">
+                    {likes}
+                  </span>
+                </div>
+              </nav>
+            </div>
           </div>
         </div>
 
