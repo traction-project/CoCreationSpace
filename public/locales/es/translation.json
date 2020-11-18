@@ -30,7 +30,6 @@
     "Save": "__STRING_NOT_TRANSLATED__",
     "Text successfully translated": "__STRING_NOT_TRANSLATED__",
     "Could not translate text": "__STRING_NOT_TRANSLATED__",
-    "Record Video": "__STRING_NOT_TRANSLATED__",
     "Tap the video to stop recording and upload the video": "__STRING_NOT_TRANSLATED__",
     "Record": "__STRING_NOT_TRANSLATED__",
     "File successfully uploaded": "__STRING_NOT_TRANSLATED__",
@@ -73,5 +72,7 @@
     "No tags added yet": "__STRING_NOT_TRANSLATED__",
     "Notification": "__STRING_NOT_TRANSLATED__",
     "Notification_plural": "__STRING_NOT_TRANSLATED__",
-    "Notifications": "__STRING_NOT_TRANSLATED__"
+    "Notifications": "__STRING_NOT_TRANSLATED__",
+    "This page is only accessible on mobile devices!": "__STRING_NOT_TRANSLATED__",
+    "Your browser cannot record video!": "__STRING_NOT_TRANSLATED__"
 }

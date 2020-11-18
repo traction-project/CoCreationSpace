@@ -30,7 +30,6 @@
     "Save": "Speichern",
     "Text successfully translated": "Text erfolgreich übersetzt",
     "Could not translate text": "Konnte Text nicht übersetzen",
-    "Record Video": "Video aufnehmen",
     "Tap the video to stop recording and upload the video": "Tippe auf das Video um zu stoppen und das Video hochzuladen",
     "Record": "Aufnehmen",
     "File successfully uploaded": "Datei erfolgreich hochgeladen",
@@ -73,5 +72,7 @@
     "No tags added yet": "Noch keine Tags hinzugefügt",
     "Notification": "Benachrichtigung",
     "Notification_plural": "Benachrichtigungen",
-    "Notifications": "Benachrichtigungen"
+    "Notifications": "Benachrichtigungen",
+    "This page is only accessible on mobile devices!": "Diese Seite kann nur mit mobilen Endgeräten genutzt werden!",
+    "Your browser cannot record video!": "Dein Browser kann keine Videos aufnehmen!"
 }
