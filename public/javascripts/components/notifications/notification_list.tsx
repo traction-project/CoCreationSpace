@@ -5,7 +5,8 @@ import { Trans, useTranslation } from "react-i18next";
 import { NotificationData } from "./use_notification";
 
 interface Notification {
-  data: NotificationData,
+  id: string;
+  data: NotificationData;
   seen: boolean;
 }
 
@@ -24,6 +25,20 @@ const NotificationList: React.FC<NotificationListProps> = (props) => {
     });
   }, []);
 
+  const deleteNotification = (id: string) => {
+    return async () => {
+      const res = await fetch(`/notifications/${id}`, {
+        method: "DELETE"
+      });
+
+      if (res.ok) {
+        setNotifications(notifications.filter((n) => {
+          return n.id != id;
+        }));
+      }
+    };
+  };
+
   return (
     <section className="section">
       <div className="container">
@@ -31,7 +46,7 @@ const NotificationList: React.FC<NotificationListProps> = (props) => {
           <div className="column is-6-widescreen is-10-tablet">
             <h4 className="title is-4">{t("Notifications")}</h4>
 
-            {notifications.map(({ data: { topic, post }}, i) => {
+            {notifications.map(({ id, data: { topic, post }}, i) => {
               return (
                 <article key={i} className="media">
                   <figure className="media-left">
@@ -58,7 +73,7 @@ const NotificationList: React.FC<NotificationListProps> = (props) => {
                     </div>
                   </div>
                   <div className="media-right">
-                    <button className="delete" />
+                    <button className="delete" onClick={deleteNotification(id)} />
                   </div>
                 </article>
               );
