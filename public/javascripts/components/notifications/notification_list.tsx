@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
+import { useHistory } from "react-router-dom";
 
 import { NotificationData } from "./use_notification";
 
@@ -15,6 +16,7 @@ interface NotificationListProps {
 }
 
 const NotificationList: React.FC<NotificationListProps> = (props) => {
+  const history = useHistory();
   const { t } = useTranslation();
   const [ notifications, setNotifications ] = useState<Array<Notification>>([]);
 
@@ -45,6 +47,18 @@ const NotificationList: React.FC<NotificationListProps> = (props) => {
     };
   };
 
+  const markSeenAndGoToPost = (notificationId: string, postId: string) => {
+    return async () => {
+      const res = await fetch(`/notifications/${notificationId}/seen`, {
+        method: "POST"
+      });
+
+      if (res.ok) {
+        history.push(`/post/${postId}`);
+      }
+    };
+  };
+
   return (
     <section className="section">
       <div className="container">
@@ -54,7 +68,7 @@ const NotificationList: React.FC<NotificationListProps> = (props) => {
 
             {notifications.map(({ id, data: { topic, post, creator }, createdAt }, i) => {
               return (
-                <article key={i} className="media">
+                <article key={i} className="media is-clickable" onClick={markSeenAndGoToPost(id, post.id)}>
                   <figure className="media-left">
                     <p className="image is-64x64">
                       <img src={creator.image} />
@@ -74,7 +88,9 @@ const NotificationList: React.FC<NotificationListProps> = (props) => {
                           A new post titled <i>{{ postTitle: post.title}}</i> was submitted to the topic <i>{{ topicTitle: topic.title}}</i>
                         </Trans>
                         <br/>
-                        <small>{creator.username}</small>&emsp;<small>{createdAt.toLocaleDateString()} {createdAt.toLocaleTimeString()}</small>
+                        <p className="mt-2">
+                          <small>{creator.username}</small>&emsp;<small>{createdAt.toLocaleDateString()} {createdAt.toLocaleTimeString()}</small>
+                        </p>
                       </p>
                     </div>
                   </div>
