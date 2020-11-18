@@ -52,7 +52,7 @@ const processUploadedAudio = async (file: NodeJS.ReadableStream, filename: strin
 
   const audio: MultimediaInstance = Multimedia.build();
 
-  audio.title = filename;
+  audio.title = newName;
   audio.transcriptionJobId = newName.split(".")[0];
   audio.status = "done";
   audio.type = "audio";
@@ -71,7 +71,7 @@ const processUploadedImage = async (file: NodeJS.ReadableStream, filename: strin
 
   const image: MultimediaInstance = Multimedia.build();
 
-  image.title = filename;
+  image.title = newName;
   image.status = "done";
   image.type = "image";
 
