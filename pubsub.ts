@@ -2,7 +2,10 @@ import http from "http";
 import { PostInstance } from "models/post";
 import WebSocket from "ws";
 
+import { getFromEnvironment } from "./util";
 import { db } from "./models";
+
+const [ CLOUDFRONT_URL ] = getFromEnvironment("CLOUDFRONT_URL");
 
 interface InterestSubscription {
   socket: WebSocket;
@@ -70,9 +73,10 @@ async function isDuplicateNotification(data: any, userId: string) {
 export async function broadcastNotification(post: PostInstance) {
   const { Notifications } = db.getModels();
 
+  const user = await post.getUser();
   const thread = await post.getThread();
 
-  if (!thread) {
+  if (!thread || !user) {
     return;
   }
 
@@ -88,9 +92,11 @@ export async function broadcastNotification(post: PostInstance) {
 
     if (interests.find((t) => t == topic.id)) {
       console.log("Sending broadcast for", post.id, post.title, topic.id, topic.title, "to", userId);
+
       const data = {
         topic: { id: topic.id, title: topic.title },
-        post: { id: post.id, title: post.title }
+        post: { id: post.id, title: post.title },
+        creator: { id: user.id, username: user.username, image: `${CLOUDFRONT_URL}/${user.image}` }
       };
 
       if (!await isDuplicateNotification(data, userId)) {
