@@ -14,36 +14,109 @@ import { UserInstance } from "../models/users";
 const [ BUCKET_NAME, ETS_PIPELINE, CLOUDFRONT_URL ] = getFromEnvironment("BUCKET_NAME", "ETS_PIPELINE", "CLOUDFRONT_URL");
 const router = Router();
 
-router.post("/upload", authRequired, (req, res) => {
+const processUploadedVideo = async (file: NodeJS.ReadableStream, filename: string, userId: string) => {
   const { Multimedia } = db.getModels();
+
+  const newName = uuid4() + getExtension(filename);
+  await uploadToS3(newName, file, BUCKET_NAME);
+
+  transcribeMediaFile("en-US", newName, BUCKET_NAME);
+  const jobId = await encodeDash(ETS_PIPELINE, newName);
+
+  const video: MultimediaInstance = Multimedia.build();
+
+  video.title = filename;
+  video.key = newName.split(".")[0];
+
+  if (jobId) {
+    video.transcodingJobId = jobId;
+    video.transcriptionJobId = newName.split(".")[0];
+    video.status = "processing";
+  } else {
+    video.status = "error";
+  }
+
+  await video.save();
+  video.setUser(userId);
+
+  return video.id;
+};
+
+const processUploadedAudio = async (file: NodeJS.ReadableStream, filename: string, userId: string) => {
+  const { Multimedia } = db.getModels();
+
+  const newName = uuid4() + getExtension(filename);
+  await uploadToS3(newName, file, BUCKET_NAME);
+  transcribeMediaFile("en-US", newName, BUCKET_NAME);
+
+  const audio: MultimediaInstance = Multimedia.build();
+
+  audio.title = filename;
+  audio.transcriptionJobId = newName.split(".")[0];
+  audio.status = "done";
+
+  await audio.save();
+  audio.setUser(userId);
+
+  return audio.id;
+};
+
+const processUploadedImage = async (file: NodeJS.ReadableStream, filename: string, userId: string) => {
+  const { Multimedia } = db.getModels();
+
+  const newName = uuid4() + getExtension(filename);
+  await uploadToS3(newName, file, BUCKET_NAME);
+
+  const image: MultimediaInstance = Multimedia.build();
+
+  image.title = filename;
+  image.status = "done";
+
+  await image.save();
+  image.setUser(userId);
+
+  return image.id;
+};
+
+router.post("/upload", authRequired, (req, res) => {
   const busboy = new Busboy({ headers: req.headers });
+  const user = req.user as UserInstance;
 
   busboy.on("file", async (fieldname, file, filename, encoding, mimetype) => {
     try {
-      const newName = uuid4() + getExtension(filename);
-      await uploadToS3(newName, file, BUCKET_NAME);
+      if (mimetype.startsWith("video")) {
+        const videoId = await processUploadedVideo(
+          file, filename, user.id
+        );
 
-      transcribeMediaFile("en-US", newName, BUCKET_NAME);
-      const jobId = await encodeDash(ETS_PIPELINE, newName);
+        res.send({
+          status: "OK",
+          id: videoId
+        });
+      } else if (mimetype.startsWith("audio")) {
+        const audioId = await processUploadedAudio(
+          file, filename, user.id
+        );
 
-      const userId: string | undefined = (req.user as UserInstance).id;
-      const video: MultimediaInstance = Multimedia.build();
+        res.send({
+          status: "OK",
+          id: audioId
+        });
+      } else if (mimetype.startsWith("image")) {
+        const imageId = await processUploadedImage(
+          file, filename, user.id
+        );
 
-      video.title = filename;
-      video.key = newName.split(".")[0];
-
-      if (jobId) {
-        video.transcodingJobId = jobId;
-        video.transcriptionJobId = newName.split(".")[0];
-        video.status = "processing";
+        res.send({
+          status: "OK",
+          id: imageId
+        });
       } else {
-        video.status = "error";
+        res.status(400).send({
+          status: "ERR",
+          message: `Unsupported MIME type ${mimetype}`
+        });
       }
-
-      await video.save();
-      video.setUser(userId);
-
-      res.send({ status: "OK", id: video.id });
     } catch (e) {
       console.error(e);
 
