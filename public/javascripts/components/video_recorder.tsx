@@ -37,66 +37,71 @@ const VideoRecorder: React.FC<VideoRecorderProps> = () => {
     setDisplayNotification(undefined);
   };
 
-  const startRecording = () => {
+  const startRecording = async () => {
     setRecorderStatus("recording");
 
-    navigator.mediaDevices.getUserMedia({
+    const stream = await navigator.mediaDevices.getUserMedia({
       audio: true,
       video: {
         width: { ideal: 4096 },
         height: { ideal: 2160 }
       }
-    }).then((stream) => {
-      let stopped = false;
-      let requestStop = false;
+    });
 
-      if (video.current) {
-        video.current.srcObject = stream;
-        video.current.muted = true;
-        video.current.onloadeddata = () => video.current?.play();
+    let stopped = false;
+    let requestStop = false;
+    const videoRef = video.current;
 
-        video.current.onclick = () => {
-          console.log("video clicked");
-          requestStop = true;
-        };
+    if (!videoRef) {
+      console.error("Video ref not available");
+      return;
+    }
+
+    videoRef.srcObject = stream;
+    videoRef.muted = true;
+    videoRef.onloadeddata = () => video.current?.play();
+
+    videoRef.onclick = () => {
+      console.log("video clicked");
+      requestStop = true;
+    };
+
+
+    const chunks: Array<BlobPart> = [];
+    const recorder = new MediaRecorder(stream, {
+      mimeType: "video/webm",
+      videoBitsPerSecond: 5000000,
+      audioBitsPerSecond: 256000
+    });
+
+    console.log("setting up recorder...");
+
+    recorder.addEventListener("error", (e) => {
+      console.error(e);
+    });
+
+    recorder.addEventListener("dataavailable", (e) => {
+      if (e.data.size > 0) {
+        chunks.push(e.data);
       }
 
-      const chunks: Array<BlobPart> = [];
-      const recorder = new MediaRecorder(stream, {
-        mimeType: "video/webm",
-        videoBitsPerSecond: 5000000,
-        audioBitsPerSecond: 256000
-      });
+      if (requestStop == true && stopped == false) {
+        console.log("stopping recorder...");
 
-      console.log("setting up recorder...");
+        recorder.stop();
+        video.current?.pause();
+        stream.getTracks().forEach((t) => t.stop());
 
-      recorder.addEventListener("error", (e) => {
-        console.error(e);
-      });
-
-      recorder.addEventListener("dataavailable", (e) => {
-        if (e.data.size > 0) {
-          chunks.push(e.data);
-        }
-
-        if (requestStop == true && stopped == false) {
-          console.log("stopping recorder...");
-
-          recorder.stop();
-          video.current?.pause();
-          stream.getTracks().forEach((t) => t.stop());
-
-          stopped = true;
-        }
-      });
-
-      recorder.addEventListener("stop", () => {
-        console.log("recorder stopped. starting file upload...");
-        startUpload(new File(chunks, "video.webm"));
-      });
-
-      recorder.start(1000);
+        stopped = true;
+      }
     });
+
+    recorder.addEventListener("stop", () => {
+      console.log("recorder stopped. starting file upload...");
+      startUpload(new File(chunks, "video.webm"));
+    });
+
+    recorder.start(1000);
   };
 
   return (
