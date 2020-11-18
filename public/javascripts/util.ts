@@ -212,3 +212,18 @@ export function isMobile() {
 
   return false;
 }
+
+/**
+ * Returns whether the user's browser supports the MediaRecorder API.
+ * This is done by checking whether the `MediaRecorder` object is present or if
+ * an exception occurs trying to access it.
+ *
+ * @returns true if MediaRecorder is supported, false otherwise
+ */
+export function isMedisRecorderSupported() {
+  try {
+    return MediaRecorder != undefined;
+  } catch {
+    return false;
+  }
+}
