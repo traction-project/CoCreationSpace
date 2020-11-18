@@ -2,7 +2,7 @@ import * as React from "react";
 import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import { postFile } from "../util";
+import { postFile, isMobile, isMedisRecorderSupported } from "../util";
 
 interface VideoRecorderProps {
 }
@@ -105,44 +105,51 @@ const VideoRecorder: React.FC<VideoRecorderProps> = () => {
     recorder.start(1000);
   };
 
+  const renderRecorder = () => {
+    return (
+      (total > 0) ? (
+        <div className="progresscontainer">
+          <progress className="progress is-primary" value={progress} max={total} />
+        </div>
+      ) : (recorderStatus) ? (
+        <div>
+          <video ref={video} />
+          <p className="has-text-centered">
+            {t("Tap the video to stop recording and upload the video")}
+          </p>
+        </div>
+      ) : (
+        <button className="button is-info is-fullwidth" onClick={startRecording}>
+          {t("Record")}
+        </button>
+      )
+    );
+  };
 
   return (
-    <section className="section">
-      <div className="container">
-        <div className="columns">
-          <div className="column is-8 is-offset-2">
-            <h1 className="title">{t("Record Video")}</h1>
-
-            {(total > 0) ? (
-              <div className="progresscontainer">
-                <progress className="progress is-primary" value={progress} max={total} />
+    <section className="hero is-fullheight-with-navbar">
+      <div className="hero-body opera-background">
+        <div className="container">
+          <div className="columns is-centered">
+            <div className="column is-6-tablet is-5-desktop is-5-widescreen">
+              <div className="box">
+                {(!isMobile()) ? (
+                  <article className="message is-danger">
+                    <div className="message-body">
+                      {t("This page is only accessible on mobile devices!")}
+                    </div>
+                  </article>
+                ) : (!isMedisRecorderSupported()) ? (
+                  <article className="message is-danger">
+                    <div className="message-body">
+                      {t("Your browser cannot record video!")}
+                    </div>
+                  </article>
+                ) : (
+                  renderRecorder()
+                )}
               </div>
-            ) : (recorderStatus) ? (
-              <div>
-                <video ref={video} />
-                <p>
-                  {t("Tap the video to stop recording and upload the video")}
-                </p>
-              </div>
-            ) : (
-              <button className="button is-info" onClick={startRecording}>
-                {t("Record")}
-              </button>
-            )}
-
-            {(displayNotification == "success") ? (
-              <div className="notification is-success fixed-notification">
-                <button className="delete" onClick={closeNotification}></button>
-                {t("File successfully uploaded")}
-              </div>
-            ) : (displayNotification == "error") ? (
-              <div className="notification is-error fixed-notification">
-                <button className="delete" onClick={closeNotification}></button>
-                {t("Could not upload file")}
-              </div>
-            ) : (
-              null
-            )}
+            </div>
           </div>
         </div>
       </div>
