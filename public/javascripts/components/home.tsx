@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useHistory } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { isMobile } from "../util";
 
 interface HomeProps {}
 
@@ -37,6 +38,11 @@ const Home: React.FC<HomeProps> = () => {
                 <li className="home__menu-item" onClick={navigateTo("/upload")}>
                   {t("Create")}
                 </li>
+                {(isMobile()) && (
+                  <li className="home__menu-item" onClick={navigateTo("/record")}>
+                    {t("Record")}
+                  </li>
+                )}
               </ul>
             </div>
           </div>
