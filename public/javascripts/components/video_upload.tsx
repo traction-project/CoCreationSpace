@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import { postFile, ResponseUploadType } from "../util";
 import Dropzone from "./dropzone";
 import Video from "./video";
-import ProgressRing from "./progress_ring";
+import ProgressBox from "./progress_box";
 
 interface VideoUploadProps {
 }
@@ -103,7 +103,7 @@ const VideoUpload: React.FC<VideoUploadProps> = () => {
         <div className="columns is-centered">
           <div className="column is-8">
             {(total > 0) ? (
-              <ProgressRing radius={160} stroke={15} progress={progress} total={total} />
+              <ProgressBox progress={progress} total={total} />
             ) : (multimedia) ? (
               <Video id={multimedia}></Video>
             ) : (
