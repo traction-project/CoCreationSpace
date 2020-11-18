@@ -105,43 +105,48 @@ const VideoRecorder: React.FC<VideoRecorderProps> = () => {
     recorder.start(1000);
   };
 
+
   return (
-    <div className="columns" style={{ marginTop: 15 }}>
-      <div className="column is-8 is-offset-2">
-        <h1 className="title">{t("Record Video")}</h1>
+    <section className="section">
+      <div className="container">
+        <div className="columns">
+          <div className="column is-8 is-offset-2">
+            <h1 className="title">{t("Record Video")}</h1>
 
-        {(total > 0) ? (
-          <div className="progresscontainer">
-            <progress className="progress is-primary" value={progress} max={total} />
-          </div>
-        ) : (recorderStatus) ? (
-          <div>
-            <video ref={video} />
-            <p>
-              {t("Tap the video to stop recording and upload the video")}
-            </p>
-          </div>
-        ) : (
-          <button className="button is-info" onClick={startRecording}>
-            {t("Record")}
-          </button>
-        )}
+            {(total > 0) ? (
+              <div className="progresscontainer">
+                <progress className="progress is-primary" value={progress} max={total} />
+              </div>
+            ) : (recorderStatus) ? (
+              <div>
+                <video ref={video} />
+                <p>
+                  {t("Tap the video to stop recording and upload the video")}
+                </p>
+              </div>
+            ) : (
+              <button className="button is-info" onClick={startRecording}>
+                {t("Record")}
+              </button>
+            )}
 
-        {(displayNotification == "success") ? (
-          <div className="notification is-success fixed-notification">
-            <button className="delete" onClick={closeNotification}></button>
-            {t("File successfully uploaded")}
+            {(displayNotification == "success") ? (
+              <div className="notification is-success fixed-notification">
+                <button className="delete" onClick={closeNotification}></button>
+                {t("File successfully uploaded")}
+              </div>
+            ) : (displayNotification == "error") ? (
+              <div className="notification is-error fixed-notification">
+                <button className="delete" onClick={closeNotification}></button>
+                {t("Could not upload file")}
+              </div>
+            ) : (
+              null
+            )}
           </div>
-        ) : (displayNotification == "error") ? (
-          <div className="notification is-error fixed-notification">
-            <button className="delete" onClick={closeNotification}></button>
-            {t("Could not upload file")}
-          </div>
-        ) : (
-          null
-        )}
+        </div>
       </div>
-    </div>
+    </section>
   );
 };
 
