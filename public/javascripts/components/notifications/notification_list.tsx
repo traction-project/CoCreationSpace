@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { Trans } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 
 import { NotificationData } from "./use_notification";
 
@@ -13,6 +13,7 @@ interface NotificationListProps {
 }
 
 const NotificationList: React.FC<NotificationListProps> = (props) => {
+  const { t } = useTranslation();
   const [ notifications, setNotifications ] = useState<Array<Notification>>([]);
 
   useEffect(() => {
@@ -26,26 +27,43 @@ const NotificationList: React.FC<NotificationListProps> = (props) => {
   return (
     <section className="section">
       <div className="container">
-        <div className="columns" style={{ marginTop: 15 }}>
-          <div className="column is-6 is-offset-3">
-            <h3 className="title is-3">Notifications</h3>
+        <div className="columns is-centered">
+          <div className="column is-6-widescreen is-10-tablet">
+            <h4 className="title is-4">{t("Notifications")}</h4>
 
             {notifications.map(({ data: { topic, post }}, i) => {
               return (
-                <div className="box" key={i}>
-                  <h5 className="title is-5">
-                    <Trans i18nKey="notification-title">
-                      New post in topic {{ topicTitle: topic.title }}
-                    </Trans>
-                  </h5>
-                  <p>
-                    <Trans i18nKey="notification-text">
-                      A new post titled <i>{{ postTitle: post.title}}</i> was submitted to the topic <i>{{ topicTitle: topic.title}}</i>
-                    </Trans>
-                  </p>
-                </div>
+                <article key={i} className="media">
+                  <figure className="media-left">
+                    <p className="image is-64x64">
+                      <img src="https://bulma.io/images/placeholders/128x128.png" />
+                    </p>
+                  </figure>
+                  <div className="media-content">
+                    <div className="content">
+                      <p>
+                        <strong>
+                          <Trans i18nKey="notification-title">
+                            New post in topic {{ topicTitle: topic.title }}
+                          </Trans>
+                        </strong>
+                        <br />
+                        <br />
+                        <Trans i18nKey="notification-text">
+                          A new post titled <i>{{ postTitle: post.title}}</i> was submitted to the topic <i>{{ topicTitle: topic.title}}</i>
+                        </Trans>
+                        <br/>
+                        <small>by @johnsmith</small> <small>31m ago</small>
+                      </p>
+                    </div>
+                  </div>
+                  <div className="media-right">
+                    <button className="delete" />
+                  </div>
+                </article>
               );
             })}
+
           </div>
         </div>
       </div>
