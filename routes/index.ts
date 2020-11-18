@@ -5,6 +5,7 @@ import { readFileSync } from "fs";
 import APIRouter from "./api";
 import SNSRouter from "./sns";
 import VideoRouter from "./video";
+import ImageRouter from "./images";
 import PostRouter from "./post";
 import ThreadRouter from "./thread";
 import TagRouter from "./tag";
@@ -30,6 +31,7 @@ router.use("/translate", TranslateRouter);
 router.use("/users", UserRouter);
 router.use("/video", VideoRouter);
 router.use("/notifications", NotificationRouter);
+router.use("/images", ImageRouter);
 
 router.get("/", (_, res) => {
   res.render("index", { title: "MediaVault" });
