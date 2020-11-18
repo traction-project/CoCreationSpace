@@ -66,6 +66,7 @@ const VideoRecorder: React.FC<VideoRecorderProps> = () => {
       requestStop = true;
     };
 
+    await videoRef.requestFullscreen();
 
     const chunks: Array<BlobPart> = [];
     const recorder = new MediaRecorder(stream, {
