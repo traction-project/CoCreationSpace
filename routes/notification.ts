@@ -48,7 +48,12 @@ router.get("/new", authRequired, async (req, res) => {
 
   res.send(
     notifications.map((n) => {
-      return n.data;
+      return {
+        id: n.id,
+        data: n.data,
+        seen: n.seen,
+        createdAt: n.createdAt
+      };
     })
   );
 });
