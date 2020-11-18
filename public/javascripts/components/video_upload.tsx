@@ -15,7 +15,7 @@ interface VideoUploadProps {
 const VideoUpload: React.FC<VideoUploadProps> = () => {
   const history = useHistory();
   const { t } = useTranslation();
-  const { handleSubmit, register, reset, watch } = useForm();
+  const { handleSubmit, register, setValue, getValues, watch } = useForm();
 
   const [ multimedia, setMultimedia ] = useState<string>();
   const [ progress, setProgress ] = useState<number>(0);
@@ -178,8 +178,8 @@ const VideoUpload: React.FC<VideoUploadProps> = () => {
                           type="button"
                           className="button is-info"
                           onClick={() => {
-                            addTag(watch("tagName"));
-                            reset({ tagName: "" });
+                            addTag(getValues("tagName"));
+                            setValue("tagName", "");
                           }}
                         >
                           {t("Add")}
