@@ -25,7 +25,9 @@ function useNotification(userId: string) {
       setNotifications(data);
     }).then(() => {
       console.log("Setting up websocket channel...");
-      const ws = new WebSocket(`ws://${location.host}/ws`);
+
+      const protocol = (location.protocol.startsWith("https")) ? "wss" : "ws";
+      const ws = new WebSocket(`${protocol}://${location.host}/ws`);
 
       ws.onopen = () => {
         console.log("Websocket connection established");
