@@ -227,3 +227,23 @@ export function isMedisRecorderSupported() {
     return false;
   }
 }
+
+/**
+ * Converts a FileList object into an array of files.
+ *
+ * @param fileList FileList object
+ * @returns Files in FileList object as an array
+ */
+export function getFilesFromList(fileList: FileList): Array<File> {
+  const files: Array<File> = [];
+
+  for (let i=0; i<fileList.length; i++) {
+    const file = fileList.item(i);
+
+    if (file != null) {
+      files.push(file);
+    }
+  }
+
+  return files;
+}
