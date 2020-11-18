@@ -31,8 +31,8 @@ const PostEntry: React.FC<PostEntryProps> = (props) => {
 
           <p className="mt-4">
             <i className="far fa-comment" />&nbsp;
-            {(post.comments && post.comments.length > 0) ? post.comments.length : 0}&nbsp;
-            {(post.comments && post.comments.length == 1) ? t("Comment") : t("Comments") }
+            {post.comments?.length || 0}&nbsp;
+            {t("Comment", { count: post.comments?.length || 0 })}
           </p>
         </div>
         {(post.dataContainer && post.dataContainer.multimedia && post.dataContainer.multimedia.length > 0) && (
