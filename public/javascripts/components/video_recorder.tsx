@@ -2,7 +2,8 @@ import * as React from "react";
 import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import { postFile, isMobile, isMedisRecorderSupported } from "../util";
+import { isMobile, isMedisRecorderSupported } from "../util";
+import VideoUpload from "./video_upload";
 
 interface VideoRecorderProps {
 }
@@ -12,30 +13,7 @@ const VideoRecorder: React.FC<VideoRecorderProps> = () => {
   const { t } = useTranslation();
 
   const [ recorderStatus, setRecorderStatus ] = useState<"recording" | "stopped">();
-  const [ progress, setProgress ] = useState<number>(0);
-  const [ total, setTotal ] = useState<number>(0);
-  const [ displayNotification, setDisplayNotification] = useState<"success" | "error">();
-
-  const startUpload = async (file: File) => {
-    try {
-      await postFile("/video/upload", file, (progress) => {
-        setProgress(progress.loaded);
-        setTotal(progress.total);
-      });
-
-      setDisplayNotification("success");
-    } catch {
-      setDisplayNotification("error");
-    } finally {
-      setTotal(0);
-      setRecorderStatus(undefined);
-      setTimeout(() => setDisplayNotification(undefined), 3000);
-    }
-  };
-
-  const closeNotification = () => {
-    setDisplayNotification(undefined);
-  };
+  const [ file, setFile ] = useState<File>();
 
   const startRecording = async () => {
     setRecorderStatus("recording");
@@ -65,8 +43,6 @@ const VideoRecorder: React.FC<VideoRecorderProps> = () => {
       console.log("video clicked");
       requestStop = true;
     };
-
-    await videoRef.requestFullscreen();
 
     const chunks: Array<BlobPart> = [];
     const recorder = new MediaRecorder(stream, {
@@ -99,7 +75,11 @@ const VideoRecorder: React.FC<VideoRecorderProps> = () => {
 
     recorder.addEventListener("stop", () => {
       console.log("recorder stopped. starting file upload...");
-      startUpload(new File(chunks, "video.webm"));
+
+      setRecorderStatus("stopped");
+      setFile(new File(chunks, "video.webm", {
+        type: "video/webm"
+      }));
     });
 
     recorder.start(1000);
@@ -107,11 +87,7 @@ const VideoRecorder: React.FC<VideoRecorderProps> = () => {
 
   const renderRecorder = () => {
     return (
-      (total > 0) ? (
-        <div className="progresscontainer">
-          <progress className="progress is-primary" value={progress} max={total} />
-        </div>
-      ) : (recorderStatus) ? (
+      (recorderStatus == "recording") ? (
         <div>
           <video ref={video} />
           <p className="has-text-centered">
@@ -125,6 +101,12 @@ const VideoRecorder: React.FC<VideoRecorderProps> = () => {
       )
     );
   };
+
+  if (recorderStatus == "stopped" && file) {
+    return (
+      <VideoUpload file={file} />
+    );
+  }
 
   return (
     <section className="hero is-fullheight-with-navbar">
