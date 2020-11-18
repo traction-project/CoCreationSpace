@@ -121,7 +121,7 @@ export async function broadcastNotification(post: PostInstance) {
  * @param server HTTP server to attach this websocket server to
  */
 async function setupWebSocketServer(server: http.Server) {
-  const wss = new WebSocket.Server({ server });
+  const wss = new WebSocket.Server({ server, path: "/ws" });
 
   wss.on("connection", (ws) => {
     console.log("New ws connection accepted");
