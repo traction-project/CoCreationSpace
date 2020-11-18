@@ -1,8 +1,8 @@
 import * as React from "react";
 import { useHistory } from "react-router-dom";
-import { PostType } from "../post/post";
 import { useTranslation } from "react-i18next";
 
+import { PostType } from "../post/post";
 import UserLogo from "../user_logo";
 
 interface PostEntryProps {
@@ -26,18 +26,18 @@ const PostEntry: React.FC<PostEntryProps> = (props) => {
 
       <div className="media-content">
         <div className="content">
-          <div className="block">
-            <strong className="post-title">{post.title ? post.title : t("Post")}</strong>
-            <small className="list-item__date">{post.createdAt && new Date(post.createdAt).toLocaleDateString()}</small>
-          </div>
+          <strong className="post-title">{post.title ? post.title : t("Post")}</strong>
+          <small className="list-item__date">{post.createdAt && new Date(post.createdAt).toLocaleDateString()}</small>
 
-          <div className="block">
-            <p>{post.dataContainer?.text_content}</p>
-          </div>
+          <p className="mt-4">
+            <i className="far fa-comment" />&nbsp;
+            {(post.comments && post.comments.length > 0) ? post.comments.length : 0}&nbsp;
+            {(post.comments && post.comments.length == 1) ? t("Comment") : t("Comments") }
+          </p>
         </div>
         {(post.dataContainer && post.dataContainer.multimedia && post.dataContainer.multimedia.length > 0) && (
           <div className="list-item__files">
-            {post.dataContainer.multimedia.map((multimedia, index) => {
+            {post.dataContainer.multimedia.map((_, index) => {
               return (
                 <div key={index}>
                   <figure className="image is-24x24 list-item__files-item">
@@ -48,13 +48,6 @@ const PostEntry: React.FC<PostEntryProps> = (props) => {
             })}
           </div>
         )}
-      </div>
-      <div className="media-right number-comments">
-        <i className="far fa-comment"></i>
-        <p>
-          {(post.comments && post.comments.length > 0) ? post.comments.length : 0}&nbsp;
-          {(post.comments && post.comments.length == 1) ? t("Comment") : t("Comments") }
-        </p>
       </div>
     </article>
   );
