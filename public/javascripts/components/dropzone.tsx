@@ -2,32 +2,34 @@ import * as React from "react";
 import { useState } from "react";
 import classNames from "classnames";
 import { useTranslation } from "react-i18next";
+import { getFilesFromList } from "../util";
 
 interface DropzoneProps {
-  onFileDropped: (f: File) => void;
+  onFilesDropped: (files: Array<File>) => void;
   size: [number | string, number | string];
 }
 
 const Dropzone: React.FC<DropzoneProps> = (props) => {
-  const { onFileDropped, size: [width, height] } = props;
+  const { onFilesDropped, size: [width, height] } = props;
   const { t } = useTranslation();
   const [ dropzoneEntered, setDropzoneEntered ] = useState(false);
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
 
-    console.log("File dropped");
-    const file = e.dataTransfer.files.item(0);
+    console.log("Files dropped");
+    const files = getFilesFromList(e.dataTransfer.files);
 
-    if (file) {
-      onFileDropped(file);
+    if (files.length > 0) {
+      onFilesDropped(files);
     }
   };
 
   const handleButtonClick = (filesToUpload: FileList) => {
-    if (filesToUpload.length > 0) {
-      const file = filesToUpload.item(0);
-      file && onFileDropped(file);
+    const files = getFilesFromList(filesToUpload);
+
+    if (files.length > 0) {
+      onFilesDropped(files);
     }
   };
 
@@ -49,6 +51,7 @@ const Dropzone: React.FC<DropzoneProps> = (props) => {
           <input
             className="file-input"
             type="file"
+            multiple={true}
             name="resume"
             onChange={(e) => e.target.files && handleButtonClick(e.target.files)}
           />
