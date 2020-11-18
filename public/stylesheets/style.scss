@@ -25,8 +25,9 @@ body {
   border-radius: 0;
 }
 
-.is-clickable {
-  cursor: pointer;
+.is-highlighted {
+  border: 1px solid #E2E2E2;
+  background-color: #F5F5F5;
 }
 
 .dropzone {

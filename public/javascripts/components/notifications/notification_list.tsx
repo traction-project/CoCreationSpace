@@ -2,6 +2,7 @@ import * as React from "react";
 import { useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
+import classNames from "classnames";
 
 import { NotificationData } from "./use_notification";
 
@@ -66,9 +67,9 @@ const NotificationList: React.FC<NotificationListProps> = (props) => {
           <div className="column is-6-widescreen is-10-tablet">
             <h4 className="title is-4">{t("Notifications")}</h4>
 
-            {notifications.map(({ id, data: { topic, post, creator }, createdAt }, i) => {
+            {notifications.map(({ id, data: { topic, post, creator }, createdAt, seen }, i) => {
               return (
-                <article key={i} className="media is-clickable" onClick={markSeenAndGoToPost(id, post.id)}>
+                <article key={i} className={classNames("media", "is-clickable", "p-4", { "is-highlighted": !seen })} onClick={markSeenAndGoToPost(id, post.id)}>
                   <figure className="media-left">
                     <p className="image is-64x64">
                       <img src={creator.image} />
