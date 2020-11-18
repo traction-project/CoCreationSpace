@@ -27,6 +27,7 @@ const processUploadedVideo = async (file: NodeJS.ReadableStream, filename: strin
 
   video.title = filename;
   video.key = newName.split(".")[0];
+  video.type = "video";
 
   if (jobId) {
     video.transcodingJobId = jobId;
@@ -54,6 +55,7 @@ const processUploadedAudio = async (file: NodeJS.ReadableStream, filename: strin
   audio.title = filename;
   audio.transcriptionJobId = newName.split(".")[0];
   audio.status = "done";
+  audio.type = "audio";
 
   await audio.save();
   audio.setUser(userId);
@@ -71,6 +73,7 @@ const processUploadedImage = async (file: NodeJS.ReadableStream, filename: strin
 
   image.title = filename;
   image.status = "done";
+  image.type = "image";
 
   await image.save();
   image.setUser(userId);
