@@ -10,9 +10,10 @@ import Video from "./video";
 import ProgressBox from "./progress_box";
 
 interface VideoUploadProps {
+  file?: File;
 }
 
-const VideoUpload: React.FC<VideoUploadProps> = () => {
+const VideoUpload: React.FC<VideoUploadProps> = ({ file }) => {
   const history = useHistory();
   const { t } = useTranslation();
   const { handleSubmit, register, setValue, getValues, watch } = useForm();
@@ -32,6 +33,12 @@ const VideoUpload: React.FC<VideoUploadProps> = () => {
         return [t.id, t.title];
       }));
     });
+  }, []);
+
+  useEffect(() => {
+    if (file) {
+      startUpload(file);
+    }
   }, []);
 
   const startUpload = async (file: File) => {
