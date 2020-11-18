@@ -217,7 +217,7 @@ const VideoUpload: React.FC<VideoUploadProps> = ({ file }) => {
                     <button
                       type="submit"
                       className="button is-link is-fullwidth"
-                      disabled={watch("title")?.length == 0}
+                      disabled={watch("title")?.length == 0 || multimedia == undefined}
                     >
                       Submit
                     </button>
