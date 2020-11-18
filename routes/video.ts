@@ -94,7 +94,8 @@ router.post("/upload", authRequired, (req, res) => {
 
         res.send({
           status: "OK",
-          id: videoId
+          id: videoId,
+          type: "video"
         });
       } else if (mimetype.startsWith("audio")) {
         const audioId = await processUploadedAudio(
@@ -103,7 +104,8 @@ router.post("/upload", authRequired, (req, res) => {
 
         res.send({
           status: "OK",
-          id: audioId
+          id: audioId,
+          type: "audio"
         });
       } else if (mimetype.startsWith("image")) {
         const imageId = await processUploadedImage(
@@ -112,7 +114,8 @@ router.post("/upload", authRequired, (req, res) => {
 
         res.send({
           status: "OK",
-          id: imageId
+          id: imageId,
+          type: "image"
         });
       } else {
         res.status(400).send({
