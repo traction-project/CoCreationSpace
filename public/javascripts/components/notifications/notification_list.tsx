@@ -8,6 +8,7 @@ interface Notification {
   id: string;
   data: NotificationData;
   seen: boolean;
+  createdAt: Date;
 }
 
 interface NotificationListProps {
@@ -21,7 +22,12 @@ const NotificationList: React.FC<NotificationListProps> = (props) => {
     fetch("/notifications").then((res) => {
       return res.json();
     }).then((data) => {
-      setNotifications(data);
+      setNotifications(data.map((notification: any) => {
+        return {
+          ...notification,
+          createdAt: new Date(notification.createdAt)
+        };
+      }));
     });
   }, []);
 
@@ -46,12 +52,12 @@ const NotificationList: React.FC<NotificationListProps> = (props) => {
           <div className="column is-6-widescreen is-10-tablet">
             <h4 className="title is-4">{t("Notifications")}</h4>
 
-            {notifications.map(({ id, data: { topic, post }}, i) => {
+            {notifications.map(({ id, data: { topic, post, creator }, createdAt }, i) => {
               return (
                 <article key={i} className="media">
                   <figure className="media-left">
                     <p className="image is-64x64">
-                      <img src="https://bulma.io/images/placeholders/128x128.png" />
+                      <img src={creator.image} />
                     </p>
                   </figure>
                   <div className="media-content">
@@ -68,7 +74,7 @@ const NotificationList: React.FC<NotificationListProps> = (props) => {
                           A new post titled <i>{{ postTitle: post.title}}</i> was submitted to the topic <i>{{ topicTitle: topic.title}}</i>
                         </Trans>
                         <br/>
-                        <small>by @johnsmith</small> <small>31m ago</small>
+                        <small>{creator.username}</small>&emsp;<small>{createdAt.toLocaleDateString()} {createdAt.toLocaleTimeString()}</small>
                       </p>
                     </div>
                   </div>
