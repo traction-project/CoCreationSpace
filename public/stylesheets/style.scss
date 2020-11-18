@@ -42,6 +42,10 @@ body {
   padding: 10px;
 }
 
+.has-overflow {
+  overflow-x: scroll;
+}
+
 .dropzone .dropzone-label {
   text-align: center;
   font-size: 20px;

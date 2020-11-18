@@ -9,6 +9,14 @@ import Dropzone from "./dropzone";
 import Video from "./video";
 import ProgressBox from "./progress_box";
 
+interface FileUpload {
+  status: "progressing" | "failed" | "done";
+  total: number;
+  progress: number;
+  filename: string;
+  id?: string;
+}
+
 interface VideoUploadProps {
   file?: File;
 }
@@ -18,9 +26,7 @@ const VideoUpload: React.FC<VideoUploadProps> = ({ file }) => {
   const { t } = useTranslation();
   const { handleSubmit, register, setValue, getValues, watch } = useForm();
 
-  const [ multimedia, setMultimedia ] = useState<string>();
-  const [ progress, setProgress ] = useState<number>(0);
-  const [ total, setTotal ] = useState<number>(0);
+  const [ fileUploads, setFileUploads ] = useState<Array<FileUpload>>([]);
   const [ displayNotification, setDisplayNotification] = useState<"success" | "error">();
   const [ tags, setTags ] = useState<Array<string>>([]);
   const [ topics, setTopics ] = useState<Array<[string, string]>>([]);
@@ -43,18 +49,56 @@ const VideoUpload: React.FC<VideoUploadProps> = ({ file }) => {
 
   const startUpload = async (file: File) => {
     try {
+      setFileUploads([ ...fileUploads, {
+        status: "progressing",
+        filename: file.name,
+        total: 0,
+        progress: 0
+      }]);
+
       const response: string = await postFile("/video/upload", file, (progress) => {
-        setProgress(progress.loaded);
-        setTotal(progress.total);
+        setFileUploads(fileUploads.map((upload) => {
+          if (file.name == upload.filename) {
+            return {
+              ...upload,
+              total: progress.total,
+              progress: progress.loaded
+            };
+          }
+
+          return upload;
+        }));
       });
 
       const responseJson: ResponseUploadType = JSON.parse(response);
-      setMultimedia(responseJson.id);
+
+      setFileUploads(fileUploads.map((upload) => {
+        if (file.name == upload.filename) {
+          return {
+            ...upload,
+            status: "done",
+            id: responseJson.id
+          };
+        }
+
+        return upload;
+      }));
+
       setDisplayNotification("success");
     } catch {
+      setFileUploads(fileUploads.map((upload) => {
+        if (file.name == upload.filename) {
+          return {
+            ...upload,
+            status: "failed"
+          };
+        }
+
+        return upload;
+      }));
+
       setDisplayNotification("error");
     } finally {
-      setTotal(0);
       setTimeout(() => setDisplayNotification(undefined), 3000);
     }
   };
@@ -67,7 +111,7 @@ const VideoUpload: React.FC<VideoUploadProps> = ({ file }) => {
     const body = {
       title,
       text: description,
-      multimedia: [multimedia],
+      multimedia: fileUploads.map((u) => u.id),
       tags: tags.map((tag) => { return { tag_name: tag }; } ),
       topicId: topic
     };
@@ -108,20 +152,27 @@ const VideoUpload: React.FC<VideoUploadProps> = ({ file }) => {
     <section className="section">
       <div className="container">
         <div className="columns is-centered">
-          <div className="column is-8">
-            {(total > 0) ? (
-              <ProgressBox progress={progress} total={total} />
-            ) : (multimedia) ? (
-              <Video id={multimedia}></Video>
+          <div className="column is-8 has-overflow">
+            {(fileUploads.length == 0) ? (
+              <Dropzone
+                size={["100%", 300]}
+                onFilesDropped={(files) => files.forEach(startUpload)}
+              />
             ) : (
-              <Dropzone size={["100%", 300]} onFileDropped={startUpload} />
+              fileUploads.map((upload) => {
+                return (upload.status == "progressing") ? (
+                  <ProgressBox progress={upload.progress} total={upload.total} />
+                ) : (
+                  <Video id={upload.id}></Video>
+                );
+              })
             )}
           </div>
         </div>
 
         <div className="columns is-centered">
           <div className="column is-10">
-            {(total > 0 || multimedia) && (
+            {(fileUploads.length > 0) && (
               <form onSubmit={handleFormSubmission}>
                 <div className="field">
                   <label className="label">{t("Title")}</label>
@@ -217,7 +268,7 @@ const VideoUpload: React.FC<VideoUploadProps> = ({ file }) => {
                     <button
                       type="submit"
                       className="button is-link is-fullwidth"
-                      disabled={watch("title")?.length == 0 || multimedia == undefined}
+                      disabled={watch("title")?.length == 0 || fileUploads.some((u) => u.status == "progressing")}
                     >
                       Submit
                     </button>
