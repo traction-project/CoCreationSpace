@@ -23,7 +23,10 @@ router.get("/", authRequired, async (req, res) => {
   res.send(
     notifications.map((n) => {
       return {
-        id: n.id, data: n.data, seen: n.seen
+        id: n.id,
+        data: n.data,
+        seen: n.seen,
+        createdAt: n.createdAt
       };
     })
   );
