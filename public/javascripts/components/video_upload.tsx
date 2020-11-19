@@ -8,6 +8,8 @@ import { postFile, ResponseUploadType } from "../util";
 import Dropzone from "./dropzone";
 import Video from "./video";
 import ProgressBox from "./progress_box";
+import BlankVideo from "./blank_video";
+import Image from "./image";
 
 interface FileUpload {
   status: "progressing" | "failed" | "done";
@@ -150,26 +152,44 @@ const VideoUpload: React.FC<VideoUploadProps> = ({ file }) => {
     }
   };
 
+  const renderMediaItem = (id: string, type: string) => {
+    if (type == "video") {
+      return (
+        <Video id={id} />
+      );
+    } else {
+      return (
+        <Image id={id} />
+      );
+    }
+  };
+
   return (
     <section className="section">
       <div className="container">
         <div className="columns is-centered">
-          <div className="column is-8 has-overflow">
-            {(fileUploads.length == 0) ? (
+          {(fileUploads.length == 0) ? (
+            <div className="column is-8 has-overflow">
               <Dropzone
                 size={["100%", 300]}
                 onFilesDropped={(files) => files.forEach(startUpload)}
               />
-            ) : (
-              fileUploads.map((upload) => {
-                return (upload.status == "progressing") ? (
-                  <ProgressBox progress={upload.progress} total={upload.total} />
-                ) : (
-                  <Video id={upload.id}></Video>
-                );
-              })
-            )}
-          </div>
+            </div>
+          ) : (
+            fileUploads.map((upload, i) => {
+              return (
+                <div className="column" key={i}>
+                  {(upload.status == "progressing") ? (
+                    <ProgressBox progress={upload.progress} total={upload.total} />
+                  ) : (upload.status == "failed") ? (
+                    <BlankVideo message="failed" />
+                  ) : (
+                    renderMediaItem(upload.id!, upload.type!)
+                  )}
+                </div>
+              );
+            })
+          )}
         </div>
 
         <div className="columns is-centered">

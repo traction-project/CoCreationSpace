@@ -18,7 +18,7 @@ const Image: React.FC<ImageProps> = ({ id }) => {
 
   return (
     <div style={{ display: "flex", justifyContent: "center", alignItems: "center", overflow: "hidden" }}>
-      {(!imageUrl) && (
+      {(imageUrl) && (
         <img src={imageUrl} style={{ flexShrink: 0, minWidth: "100%", minHeight: "100%" }} />
       )}
     </div>
