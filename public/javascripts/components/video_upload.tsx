@@ -4,7 +4,7 @@ import { useHistory } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useForm } from "react-hook-form";
 
-import { postFile, ResponseUploadType } from "../util";
+import { getFilesFromList, postFile, ResponseUploadType } from "../util";
 import Dropzone from "./dropzone";
 import Video from "./video";
 import ProgressBox from "./progress_box";
@@ -169,7 +169,7 @@ const VideoUpload: React.FC<VideoUploadProps> = ({ file }) => {
       <div className="container">
         <div className="columns is-centered is-multiline">
           {(fileUploads.length == 0) ? (
-            <div className="column is-8 has-overflow">
+            <div className="column is-8">
               <Dropzone
                 size={["100%", 300]}
                 onFilesDropped={(files) => files.forEach(startUpload)}
@@ -191,6 +191,35 @@ const VideoUpload: React.FC<VideoUploadProps> = ({ file }) => {
             })
           )}
         </div>
+
+        {(fileUploads.length > 0) && (
+          <div className="columns is-centered">
+            <div className="column" style={{ display: "flex", justifyContent: "center" }}>
+              <div className="file">
+                <label className="file-label">
+                  <input
+                    className="file-input"
+                    type="file"
+                    multiple={true}
+                    name="resume"
+                    onChange={(e) => {
+                      getFilesFromList(e.target.files).forEach((f) => startUpload(f));
+                    }}
+                  />
+                  <span className="file-cta">
+                    <span className="file-icon">
+                      <i className="fas fa-upload"></i>
+                    </span>
+                    &nbsp;
+                    <span className="file-label">
+                      {t("Add more files")}…
+                    </span>
+                  </span>
+                </label>
+              </div>
+            </div>
+          </div>
+        )}
 
         <div className="columns is-centered">
           <div className="column is-10">
