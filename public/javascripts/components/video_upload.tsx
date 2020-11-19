@@ -50,7 +50,7 @@ const VideoUpload: React.FC<VideoUploadProps> = ({ file }) => {
 
   const startUpload = async (file: File) => {
     try {
-      setFileUploads([ ...fileUploads, {
+      setFileUploads((uploads) => [ ...uploads, {
         status: "progressing",
         filename: file.name,
         total: 0,
@@ -58,7 +58,7 @@ const VideoUpload: React.FC<VideoUploadProps> = ({ file }) => {
       }]);
 
       const response: string = await postFile("/video/upload", file, (progress) => {
-        setFileUploads(fileUploads.map((upload) => {
+        setFileUploads((uploads) => uploads.map((upload) => {
           if (file.name == upload.filename) {
             return {
               ...upload,
@@ -73,7 +73,7 @@ const VideoUpload: React.FC<VideoUploadProps> = ({ file }) => {
 
       const responseJson: ResponseUploadType = JSON.parse(response);
 
-      setFileUploads(fileUploads.map((upload) => {
+      setFileUploads((uploads) => uploads.map((upload) => {
         if (file.name == upload.filename) {
           return {
             ...upload,
@@ -88,7 +88,7 @@ const VideoUpload: React.FC<VideoUploadProps> = ({ file }) => {
 
       setDisplayNotification("success");
     } catch {
-      setFileUploads(fileUploads.map((upload) => {
+      setFileUploads((uploads) => uploads.map((upload) => {
         if (file.name == upload.filename) {
           return {
             ...upload,
