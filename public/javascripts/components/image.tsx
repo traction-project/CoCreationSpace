@@ -14,13 +14,29 @@ const Image: React.FC<ImageProps> = ({ id }) => {
     }).then((data) => {
       setImageUrl(data.url);
     });
-  }, []);
+  }, [id]);
+
+  const wrapperStyle: React.CSSProperties = {
+    width: "100%",
+    paddingBottom: "56.25%",
+    position: "relative"
+  };
+
+  const innerStyle: React.CSSProperties = {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    position: "absolute",
+    top: 0, left: 0, bottom: 0, right: 0
+  };
 
   return (
-    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", overflow: "hidden" }}>
-      {(imageUrl) && (
-        <img src={imageUrl} style={{ flexShrink: 0, minWidth: "100%", minHeight: "100%" }} />
-      )}
+    <div style={wrapperStyle}>
+      <div style={innerStyle}>
+        {(imageUrl) && (
+          <img src={imageUrl} style={{ maxHeight: "100%" }} />
+        )}
+      </div>
     </div>
   );
 };
