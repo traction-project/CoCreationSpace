@@ -172,6 +172,24 @@ router.get("/id/:id", async (req, res) => {
   }
 });
 
+router.get("/id/:id/thumbnail", async (req, res) => {
+  const { id } = req.params;
+
+  const { Multimedia } = db.getModels();
+  const video = await Multimedia.findByPk(id);
+
+  if (video && video.thumbnails) {
+    return res.send({
+      thumbnail: `${CLOUDFRONT_URL}/transcoded/${video.thumbnails[0]}`
+    });
+  }
+
+  return res.status(404).send({
+    status: "ERR",
+    message: "No thumbnail found"
+  });
+});
+
 router.get("/id/:id/status", async (req, res) => {
   const { id } = req.params;
   const { Multimedia } = db.getModels();
