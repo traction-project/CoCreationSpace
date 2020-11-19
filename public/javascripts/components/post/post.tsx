@@ -16,20 +16,25 @@ import { TagData } from "../post_list/post_list";
 import { getPostId, postComment, postEmojiReaction, postLike } from "../../services/post.service";
 import { addEmojiAnimation, addTooltip } from "../videojs/util";
 import TranslationModal from "./translation_modal";
+import Image from "../image";
+import Thumbnail from "../thumbnail";
 
-interface dataContainerType {
+interface MultimediaItem {
+  id: string;
+  status: string;
+  type: string;
+}
+
+interface DataContainerType {
   text_content?: string;
-  multimedia?: [{
-    id?: string,
-    status?: string
-  }]
+  multimedia?: Array<MultimediaItem>;
 }
 
 export interface PostType extends CommonType {
   title?: string;
   second?: number;
   parent_post_id: string;
-  dataContainer?: dataContainerType;
+  dataContainer?: DataContainerType;
   comments?: PostType[];
   karma_points?: number;
   postReference?: PostType[];
@@ -62,6 +67,7 @@ const Post: React.FC<PostProps> = (props) => {
   const [showComments, setShowComments] = useState(false);
   const [player, setPlayer] = useState<VideoJsPlayer>();
   const [showEmojis, setShowEmojis] = useState<boolean>(false);
+  const [selectedItem, setSelectedItem ] = useState<MultimediaItem>();
   const emojis = ["👍","💓","😊","😍","😂","😡"];
 
   useEffect(() => {
@@ -73,6 +79,7 @@ const Post: React.FC<PostProps> = (props) => {
 
         setPost(data);
         setComments(data.comments);
+        setSelectedItem(data.dataContainer.multimedia[0]);
         setEmojiReactions(data.emojiReactions.map((item: EmojiReaction) => {
           return { emoji: item.emoji, second: item.second };
         }));
@@ -234,20 +241,19 @@ const Post: React.FC<PostProps> = (props) => {
           </div>
         </div>
 
-        {(post?.dataContainer?.multimedia && post.dataContainer.multimedia.length > 0) && (
+        {(selectedItem) && (
           <div className="columns is-centered">
             <div className="column is-8-desktop is-10-tablet">
-              {post.dataContainer.multimedia.map((multimedia, index) => {
-                return (
-                  <Video
-                    key={index}
-                    id={multimedia.id}
-                    getPlayer={callbackPlayer}
-                    comments={comments}
-                    emojis={emojiReactions}
-                  />
-                );
-              })}
+              {(selectedItem.type == "video") ? (
+                <Video
+                  id={selectedItem.id}
+                  getPlayer={callbackPlayer}
+                  comments={comments}
+                  emojis={emojiReactions}
+                />
+              ) : (
+                <Image id={selectedItem.id} />
+              )}
             </div>
           </div>
         )}
@@ -308,6 +314,25 @@ const Post: React.FC<PostProps> = (props) => {
             </nav>
           </div>
         </div>
+
+        {(post?.dataContainer?.multimedia && post.dataContainer.multimedia.length > 1) && (
+          <div style={{ display: "flex", backgroundColor: "#F5F5F5" }}>
+            {post.dataContainer.multimedia.map((multimedia, index) => {
+              return (
+                <div
+                  key={index}
+                  className="is-clickable"
+                  onClick={setSelectedItem.bind(null, multimedia)}
+                >
+                  <Thumbnail
+                    id={multimedia.id}
+                    type={multimedia.type}
+                  />
+                </div>
+              );
+            })}
+          </div>
+        )}
 
         <div className="columns">
           <div className="column">
