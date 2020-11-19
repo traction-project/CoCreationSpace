@@ -13,10 +13,15 @@ interface PostListProps {
 }
 
 export interface TagData {
-  id: number;
+  id: string;
   tag_name: string;
   createdAt: string;
   post?: PostType[]
+}
+
+interface InterestData {
+  title: string;
+  id: string;
 }
 
 const PostList: React.FC<PostListProps> = ({endpoint}) => {
@@ -24,9 +29,10 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
   const { t } = useTranslation();
 
   const [ posts, setPosts ] = useState<Array<PostType>>([]);
-  const [ filteredPosts, setFilteredPosts ] = useState<Array<PostType>>([]);
   const [ tags, setTags ] = useState<Array<TagData>>();
-  const [ selectedTag, setSelectedTag ] = useState<number>();
+  const [ interests, setInterests ] = useState<Array<InterestData>>();
+
+  const [ selectedFilter, setSelectedFilter ] = useState<{ type: "tag" | "interest", id: string }>();
 
   useEffect(() => {
     (async () => {
@@ -37,16 +43,32 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
       });
 
       setPosts(postsList);
-      setFilteredPosts(postsList);
       getTags(postsList);
+      getInterests(postsList);
     })();
   }, [endpoint]);
 
-  const getPosts = (criteria?: string): Promise<Array<PostType>> => {
+  const getPosts = async (criteria?: string): Promise<Array<PostType>> => {
     const url = criteria ? `${endpoint}?q=${criteria}` : endpoint;
 
-    return fetch(url)
-      .then(res => res.json());
+    const res = await fetch(url);
+    return res.json();
+  };
+
+  const getInterests = (posts: Array<PostType>) => {
+    const interests = posts.reduce<Array<InterestData>>((acc, post) => {
+      const { thread: { topic: { id, title } }} = post;
+
+      if (acc.find((i) => i.id == id)) {
+        return acc;
+      }
+
+      return acc.concat([{
+        id, title
+      }]);
+    }, []);
+
+    setInterests(interests);
   };
 
   const getTags = (posts: Array<PostType>) => {
@@ -55,6 +77,7 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
       if (post.tags && post.tags.length > 0) {
         post.tags.forEach((tag: TagData) => {
           const isSaved = tagsList.filter(tagSaved => tagSaved.id === tag.id);
+
           if (!isSaved || isSaved.length == 0) {
             tagsList.push(tag);
           }
@@ -70,29 +93,12 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
   };
 
   const handleClickAllPosts = () => {
-    setFilteredPosts(posts);
-    setSelectedTag(undefined);
-  };
-
-  const handleClickTag = (tagSelected: TagData) => {
-    const postList: Array<PostType> = [];
-
-    posts.forEach((post) => {
-      post.tags?.forEach((tag) => {
-        if (tag.id === tagSelected.id) {
-          postList.push(post);
-        }
-      });
-    });
-
-    setFilteredPosts(postList);
-    setSelectedTag(tagSelected.id);
+    setSelectedFilter(undefined);
   };
 
   const handleChange = async (value: string) => {
     const postsList: Array<PostType> = await getPosts(value);
     setPosts(postsList);
-    setFilteredPosts(postsList);
   };
 
   return (
@@ -109,18 +115,22 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
         <div className="columns" style={{ marginTop: 15 }}>
           <div className="column is-9">
             <div>
-              {(filteredPosts) ? (
-                filteredPosts.map((post, index) => {
-                  return (
-                    <React.Fragment key={index}>
-                      <PostEntry key={index} post={post} />
-                      <hr/>
-                    </React.Fragment>
-                  );
-                })
-              ) : (
-                <p>{t("This user has not posts")}</p>
-              )}
+              {posts.filter((post) => {
+                if (!selectedFilter) {
+                  return true;
+                } else if (selectedFilter.type == "interest") {
+                  return post.thread.topic.id == selectedFilter.id;
+                } else {
+                  return post.tags?.find((t) => t.id == selectedFilter.id);
+                }
+              }).map((post, index) => {
+                return (
+                  <React.Fragment key={index}>
+                    <PostEntry key={index} post={post} />
+                    <hr/>
+                  </React.Fragment>
+                );
+              })}
             </div>
           </div>
 
@@ -130,6 +140,27 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
             </button>
 
             <hr />
+            <h6 className="title is-6">{t("Filter by interest")}</h6>
+
+            <div>
+              {interests?.map((interest, index) => {
+                return (
+                  <span
+                    key={index}
+                    className={classNames("tag", { "is-primary": selectedFilter?.type == "interest" && selectedFilter.id == interest.id })}
+                    onClick={setSelectedFilter.bind(null, { type: "interest", id: interest.id })}
+                  >
+                    {interest.title}
+                  </span>
+                );
+              })}
+            </div>
+
+            <a className="is-size-7" onClick={handleClickAllPosts}>
+              {t("Clear filter")}
+            </a>
+
+            <hr />
             <h6 className="title is-6">{t("Filter by tag")}</h6>
 
             <div>
@@ -137,8 +168,8 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
                 return (
                   <span
                     key={index}
-                    className={classNames("tag", { "is-primary": tag.id == selectedTag })}
-                    onClick={() => handleClickTag(tag)}
+                    className={classNames("tag", { "is-primary": selectedFilter?.type == "tag" && selectedFilter.id == tag.id })}
+                    onClick={setSelectedFilter.bind(null, { type: "tag", id: tag.id })}
                   >
                     {tag.tag_name}
                   </span>

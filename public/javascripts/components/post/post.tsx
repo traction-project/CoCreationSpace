@@ -40,6 +40,11 @@ export interface PostType extends CommonType {
   postReference?: PostType[];
   postReferenced?: PostType[];
   user: UserType;
+  thread: {
+    id: string,
+    title: string,
+    topic: { id: string, title: string }
+  };
   userReferenced?: UserType[];
   tags?: TagData[];
 }
