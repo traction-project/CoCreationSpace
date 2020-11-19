@@ -230,15 +230,20 @@ export function isMedisRecorderSupported() {
 }
 
 /**
- * Converts a FileList object into an array of files.
+ * Converts a FileList object into an array of files. Returns an empty array if
+ * the given file list is undefined or null.
  *
  * @param fileList FileList object
  * @returns Files in FileList object as an array
  */
-export function getFilesFromList(fileList: FileList): Array<File> {
+export function getFilesFromList(fileList?: FileList | null): Array<File> {
+  if (!fileList) {
+    return [];
+  }
+
   const files: Array<File> = [];
 
-  for (let i=0; i<fileList.length; i++) {
+  for (let i = 0; i < fileList.length; i++) {
     const file = fileList.item(i);
 
     if (file != null) {
