@@ -48,7 +48,6 @@
     "notification-text": "A new post titled <1><0>{{postTitle}}</0></1> was submitted to the topic <3><0>{{topicTitle}}</0></3>",
     "login-error": "<0>Login failed!</0> Username or password are incorrect.",
     "interests-error-unknown": "<0>Selection failed!</0> An onknown error occurred.",
-    "Select Interests": "__STRING_NOT_TRANSLATED__",
     "image-upload-error": "<0>Image upload failed!</0> An onknown error occurred.",
     "Upload Profile Picture": "__STRING_NOT_TRANSLATED__",
     "Choose an image": "__STRING_NOT_TRANSLATED__",
@@ -75,5 +74,6 @@
     "Notifications": "__STRING_NOT_TRANSLATED__",
     "This page is only accessible on mobile devices!": "__STRING_NOT_TRANSLATED__",
     "Your browser cannot record video!": "__STRING_NOT_TRANSLATED__",
-    "Add more files": "__STRING_NOT_TRANSLATED__"
+    "Add more files": "__STRING_NOT_TRANSLATED__",
+    "Select Interest Topics": "__STRING_NOT_TRANSLATED__"
 }
