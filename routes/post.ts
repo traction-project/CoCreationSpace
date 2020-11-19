@@ -14,7 +14,7 @@ const router = Router();
  * Get all posts
  */
 router.get("/all", authRequired, async (req, res) => {
-  const { Posts, DataContainer, Users, Multimedia } = db.getModels();
+  const { Posts, DataContainer, Users, Multimedia, Threads } = db.getModels();
 
   let queryDataContainer = {
     model: DataContainer,
@@ -38,7 +38,11 @@ router.get("/all", authRequired, async (req, res) => {
       model: Users,
       as: "user",
       attributes: ["id", "username", "image"]
-    }, queryDataContainer, "comments", "tags", "emojiReactions"]
+    }, queryDataContainer, "comments", "tags", "emojiReactions", {
+      model: Threads,
+      as: "thread",
+      include: ["topic"]
+    }]
   });
 
   posts.forEach(post => {
