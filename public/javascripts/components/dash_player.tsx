@@ -31,7 +31,9 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
     if (videoNode === null) {
       return;
     }
-    const video = videojs(videoNode.current, { width, autoplay: true, controls: true }, () => {initPlayer(video);});
+    const video = videojs(videoNode.current, { width, autoplay: false, controls: true }, () => {
+      initPlayer(video);
+    });
     setPlayer(video);
     getPlayer && getPlayer(video);
 
@@ -72,8 +74,6 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
           createMarkers(video, markers, playerNode);
         });
       }
-
-      video.play();
     }
   };
 
@@ -120,7 +120,7 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
 
   return (
     <div ref={playerNode} data-vjs-player>
-      <video ref={videoNode} className={classNames("video-js", "vjs-16-9", { "vjs-fill": width == undefined })}>
+      <video autoPlay={false} ref={videoNode} className={classNames("video-js", "vjs-16-9", { "vjs-fill": width == undefined })}>
         {subtitles.map((s, i) => {
           return (
             <track key={i} src={s.url} label={s.language} srcLang={s.language} default={true} />
