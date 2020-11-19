@@ -63,7 +63,7 @@ const Signup: React.FC<SignupProps> = (props) => {
                   </>
                 ) : (step == 3) ? (
                   <>
-                    <h4 className="title is-4">{t("Select Interests")}</h4>
+                    <h4 className="title is-4">{t("Select Interest Topics")}</h4>
 
                     <InterestSelectForm
                       onComplete={() => {
