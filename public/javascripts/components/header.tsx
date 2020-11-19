@@ -61,23 +61,30 @@ const Header: React.FC<HeaderProps> = (props) => {
         <div className="navbar-start">
           <Link
             className={classnames("navbar-item", { "is-active": location.pathname == "/" })}
+            onClick={() => setBurgerActive(false)}
             to={"/"}
           >
             {t("Home")}
           </Link>
           <Link
             className={classnames("navbar-item", { "is-active": location.pathname == "/userPosts" })}
-            to={"/userPosts"}>
+            onClick={() => setBurgerActive(false)}
+            to={"/userPosts"}
+          >
             {t("My Posts")}
           </Link>
           <Link
             className={classnames("navbar-item", { "is-active": location.pathname == "/posts" })}
-            to={"/posts"}>
+            onClick={() => setBurgerActive(false)}
+            to={"/posts"}
+          >
             {t("Explore")}
           </Link>
           <Link
             className={classnames("navbar-item", { "is-active": location.pathname == "/upload" })}
-            to={"/upload"}>
+            onClick={() => setBurgerActive(false)}
+            to={"/upload"}
+          >
             {t("Create Post")}
           </Link>
         </div>
@@ -85,7 +92,7 @@ const Header: React.FC<HeaderProps> = (props) => {
         <div className="navbar-end">
           {(props.login.loggedIn && props.login.user) ? (
             <>
-              <Link to="/notifications" className="navbar-item">
+              <Link to="/notifications" className="navbar-item" onClick={() => setBurgerActive(false)}>
                 <NotificationCounter userId={props.login.user.id} />
               </Link>
 
@@ -96,7 +103,9 @@ const Header: React.FC<HeaderProps> = (props) => {
                   </figure>
                 </a>
                 <div className="navbar-dropdown is-right">
-                  <Link className="navbar-item" to="/profile">{t("Profile")}</Link>
+                  <Link className="navbar-item" to="/profile" onClick={() => setBurgerActive(false)}>
+                    {t("Profile")}
+                  </Link>
                   <hr className="navbar-divider" />
                   <a className="navbar-item" onClick={logOut}>{t("Sign Out")}</a>
                 </div>
@@ -105,8 +114,12 @@ const Header: React.FC<HeaderProps> = (props) => {
           ) : (
             <div className="navbar-item">
               <div className="buttons">
-                <Link className="button navbar-item is-info" to={"/login"}>{t("Sign In")}</Link>
-                <Link className="button navbar-item is-light" to={"/signup"}>{t("Sign Up")}</Link>
+                <Link className="button navbar-item is-info" to={"/login"} onClick={() => setBurgerActive(false)}>
+                  {t("Sign In")}
+                </Link>
+                <Link className="button navbar-item is-light" to={"/signup"} onClick={() => setBurgerActive(false)}>
+                  {t("Sign Up")}
+                </Link>
               </div>
             </div>
           )}
