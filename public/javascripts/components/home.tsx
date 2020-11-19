@@ -62,6 +62,10 @@ const Home: React.FC<HomeProps> = (props) => {
                 </ul>
               ) : (
                 <div className="box">
+                  <h4 className="title is-4 has-text-centered">
+                    {t("Welcome to the MediaVault!")}
+                  </h4>
+
                   <div className="columns is-centered is-mobile">
                     <div className="column">
                       <Link className="button navbar-item is-info" to={"/login"}>{t("Sign In")}</Link>
@@ -70,6 +74,7 @@ const Home: React.FC<HomeProps> = (props) => {
                       <Link className="button navbar-item is-light" to={"/signup"}>{t("Sign Up")}</Link>
                     </div>
                   </div>
+
                   <div className="has-children-centered">
                     <LanguageSwitcher />
                   </div>
