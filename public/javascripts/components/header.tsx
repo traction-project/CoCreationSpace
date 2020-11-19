@@ -75,6 +75,11 @@ const Header: React.FC<HeaderProps> = (props) => {
             to={"/posts"}>
             {t("Explore")}
           </Link>
+          <Link
+            className={classnames("navbar-item", { "is-active": location.pathname == "/upload" })}
+            to={"/upload"}>
+            {t("Create Post")}
+          </Link>
         </div>
 
         <div className="navbar-end">
