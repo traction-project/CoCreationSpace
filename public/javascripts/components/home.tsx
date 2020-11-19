@@ -1,11 +1,26 @@
 import * as React from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { Dispatch, bindActionCreators } from "redux";
+import { connect } from "react-redux";
+
 import { isMobile } from "../util";
+import { ApplicationState } from "../store";
+import { actionCreators as loginActionCreators, LoginActions } from "../actions/login";
+import { LoginState } from "../reducers/login";
+import LanguageSwitcher from "./language_switcher";
 
-interface HomeProps {}
+interface HomeActionProps {
+  loginActions: LoginActions
+}
 
-const Home: React.FC<HomeProps> = () => {
+interface HomeConnectedProps {
+  login: LoginState;
+}
+
+type HomeProps = HomeActionProps & HomeConnectedProps;
+
+const Home: React.FC<HomeProps> = (props) => {
   const { t } = useTranslation();
   const history = useHistory();
 
@@ -52,4 +67,16 @@ const Home: React.FC<HomeProps> = () => {
   );
 };
 
-export default Home;
+function mapStateToProps(state: ApplicationState): HomeConnectedProps {
+  return {
+    login: state.login
+  };
+}
+
+function mapDispatchToProps(dispatch: Dispatch) {
+  return {
+    loginActions: bindActionCreators(loginActionCreators, dispatch)
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);
