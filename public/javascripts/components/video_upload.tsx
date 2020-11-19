@@ -15,6 +15,7 @@ interface FileUpload {
   progress: number;
   filename: string;
   id?: string;
+  type?: string;
 }
 
 interface VideoUploadProps {
@@ -77,7 +78,8 @@ const VideoUpload: React.FC<VideoUploadProps> = ({ file }) => {
           return {
             ...upload,
             status: "done",
-            id: responseJson.id
+            id: responseJson.id,
+            type: responseJson.type
           };
         }
 
