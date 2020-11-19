@@ -17,7 +17,6 @@
     "Add a comment": "Kommentar hinzufügen",
     "required": "erforderlich",
     "Cancel": "Abbrechen",
-    "This user has not posts": "Dieser Benutzer hat keine Beiträge",
     "New Post": "Neuer Beitrag",
     "Show Comments": "Zeige Kommentare",
     "Confirm Password": "Passwort bestätigen",
@@ -75,5 +74,6 @@
     "This page is only accessible on mobile devices!": "Diese Seite kann nur mit mobilen Endgeräten genutzt werden!",
     "Your browser cannot record video!": "Dein Browser kann keine Videos aufnehmen!",
     "Add more files": "Weitere Dateien hinzufügen",
-    "Select Interest Topics": "Themeninteressen auswählen"
+    "Select Interest Topics": "Themeninteressen auswählen",
+    "Filter by interest": "Nach Interessen filtern"
 }

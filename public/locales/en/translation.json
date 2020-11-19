@@ -17,7 +17,6 @@
     "Add a comment": "Add a comment",
     "required": "required",
     "Cancel": "Cancel",
-    "This user has not posts": "This user has not posts",
     "New Post": "New Post",
     "Show Comments": "Show Comments",
     "Confirm Password": "Confirm Password",
@@ -75,5 +74,6 @@
     "This page is only accessible on mobile devices!": "This page is only accessible on mobile devices!",
     "Your browser cannot record video!": "Your browser cannot record video!",
     "Add more files": "Add more files",
-    "Select Interest Topics": "Select Interest Topics"
+    "Select Interest Topics": "Select Interest Topics",
+    "Filter by interest": "Filter by interest"
 }

@@ -17,7 +17,6 @@
     "Add a comment": "__STRING_NOT_TRANSLATED__",
     "required": "__STRING_NOT_TRANSLATED__",
     "Cancel": "__STRING_NOT_TRANSLATED__",
-    "This user has not posts": "__STRING_NOT_TRANSLATED__",
     "New Post": "__STRING_NOT_TRANSLATED__",
     "Show Comments": "__STRING_NOT_TRANSLATED__",
     "Confirm Password": "__STRING_NOT_TRANSLATED__",
@@ -75,5 +74,6 @@
     "This page is only accessible on mobile devices!": "__STRING_NOT_TRANSLATED__",
     "Your browser cannot record video!": "__STRING_NOT_TRANSLATED__",
     "Add more files": "__STRING_NOT_TRANSLATED__",
-    "Select Interest Topics": "__STRING_NOT_TRANSLATED__"
+    "Select Interest Topics": "__STRING_NOT_TRANSLATED__",
+    "Filter by interest": "__STRING_NOT_TRANSLATED__"
 }
