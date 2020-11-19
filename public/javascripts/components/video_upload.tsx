@@ -167,7 +167,7 @@ const VideoUpload: React.FC<VideoUploadProps> = ({ file }) => {
   return (
     <section className="section">
       <div className="container">
-        <div className="columns is-centered">
+        <div className="columns is-centered is-multiline">
           {(fileUploads.length == 0) ? (
             <div className="column is-8 has-overflow">
               <Dropzone
