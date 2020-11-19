@@ -147,9 +147,17 @@ const VideoUpload: React.FC<VideoUploadProps> = ({ file }) => {
   };
 
   const addTag = (value: string) => {
-    if (value.length > 0 && tags.indexOf(value) === -1) {
-      setTags([...tags, value]);
+    if (value.length == 0) {
+      return;
     }
+
+    const tagsToAdd = value.split(",").map((t) => {
+      return t.trim();
+    }).filter((t) => {
+      return tags.indexOf(t) == -1;
+    });
+
+    setTags(tags.concat(tagsToAdd));
   };
 
   const renderMediaItem = (id: string, type: string) => {
