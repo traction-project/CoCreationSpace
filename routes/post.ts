@@ -6,6 +6,7 @@ import { authRequired } from "../util/middleware";
 import { UserInstance } from "models/users";
 import association from "../models/associations";
 import { TagInstance } from "models/tag";
+import { PostInstance } from "models/post";
 
 const [ CLOUDFRONT_URL ] = getFromEnvironment("CLOUDFRONT_URL");
 const router = Router();
@@ -133,6 +134,58 @@ router.get("/id/:id", authRequired, async (req, res) => {
     ],
     order: [["comments","created_at", "desc"]],
   });
+
+  if (post) {
+    const likes = await post.countLikesUsers();
+    const isLiked = await post.hasLikesUser(user);
+
+    if (post.user && isUser(post.user)) {
+      post.user.image = `${CLOUDFRONT_URL}/${post.user.image}`;
+    }
+
+    const postJSON = post.toJSON();
+    const result = {
+      likes,
+      isLiked,
+      ...postJSON
+    };
+
+    res.send(result);
+  } else {
+    res.status(404).json([]);
+  }
+});
+
+router.get("/id/:id/parent", authRequired, async (req, res) => {
+  const { id } = req.params;
+  const user = req.user as UserInstance;
+
+  const { Posts } = db.getModels();
+
+  let post: PostInstance | null;
+  let parentPostId: string | undefined = id;
+
+  do {
+    post = await Posts.findByPk(parentPostId, {
+      include: [
+        {
+          association: association.getAssociatons().postAssociations.PostDataContainer,
+          include: [ association.getAssociatons().datacontainerAssociations.DatacontainerMultimedia ]
+        }, {
+          model: Posts,
+          as: "comments",
+          include: ["dataContainer", "user"],
+        }, "postReference", "postReferenced", "user", "userReferenced", "tags", "emojiReactions"
+      ],
+      order: [["comments","created_at", "desc"]],
+    });
+
+    if (post == null) {
+      return res.status(404).json([]);
+    }
+
+    parentPostId = post.parent_post_id;
+  } while (parentPostId);
 
   if (post) {
     const likes = await post.countLikesUsers();
