@@ -88,10 +88,9 @@ const NotificationList: React.FC<NotificationListProps> = (props) => {
                         <Trans i18nKey="notification-text">
                           A new post titled <i>{{ postTitle: post.title}}</i> was submitted to the topic <i>{{ topicTitle: topic.title}}</i>
                         </Trans>
-                        <br/>
-                        <p className="mt-2">
-                          <small>{creator.username}</small>&emsp;<small>{createdAt.toLocaleDateString()} {createdAt.toLocaleTimeString()}</small>
-                        </p>
+                      </p>
+                      <p className="mt-2">
+                        <small>{creator.username}</small>&emsp;<small>{createdAt.toLocaleDateString()} {createdAt.toLocaleTimeString()}</small>
                       </p>
                     </div>
                   </div>
