@@ -46,6 +46,11 @@ body {
   overflow-x: scroll;
 }
 
+.has-children-centered {
+  display: flex;
+  justify-content: center;
+}
+
 .dropzone .dropzone-label {
   text-align: center;
   font-size: 20px;
