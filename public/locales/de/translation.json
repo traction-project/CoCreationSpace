@@ -79,5 +79,7 @@
     "Create Post": "Post erstellen",
     "Welcome to the MediaVault!": "Wilkommen zum MediaVault!",
     "notification-comment": "Neuer Kommentar zum Thema <1>{{topicTitle}}</1>",
-    "notification-text-comment": "Ein neuer Kommentar zum Thema <1><0>{{topicTitle}}</0></1> wurde erstellt"
+    "notification-text-comment": "Ein neuer Kommentar zum Thema <1><0>{{topicTitle}}</0></1> wurde erstellt",
+    "Text": "Text",
+    "Media": "Medien"
 }
