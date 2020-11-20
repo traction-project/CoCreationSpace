@@ -23,7 +23,7 @@ router.get("/all", authRequired, async (req, res) => {
     include: [{
       model: Multimedia,
       as: "multimedia",
-      attributes: ["status"]
+      attributes: ["status", "id"]
     }]
   };
 
@@ -78,7 +78,7 @@ router.get("/all/user", authRequired, async (req, res) => {
     include: [{
       model: Multimedia,
       as: "multimedia",
-      attributes: ["status"]
+      attributes: ["status", "id"]
     }]
   };
 
