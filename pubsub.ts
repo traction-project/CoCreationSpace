@@ -64,6 +64,33 @@ async function isDuplicateNotification(data: any, userId: string) {
 }
 
 /**
+ * Sends a refreshed list of notifications to the user with the given ID. If no
+ * such user is connected, nothing happens.
+ *
+ * @param userId ID of user to send refreshed notifications to
+ */
+export async function sendRefreshToClient(userId: string) {
+  const { Users } = db.getModels();
+
+  const user = await Users.findByPk(userId);
+
+  if (user) {
+    const userNotifications = await user.getNotifications({
+      order: [["createdAt", "DESC"]]
+    });
+
+    clients.forEach((client) => {
+      if (client.userId == user.id) {
+        client.socket.send({
+          type: "refresh",
+          data: userNotifications.map((notification) => notification.data)
+        });
+      }
+    });
+  }
+}
+
+/**
  * Broadcasts a notification message to all clients which are subscribed to the
  * topic that the given post belongs to. The message contains topic id and
  * title and the id and title of the post.
