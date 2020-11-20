@@ -26,7 +26,9 @@ const VideoWithToolbar: React.FC<VideoWithToolbarProps> = (props) => {
   const { post } = props;
   const { openPortal, closePortal, isOpen, Portal } = usePortal();
 
-  const [emojiReactions, setEmojiReactions] = useState<EmojiReaction[]>([]);
+  const [emojiReactions, setEmojiReactions] = useState<EmojiReaction[]>((post as any).emojiReactions.map((item: EmojiReaction) => {
+    return { emoji: item.emoji, second: item.second };
+  }));
   const [showEmojis, setShowEmojis] = useState<boolean>(false);
   const [player, setPlayer] = useState<VideoJsPlayer>();
 
@@ -79,7 +81,7 @@ const VideoWithToolbar: React.FC<VideoWithToolbarProps> = (props) => {
 
   return (
     <>
-      <Video {...props} getPlayer={callbackPlayer} />
+      <Video {...props} getPlayer={callbackPlayer} emojis={emojiReactions} />
 
       <nav className="level is-mobile" style={{position: "relative"}}>
         <div className="level-left">

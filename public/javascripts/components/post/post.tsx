@@ -5,7 +5,7 @@ import { VideoJsPlayer } from "video.js";
 import { useTranslation } from "react-i18next";
 import classNames from "classnames";
 
-import { CommonType, convertHMS, EmojiReaction } from "../../util";
+import { CommonType, convertHMS } from "../../util";
 import UserLogo, { UserType } from "../user_logo";
 import CommentList from "./comment_list";
 import NewComment from "./new_comment";
@@ -64,7 +64,6 @@ const Post: React.FC<PostProps> = (props) => {
   const [likes, setLikes] = useState<number>(0);
   const [showNewComment, setShowNewComment] = useState<boolean>(false);
   const [comments, setComments] = useState<PostType[]>([]);
-  const [emojiReactions, setEmojiReactions] = useState<EmojiReaction[]>([]);
   const [showComments, setShowComments] = useState(false);
   const [player, setPlayer] = useState<VideoJsPlayer>();
   const [selectedItem, setSelectedItem ] = useState<MultimediaItem>();
@@ -79,9 +78,6 @@ const Post: React.FC<PostProps> = (props) => {
         setPost(data);
         setComments(data.comments);
         setSelectedItem(data.dataContainer.multimedia[0]);
-        setEmojiReactions(data.emojiReactions.map((item: EmojiReaction) => {
-          return { emoji: item.emoji, second: item.second };
-        }));
 
         if (!data.parent_post_id) {
           setShowNewComment(true);
@@ -207,7 +203,6 @@ const Post: React.FC<PostProps> = (props) => {
                   post={post}
                   getPlayer={callbackPlayer}
                   comments={comments}
-                  emojis={emojiReactions}
                 />
               ) : (
                 <Image id={selectedItem.id} />
