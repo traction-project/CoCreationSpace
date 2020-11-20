@@ -137,8 +137,11 @@ export async function broadcastNotification(post: PostInstance) {
       let notification = await getExistingNotification(data, userId);
 
       if (!notification) {
-        notification = await Notifications.create({ data });
-        await notification.setUser(userId);
+        // TODO fix type definitions
+        notification = await Notifications.create({
+          data,
+          user_id: userId
+        } as any);
       }
 
       socket.send(JSON.stringify({
@@ -233,10 +236,12 @@ async function setupWebSocketServer(server: http.Server) {
   });
 
   Notifications.afterUpdate(async (notification) => {
-    const user = await notification.getUser();
-    console.log("Notification updated, sending refresh to user", user.id);
+    if (!notification.isNewRecord) {
+      const user = await notification.getUser();
+      console.log("Notification updated, sending refresh to user", user.id);
 
-    await sendRefreshToClient(user.id);
+      await sendRefreshToClient(user.id);
+    }
   });
 
   Notifications.afterDestroy(async (notification) => {
