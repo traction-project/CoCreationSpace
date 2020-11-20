@@ -238,6 +238,13 @@ async function setupWebSocketServer(server: http.Server) {
 
     await sendRefreshToClient(user.id);
   });
+
+  Notifications.afterDestroy(async (notification) => {
+    const user = await notification.getUser();
+    console.log("Notification deleted, sending refresh to user", user.id);
+
+    await sendRefreshToClient(user.id);
+  });
 }
 
 export default setupWebSocketServer;
