@@ -45,6 +45,9 @@ function useNotification(userId: string) {
         case "message":
           onNotificationReceived(message.data);
           break;
+        case "refresh":
+          setNotifications(message.data);
+          break;
         case "ping":
           ws.send(JSON.stringify({ command: "pong" }));
           break;
