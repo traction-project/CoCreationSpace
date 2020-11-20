@@ -33,6 +33,7 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
   const [ interests, setInterests ] = useState<Array<InterestData>>();
 
   const [ selectedFilter, setSelectedFilter ] = useState<{ type: "tag" | "interest", id: string }>();
+  const [ selectedTab, setSelectedTab ] = useState<"text" | "media">("text");
 
   useEffect(() => {
     (async () => {
@@ -112,8 +113,19 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
 
         <hr/>
 
-        <div className="columns" style={{ marginTop: 15 }}>
+        <div className="columns">
           <div className="column is-9">
+            <div className="tabs is-centered">
+              <ul>
+                <li className={classNames({ "is-active": selectedTab == "text" })}>
+                  <a onClick={setSelectedTab.bind(null, "text")}>{t("Text")}</a>
+                </li>
+                <li className={classNames({ "is-active": selectedTab == "media" })}>
+                  <a onClick={setSelectedTab.bind(null, "media")}>{t("Media")}</a>
+                </li>
+              </ul>
+            </div>
+
             <div>
               {posts.filter((post) => {
                 if (!selectedFilter) {
