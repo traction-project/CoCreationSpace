@@ -11,10 +11,14 @@ const NotificationCounter: React.FC<NotificationCounterProps> = (props) => {
   const { t } = useTranslation();
   const notifications = useNotification(userId);
 
+  const unseenNotifications = notifications.filter((n) => {
+    return !n.seen;
+  });
+
   return (
     <div>
       <i className="far fa-bell" />&nbsp;
-      {notifications.length} {t("Notification", { count: notifications.length })}
+      {unseenNotifications.length} {t("Notification", { count: unseenNotifications.length })}
     </div>
   );
 };
