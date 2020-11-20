@@ -77,5 +77,7 @@
     "Select Interest Topics": "__STRING_NOT_TRANSLATED__",
     "Filter by interest": "__STRING_NOT_TRANSLATED__",
     "Create Post": "__STRING_NOT_TRANSLATED__",
-    "Welcome to the MediaVault!": "__STRING_NOT_TRANSLATED__"
+    "Welcome to the MediaVault!": "__STRING_NOT_TRANSLATED__",
+    "notification-comment": "New comment in topic <1>{{topicTitle}}</1>",
+    "notification-text-comment": "A new comment was submitted to the topic <1><0>{{topicTitle}}</0></1>"
 }
