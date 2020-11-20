@@ -81,6 +81,8 @@ export async function sendRefreshToClient(userId: string) {
 
     clients.forEach((client) => {
       if (client.userId == user.id) {
+        console.log("Sending refresh to", user.id, userNotifications.length);
+
         client.socket.send(JSON.stringify({
           type: "refresh",
           data: userNotifications.map((notification) => notification.data)
@@ -126,14 +128,21 @@ export async function broadcastNotification(post: PostInstance) {
         creator: { id: user.id, username: user.username, image: `${CLOUDFRONT_URL}/${user.image}` }
       };
 
-      if (!await isDuplicateNotification(data, userId)) {
-        const notification = await Notifications.create({ data });
+      let notification = await getExistingNotification(data, userId);
+
+      if (!notification) {
+        notification = await Notifications.create({ data });
         await notification.setUser(userId);
       }
 
       socket.send(JSON.stringify({
         type: "message",
-        data
+        data: {
+          id: notification.id,
+          seen: notification.seen,
+          createdAt: notification.createdAt,
+          data
+        }
       }));
     }
   });
@@ -219,6 +228,8 @@ async function setupWebSocketServer(server: http.Server) {
 
   Notifications.afterUpdate(async (notification) => {
     const user = await notification.getUser();
+    console.log("Notification updated, sending refresh to user", user.id);
+
     await sendRefreshToClient(user.id);
   });
 }
