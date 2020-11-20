@@ -1,22 +1,20 @@
 import * as React from "react";
-import { useState, useEffect, Fragment } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { VideoJsPlayer } from "video.js";
-import usePortal from "react-useportal";
 import { useTranslation } from "react-i18next";
 import classNames from "classnames";
 
-import { activateSubtitleTrack, CommonType, convertHMS, EmojiReaction } from "../../util";
+import { CommonType, convertHMS, EmojiReaction } from "../../util";
 import UserLogo, { UserType } from "../user_logo";
 import CommentList from "./comment_list";
-import Video from "../video";
 import NewComment from "./new_comment";
 import { TagData } from "../post_list/post_list";
-import { getPostId, postComment, postEmojiReaction, postLike } from "../../services/post.service";
-import { addEmojiAnimation, addTooltip } from "../videojs/util";
-import TranslationModal from "./translation_modal";
+import { getPostId, postComment, postLike } from "../../services/post.service";
+import { addTooltip } from "../videojs/util";
 import Image from "../image";
 import Thumbnail from "../thumbnail";
+import VideoWithToolbar from "../video_with_toolbar";
 
 interface MultimediaItem {
   id: string;
@@ -60,7 +58,6 @@ const Post: React.FC<PostProps> = (props) => {
   const { id } = useParams<{ id: string }>();
   const idPost = props.post ? props.post.id : id;
   const { callbackClickTime } = props;
-  const { openPortal, closePortal, isOpen, Portal } = usePortal();
 
   const [post, setPost] = useState<PostType>();
   const [isLike, setIsLike] = useState<boolean>(false);
@@ -70,9 +67,7 @@ const Post: React.FC<PostProps> = (props) => {
   const [emojiReactions, setEmojiReactions] = useState<EmojiReaction[]>([]);
   const [showComments, setShowComments] = useState(false);
   const [player, setPlayer] = useState<VideoJsPlayer>();
-  const [showEmojis, setShowEmojis] = useState<boolean>(false);
   const [selectedItem, setSelectedItem ] = useState<MultimediaItem>();
-  const emojis = ["👍","💓","😊","😍","😂","😡"];
 
   useEffect(() => {
     (async () => {
@@ -154,48 +149,6 @@ const Post: React.FC<PostProps> = (props) => {
     setShowNewComment(false);
   };
 
-  const handleClickEmojiButton = () => {
-    setShowEmojis(!showEmojis);
-  };
-
-  const handleClickEmojiItem = async (emoji: string) => {
-    setShowEmojis(false);
-
-    if (player) {
-      const second = player.currentTime();
-      const response = await postEmojiReaction(idPost, emoji, second);
-
-      if (response.ok) {
-        const data = await response.json();
-        const reaction: EmojiReaction = {
-          emoji: data.emoji,
-          second: data.second
-        };
-
-        addEmojiAnimation(player, reaction);
-
-        const reactions = [
-          reaction,
-          ...emojiReactions
-        ];
-
-        setEmojiReactions(reactions);
-      }
-    }
-  };
-
-  const handleTranslationSuccess = (languageCode: string, subtitleId: string) => {
-    if (player) {
-      player.addRemoteTextTrack({
-        kind: "subtitles",
-        srclang: languageCode,
-        src: `/video/subtitles/${subtitleId}`
-      }, true);
-
-      activateSubtitleTrack(player, languageCode);
-    }
-  };
-
   const handleClickTime = (second: number) => {
     if (player) {
       player.currentTime(second);
@@ -249,8 +202,9 @@ const Post: React.FC<PostProps> = (props) => {
           <div className="columns is-centered">
             <div className="column is-8-desktop is-10-tablet">
               {(selectedItem.type == "video") ? (
-                <Video
+                <VideoWithToolbar
                   id={selectedItem.id}
+                  post={post}
                   getPlayer={callbackPlayer}
                   comments={comments}
                   emojis={emojiReactions}
@@ -266,42 +220,6 @@ const Post: React.FC<PostProps> = (props) => {
           <div className="column">
             <nav className="level is-mobile" style={{position: "relative"}}>
               <div className="level-left">
-                {(post.dataContainer?.multimedia && post.dataContainer?.multimedia.length > 0) && (
-                  <Fragment>
-                    <div className={`emoji-container ${showEmojis ? "" : "hidden"}`}>
-                      {emojis.map((emoji, index) => {
-                        return (
-                          <button key={index} className="emoji-item" onClick={() => handleClickEmojiItem(emoji)}>{emoji}</button>
-                        );
-                      })}
-                    </div>
-
-                    <a className="level-item button is-info is-small" onClick={handleClickEmojiButton}>
-                      <span className="icon is-small">
-                        <i className="fas fa-smile"></i>
-                      </span>
-                    </a>
-
-                    {(!post.parent_post_id) && (
-                      <a className="level-item" onClick={(e) => openPortal(e)}>
-                        <span className="icon is-small">
-                          <i className="fas fa-language"/>
-                        </span>
-                      </a>
-                    )}
-
-                    {isOpen && (
-                      <Portal>
-                        <TranslationModal
-                          id={post.dataContainer.multimedia[0].id!}
-                          onSuccess={handleTranslationSuccess}
-                          onClose={closePortal}
-                        />
-                      </Portal>
-                    )}
-                  </Fragment>
-                )}
-
                 <a className="level-item" onClick={handleClickReply}>
                   <span className="icon is-small"><i className="fas fa-reply"></i></span>
                 </a>
