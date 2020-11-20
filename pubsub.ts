@@ -81,10 +81,10 @@ export async function sendRefreshToClient(userId: string) {
 
     clients.forEach((client) => {
       if (client.userId == user.id) {
-        client.socket.send({
+        client.socket.send(JSON.stringify({
           type: "refresh",
           data: userNotifications.map((notification) => notification.data)
-        });
+        }));
       }
     });
   }
