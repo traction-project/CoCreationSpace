@@ -85,7 +85,13 @@ export async function sendRefreshToClient(userId: string) {
 
         client.socket.send(JSON.stringify({
           type: "refresh",
-          data: userNotifications.map((notification) => notification.data)
+          data: userNotifications.map((notification) => {
+            const { id, seen, createdAt, data } = notification;
+
+            return {
+              id, seen, createdAt, data
+            };
+          })
         }));
       }
     });

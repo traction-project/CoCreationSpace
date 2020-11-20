@@ -4,14 +4,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 import classNames from "classnames";
 
-import { NotificationData } from "./use_notification";
-
-interface Notification {
-  id: string;
-  data: NotificationData;
-  seen: boolean;
-  createdAt: Date;
-}
+import { Notification } from "./use_notification";
 
 interface NotificationListProps {
 }

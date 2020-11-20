@@ -1,5 +1,12 @@
 import { useEffect, useState } from "react";
 
+export interface Notification {
+  id: string;
+  data: NotificationData;
+  seen: boolean;
+  createdAt: Date;
+}
+
 export interface NotificationData {
   topic: { id: string, title: string },
   post: { id: string, title: string | null },
@@ -7,9 +14,9 @@ export interface NotificationData {
 }
 
 function useNotification(userId: string) {
-  const [ notifications, setNotifications ] = useState<Array<NotificationData>>([]);
+  const [ notifications, setNotifications ] = useState<Array<Notification>>([]);
 
-  const onNotificationReceived = (notification: NotificationData) => {
+  const onNotificationReceived = (notification: Notification) => {
     console.log("Notification received:", notification);
 
     setNotifications(notifications => [
