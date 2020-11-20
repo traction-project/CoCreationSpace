@@ -39,17 +39,17 @@ async function getUserInterests(userId: string): Promise<Array<string>> {
 }
 
 /**
- * Checks whether a notification with the given data content already exists for
- * the user with the given ID.
+ * Tries to retrieve an existing notification with the given data and user ID.
+ * If it exists, it is returned, otherwise null is returned.
  *
  * @param data Data in the notification
  * @param userId ID of the user that the notification belongs to
- * @returns true if the notification already exists, false otherwise
+ * @returns The notification if it exists, null otherwise
  */
-async function isDuplicateNotification(data: any, userId: string) {
+async function getExistingNotification(data: any, userId: string) {
   const { Notifications, Users } = db.getModels();
 
-  const isDuplicate = await Notifications.findOne({
+  const existingNotification = await Notifications.findOne({
     where: {
       data
     },
@@ -60,7 +60,7 @@ async function isDuplicateNotification(data: any, userId: string) {
     }
   });
 
-  return isDuplicate != null;
+  return existingNotification;
 }
 
 /**
