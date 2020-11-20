@@ -28,7 +28,9 @@ const NotificationList: React.FC<NotificationListProps> = (props) => {
   }, []);
 
   const deleteNotification = (id: string) => {
-    return async () => {
+    return async (e: React.MouseEvent<HTMLButtonElement>) => {
+      e.stopPropagation();
+
       const res = await fetch(`/notifications/${id}`, {
         method: "DELETE"
       });
