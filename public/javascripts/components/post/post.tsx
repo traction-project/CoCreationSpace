@@ -7,7 +7,6 @@ import { useTranslation } from "react-i18next";
 import classNames from "classnames";
 
 import { activateSubtitleTrack, CommonType, convertHMS, EmojiReaction } from "../../util";
-
 import UserLogo, { UserType } from "../user_logo";
 import CommentList from "./comment_list";
 import Video from "../video";
