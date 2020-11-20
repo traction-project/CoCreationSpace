@@ -6,6 +6,7 @@ import classNames from "classnames";
 
 import { PostType } from "../post/post";
 import Filter from "./filter";
+import PostThumbnailEntry from "./post_thumbnail_entry";
 import PostEntry from "./post_entry";
 
 interface PostListProps {
@@ -138,7 +139,11 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
               }).map((post, index) => {
                 return (
                   <React.Fragment key={index}>
-                    <PostEntry key={index} post={post} />
+                    {(selectedTab == "text") ? (
+                      <PostEntry key={index} post={post} />
+                    ) : (
+                      <PostThumbnailEntry key={index} post={post} />
+                    )}
                     <hr/>
                   </React.Fragment>
                 );
