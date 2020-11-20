@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 export interface NotificationData {
   topic: { id: string, title: string },
-  post: { id: string, title: string },
+  post: { id: string, title: string | null },
   creator: { id: string, username: string, image: string }
 }
 

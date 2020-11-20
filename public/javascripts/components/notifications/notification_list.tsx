@@ -82,15 +82,27 @@ const NotificationList: React.FC<NotificationListProps> = (props) => {
                     <div className="content">
                       <p>
                         <strong>
-                          <Trans i18nKey="notification-title">
-                            New post in topic {{ topicTitle: topic.title }}
-                          </Trans>
+                          {(post.title != null) ? (
+                            <Trans i18nKey="notification-title">
+                              New post in topic {{ topicTitle: topic.title }}
+                            </Trans>
+                          ) : (
+                            <Trans i18nKey="notification-comment">
+                              New comment in topic {{ topicTitle: topic.title }}
+                            </Trans>
+                          )}
                         </strong>
                         <br />
                         <br />
-                        <Trans i18nKey="notification-text">
-                          A new post titled <i>{{ postTitle: post.title}}</i> was submitted to the topic <i>{{ topicTitle: topic.title}}</i>
-                        </Trans>
+                        {(post.title != null) ? (
+                          <Trans i18nKey="notification-text">
+                            A new post titled <i>{{ postTitle: post.title}}</i> was submitted to the topic <i>{{ topicTitle: topic.title}}</i>
+                          </Trans>
+                        ) : (
+                          <Trans i18nKey="notification-text-comment">
+                            A new comment was submitted to the topic <i>{{ topicTitle: topic.title}}</i>
+                          </Trans>
+                        )}
                       </p>
                       <p className="mt-2">
                         <small>{creator.username}</small>&emsp;<small>{createdAt.toLocaleDateString()} {createdAt.toLocaleTimeString()}</small>
