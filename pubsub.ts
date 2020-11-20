@@ -210,11 +210,16 @@ async function setupWebSocketServer(server: http.Server) {
 
   });
 
-  const { Posts } = db.getModels();
+  const { Posts, Notifications } = db.getModels();
 
   Posts.afterCreate(async (post) => {
     console.log("Post created, sending broadcast...");
-    broadcastNotification(post);
+    await broadcastNotification(post);
+  });
+
+  Notifications.afterUpdate(async (notification) => {
+    const user = await notification.getUser();
+    await sendRefreshToClient(user.id);
   });
 }
 
