@@ -231,110 +231,107 @@ const VideoUpload: React.FC<VideoUploadProps> = ({ file }) => {
 
         <div className="columns is-centered">
           <div className="column is-10">
-            {(fileUploads.length > 0) && (
-              <form onSubmit={handleFormSubmission}>
-                <div className="field">
-                  <label className="label">{t("Title")}</label>
-                  <div className="control">
-                    <input
-                      className="input"
-                      type="text"
-                      placeholder={`${t("Add title")}...`}
-                      name="title"
-                      required={true}
-                      ref={register({
-                        required: true
+            <form onSubmit={handleFormSubmission}>
+              <div className="field">
+                <label className="label">{t("Title")}</label>
+                <div className="control">
+                  <input
+                    className="input"
+                    type="text"
+                    placeholder={`${t("Add title")}...`}
+                    name="title"
+                    required={true}
+                    ref={register({
+                      required: true
+                    })}
+                  />
+                </div>
+              </div>
+              <div className="field">
+                <label className="label">{t("Description")}</label>
+                <div className="control">
+                  <textarea
+                    placeholder={`${t("Description")}...`}
+                    className="textarea"
+                    name="description"
+                    ref={register}
+                  />
+                </div>
+              </div>
+
+              <div className="field">
+                <label className="label">{t("Topic")}</label>
+                <div className="control">
+                  <div className="select">
+                    <select name="topic" ref={register}>
+                      {topics.map(([id, name]) => {
+                        return (
+                          <option key={id} value={id}>{name}</option>
+                        );
                       })}
-                    />
+                    </select>
                   </div>
                 </div>
+              </div>
 
-                <div className="field">
-                  <label className="label">{t("Description")}</label>
-                  <div className="control">
-                    <textarea
-                      placeholder={`${t("Description")}...`}
-                      className="textarea"
-                      name="description"
-                      ref={register}
-                    />
-                  </div>
-                </div>
+              <div className="field">
+                <label className="label">{t("Tags")}</label>
 
-                <div className="field">
-                  <label className="label">{t("Topic")}</label>
-                  <div className="control">
-                    <div className="select">
-                      <select name="topic" ref={register}>
-                        {topics.map(([id, name]) => {
-                          return (
-                            <option key={id} value={id}>{name}</option>
-                          );
-                        })}
-                      </select>
+                <div className="control">
+                  <div className="field has-addons">
+                    <div className="control">
+                      <input
+                        className="input"
+                        type="text"
+                        name="tagName"
+                        placeholder={`${t("Add tag")}...`}
+                        ref={register}
+                      />
+                    </div>
+                    <div className="control">
+                      <button
+                        type="button"
+                        className="button is-info"
+                        onClick={() => {
+                          addTag(getValues("tagName"));
+                          setValue("tagName", "");
+                        }}
+                      >
+                        {t("Add")}
+                      </button>
                     </div>
                   </div>
                 </div>
 
-                <div className="field">
-                  <label className="label">{t("Tags")}</label>
-
-                  <div className="control">
-                    <div className="field has-addons">
-                      <div className="control">
-                        <input
-                          className="input"
-                          type="text"
-                          name="tagName"
-                          placeholder={`${t("Add tag")}...`}
-                          ref={register}
-                        />
-                      </div>
-                      <div className="control">
-                        <button
-                          type="button"
-                          className="button is-info"
-                          onClick={() => {
-                            addTag(getValues("tagName"));
-                            setValue("tagName", "");
-                          }}
-                        >
-                          {t("Add")}
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="list-tags">
-                    {(tags.length > 0) ? (
-                      <ul>
-                        {tags.map((tag, index) => {
-                          return (
-                            <li key={index} className="tag is-medium is-primary">
-                              {tag} <a className="delete" onClick={handleClickRemoveTag.bind(null, tag)}></a>
-                            </li>
-                          );
-                        })}
-                      </ul>
-                    ) : (
-                      <p>{t("No tags added yet")}</p>
-                    )}
-                  </div>
+                <div className="list-tags">
+                  {(tags.length > 0) ? (
+                    <ul>
+                      {tags.map((tag, index) => {
+                        return (
+                          <li key={index} className="tag is-medium is-primary">
+                            {tag} <a className="delete" onClick={handleClickRemoveTag.bind(null, tag)}></a>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  ) : (
+                    <p>{t("No tags added yet")}</p>
+                  )}
                 </div>
+              </div>
 
-                <div className="field pt-4">
-                  <div className="control">
-                    <button
-                      type="submit"
-                      className="button is-link is-fullwidth"
-                      disabled={watch("title")?.length == 0 || fileUploads.some((u) => u.status == "progressing")}
-                    >
-                      Submit
-                    </button>
-                  </div>
+              <div className="field pt-4">
+                <div className="control">
+                  <button
+                    type="submit"
+                    className="button is-link is-fullwidth"
+                    disabled={watch("title")?.length == 0 || fileUploads.length == 0 || fileUploads.some((u) => u.status == "progressing")}
+                  >
+                    Submit
+                  </button>
                 </div>
-              </form>
-            )}
+              </div>
+            </form>
 
             {(displayNotification == "success") ? (
               <div className="notification is-success fixed-notification">
