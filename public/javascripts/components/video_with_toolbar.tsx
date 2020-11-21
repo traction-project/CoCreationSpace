@@ -86,7 +86,7 @@ const VideoWithToolbar: React.FC<VideoWithToolbarProps> = (props) => {
 
       <nav className="level is-mobile" style={{position: "relative"}}>
         <div className="level-left">
-          <div className={classNames("emoji-container", { "hidden": showEmojis })}>
+          <div className={classNames("emoji-container", { "hidden": !showEmojis })}>
             {EMOJIS.map((emoji, index) => {
               return (
                 <button key={index} className="emoji-item" onClick={() => handleClickEmojiItem(emoji)}>{emoji}</button>
