@@ -47,7 +47,7 @@ export const addTooltip = (video: VideoJsPlayer,reaction: PostType): void => {
  * @param playerNode Div element ref that contains the player
  */
 export const createMarkers = (video: VideoJsPlayer, markers: Marker[], playerNode: React.RefObject<HTMLDivElement>) => {
-  if (video) {
+  if (video && video.duration() > 0) {
     markers.map(marker => {
       const { type, second, emoji } = marker;
 
