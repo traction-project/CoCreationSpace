@@ -221,7 +221,7 @@ const Post: React.FC<PostProps> = (props) => {
 
                 <a className="level-item" onClick={handleClickLike}>
                   <span key="unique" className="icon is-small">
-                    <i className={ isLike ? "fas fa-heart" : "far fa-heart"} />
+                    <i className={classNames("fa-heart", { "fas": isLike, "far": !isLike })} />
                   </span>
                 </a>
                 <span className="level-item">

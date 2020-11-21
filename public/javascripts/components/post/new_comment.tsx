@@ -2,6 +2,7 @@ import * as React from "react";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import classNames from "classnames";
 
 import FileUpload from "./new_comment_file_upload";
 
@@ -63,7 +64,7 @@ const NewComment: React.FC<NewCommentProps> = (props) => {
       <form onSubmit={handleClickComment}>
         <div className="form-group">
           <textarea
-            className={ errors.comment ? "textarea alert" : "textarea"}
+            className={classNames("textarea", { "alert": errors.comment })}
             placeholder={t("Add a comment") + "..."}
             rows={3}
             name="comment"

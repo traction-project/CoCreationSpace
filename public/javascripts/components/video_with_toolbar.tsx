@@ -3,6 +3,7 @@ import { useState } from "react";
 import { VideoJsPlayer } from "video.js";
 import usePortal from "react-useportal";
 import { PostType } from "./post/post";
+import classNames from "classnames";
 
 import { postEmojiReaction } from "../services/post.service";
 import { addEmojiAnimation } from "./videojs/util";
@@ -85,7 +86,7 @@ const VideoWithToolbar: React.FC<VideoWithToolbarProps> = (props) => {
 
       <nav className="level is-mobile" style={{position: "relative"}}>
         <div className="level-left">
-          <div className={`emoji-container ${showEmojis ? "" : "hidden"}`}>
+          <div className={classNames("emoji-container", { "hidden": showEmojis })}>
             {EMOJIS.map((emoji, index) => {
               return (
                 <button key={index} className="emoji-item" onClick={() => handleClickEmojiItem(emoji)}>{emoji}</button>
