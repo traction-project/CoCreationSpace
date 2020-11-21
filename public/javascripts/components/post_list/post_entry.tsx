@@ -27,7 +27,10 @@ const PostEntry: React.FC<PostEntryProps> = (props) => {
       <div className="media-content">
         <div className="content">
           <strong className="post-title">{post.title ? post.title : t("Post")}</strong>
-          <small className="list-item__date">{post.createdAt && new Date(post.createdAt).toLocaleDateString()}</small>
+          <small className="list-item__date">
+            {post.createdAt && new Date(post.createdAt).toLocaleDateString()}&emsp;
+            {post.createdAt && new Date(post.createdAt).toLocaleTimeString()}
+          </small>
 
           <p className="mt-2">
             {post.dataContainer?.text_content}

@@ -28,7 +28,10 @@ const PostThumbnailEntry: React.FC<PostThumbnailEntryProps> = (props) => {
       <div className="media-content">
         <div className="content">
           <strong className="post-title">{post.title ? post.title : t("Post")}</strong>
-          <small className="list-item__date">{post.createdAt && new Date(post.createdAt).toLocaleDateString()}</small>
+          <small className="list-item__date">
+            {post.createdAt && new Date(post.createdAt).toLocaleDateString()}&emsp;
+            {post.createdAt && new Date(post.createdAt).toLocaleTimeString()}
+          </small>
 
           <div className="m-4" style={{ display: "flex", flexWrap: "wrap" }}>
             {(post.dataContainer?.multimedia && post.dataContainer.multimedia.length > 0) && (
