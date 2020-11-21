@@ -44,11 +44,11 @@ const PostEntry: React.FC<PostEntryProps> = (props) => {
         </div>
         {(post.dataContainer && post.dataContainer.multimedia && post.dataContainer.multimedia.length > 0) && (
           <div className="list-item__files">
-            {post.dataContainer.multimedia.map((_, index) => {
+            {post.dataContainer.multimedia.map((m, index) => {
               return (
                 <div key={index}>
-                  <figure className="image is-24x24 list-item__files-item">
-                    <img src="/images/docs.png" />
+                  <figure className="image is-24x24 list-item__files-item mr-2">
+                    <img src={`/images/file-${m.type}-solid.png`} />
                   </figure>
                 </div>
               );
