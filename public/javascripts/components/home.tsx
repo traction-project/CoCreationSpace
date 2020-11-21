@@ -4,7 +4,6 @@ import { useTranslation } from "react-i18next";
 import { Dispatch, bindActionCreators } from "redux";
 import { connect } from "react-redux";
 
-import { isMobile } from "../util";
 import { ApplicationState } from "../store";
 import { actionCreators as loginActionCreators, LoginActions } from "../actions/login";
 import { LoginState } from "../reducers/login";
@@ -54,11 +53,6 @@ const Home: React.FC<HomeProps> = (props) => {
                   <li className="home__menu-item" onClick={navigateTo("/upload")}>
                     {t("Create")}
                   </li>
-                  {(isMobile()) && (
-                    <li className="home__menu-item" onClick={navigateTo("/record")}>
-                      {t("Record")}
-                    </li>
-                  )}
                 </ul>
               ) : (
                 <div className="box">
