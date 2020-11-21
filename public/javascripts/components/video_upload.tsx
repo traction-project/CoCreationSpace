@@ -128,7 +128,8 @@ const VideoUpload: React.FC<VideoUploadProps> = ({ file }) => {
       });
 
       if (res.ok) {
-        history.push("/userPosts");
+        const post = await res.json();
+        history.push(`/post/${post.id}`);
       } else {
         throw new Error("HTTP status code: " + res.status);
       }
