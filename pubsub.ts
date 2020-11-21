@@ -126,6 +126,11 @@ export async function broadcastNotification(post: PostInstance) {
     const interests = await getUserInterests(userId);
 
     if (interests.find((t) => t == topic.id)) {
+      // Don't send notification if client is creator of post
+      if (user.id == userId) {
+        return;
+      }
+
       console.log("Sending broadcast for", post.id, post.title, topic.id, topic.title, "to", userId);
 
       const data = {
