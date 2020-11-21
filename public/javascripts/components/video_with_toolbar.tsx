@@ -27,8 +27,8 @@ const VideoWithToolbar: React.FC<VideoWithToolbarProps> = (props) => {
   const { post } = props;
   const { openPortal, closePortal, isOpen, Portal } = usePortal();
 
-  const [emojiReactions, setEmojiReactions] = useState<EmojiReaction[]>((post as any).emojiReactions.map((item: EmojiReaction) => {
-    return { emoji: item.emoji, second: item.second };
+  const [emojiReactions, setEmojiReactions] = useState<EmojiReaction[]>((post as any).emojiReactions.map(({ emoji, second }: EmojiReaction) => {
+    return { emoji, second };
   }));
   const [showEmojis, setShowEmojis] = useState<boolean>(false);
   const [player, setPlayer] = useState<VideoJsPlayer>();

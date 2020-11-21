@@ -48,7 +48,7 @@ export function EmojiReactionsModelFactory(sequelize: Sequelize.Sequelize): Sequ
       allowNull: false
     },
     second: {
-      type: Sequelize.DataTypes.DECIMAL
+      type: Sequelize.DataTypes.DOUBLE
     },
     post_id: {
       type: Sequelize.DataTypes.UUIDV4,
