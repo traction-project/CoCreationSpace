@@ -249,7 +249,9 @@ async function setupWebSocketServer(server: http.Server) {
       user_id: user.id
     } as any);
 
-    await sendRefreshToClient(user.id);
+    setTimeout(async () => {
+      await sendRefreshToClient(user.id);
+    }, 50000);
   });
 
   Posts.afterCreate(async (post) => {
