@@ -5,6 +5,12 @@ import { authRequired } from "../util/middleware";
 
 const router = Router();
 
+/**
+ * Automatically translate the media item identified by the given `id` into the
+ * language identified by `target`. Where `target` is a language code (such as
+ * en, de or es). If translation fails or the original multimedia item has no
+ * transcript available, HTTP error 400 is returned.
+ */
 router.post("/:id/:target", authRequired, async (req, res) => {
   const { id, target } = req.params;
   const { Multimedia, Subtitles } = db.getModels();
@@ -49,6 +55,11 @@ router.post("/:id/:target", authRequired, async (req, res) => {
   }
 });
 
+/**
+ * Adds a manually created set of subtitles to the multimedia item specified by
+ * the given ID. The parameter `target` speicifes the language of the new
+ * subtitles.
+ */
 router.post("/:id/:target/manual", async (req, res) => {
   const { id, target } = req.params;
   const cues = req.body;
@@ -65,6 +76,10 @@ router.post("/:id/:target/manual", async (req, res) => {
   res.send("OK");
 });
 
+/**
+ * Retrieve transcript for media item with given ID. Returns with HTTP error
+ * 404 if no such transcript is available.
+ */
 router.get("/:id/transcript", authRequired, async (req, res) => {
   const { id } = req.params;
   const { Multimedia } = db.getModels();
