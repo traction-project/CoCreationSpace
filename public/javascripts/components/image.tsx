@@ -1,11 +1,15 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
+import usePortal from "react-useportal";
+
+import FullscreenImage from "./fullscreen_image";
 
 interface ImageProps {
   id: string;
 }
 
 const Image: React.FC<ImageProps> = ({ id }) => {
+  const { isOpen, Portal, openPortal, closePortal } = usePortal();
   const [ imageUrl, setImageUrl ] = useState<string>();
 
   useEffect(() => {
@@ -34,9 +38,22 @@ const Image: React.FC<ImageProps> = ({ id }) => {
     <div style={wrapperStyle}>
       <div style={innerStyle}>
         {(imageUrl) && (
-          <img src={imageUrl} style={{ maxHeight: "100%" }} />
+          <img
+            src={imageUrl}
+            style={{ maxHeight: "100%", cursor: "pointer" }}
+            onClick={openPortal}
+          />
         )}
       </div>
+
+      {(isOpen) && (
+        <Portal>
+          <FullscreenImage
+            id={id}
+            onClose={closePortal}
+          />
+        </Portal>
+      )}
     </div>
   );
 };
