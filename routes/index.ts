@@ -104,4 +104,10 @@ router.get("/revision", (_, res) => {
   }
 });
 
+router.get("/resetdatabase", (_, res) => {
+  return res.send({
+    status: "OK"
+  });
+});
+
 export default router;
