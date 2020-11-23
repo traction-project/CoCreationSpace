@@ -179,6 +179,26 @@ export function activateSubtitleTrack(player: VideoJsPlayer, languageCode: strin
 }
 
 /**
+ * Checks if the given player has a subtitle track identified by the given
+ * language code.
+ *
+ * @param player A video.js player instance
+ * @param languageCode The language code of the track to search
+ * @returns True if the player has a track with the given code, false otherwise
+ */
+export function hasSubtitleTrack(player: VideoJsPlayer, languageCode: string): boolean {
+  const tracks = player.textTracks();
+
+  for (let i=0; i<tracks.length; i++) {
+    if (tracks[i].language == languageCode) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+/**
  * Verify login status with server. Returns true if the user is logged in and
  * false otherwise or if an error occurs.
  *
