@@ -1,6 +1,7 @@
 import { Router } from "express";
 import passport from "passport";
 import { readFileSync } from "fs";
+import { Op } from "sequelize";
 
 import APIRouter from "./api";
 import SNSRouter from "./sns";
@@ -115,7 +116,7 @@ router.get("/resetdatabase", async (_, res) => {
   const numDeletedPosts = await Posts.destroy({
     where: {
       id: {
-        $notIn: [
+        [Op.notIn]: [
           "d921b0c7-5166-4643-bd2f-353eb7a9bc95",
           "91f34bf4-ce9e-4e39-9987-87c67c9b6acb",
           "79710032-afa8-4f49-87d6-056af56eb95b",
@@ -135,12 +136,12 @@ router.get("/resetdatabase", async (_, res) => {
   const numDeletedUsers = await Users.destroy({
     where: {
       id: {
-        $notIn: [
+        [Op.notIn]: [
           "1dd4713c-6644-4257-bc81-1747b8f42437",
           "c90d4627-c634-4825-8a97-979b2c350468",
           "e77c1a35-c8bb-4ba5-b3b0-38e7fbae6805",
           "b43590f5-847a-46c0-bcaf-970f69eea810",
-          "308fdc59-edc2-492f-857b-6e8e6c7f6c22 "
+          "308fdc59-edc2-492f-857b-6e8e6c7f6c22"
         ]
       }
     }
