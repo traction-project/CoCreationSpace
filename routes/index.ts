@@ -110,10 +110,11 @@ router.get("/revision", (_, res) => {
  *
  * XXX THIS NEEDS TO BE DISABLED AFTER THE TRIAL!
  */
-router.get("/resetdatabase", async (_, res) => {
+router.get("/resetdatabase", async (req, res) => {
   const { Posts, Users } = db.getModels();
+  const isDryRun = req.query.confirm == undefined;
 
-  const numDeletedPosts = await Posts.destroy({
+  const postQuery = {
     where: {
       id: {
         [Op.notIn]: [
@@ -131,9 +132,9 @@ router.get("/resetdatabase", async (_, res) => {
         ]
       }
     }
-  });
+  };
 
-  const numDeletedUsers = await Users.destroy({
+  const userQuery ={
     where: {
       id: {
         [Op.notIn]: [
@@ -145,10 +146,21 @@ router.get("/resetdatabase", async (_, res) => {
         ]
       }
     }
-  });
+  };
+
+  let numDeletedPosts = 0, numDeletedUsers = 0;
+
+  if (isDryRun) {
+    numDeletedPosts = await Posts.count(postQuery);
+    numDeletedUsers = await Users.count(userQuery);
+  } else {
+    numDeletedPosts = await Posts.destroy(postQuery);
+    numDeletedUsers = await Users.destroy(userQuery);
+  }
 
   return res.send({
     status: "OK",
+    isDryRun,
     deletedRecords: {
       users: numDeletedUsers,
       posts: numDeletedPosts
