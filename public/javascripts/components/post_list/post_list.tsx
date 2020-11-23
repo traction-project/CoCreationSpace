@@ -108,7 +108,7 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
       <div className="container">
         <div className="columns is-centered">
           <div className="column is-6-desktop is-8-tablet">
-            <Filter searchValueChange={handleChange} />
+            <Filter searchValueChange={handleChange} placeholder={`${t("Search")}...`}/>
           </div>
         </div>
 

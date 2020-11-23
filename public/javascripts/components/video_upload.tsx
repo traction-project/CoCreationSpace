@@ -328,7 +328,7 @@ const VideoUpload: React.FC<VideoUploadProps> = ({ file }) => {
                     className="button is-link is-fullwidth"
                     disabled={watch("title")?.length == 0 || fileUploads.length == 0 || fileUploads.some((u) => u.status == "progressing")}
                   >
-                    Submit
+                    {t("Submit")}
                   </button>
                 </div>
               </div>
