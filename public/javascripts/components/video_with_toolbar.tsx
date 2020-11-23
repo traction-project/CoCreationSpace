@@ -7,7 +7,7 @@ import classNames from "classnames";
 
 import { postEmojiReaction } from "../services/post.service";
 import { addEmojiAnimation } from "./videojs/util";
-import { activateSubtitleTrack, EmojiReaction } from "../util";
+import { activateSubtitleTrack, EmojiReaction, hasSubtitleTrack } from "../util";
 
 import Video from "./video";
 import TranslationModal from "./post/translation_modal";
@@ -65,11 +65,13 @@ const VideoWithToolbar: React.FC<VideoWithToolbarProps> = (props) => {
 
   const handleTranslationSuccess = (languageCode: string, subtitleId: string) => {
     if (player) {
-      player.addRemoteTextTrack({
-        kind: "subtitles",
-        srclang: languageCode,
-        src: `/video/subtitles/${subtitleId}`
-      }, true);
+      if (!hasSubtitleTrack(player, languageCode)) {
+        player.addRemoteTextTrack({
+          kind: "subtitles",
+          srclang: languageCode,
+          src: `/video/subtitles/${subtitleId}`
+        }, true);
+      }
 
       activateSubtitleTrack(player, languageCode);
     }
