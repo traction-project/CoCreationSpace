@@ -8,6 +8,16 @@ $navbar-dropdown-arrow: #FFFFFF;
 
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
+// Video.js overrides
+
+.vjs-picture-in-picture-control {
+  display: none;
+}
+
+.vjs-subs-caps-button {
+  display: none;
+}
+
 // Other style imports
 
 @import "bulma/bulma.sass";
