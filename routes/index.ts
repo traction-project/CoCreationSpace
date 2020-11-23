@@ -104,9 +104,39 @@ router.get("/revision", (_, res) => {
   }
 });
 
-router.get("/resetdatabase", (_, res) => {
+/**
+ * Reset database to a pristine state for the trial.
+ *
+ * XXX THIS NEEDS TO BE DISABLED AFTER THE TRIAL!
+ */
+router.get("/resetdatabase", async (_, res) => {
+  const { Posts, Users } = db.getModels();
+
+  const numDeletedPosts = await Posts.destroy({
+    where: {
+      id: {
+        $notIn: [
+          "d921b0c7-5166-4643-bd2f-353eb7a9bc95",
+          "91f34bf4-ce9e-4e39-9987-87c67c9b6acb",
+          "79710032-afa8-4f49-87d6-056af56eb95b",
+          "bf0931a3-6e07-4680-8e14-391cd91008a2",
+          "c52f131d-919f-4e01-92dd-c20873aa4b9d",
+          "0d8e32e9-6b7d-4dc6-ab54-8dff018502ec",
+          "6ec6e300-0f34-4f4f-8d09-7480fb7909d6",
+          "5fd0a6ee-40ce-4a18-8018-6604e94d5cad",
+          "b40de631-173f-4525-a1c1-09d81efa8569",
+          "3f6ddbea-dc2e-47da-a29b-d261f573e40e",
+          "2482d38c-536f-4ed1-a00e-4b2ea2ac748a"
+        ]
+      }
+    }
+  });
+
   return res.send({
-    status: "OK"
+    status: "OK",
+    deletedRecords: {
+      posts: numDeletedPosts
+    }
   });
 });
 
