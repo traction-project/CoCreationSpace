@@ -4,10 +4,11 @@ import useNotification from "./use_notification";
 
 interface NotificationCounterProps {
   userId: string;
+  hideText?: boolean;
 }
 
 const NotificationCounter: React.FC<NotificationCounterProps> = (props) => {
-  const { userId } = props;
+  const { userId, hideText } = props;
   const { t } = useTranslation();
   const notifications = useNotification(userId);
 
@@ -17,8 +18,13 @@ const NotificationCounter: React.FC<NotificationCounterProps> = (props) => {
 
   return (
     <div>
-      <i className="far fa-bell" />&nbsp;
-      {unseenNotifications.length} {t("Notification", { count: unseenNotifications.length })}
+      {(hideText) || (
+        <>
+          <i className="far fa-bell" />
+          &nbsp;
+        </>
+      )}
+      {unseenNotifications.length} {(hideText) || t("Notification", { count: unseenNotifications.length })}
     </div>
   );
 };
