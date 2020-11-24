@@ -98,6 +98,23 @@ export async function sendRefreshToClient(userId: string) {
   }
 }
 
+function groupConnectionsByUserId(clients: Array<InterestSubscription>): Map<string, Array<WebSocket>> {
+  return clients.reduce((userConnections, client) => {
+    if (userConnections.has(client.userId)) {
+      const connections = userConnections.get(client.userId)!;
+
+      return userConnections.set(
+        client.userId,
+        connections.concat([client.socket])
+      );
+    }
+
+    return userConnections.set(
+      client.userId, [client.socket]
+    );
+  }, new Map<string, Array<WebSocket>>());
+}
+
 /**
  * Broadcasts a notification message to all clients which are subscribed to the
  * topic that the given post belongs to. The message contains topic id and
@@ -251,7 +268,7 @@ async function setupWebSocketServer(server: http.Server) {
 
     setTimeout(async () => {
       await sendRefreshToClient(user.id);
-    }, 50000);
+    }, 5000);
   });
 
   Posts.afterCreate(async (post) => {
