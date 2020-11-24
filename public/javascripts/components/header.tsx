@@ -54,6 +54,12 @@ const Header: React.FC<HeaderProps> = (props) => {
           <span aria-hidden="true" />
           <span aria-hidden="true" />
           <span aria-hidden="true" />
+
+          {(props.login.loggedIn && props.login.user) && (
+            <div className="notification-count">
+              <NotificationCounter hideText={true} userId={props.login.user!.id} />
+            </div>
+          )}
         </a>
       </div>
 

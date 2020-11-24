@@ -30,6 +30,13 @@ body {
   background-color: #F5F5F5;
 }
 
+.notification-count {
+  position: absolute;
+  top: 0.25rem;
+  right: 0.5rem;
+  font-size: 0.75rem;
+}
+
 .dropzone {
   border: 4px dashed #999999;
   border-radius: 7px;
