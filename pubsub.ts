@@ -40,31 +40,6 @@ async function getUserInterests(userId: string): Promise<Array<string>> {
 }
 
 /**
- * Tries to retrieve an existing notification with the given data and user ID.
- * If it exists, it is returned, otherwise null is returned.
- *
- * @param data Data in the notification
- * @param userId ID of the user that the notification belongs to
- * @returns The notification if it exists, null otherwise
- */
-async function getExistingNotification(data: any, userId: string) {
-  const { Notifications, Users } = db.getModels();
-
-  const existingNotification = await Notifications.findOne({
-    where: {
-      data
-    },
-    include: {
-      model: Users,
-      as: "user",
-      where: { id: userId }
-    }
-  });
-
-  return existingNotification;
-}
-
-/**
  * Sends a refreshed list of notifications to the user with the given ID. If no
  * such user is connected, nothing happens.
  *
@@ -99,6 +74,13 @@ export async function sendRefreshToClient(userId: string) {
   }
 }
 
+/**
+ * Groups a list of clients into a map object, containing user IDs as keys,
+ * mapping them to all socket connections for that user ID.
+ *
+ * @param clients Array of clients with user ID and socket connections
+ * @returns A map object, mapping user IDs to lists of socket connections
+ */
 function groupConnectionsByUserId(clients: Array<InterestSubscription>): Map<string, Array<WebSocket>> {
   return clients.reduce((userConnections, client) => {
     if (userConnections.has(client.userId)) {
