@@ -8,6 +8,7 @@ export interface NotificationAttributes extends CommonAttributes {
   data: any;
   seen?: boolean;
   user?: UsersAttributes | UsersAttributes["id"];
+  hash?: string;
 }
 
 type NotificationCreationAttributes = Optional<NotificationAttributes, "id" | "createdAt" | "updatedAt">;
@@ -55,6 +56,9 @@ export function NotificationsModelFactory(sequelize: Sequelize.Sequelize): Seque
     },
     user_id : {
       type: Sequelize.DataTypes.UUID,
+    },
+    hash: {
+      type: Sequelize.DataTypes.STRING
     }
   };
 
