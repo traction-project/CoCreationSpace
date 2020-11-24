@@ -1,6 +1,7 @@
 import http from "http";
 import { PostInstance } from "models/post";
 import WebSocket from "ws";
+import crypto from "crypto";
 
 import { getFromEnvironment } from "./util";
 import { db } from "./models";
@@ -138,8 +139,14 @@ export async function broadcastNotification(post: PostInstance) {
     return;
   }
 
-  clients.forEach(async (client) => {
-    const { socket, userId } = client;
+  const data = {
+    topic: { id: topic.id, title: topic.title },
+    post: { id: post.id, title: post.title },
+    creator: { id: user.id, username: user.username, image: `${CLOUDFRONT_URL}/${user.image}` }
+  };
+  const notificationDataHash = crypto.createHash("sha256").update(JSON.stringify(data)).digest("hex");
+
+  groupConnectionsByUserId(clients).forEach(async (sockets, userId) => {
     const interests = await getUserInterests(userId);
 
     if (interests.find((t) => t == topic.id)) {
@@ -148,33 +155,29 @@ export async function broadcastNotification(post: PostInstance) {
         return;
       }
 
-      console.log("Sending broadcast for", post.id, post.title, topic.id, topic.title, "to", userId);
+      console.log("Creating notification with hash", notificationDataHash, "for", userId);
 
-      const data = {
-        topic: { id: topic.id, title: topic.title },
-        post: { id: post.id, title: post.title },
-        creator: { id: user.id, username: user.username, image: `${CLOUDFRONT_URL}/${user.image}` }
-      };
+      const notification = await Notifications.create({
+        data,
+        user_id: userId,
+        hash: notificationDataHash
+      } as any);
 
-      let notification = await getExistingNotification(data, userId);
+      console.log("Sending notification to", sockets.length, "connections...");
 
-      if (!notification) {
-        // TODO fix type definitions
-        notification = await Notifications.create({
-          data,
-          user_id: userId
-        } as any);
-      }
+      sockets.forEach((socket) => {
+        console.log("Sending notification to connection for", userId);
 
-      socket.send(JSON.stringify({
-        type: "message",
-        data: {
-          id: notification.id,
-          seen: notification.seen,
-          createdAt: notification.createdAt,
-          data
-        }
-      }));
+        socket.send(JSON.stringify({
+          type: "message",
+          data: {
+            id: notification.id,
+            seen: notification.seen,
+            createdAt: notification.createdAt,
+            data
+          }
+        }));
+      });
     }
   });
 }
