@@ -16,6 +16,10 @@ const NotificationCounter: React.FC<NotificationCounterProps> = (props) => {
     return !n.seen;
   });
 
+  if (unseenNotifications.length == 0 && hideText) {
+    return null;
+  }
+
   return (
     <div>
       {(hideText) || (
