@@ -179,6 +179,33 @@ export function activateSubtitleTrack(player: VideoJsPlayer, languageCode: strin
 }
 
 /**
+ * Deactivates all subtitle tracks for the given video.js player instance.
+ *
+ * @param player A video.js player instance
+ */
+export function disableSubtitles(player: VideoJsPlayer) {
+  const tracks = player.textTracks();
+
+  for (let i=0; i<tracks.length; i++) {
+    tracks[i].mode = "hidden";
+  }
+}
+
+/**
+ * Activates first subtitle track for the given video.js player instance, if
+ * available.
+ *
+ * @param player A video.js player instance
+ */
+export function enableSubtitles(player: VideoJsPlayer) {
+  const tracks = player.textTracks();
+
+  if (tracks.length > 0) {
+    tracks[0].mode = "showing";
+  }
+}
+
+/**
  * Checks if the given player has a subtitle track identified by the given
  * language code.
  *
