@@ -81,5 +81,7 @@
     "notification-comment": "New comment in topic <1>{{topicTitle}}</1>",
     "notification-text-comment": "A new comment was submitted to the topic <1><0>{{topicTitle}}</0></1>",
     "Text": "Text",
-    "Media": "Media"
+    "Media": "Media",
+    "Edit Post": "Edit Post",
+    "Edit": "Edit"
 }

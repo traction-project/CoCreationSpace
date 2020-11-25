@@ -185,7 +185,7 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
                       {post.createdAt && new Date(post.createdAt).toLocaleDateString()}&emsp;
                       {post.createdAt && new Date(post.createdAt).toLocaleTimeString()}&emsp;
                       {(props.login.user?.id == post.user.id) && (
-                        <Link to={`/post/${post.id}/edit`}>Edit</Link>
+                        <Link to={`/post/${post.id}/edit`}>{t("Edit")}</Link>
                       )}
                     </small>
                     <br />

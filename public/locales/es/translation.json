@@ -81,5 +81,7 @@
     "notification-comment": "Nuevo comentario en el tema <1>{{topicTitle}}</1>",
     "notification-text-comment": "Se ha creado un nuevo comentario en el tema <1><0>{{topicTitle}}</0></1>",
     "Text": "Texto",
-    "Media": "Multimedia"
+    "Media": "Multimedia",
+    "Edit Post": "Editar Publicación",
+    "Edit": "Editar"
 }
