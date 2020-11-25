@@ -156,6 +156,9 @@ router.get("/id/:id", authRequired, async (req, res) => {
   }
 });
 
+/**
+ * Get topmost parent of post with given ID
+ */
 router.get("/id/:id/parent", authRequired, async (req, res) => {
   const { id } = req.params;
   const user = req.user as UserInstance;
@@ -263,12 +266,42 @@ router.post("/", authRequired, async (req, res) => {
   return res.send(postSaved);
 });
 
+router.post("/id/:id/edit", authRequired, async (req, res) => {
+  const { id } = req.params;
+  const { title, description } = req.body;
+
+  const { Posts, DataContainer } = db.getModels();
+  const post = await Posts.findByPk(id);
+  const dataContainer = await DataContainer.findOne({ where: { post_id: id } as any });
+
+  if (post && dataContainer) {
+    if (title) {
+      post.title = title;
+      await post.save();
+    }
+
+    if (description) {
+      dataContainer.text_content = description;
+      await dataContainer.save();
+    }
+
+    return res.send({
+      status: "OK"
+    });
+  }
+
+  return res.status(404).send({
+    status: "ERR",
+    message: "Post not found"
+  });
+});
+
 /**
  * Create comment from post with specific id
  */
 router.post("/id/:id", authRequired, async (req, res) => {
   const { id } = req.params;
-  const { text, multimedia,  second } = req.body;
+  const { text, multimedia, second } = req.body;
 
   if (!text) {
     return res.status(400).send({ message: "Field text not present"});
