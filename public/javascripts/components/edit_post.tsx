@@ -26,8 +26,18 @@ const EditPost: React.FC<EditPostProps> = () => {
     });
   }, []);
 
-  const handleFormSubmission = handleSubmit(() => {
-    history.goBack();
+  const handleFormSubmission = handleSubmit(async ({ title, description }) => {
+    const res = await fetch(`/posts/id/${id}/edit`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        title, description
+      })
+    });
+
+    if (res.ok) {
+      history.goBack();
+    }
   });
 
   if (!post) {
@@ -48,7 +58,7 @@ const EditPost: React.FC<EditPostProps> = () => {
                   <input
                     className="input"
                     type="text"
-                    value={post.title}
+                    defaultValue={post.title}
                     placeholder={`${t("Add title")}...`}
                     name="title"
                     required={true}
@@ -65,7 +75,7 @@ const EditPost: React.FC<EditPostProps> = () => {
                     placeholder={`${t("Description")}...`}
                     className="textarea"
                     name="description"
-                    value={post.dataContainer?.text_content}
+                    defaultValue={post.dataContainer?.text_content}
                     ref={register}
                   />
                 </div>
