@@ -271,10 +271,18 @@ router.post("/id/:id/edit", authRequired, async (req, res) => {
   const { title, description } = req.body;
 
   const { Posts, DataContainer } = db.getModels();
+  const user = req.user as UserInstance;
   const post = await Posts.findByPk(id);
   const dataContainer = await DataContainer.findOne({ where: { post_id: id } as any });
 
   if (post && dataContainer) {
+    if (post.user_id != user.id) {
+      return res.status(401).send({
+        status: "ERR",
+        message: "Not authorized"
+      });
+    }
+
     if (title) {
       post.title = title;
       await post.save();
