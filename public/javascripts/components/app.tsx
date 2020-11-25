@@ -21,6 +21,7 @@ import Profile from "./profile";
 import Signup from "./signup/signup";
 import NotificationList from "./notifications/notification_list";
 import CookieBanner from "./cookie_banner";
+import EditPost from "./edit_post";
 
 async function checkLogin() {
   const loginStatus = await verifyLoginStatus();
@@ -72,6 +73,9 @@ const App: React.FC<AppProps> = () => {
             </Route>
             <PrivateRoute path="/posts">
               <PostList endpoint="/posts/all" />
+            </PrivateRoute>
+            <PrivateRoute path="/post/:id/edit">
+              <EditPost />
             </PrivateRoute>
             <Route path="/post/:id">
               <Post />
