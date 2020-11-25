@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { VideoJsPlayer } from "video.js";
 import { useTranslation } from "react-i18next";
 import classNames from "classnames";
@@ -175,7 +175,9 @@ const Post: React.FC<PostProps> = (props) => {
                     )}
 
                     <small className="list-item__date">
-                      {post.createdAt && new Date(post.createdAt).toLocaleDateString()}
+                      {post.createdAt && new Date(post.createdAt).toLocaleDateString()}&emsp;
+                      {post.createdAt && new Date(post.createdAt).toLocaleTimeString()}&emsp;
+                      <Link to={`/post/${post.id}/edit`}>Edit</Link>
                     </small>
                     <br />
                     <br />
