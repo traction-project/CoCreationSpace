@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { VideoJsPlayer } from "video.js";
 import { useTranslation } from "react-i18next";
+import { connect } from "react-redux";
 import classNames from "classnames";
 
 import { CommonType, convertHMS } from "../../util";
@@ -15,6 +16,8 @@ import { addTooltip } from "../videojs/util";
 import Image from "../image";
 import Thumbnail from "../thumbnail";
 import VideoWithToolbar from "../video_with_toolbar";
+import { LoginState } from "../../reducers/login";
+import { ApplicationState } from "../../store";
 
 interface MultimediaItem {
   id: string;
@@ -46,6 +49,10 @@ export interface PostType extends CommonType {
   tags?: TagData[];
 }
 
+interface PostConnectedProps {
+  login: LoginState;
+}
+
 interface PostProps {
   post?: {
     id: string;
@@ -53,7 +60,7 @@ interface PostProps {
   callbackClickTime?: (s: number) => void;
 }
 
-const Post: React.FC<PostProps> = (props) => {
+const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
   const { t } = useTranslation();
   const { id } = useParams<{ id: string }>();
   const idPost = props.post ? props.post.id : id;
@@ -275,4 +282,10 @@ const Post: React.FC<PostProps> = (props) => {
   );
 };
 
-export default Post;
+function mapStateToProps(state: ApplicationState): PostConnectedProps {
+  return {
+    login: state.login
+  };
+}
+
+export default connect(mapStateToProps)(Post);
