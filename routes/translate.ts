@@ -18,8 +18,10 @@ router.post("/:id/:target", authRequired, async (req, res) => {
   const video = await Multimedia.findByPk(id);
 
   if (video && video.transcript) {
-    const existingSubtitle = await Subtitles.findOne({
-      where: { language: target }
+    const [ existingSubtitle ] = await video.getSubtitles({
+      where: {
+        language: target,
+      }
     });
 
     if (existingSubtitle) {

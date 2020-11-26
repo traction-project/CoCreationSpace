@@ -212,7 +212,7 @@ router.get("/id/:id/subtitles", async (req, res) => {
   const video = await Multimedia.findOne({ where: { id } });
 
   if (video) {
-    const subtitles = await video.getSubtitle();
+    const subtitles = await video.getSubtitles();
 
     res.json(subtitles.map((s) => {
       return {
