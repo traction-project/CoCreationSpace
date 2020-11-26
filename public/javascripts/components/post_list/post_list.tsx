@@ -175,9 +175,11 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
               })}
             </div>
 
-            <a className="is-size-7" onClick={handleClickAllPosts}>
-              {t("Clear filter")}
-            </a>
+            {(selectedFilter?.type == "interest") && (
+              <a className="is-size-7" onClick={handleClickAllPosts}>
+                {t("Clear filter")}
+              </a>
+            )}
 
             <hr />
             <h6 className="title is-6">{t("Filter by tag")}</h6>
@@ -196,9 +198,11 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
               })}
             </div>
 
-            <a className="is-size-7" onClick={handleClickAllPosts}>
-              {t("Clear filter")}
-            </a>
+            {(selectedFilter?.type == "tag") && (
+              <a className="is-size-7" onClick={handleClickAllPosts}>
+                {t("Clear filter")}
+              </a>
+            )}
           </div>
         </div>
       </div>
