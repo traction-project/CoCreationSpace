@@ -99,6 +99,8 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
   };
 
   const handleChange = async (value: string) => {
+    setSelectedFilter(undefined);
+
     const postsList: Array<PostType> = await getPosts(value);
     setPosts(postsList);
   };
