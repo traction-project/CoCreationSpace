@@ -1,6 +1,6 @@
 {
   "name": "mediavault",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "start": "node --enable-source-maps ./bin/backend.js",
