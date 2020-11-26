@@ -5,7 +5,7 @@ const sequelize = new Sequelize("sqlite::memory:", { logging: false });
 
 import { db } from "../../models";
 
-describe("Posts model", () => {
+describe("Multimedia model", () => {
   beforeAll(async () => {
     await db.createDB(sequelize);
   });
@@ -41,5 +41,51 @@ describe("Posts model", () => {
     expect(mediaItem.thumbnails).toEqual(
       ["thumbnail1", "thumbnail2", "thumbnail3"]
     );
+  });
+
+  it("should return all subtitles for a video", async () => {
+    const { Multimedia, Subtitles } = db.getModels();
+
+    const mediaItem = await Multimedia.create({
+      title: "test",
+    });
+
+    const sub1 = await Subtitles.create({
+      language: "de",
+      content: "WEBVTT"
+    });
+    const sub2 = await Subtitles.create({
+      language: "nl",
+      content: "WEBVTT"
+    });
+
+    await mediaItem.setSubtitles([sub1, sub2]);
+    expect(await mediaItem.countSubtitles()).toEqual(2);
+  });
+
+  it("should return all subtitles for a video with the given language", async () => {
+    const { Multimedia, Subtitles } = db.getModels();
+
+    const mediaItem = await Multimedia.create({
+      title: "test",
+    });
+
+    const sub1 = await Subtitles.create({
+      language: "de",
+      content: "WEBVTT"
+    });
+    const sub2 = await Subtitles.create({
+      language: "nl",
+      content: "WEBVTT"
+    });
+    const sub3 = await Subtitles.create({
+      language: "nl",
+      content: "WEBVTT"
+    });
+
+    await mediaItem.setSubtitles([sub1, sub2, sub3]);
+
+    expect((await mediaItem.getSubtitles({ where: { language: "de" } })).length).toEqual(1);
+    expect(await mediaItem.getSubtitles({ where: { language: "es" } })).toEqual([]);
   });
 });
