@@ -96,7 +96,7 @@ function multimediaAssociations(models: DbInterface): void {
   models.Multimedia.belongsTo(models.DataContainer, { as: "dataContainer", foreignKey: "data_container_id" });
   models.Multimedia.hasMany(models.AudioContent, { as: "audioContent", foreignKey: "multimedia_id" });
   models.Multimedia.hasMany(models.Metadata, { as: "metadata", foreignKey: "multimedia_id"});
-  models.Multimedia.hasMany(models.Subtitles, { as: "subtitle", foreignKey: "multimedia_id"});
+  models.Multimedia.hasMany(models.Subtitles, { as: "subtitles", foreignKey: "multimedia_id"});
 }
 
 /**
