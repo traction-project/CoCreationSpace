@@ -2,7 +2,6 @@ import * as React from "react";
 import { useState } from "react";
 import { VideoJsPlayer } from "video.js";
 import { PostType } from "./post/post";
-import classNames from "classnames";
 
 import { postEmojiReaction } from "../services/post.service";
 import { addEmojiAnimation } from "./videojs/util";
@@ -24,19 +23,12 @@ const EMOJIS = ["👍","💓","😊","😍","😂","😡"];
 const VideoWithToolbar: React.FC<VideoWithToolbarProps> = (props) => {
   const { post } = props;
 
+  const [player, setPlayer] = useState<VideoJsPlayer>();
   const [emojiReactions, setEmojiReactions] = useState<EmojiReaction[]>((post as any).emojiReactions.map(({ emoji, second }: EmojiReaction) => {
     return { emoji, second };
   }));
-  const [showEmojis, setShowEmojis] = useState<boolean>(false);
-  const [player, setPlayer] = useState<VideoJsPlayer>();
-
-  const handleClickEmojiButton = () => {
-    setShowEmojis(!showEmojis);
-  };
 
   const handleClickEmojiItem = async (emoji: string) => {
-    setShowEmojis(false);
-
     if (player) {
       const second = player.currentTime();
       const response = await postEmojiReaction(post.id, emoji, second);
@@ -71,19 +63,13 @@ const VideoWithToolbar: React.FC<VideoWithToolbarProps> = (props) => {
 
       <nav className="level is-mobile" style={{position: "relative"}}>
         <div className="level-left">
-          <div className={classNames("emoji-container", { "hidden": !showEmojis })}>
+          <div className="level-item">
             {EMOJIS.map((emoji, index) => {
               return (
                 <button key={index} className="emoji-item" onClick={() => handleClickEmojiItem(emoji)}>{emoji}</button>
               );
             })}
           </div>
-
-          <a className="level-item button is-info is-small" onClick={handleClickEmojiButton}>
-            <span className="icon is-small">
-              <i className="fas fa-smile"></i>
-            </span>
-          </a>
 
         </div>
       </nav>
