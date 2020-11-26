@@ -1,16 +1,14 @@
 import * as React from "react";
 import { useState } from "react";
 import { VideoJsPlayer } from "video.js";
-import usePortal from "react-useportal";
 import { PostType } from "./post/post";
 import classNames from "classnames";
 
 import { postEmojiReaction } from "../services/post.service";
 import { addEmojiAnimation } from "./videojs/util";
-import { activateSubtitleTrack, EmojiReaction, hasSubtitleTrack } from "../util";
+import { EmojiReaction } from "../util";
 
 import Video from "./video";
-import TranslationModal from "./post/translation_modal";
 
 interface VideoWithToolbarProps {
   post: PostType;
@@ -25,7 +23,6 @@ const EMOJIS = ["👍","💓","😊","😍","😂","😡"];
 
 const VideoWithToolbar: React.FC<VideoWithToolbarProps> = (props) => {
   const { post } = props;
-  const { openPortal, closePortal, isOpen, Portal } = usePortal();
 
   const [emojiReactions, setEmojiReactions] = useState<EmojiReaction[]>((post as any).emojiReactions.map(({ emoji, second }: EmojiReaction) => {
     return { emoji, second };
@@ -63,20 +60,6 @@ const VideoWithToolbar: React.FC<VideoWithToolbarProps> = (props) => {
     }
   };
 
-  const handleTranslationSuccess = (languageCode: string, subtitleId: string) => {
-    if (player) {
-      if (!hasSubtitleTrack(player, languageCode)) {
-        player.addRemoteTextTrack({
-          kind: "subtitles",
-          srclang: languageCode,
-          src: `/video/subtitles/${subtitleId}`
-        }, true);
-      }
-
-      activateSubtitleTrack(player, languageCode);
-    }
-  };
-
   const callbackPlayer = async (newPlayer: VideoJsPlayer) => {
     setPlayer(newPlayer);
     props.getPlayer?.(newPlayer);
@@ -102,21 +85,6 @@ const VideoWithToolbar: React.FC<VideoWithToolbarProps> = (props) => {
             </span>
           </a>
 
-          <a className="level-item" onClick={(e) => openPortal(e)}>
-            <span className="icon is-small">
-              <i className="fas fa-language"/>
-            </span>
-          </a>
-
-          {isOpen && (
-            <Portal>
-              <TranslationModal
-                id={props.id!}
-                onSuccess={handleTranslationSuccess}
-                onClose={closePortal}
-              />
-            </Portal>
-          )}
         </div>
       </nav>
     </>
