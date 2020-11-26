@@ -16,6 +16,7 @@ interface DashPlayerProps {
   width?: number;
   comments?: PostType[];
   emojis?: EmojiReaction[];
+  videoId?: string;
   getPlayer?: (v: VideoJsPlayer) => void;
 }
 
@@ -25,7 +26,7 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
   const [ player, setPlayer ] = useState<VideoJsPlayer>();
   const [ currentTime, setCurrentTime ] = useState<number>(0);
   const [ currentTimeRounded, setCurrentTimeRounded ] = useState<number>(0);
-  const { manifest, width, subtitles, comments, getPlayer, emojis } = props;
+  const { manifest, width, subtitles, comments, getPlayer, emojis, videoId } = props;
 
   useEffect(() => {
     if (videoNode === null) {
@@ -100,6 +101,7 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
           addTooltip(player, comment[0]);
         }
       }
+
       if (emojis) {
         const items = emojis.filter((item) => item.second && (Math.floor(item.second) === timeRounded));
         if (items.length > 0) {
