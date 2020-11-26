@@ -36,6 +36,8 @@ const TranslationModal: React.FC<TranslationModalProps> = (props) => {
       <div className="modal-background" onClick={onClose} />
       <div className="modal-content">
         <div className="box">
+          <h4 className="title is-4">{t("Translate Subtitles")}</h4>
+
           <div className="field">
             <label className="label">{t("Language")}</label>
             <div className="control">
@@ -46,7 +48,7 @@ const TranslationModal: React.FC<TranslationModalProps> = (props) => {
             </div>
           </div>
 
-          <div className="field is-grouped">
+          <div className="field is-grouped pt-4">
             <div className="control">
               <button className="button is-link" onClick={onDone}>{t("Translate")}</button>
             </div>
