@@ -25,7 +25,7 @@ export const addEmojiAnimation = (video: VideoJsPlayer, emoji: EmojiReaction) =>
  * @param video VideoJsPlayer instance
  * @param reaction Emoji to print in the player
  */
-export const addTooltip = (video: VideoJsPlayer,reaction: PostType): void => {
+export const addTooltip = (video: VideoJsPlayer, reaction: PostType): void => {
   const text = reaction.dataContainer?.text_content;
 
   if (video && text) {

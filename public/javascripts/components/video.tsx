@@ -66,6 +66,7 @@ const Video: React.FC<VideoProps> = (props) => {
             comments={comments}
             getPlayer={getPlayer}
             emojis={emojis}
+            videoId={idVideo}
           />
         ) : (
           <BlankVideo />

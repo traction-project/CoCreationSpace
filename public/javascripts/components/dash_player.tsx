@@ -9,6 +9,7 @@ import { PostType } from "./post/post";
 import { EmojiReaction } from "../util";
 import { addEmojiAnimation, addTooltip, createMarkers } from "./videojs/util";
 import { Marker } from "./videojs/types";
+import TranslationButton from "./videojs/translation_button";
 
 interface DashPlayerProps {
   manifest: string;
@@ -83,6 +84,11 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
         video.on("loadedmetadata", () => {
           createMarkers(video, markers, playerNode);
         });
+      }
+
+      if (videoId) {
+        const translationButton = new TranslationButton(video, videoId, {});
+        video.controlBar.addChild(translationButton);
       }
     }
   };
