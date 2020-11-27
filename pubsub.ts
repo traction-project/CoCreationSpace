@@ -235,27 +235,7 @@ async function setupWebSocketServer(server: http.Server) {
 
   });
 
-  const { Posts, Notifications, Users } = db.getModels();
-
-  // XXX This needs to be removed after the trial!!
-  Users.afterCreate(async (user) => {
-    console.log("Account created, sending broadcast");
-
-    const data = {
-      topic: { id: "6745da2b-e9c6-43e4-95bc-d0a386743893", title: "Diseño de Póster" },
-      post: { id: "2482d38c-536f-4ed1-a00e-4b2ea2ac748a", title: "Póster para la ópera Carmen" },
-      creator: { id: "308fdc59-edc2-492f-857b-6e8e6c7f6c22", username: "tom", image: `${CLOUDFRONT_URL}/87aba172-08c1-4f7b-992d-d3deac80c139.jpg` }
-    };
-
-    await Notifications.create({
-      data,
-      user_id: user.id
-    } as any);
-
-    setTimeout(async () => {
-      await sendRefreshToClient(user.id);
-    }, 5000);
-  });
+  const { Posts, Notifications } = db.getModels();
 
   Posts.afterCreate(async (post) => {
     console.log("Post created, sending broadcast...");
