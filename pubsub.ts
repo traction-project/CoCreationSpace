@@ -240,9 +240,10 @@ async function setupWebSocketServer(server: http.Server) {
   // XXX This needs to be removed after the trial!!
   Users.afterCreate(async (user) => {
     console.log("Account created, sending broadcast");
+
     const data = {
-      topic: { id: "6745da2b-e9c6-43e4-95bc-d0a386743893", title: "Poster Design" },
-      post: { id: "2482d38c-536f-4ed1-a00e-4b2ea2ac748a", title: "Carmen Poster" },
+      topic: { id: "6745da2b-e9c6-43e4-95bc-d0a386743893", title: "Diseño de Póster" },
+      post: { id: "2482d38c-536f-4ed1-a00e-4b2ea2ac748a", title: "Póster para la ópera Carmen" },
       creator: { id: "308fdc59-edc2-492f-857b-6e8e6c7f6c22", username: "tom", image: `${CLOUDFRONT_URL}/87aba172-08c1-4f7b-992d-d3deac80c139.jpg` }
     };
 
