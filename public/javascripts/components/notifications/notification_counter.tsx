@@ -22,12 +22,8 @@ const NotificationCounter: React.FC<NotificationCounterProps> = (props) => {
 
   return (
     <div>
-      {(hideText) || (
-        <>
-          <i className="far fa-bell" />
-          &nbsp;
-        </>
-      )}
+      <i className="far fa-bell" />
+      &nbsp;
       {unseenNotifications.length} {(hideText) || t("Notification", { count: unseenNotifications.length })}
     </div>
   );
