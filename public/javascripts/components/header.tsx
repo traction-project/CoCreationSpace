@@ -36,6 +36,11 @@ const Header: React.FC<HeaderProps> = (props) => {
     setBurgerActive(!burgerActive);
   };
 
+  const onCollapsedNotificationIconClicked = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
+    history.push("/notifications");
+  };
+
   return (
     <nav className="navbar" role="navigation" aria-label="main navigation">
       <div className="navbar-brand">
@@ -56,7 +61,7 @@ const Header: React.FC<HeaderProps> = (props) => {
           <span aria-hidden="true" />
 
           {(props.login.loggedIn && props.login.user) && (
-            <div className="notification-count">
+            <div className="notification-count" onClick={onCollapsedNotificationIconClicked}>
               <NotificationCounter hideText={true} userId={props.login.user!.id} />
             </div>
           )}
