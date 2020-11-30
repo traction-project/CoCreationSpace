@@ -111,7 +111,7 @@ router.get("/revision", (_, res) => {
  * XXX THIS NEEDS TO BE DISABLED AFTER THE TRIAL!
  */
 router.get("/resetdatabase", async (req, res) => {
-  const { Posts, Users } = db.getModels();
+  const { Posts, Users, EmojiReactions } = db.getModels();
   const isDryRun = req.query.confirm == undefined;
 
   const postQuery = {
@@ -134,7 +134,7 @@ router.get("/resetdatabase", async (req, res) => {
     }
   };
 
-  const userQuery ={
+  const userQuery = {
     where: {
       id: {
         [Op.notIn]: [
@@ -148,14 +148,22 @@ router.get("/resetdatabase", async (req, res) => {
     }
   };
 
-  let numDeletedPosts = 0, numDeletedUsers = 0;
+  const emojiReactionQuery = {
+    where: {
+      post_id: "3f6ddbea-dc2e-47da-a29b-d261f573e40e"
+    }
+  };
+
+  let numDeletedPosts = 0, numDeletedUsers = 0, numDeletedEmojiReactions = 0;
 
   if (isDryRun) {
     numDeletedPosts = await Posts.count(postQuery);
     numDeletedUsers = await Users.count(userQuery);
+    numDeletedEmojiReactions = await EmojiReactions.count(emojiReactionQuery);
   } else {
     numDeletedPosts = await Posts.destroy(postQuery);
     numDeletedUsers = await Users.destroy(userQuery);
+    numDeletedEmojiReactions = await EmojiReactions.destroy(emojiReactionQuery);
   }
 
   return res.send({
@@ -163,7 +171,8 @@ router.get("/resetdatabase", async (req, res) => {
     isDryRun,
     deletedRecords: {
       users: numDeletedUsers,
-      posts: numDeletedPosts
+      posts: numDeletedPosts,
+      emojiReactions: numDeletedEmojiReactions
     }
   });
 });
