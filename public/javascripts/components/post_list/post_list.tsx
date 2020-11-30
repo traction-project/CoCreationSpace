@@ -38,11 +38,7 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
 
   useEffect(() => {
     (async () => {
-      const postsList = (await getPosts()).filter((post) => {
-        return post.dataContainer?.multimedia?.every(({ status }) => {
-          return status === "done";
-        });
-      });
+      const postsList = await getPosts();
 
       setPosts(postsList);
       getTags(postsList);
