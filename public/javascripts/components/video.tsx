@@ -8,6 +8,7 @@ import DashPlayer from "./dash_player";
 import { PostType } from "./post/post";
 import { EmojiReaction } from "../util";
 import BlankVideo from "./blank_video";
+import useInterval from "./use_interval";
 
 interface VideoProps {
   id?: string;
@@ -27,7 +28,7 @@ const Video: React.FC<VideoProps> = (props) => {
   const [ availableSubtitles, setAvailableSubtitles ] = useState<Array<{ language: string, url: string }>>([]);
   const [ videoStatus, setVideoStatus ] = useState<string | undefined>();
 
-  useEffect(() => {
+  const fetchVideo = () => {
     fetch(`/video/id/${idVideo}/status`).then((res) => {
       return res.json();
     }).then(({ status }) => {
@@ -54,7 +55,10 @@ const Video: React.FC<VideoProps> = (props) => {
         });
       }
     });
-  }, [idVideo]);
+  };
+
+  useEffect(fetchVideo, [idVideo]);
+  useInterval(fetchVideo, (videoStatus == "processing") ? 3000 : null);
 
   if (videoStatus === "done") {
     return (
