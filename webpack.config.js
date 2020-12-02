@@ -2,7 +2,7 @@ const webpack = require("webpack");
 const nodeExternals = require('webpack-node-externals');
 
 const frontend = {
-  mode: "development",
+  mode: process.env.NODE_ENV || "development",
   target: "web",
   entry: {
     bundle: "./public/javascripts/main.ts",
@@ -40,7 +40,7 @@ const frontend = {
 };
 
 const backend = {
-  mode: "development",
+  mode: process.env.NODE_ENV || "development",
   target: "node",
   node: {
     __dirname: true
