@@ -42,7 +42,7 @@ const Header: React.FC<HeaderProps> = (props) => {
   };
 
   return (
-    <nav className="navbar" role="navigation" aria-label="main navigation">
+    <nav className="navbar is-fixed-top" role="navigation" aria-label="main navigation">
       <div className="navbar-brand">
         <a className="navbar-item" href="/">
           <img src="/images/header-logo.png" alt="traction-logo" />
