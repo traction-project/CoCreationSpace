@@ -10,7 +10,10 @@ const frontend = {
   },
   devtool: "source-map",
   resolve: {
-    extensions: ['.tsx', '.ts', '.js']
+    extensions: ['.tsx', '.ts', '.js'],
+    fallback: {
+      "stream": require.resolve("stream-browserify")
+    }
   },
   module: {
     rules: [
