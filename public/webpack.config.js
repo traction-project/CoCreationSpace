@@ -3,7 +3,9 @@ const webpack = require("webpack");
 const frontend = {
   mode: process.env.NODE_ENV || "development",
   target: "web",
-  entry: "./javascripts/main.ts",
+  entry: {
+    bundle: "./javascripts/main.ts"
+  },
   output: {
     path: __dirname + "/dist",
     filename: "[name].js"
