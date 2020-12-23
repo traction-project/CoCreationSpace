@@ -1,43 +1,5 @@
 const webpack = require("webpack");
-const nodeExternals = require('webpack-node-externals');
-
-const frontend = {
-  mode: process.env.NODE_ENV || "development",
-  target: "web",
-  entry: {
-    bundle: "./public/javascripts/main.ts",
-  },
-  output: {
-    path: __dirname + "/public/dist",
-    filename: "[name].js"
-  },
-  devtool: "source-map",
-  resolve: {
-    extensions: ['.js', '.jsx', '.ts', '.tsx'],
-    fallback: {
-      "stream": require.resolve("stream-browserify")
-    }
-  },
-  module: {
-    rules: [
-      {
-        test: /\.tsx?$/,
-        use: "ts-loader"
-      }, {
-        test: /\.s[ac]ss$/,
-        use: [
-          "style-loader",
-          "css-loader",
-          "sass-loader"
-        ]
-      },
-      {
-        test: /\.(png|jpg)$/,
-        loader: 'ignore-loader'
-      }
-    ]
-  }
-};
+const nodeExternals = require("webpack-node-externals");
 
 const backend = {
   mode: process.env.NODE_ENV || "development",
@@ -55,7 +17,7 @@ const backend = {
   },
   devtool: "source-map",
   resolve: {
-    extensions: ['.js', '.jsx', '.ts', '.tsx']
+    extensions: [".js", ".ts"]
   },
   module: {
     rules: [
@@ -67,4 +29,4 @@ const backend = {
   }
 };
 
-module.exports = [frontend, backend];
+module.exports = backend;
