@@ -3,19 +3,14 @@ const webpack = require("webpack");
 const frontend = {
   mode: process.env.NODE_ENV || "development",
   target: "web",
-  entry: {
-    bundle: __dirname + "/javascripts/main.ts",
-  },
+  entry: "./javascripts/main.ts",
   output: {
     path: __dirname + "/dist",
     filename: "[name].js"
   },
   devtool: "source-map",
   resolve: {
-    extensions: ['.js', '.jsx', '.ts', '.tsx'],
-    fallback: {
-      "stream": require.resolve("stream-browserify")
-    }
+    extensions: ['.tsx', '.ts', '.js']
   },
   module: {
     rules: [
@@ -38,4 +33,4 @@ const frontend = {
   }
 };
 
-module.export = frontend;
+module.exports = frontend;
