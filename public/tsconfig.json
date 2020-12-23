@@ -11,15 +11,7 @@
     "strictNullChecks": true,
     "keyofStringsOnly": true,
     "noUnusedLocals": true,
-    "baseUrl": ".",
-    "paths": {
-      "typings/*": [
-        "util/typing/*"
-      ],
-      "models/*": [
-        "models/*"
-      ]
-    }
+    "baseUrl": "."
   },
   "include": [
     "./**/*.tsx",
