@@ -8,7 +8,7 @@
     "test": "jest --verbose --bail --coverage",
     "lint": "eslint --ext=ts,tsx,js,jsx .",
     "doc": "typedoc --out docs/ --mode file --exclude node_modules/ --ignoreCompilerErrors .",
-    "build": "NODE_OPTIONS=--max_old_space_size=8192 webpack"
+    "build": "webpack"
   },
   "dependencies": {
     "aws-sdk": "^2.641.0",
