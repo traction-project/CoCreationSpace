@@ -32,17 +32,20 @@ file `.env-sample` to `.env` and fill in the required config values inside the
 file. Also make sure that this new file is not committed to version control.
 Further, in order to make use of AWS, make sure to place a JSON file named
 `aws.json` containing your AWS access credentials into the root folder. This
-file should also not be committed to version control.
+file should also **not** be committed to version control.
 
-Before your first launch, you should run the following command to install all
-required dependencies:
+The application is separated into a frontend and a backend portion. Both have
+their own build files and separate dependencies. Before the first launch, you
+should run the following command to install all required dependencies. This
+needs to be done in both, the root folder and in the folder `public/`:
 
     yarn install
 
-This will fetch and install all packages. In order to build and bundle the
-application, run the following command:
+This will fetch and install all packages. In order to compile and bundle the
+application, run the following command. Again, this needs to be done in the
+root folder as well as the folder `public/`
 
-    yarn run webpack
+    yarn build
 
 This command needs to be re-run every time you change any of the code. You
 can also attach the flag `-w` to the command to make sure the command keeps
@@ -74,7 +77,7 @@ the container and compiled bundles being overridden.
 To run the unit tests, make sure you have `yarn` installed as well as all
 development packages are installed by running `yarn install`. Following this,
 you can run the unit tests and generate a coverage report by invoking the
-following command:
+following command in the root folder:
 
     yarn test
 
