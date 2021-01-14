@@ -16,7 +16,8 @@ WORKDIR /code
 COPY --from=frontend /code public/
 
 RUN yarn install && \
-    yarn build
+    yarn build && \
+    yarn cache clean
 
 EXPOSE 3000
 CMD ["yarn", "start"]
