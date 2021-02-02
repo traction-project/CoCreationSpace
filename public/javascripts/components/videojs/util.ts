@@ -15,6 +15,7 @@ import { Marker } from "./types";
 export const addEmojiAnimation = (video: VideoJsPlayer, emoji: EmojiReaction) => {
   const animation = new vjsEmojiAnimation(video, { emoji: emoji.emoji });
   video.addChild(animation);
+
   setTimeout(() => {
     video.removeChild(animation);
   }, 1000);
@@ -34,9 +35,13 @@ export const addTooltip = (video: VideoJsPlayer, reaction: PostType): void => {
     if (currentTooltip) {
       video.removeChild(currentTooltip);
     }
+
     const tooltip = new vjsTooltip(video, { username: reaction.user.username, text});
     video.addChild(tooltip);
-    setTimeout(() => video && video.removeChild(tooltip), 3000);
+
+    setTimeout(() => {
+      video && video.removeChild(tooltip);
+    }, 3000);
   }
 };
 
@@ -53,18 +58,19 @@ export const createMarkers = (video: VideoJsPlayer, markers: Marker[], playerNod
 
       if (type === "comment") {
         const marker = document.createElement("i");
-        marker.classList.add("fas");
-        marker.classList.add("fa-comment");
-        marker.classList.add("video-marker");
+        marker.classList.add("fas", "fa-comment", "video-marker");
         marker.style.left = `${second * 100 / video.duration()}%`;
+
         playerNode.current?.querySelector(".vjs-progress-holder")?.appendChild(marker);
       }
       if (type === "emoji") {
         const marker = document.createElement("span");
         marker.classList.add("video-marker");
+
         if (emoji) {
           marker.innerHTML = emoji;
         }
+
         marker.style.left = `${second * 100 / video.duration()}%`;
         playerNode.current?.querySelector(".vjs-progress-holder")?.appendChild(marker);
       }

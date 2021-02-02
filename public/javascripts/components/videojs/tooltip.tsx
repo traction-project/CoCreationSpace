@@ -25,9 +25,11 @@ class vjsTooltip extends vjsComponent {
     super(player, options);
 
     const { username, text } = options;
+
     player.ready(() => {
       this.mount(username, text);
     });
+
     this.on("dispose", () => {
       ReactDOM.unmountComponentAtNode(this.el());
     });
