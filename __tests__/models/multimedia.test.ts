@@ -99,4 +99,19 @@ describe("Multimedia model", () => {
     expect(mediaItem.viewCount).toBeDefined();
     expect(mediaItem.viewCount).toEqual(0);
   });
+
+  it("should increment the view count by one after calling incrementViewCount()", async () => {
+    const { Multimedia } = db.getModels();
+
+    const mediaItem = await Multimedia.create({
+      title: "test",
+    });
+
+    expect(mediaItem.viewCount).toBeDefined();
+    expect(mediaItem.viewCount).toEqual(0);
+
+    await mediaItem.incrementViewCount();
+
+    expect(mediaItem.viewCount).toEqual(1);
+  });
 });
