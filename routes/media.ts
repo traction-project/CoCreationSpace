@@ -155,7 +155,7 @@ router.get("/all", async (req, res) => {
   }));
 });
 
-router.get("/id/:id", async (req, res) => {
+router.get("/:id", async (req, res) => {
   const { id } = req.params;
 
   const { Multimedia } = db.getModels();
@@ -172,7 +172,7 @@ router.get("/id/:id", async (req, res) => {
   }
 });
 
-router.get("/id/:id/thumbnail", async (req, res) => {
+router.get("/:id/thumbnail", async (req, res) => {
   const { id } = req.params;
 
   const { Multimedia } = db.getModels();
@@ -190,7 +190,7 @@ router.get("/id/:id/thumbnail", async (req, res) => {
   });
 });
 
-router.post("/id/:id/view", async (req, res) => {
+router.post("/:id/view", async (req, res) => {
   const { id } = req.params;
   const { Multimedia } = db.getModels();
 
@@ -210,7 +210,7 @@ router.post("/id/:id/view", async (req, res) => {
   }
 });
 
-router.get("/id/:id/status", async (req, res) => {
+router.get("/:id/status", async (req, res) => {
   const { id } = req.params;
   const { Multimedia } = db.getModels();
 
@@ -225,7 +225,7 @@ router.get("/id/:id/status", async (req, res) => {
   }
 });
 
-router.get("/id/:id/subtitles", async (req, res) => {
+router.get("/:id/subtitles", async (req, res) => {
   const { id } = req.params;
 
   const { Multimedia } = db.getModels();
