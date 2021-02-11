@@ -12,7 +12,7 @@ const Thumbnail: React.FC<ThumbnailProps> = ({ id, type, height = 100 }) => {
 
   useEffect(() => {
     if (type == "video") {
-      fetch(`/video/id/${id}/thumbnail`).then((res) => {
+      fetch(`/media/${id}/thumbnail`).then((res) => {
         return res.json();
       }).then((data) => {
         setUrl(data.thumbnail);

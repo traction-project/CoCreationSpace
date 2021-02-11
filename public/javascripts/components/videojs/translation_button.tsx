@@ -25,7 +25,7 @@ const TranslationButton: React.FC<TranslationButtonProps> = (props) => {
         player.addRemoteTextTrack({
           kind: "subtitles",
           srclang: languageCode,
-          src: `/video/subtitles/${subtitleId}`
+          src: `/media/subtitles/${subtitleId}`
         }, true);
       }
 

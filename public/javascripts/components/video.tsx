@@ -29,23 +29,23 @@ const Video: React.FC<VideoProps> = (props) => {
   const [ videoStatus, setVideoStatus ] = useState<string | undefined>();
 
   const fetchVideo = () => {
-    fetch(`/video/id/${idVideo}/status`).then((res) => {
+    fetch(`/media/${idVideo}/status`).then((res) => {
       return res.json();
     }).then(({ status }) => {
       setVideoStatus(status);
 
       if (status == "done") {
-        fetch(`/video/id/${idVideo}/subtitles`).then((res) => {
+        fetch(`/media/${idVideo}/subtitles`).then((res) => {
           return res.json();
         }).then((data) => {
           setAvailableSubtitles(data.map((s: any) => {
             return {
               language: s.language,
-              url: `/video/subtitles/${s.id}`
+              url: `/media/subtitles/${s.id}`
             };
           }));
 
-          return fetch(`/video/id/${idVideo}`);
+          return fetch(`/media/${idVideo}`);
         }).then(async (res) => {
           if (res.ok) {
             const data = await res.json();

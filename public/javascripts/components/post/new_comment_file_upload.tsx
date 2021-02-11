@@ -25,7 +25,7 @@ const FileUpload: React.FC<FileUploadProps> = ({ fileToUpload, addMultimedia, se
       try {
         setLoading(true);
 
-        const response: string = await postFile("/video/upload", fileUpload, async (progress) => {
+        const response: string = await postFile("/media/upload", fileUpload, async (progress) => {
           setLoaded(progress.loaded);
           setTotal(progress.total);
         });

@@ -59,7 +59,7 @@ const VideoUpload: React.FC<VideoUploadProps> = ({ file }) => {
         progress: 0
       }]);
 
-      const response: string = await postFile("/video/upload", file, (progress) => {
+      const response: string = await postFile("/media/upload", file, (progress) => {
         setFileUploads((uploads) => uploads.map((upload) => {
           if (file.name == upload.filename) {
             return {
