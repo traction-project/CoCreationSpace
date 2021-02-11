@@ -23,6 +23,7 @@ export interface MultimediaAttributes extends CommonAttributes {
   audio_descriptions?: string;
   duration?: number;
   resolutions?: Array<number>;
+  viewCount?: number;
   type?: string;
   user?: UsersAttributes | UsersAttributes["id"];
   dataContainer?: DataContainerAttributes | DataContainerAttributes["id"];
@@ -138,6 +139,10 @@ export function MultimediaModelFactory(sequelize: Sequelize.Sequelize): Sequeliz
     },
     type: {
       type: Sequelize.DataTypes.STRING
+    },
+    viewCount: {
+      type: Sequelize.DataTypes.INTEGER,
+      defaultValue: 0
     }
   };
 
