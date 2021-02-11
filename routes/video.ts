@@ -190,6 +190,26 @@ router.get("/id/:id/thumbnail", async (req, res) => {
   });
 });
 
+router.post("/id/:id/view", async (req, res) => {
+  const { id } = req.params;
+  const { Multimedia } = db.getModels();
+
+  const mediaItem = await Multimedia.findByPk(id);
+
+  if (mediaItem) {
+    await mediaItem.incrementViewCount();
+
+    res.send({
+      status: "OK"
+    });
+  } else {
+    res.status(404).send({
+      status: "ERR",
+      message: "Media item not found"
+    });
+  }
+});
+
 router.get("/id/:id/status", async (req, res) => {
   const { id } = req.params;
   const { Multimedia } = db.getModels();
