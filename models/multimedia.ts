@@ -76,6 +76,8 @@ export interface MultimediaInstance extends Sequelize.Model<MultimediaAttributes
   removeSubtitle: Sequelize.HasManyRemoveAssociationMixin<SubtitlesInstance, SubtitlesInstance["id"]>;
   removeSubtitles: Sequelize.HasManyRemoveAssociationsMixin<SubtitlesInstance, SubtitlesInstance["id"]>;
   createSubtitle: Sequelize.HasManyCreateAssociationMixin<SubtitlesInstance>;
+
+  incrementViewCount: () => Promise<void>;
 }
 
 /**
@@ -150,6 +152,11 @@ export function MultimediaModelFactory(sequelize: Sequelize.Sequelize): Sequeliz
   const Multimedia = sequelize.define<MultimediaInstance, MultimediaCreationAttributes>("multimedia", attributes, { underscored: true, tableName: TABLE_NAME });
 
   Multimedia.beforeCreate(multimedia => { multimedia.id = uuidv4(); });
+
+  Multimedia.prototype.incrementViewCount = async function () {
+    await this.increment("viewCount");
+    await this.reload();
+  };
 
   return Multimedia;
 }
