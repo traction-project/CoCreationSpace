@@ -34,7 +34,7 @@ router.use("/notifications", NotificationRouter);
 router.use("/images", ImageRouter);
 
 router.get("/", (_, res) => {
-  res.render("index", { title: "MediaVault" });
+  res.render("index", { title: "MediaVault", env: process.env.NODE_ENV });
 });
 
 router.post("/login", passport.authenticate("local"), (req, res) => {
