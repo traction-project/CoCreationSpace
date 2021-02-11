@@ -159,7 +159,7 @@ router.get("/:id", async (req, res) => {
   const { id } = req.params;
 
   const { Multimedia } = db.getModels();
-  const video = await Multimedia.findOne({ where: { id } });
+  const video = await Multimedia.findByPk(id);
 
   if (video) {
     return res.send({
@@ -229,7 +229,7 @@ router.get("/:id/subtitles", async (req, res) => {
   const { id } = req.params;
 
   const { Multimedia } = db.getModels();
-  const video = await Multimedia.findOne({ where: { id } });
+  const video = await Multimedia.findByPk(id);
 
   if (video) {
     const subtitles = await video.getSubtitles();
@@ -249,7 +249,7 @@ router.get("/subtitles/:id", async (req, res) => {
   const { id } = req.params;
 
   const { Subtitles } = db.getModels();
-  const subtitle = await Subtitles.findOne({ where: { id } });
+  const subtitle = await Subtitles.findByPk(id);
 
   if (subtitle) {
     res.send(subtitle.content);
