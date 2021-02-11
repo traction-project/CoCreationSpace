@@ -88,4 +88,15 @@ describe("Multimedia model", () => {
     expect((await mediaItem.getSubtitles({ where: { language: "de" } })).length).toEqual(1);
     expect(await mediaItem.getSubtitles({ where: { language: "es" } })).toEqual([]);
   });
+
+  it("should initialise view count to zero", async () => {
+    const { Multimedia } = db.getModels();
+
+    const mediaItem = await Multimedia.create({
+      title: "test",
+    });
+
+    expect(mediaItem.viewCount).toBeDefined();
+    expect(mediaItem.viewCount).toEqual(0);
+  });
 });
