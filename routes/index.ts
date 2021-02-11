@@ -4,7 +4,7 @@ import { readFileSync } from "fs";
 
 import APIRouter from "./api";
 import SNSRouter from "./sns";
-import VideoRouter from "./video";
+import MediaRouter from "./media";
 import ImageRouter from "./images";
 import PostRouter from "./post";
 import ThreadRouter from "./thread";
@@ -29,7 +29,7 @@ router.use("/threads", ThreadRouter);
 router.use("/topics", TopicRouter);
 router.use("/translate", TranslateRouter);
 router.use("/users", UserRouter);
-router.use("/video", VideoRouter);
+router.use("/media", MediaRouter);
 router.use("/notifications", NotificationRouter);
 router.use("/images", ImageRouter);
 
