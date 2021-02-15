@@ -53,7 +53,7 @@ export default association;
  */
 function audioContentAssociations(models: DbInterface): void {
   models.AudioContent.belongsTo(models.Multimedia, { as: "multimedia", foreignKey: "multimedia_id" });
-  models.AudioContent.hasMany(models.Metadata, { as: "metadata", foreignKey: "audio_content_id" });
+  models.AudioContent.hasMany(models.Metadata, { as: "metadatas", foreignKey: "audio_content_id" });
 }
 
 /**

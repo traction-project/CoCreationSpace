@@ -10,7 +10,7 @@ export interface AudioContentAttributes extends CommonAttributes{
     language?: string;
     audio_type?: string;
     multimedia?: MultimediaAttributes | MultimediaAttributes["id"];
-    metadata?: MetadataAttributes | MetadataAttributes["id"];
+    metadatas?: MetadataAttributes | MetadataAttributes["id"];
 }
 
 type AudioContentCreationAttributes = Optional<AudioContentAttributes, "id" | "createdAt" | "updatedAt">;
@@ -22,8 +22,8 @@ export interface AudioContentInstance extends Sequelize.Model<AudioContentAttrib
   getMultimedia: Sequelize.BelongsToGetAssociationMixin<MultimediaInstance>;
   setMultimedia: Sequelize.BelongsToSetAssociationMixin<MultimediaInstance, MultimediaInstance["id"]>;
 
-  getMetadata: Sequelize.HasManyGetAssociationsMixin<MetadataInstance>;
-  setMetadata: Sequelize.HasManySetAssociationsMixin<MetadataInstance, MetadataInstance["id"]>;
+  getMetadatas: Sequelize.HasManyGetAssociationsMixin<MetadataInstance>;
+  setMetadatas: Sequelize.HasManySetAssociationsMixin<MetadataInstance, MetadataInstance["id"]>;
   addMetadatas: Sequelize.HasManyAddAssociationsMixin<MetadataInstance, MetadataInstance["id"]>;
   addMetadata: Sequelize.HasManyAddAssociationMixin<MetadataInstance, MetadataInstance["id"]>;
   createMetadata: Sequelize.HasManyCreateAssociationMixin<MetadataInstance>;
