@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { VideoJsPlayer } from "video.js";
 import { PostType } from "./post/post";
 
@@ -21,12 +21,25 @@ interface VideoWithToolbarProps {
 const EMOJIS = ["👍","💓","😊","😍","😂","😡"];
 
 const VideoWithToolbar: React.FC<VideoWithToolbarProps> = (props) => {
-  const { post } = props;
+  const { post, id: videoId } = props;
 
-  const [player, setPlayer] = useState<VideoJsPlayer>();
-  const [emojiReactions, setEmojiReactions] = useState<EmojiReaction[]>((post as any).emojiReactions.map(({ emoji, second }: EmojiReaction) => {
+  const [ player, setPlayer ] = useState<VideoJsPlayer>();
+  const [ viewCount, setViewCount ] = useState<number>();
+  const [ emojiReactions, setEmojiReactions ] = useState<EmojiReaction[]>((post as any).emojiReactions.map(({ emoji, second }: EmojiReaction) => {
     return { emoji, second };
   }));
+
+  useEffect(() => {
+    if (videoId) {
+      fetch(`/media/${videoId}/views`).then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+      }).then(({ views }) => {
+        setViewCount(views);
+      });
+    }
+  }, []);
 
   const handleClickEmojiItem = async (emoji: string) => {
     if (player) {
@@ -70,7 +83,14 @@ const VideoWithToolbar: React.FC<VideoWithToolbarProps> = (props) => {
               );
             })}
           </div>
+        </div>
 
+        <div className="level-right">
+          <div className="level-item">
+            {(viewCount) && (
+              <>{viewCount} views</>
+            )}
+          </div>
         </div>
       </nav>
     </>
