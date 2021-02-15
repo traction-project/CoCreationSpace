@@ -4,7 +4,7 @@ const typescriptTransform = require("i18next-scanner-typescript");
 
 module.exports = {
   input: [
-    "public/**/*.{ts,tsx}",
+    "./javascripts/**/*.{ts,tsx}",
   ],
   output: "./",
   options: {
@@ -21,8 +21,8 @@ module.exports = {
     defaultNs: "translation",
     defaultValue: "__STRING_NOT_TRANSLATED__",
     resource: {
-      loadPath: "public/locales/{{lng}}/{{ns}}.json",
-      savePath: "public/locales/{{lng}}/{{ns}}.json",
+      loadPath: "locales/{{lng}}/{{ns}}.json",
+      savePath: "locales/{{lng}}/{{ns}}.json",
       jsonIndent: 4,
       lineEnding: "\n"
     },
@@ -34,7 +34,6 @@ module.exports = {
     },
     removeUnusedKeys: true,
   },
-
   transform: typescriptTransform({
     extensions: [".ts", ".tsx"],
     tsOptions: {
