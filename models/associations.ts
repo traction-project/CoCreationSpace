@@ -35,6 +35,7 @@ class Associations {
     threadAssociations(models);
     userAssociations(models);
     notificationAssociations(models);
+    userGroupAssociations(models);
 
     this.associatons = {
       datacontainerAssociations,
@@ -229,6 +230,7 @@ function userAssociations(models: DbInterface): void {
   models.Users.belongsTo(models.Preferences, { as: "preferences", foreignKey: "preferences_id" });
   models.Users.hasMany(models.Posts, { as: "post", foreignKey: "user_id" });
   models.Users.hasMany(models.Notifications, { as: "notifications", foreignKey: "user_id" });
+  models.Users.belongsToMany(models.UserGroups, { through: "user_group_users" });
 
   models.Users.belongsToMany(models.Permissions, {
     through: "user_permissions"
@@ -265,6 +267,14 @@ function userAssociations(models: DbInterface): void {
     foreignKey: "user_id",
     as: "interestedTopics"
   });
+}
+
+/**
+ * Create associations for the user_group table
+ * @param models DBInterface
+ */
+function userGroupAssociations(models: DbInterface) {
+  models.UserGroups.belongsToMany(models.Users, { through: "user_group_users" });
 }
 
 function notificationAssociations(models: DbInterface) {
