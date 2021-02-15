@@ -1,6 +1,7 @@
 import Sequelize, { Optional } from "sequelize";
 
 import { CommonAttributes } from "util/typing/modelCommonAttributes";
+import { UserInstance } from "./users";
 
 export interface UserGroupAttributes extends CommonAttributes {
     name: string;
@@ -11,7 +12,17 @@ type UserGroupCreationAttributes = Optional<UserGroupAttributes, "createdAt" | "
 /**
  * UserGroup instance object interface
  */
-export interface UserGroupInstance extends Sequelize.Model<UserGroupAttributes, UserGroupCreationAttributes>, UserGroupAttributes {}
+export interface UserGroupInstance extends Sequelize.Model<UserGroupAttributes, UserGroupCreationAttributes>, UserGroupAttributes {
+  getUsers: Sequelize.BelongsToManyGetAssociationsMixin<UserInstance>;
+  setUsers: Sequelize.BelongsToManySetAssociationsMixin<UserInstance, UserInstance["id"]>;
+  addUsers: Sequelize.BelongsToManyAddAssociationsMixin<UserInstance, UserInstance["id"]>;
+  addUser: Sequelize.BelongsToManyAddAssociationMixin<UserInstance, UserInstance["id"]>;
+  removeUser: Sequelize.BelongsToManyRemoveAssociationMixin<UserInstance, UserInstance["id"]>;
+  removeUsers: Sequelize.BelongsToManyRemoveAssociationsMixin<UserInstance, UserInstance["id"]>;
+  hasUser: Sequelize.BelongsToManyHasAssociationMixin<UserInstance, UserInstance["id"]>;
+  hasUsers: Sequelize.BelongsToManyHasAssociationsMixin<UserInstance, UserInstance["id"]>;
+  countUsers: Sequelize.BelongsToManyCountAssociationsMixin;
+}
 
 /**
  * Build UserGroup model object

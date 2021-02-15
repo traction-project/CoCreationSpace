@@ -12,6 +12,7 @@ import { PostInstance, PostAttributes } from "./post";
 import { EmojiReactionsInstance } from "./emoji_reactions";
 import { TopicInstance } from "./topic";
 import { NotificationAttributes, NotificationInstance } from "./notifications";
+import { UserGroupInstance } from "./user_groups";
 
 const [ SESSION_SECRET ] = getFromEnvironment("SESSION_SECRET");
 
@@ -123,6 +124,16 @@ export interface UserInstance extends Sequelize.Model<UsersAttributes, UsersCrea
   hasInterestedTopic: Sequelize.BelongsToManyHasAssociationMixin<TopicInstance, TopicInstance["id"]>;
   hasInterestedTopics: Sequelize.BelongsToManyHasAssociationsMixin<TopicInstance, TopicInstance["id"]>;
   countInterestedTopics: Sequelize.BelongsToManyCountAssociationsMixin;
+
+  getUserGroups: Sequelize.BelongsToManyGetAssociationsMixin<UserGroupInstance>;
+  setUserGroups: Sequelize.BelongsToManySetAssociationsMixin<UserGroupInstance, UserGroupInstance["id"]>;
+  addUserGroups: Sequelize.BelongsToManyAddAssociationsMixin<UserGroupInstance, UserGroupInstance["id"]>;
+  addUserGroup: Sequelize.BelongsToManyAddAssociationMixin<UserGroupInstance, UserGroupInstance["id"]>;
+  removeUserGroup: Sequelize.BelongsToManyRemoveAssociationMixin<UserGroupInstance, UserGroupInstance["id"]>;
+  removeUserGroups: Sequelize.BelongsToManyRemoveAssociationsMixin<UserGroupInstance, UserGroupInstance["id"]>;
+  hasUserGroup: Sequelize.BelongsToManyHasAssociationMixin<UserGroupInstance, UserGroupInstance["id"]>;
+  hasUserGroups: Sequelize.BelongsToManyHasAssociationsMixin<UserGroupInstance, UserGroupInstance["id"]>;
+  countUserGroups: Sequelize.BelongsToManyCountAssociationsMixin;
 
   getNotifications: Sequelize.BelongsToManyGetAssociationsMixin<NotificationInstance>;
   setNotifications: Sequelize.BelongsToManySetAssociationsMixin<NotificationInstance, NotificationInstance["id"]>;
