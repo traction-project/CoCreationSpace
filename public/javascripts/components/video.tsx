@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { VideoJsPlayer } from "video.js";
 import { useTranslation } from "react-i18next";
@@ -23,6 +23,10 @@ const Video: React.FC<VideoProps> = (props) => {
   const { id } = useParams<{ id: string }>();
   const { id: idAttribute, comments, getPlayer, emojis } = props;
   const idVideo = idAttribute ? idAttribute : id;
+
+  const totalPlayTime = useRef(0);
+  const lastTimestamp = useRef(0);
+  const viewCounted = useRef(false);
 
   const [ videoUrl, setVideoUrl ] = useState<string | undefined>(undefined);
   const [ availableSubtitles, setAvailableSubtitles ] = useState<Array<{ language: string, url: string }>>([]);
@@ -57,6 +61,23 @@ const Video: React.FC<VideoProps> = (props) => {
     });
   };
 
+  const countView = (time: number, isPlaying: boolean) => {
+    if (viewCounted.current) {
+      return;
+    }
+
+    if (isPlaying) {
+      totalPlayTime.current += time - lastTimestamp.current;
+
+      if (totalPlayTime.current >= 30) {
+        viewCounted.current = true;
+        fetch(`/media/${idVideo}/view`, { method: "POST" });
+      }
+    }
+
+    lastTimestamp.current = time;
+  };
+
   useEffect(fetchVideo, [idVideo]);
   useInterval(fetchVideo, (videoStatus == "processing") ? 3000 : null);
 
@@ -71,6 +92,7 @@ const Video: React.FC<VideoProps> = (props) => {
             getPlayer={getPlayer}
             emojis={emojis}
             videoId={idVideo}
+            onTimeUpdate={countView}
           />
         ) : (
           <BlankVideo />
