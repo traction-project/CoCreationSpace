@@ -19,7 +19,7 @@ interface DashPlayerProps {
   emojis?: EmojiReaction[];
   videoId?: string;
   getPlayer?: (v: VideoJsPlayer) => void;
-  onTimeUpdate?: (currentTime: number, isPlaying: boolean) => void;
+  onTimeUpdate?: (currentTime: number, duration: number, isPlaying: boolean) => void;
 }
 
 const DashPlayer: React.FC<DashPlayerProps> = (props) => {
@@ -97,7 +97,7 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
   const handlePlayerTimeUpdated = () => {
     if (player) {
       setCurrentTime(player.currentTime());
-      onTimeUpdate?.(player.currentTime(), !player.paused());
+      onTimeUpdate?.(player.currentTime(), player.duration(), !player.paused());
     }
   };
 
