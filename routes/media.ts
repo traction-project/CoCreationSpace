@@ -210,6 +210,24 @@ router.post("/:id/view", async (req, res) => {
   }
 });
 
+router.get("/:id/views", async (req, res) => {
+  const { id } = req.params;
+  const { Multimedia } = db.getModels();
+
+  const mediaItem = await Multimedia.findByPk(id);
+
+  if (mediaItem) {
+    res.send({
+      views: mediaItem.viewCount
+    });
+  } else {
+    res.status(404).send({
+      status: "ERR",
+      message: "Media item not found"
+    });
+  }
+});
+
 router.get("/:id/status", async (req, res) => {
   const { id } = req.params;
   const { Multimedia } = db.getModels();
