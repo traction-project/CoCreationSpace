@@ -61,9 +61,14 @@ const Video: React.FC<VideoProps> = (props) => {
     });
   };
 
-  const countView = (time: number, isPlaying: boolean) => {
+  const countView = (time: number, duration: number, isPlaying: boolean) => {
     if (viewCounted.current) {
       return;
+    }
+
+    if (duration < 30 && time >= duration) {
+      viewCounted.current = true;
+      fetch(`/media/${idVideo}/view`, { method: "POST" });
     }
 
     if (isPlaying) {
