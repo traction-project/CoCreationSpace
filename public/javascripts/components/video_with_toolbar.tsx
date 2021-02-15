@@ -2,6 +2,7 @@ import * as React from "react";
 import { useState, useEffect } from "react";
 import { VideoJsPlayer } from "video.js";
 import { PostType } from "./post/post";
+import { Trans } from "react-i18next";
 
 import { postEmojiReaction } from "../services/post.service";
 import { addEmojiAnimation } from "./videojs/util";
@@ -88,7 +89,7 @@ const VideoWithToolbar: React.FC<VideoWithToolbarProps> = (props) => {
         <div className="level-right">
           <div className="level-item">
             {(viewCount) && (
-              <>{viewCount} views</>
+              <Trans i18nKey="view-count">{{viewCount}} views</Trans>
             )}
           </div>
         </div>
