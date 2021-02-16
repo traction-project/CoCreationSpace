@@ -30,7 +30,7 @@ export interface DataContainerInstance extends Sequelize.Model<DataContainerAttr
   removeMultimedias: Sequelize.HasManyRemoveAssociationsMixin<MultimediaInstance, MultimediaInstance["id"]>;
   hasMultimedia: Sequelize.HasManyHasAssociationMixin<MultimediaInstance, MultimediaInstance["id"]>;
   hasMultimedias: Sequelize.HasManyHasAssociationsMixin<MultimediaInstance, MultimediaInstance["id"]>;
-  countMultimedias: Sequelize.HasManyCountAssociationsMixin;
+  countMultimedia: Sequelize.HasManyCountAssociationsMixin;
 }
 
 /**
