@@ -7,7 +7,7 @@ export interface UserGroupAttributes extends CommonAttributes {
     name: string;
 }
 
-type UserGroupCreationAttributes = Optional<UserGroupAttributes, "createdAt" | "updatedAt">
+type UserGroupCreationAttributes = Optional<UserGroupAttributes, "id" | "createdAt" | "updatedAt">
 
 /**
  * UserGroup instance object interface
