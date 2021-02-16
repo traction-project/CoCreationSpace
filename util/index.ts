@@ -159,3 +159,25 @@ export const buildCriteria = async ({ q }: { q?: string }, model: ModelCtor<Mode
 export const isUser = (object: any): object is UsersAttributes => {
   return "username" in object;
 };
+
+/**
+ * Lists all methods that are callable on a given object.
+ * Useful for debugging association methods.
+ *
+ * @param toCheck Object to check
+ */
+export function getAllMethods(toCheck: any) {
+  let props: Array<any> = [];
+  let obj = toCheck;
+
+  do {
+    props = props.concat(Object.getOwnPropertyNames(obj));
+    obj = Object.getPrototypeOf(obj);
+  } while (obj);
+
+  return props.sort().filter((e, i, arr) => {
+    if (e != arr[i + 1] && typeof toCheck[e] == "function") {
+      return true;
+    }
+  });
+}
