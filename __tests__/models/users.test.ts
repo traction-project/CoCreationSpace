@@ -13,10 +13,11 @@ describe("Users model", () => {
   });
 
   beforeEach(async () => {
-    const { Users, Permissions } = db.getModels();
+    const { Users, UserGroup, Permissions } = db.getModels();
 
     await Users.destroy({ truncate: true });
     await Permissions.destroy({ truncate: true });
+    await UserGroup.destroy({ truncate: true });
   });
 
   it("should create a new user with just a username", async () => {
@@ -182,5 +183,74 @@ describe("Users model", () => {
     const decoded = (await jwt.verify(token, "sessionsecret")) as UserInstance;
     expect(decoded).toBeDefined();
     expect(decoded.id).toEqual(user.id);
+  });
+
+  it("should associate a user with a single group", async () => {
+    const { Users, UserGroup } = db.getModels();
+
+    const user = await Users.create(
+      {
+        username: "admin",
+        password: "password"
+      }
+    );
+    const group = await UserGroup.create({ name: "group1" });
+
+    expect(await user.countUserGroups()).toEqual(0);
+
+    await user.addUserGroup(group);
+    expect(await user.countUserGroups()).toEqual(1);
+  });
+
+  it("should associate a user with multiple single groups", async () => {
+    const { Users, UserGroup } = db.getModels();
+
+    const user = await Users.create(
+      {
+        username: "admin",
+        password: "password"
+      }
+    );
+    const group1 = await UserGroup.create({ name: "group1" });
+    const group2 = await UserGroup.create({ name: "group2" });
+
+    expect(await user.countUserGroups()).toEqual(0);
+
+    await user.addUserGroups([group1, group2]);
+    expect(await user.countUserGroups()).toEqual(2);
+  });
+
+  it("should remove a user from a group", async () => {
+    const { Users, UserGroup } = db.getModels();
+
+    const user = await Users.create(
+      {
+        username: "admin",
+        password: "password"
+      }
+    );
+    const group1 = await UserGroup.create({ name: "group1" });
+    const group2 = await UserGroup.create({ name: "group2" });
+    await user.addUserGroups([group1, group2]);
+
+    expect(await user.countUserGroups()).toEqual(2);
+    await user.removeUserGroup(group1.id);
+    expect(await user.countUserGroups()).toEqual(1);
+  });
+
+  it("should return whether a user is part of a group", async () => {
+    const { Users, UserGroup } = db.getModels();
+
+    const user = await Users.create(
+      {
+        username: "admin",
+        password: "password"
+      }
+    );
+    const group1 = await UserGroup.create({ name: "group1" });
+
+    expect(await user.hasUserGroup(group1)).toBeFalsy();
+    await user.addUserGroup(group1);
+    expect(await user.hasUserGroup(group1)).toBeTruthy();
   });
 });
