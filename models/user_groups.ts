@@ -1,4 +1,5 @@
 import Sequelize, { Optional } from "sequelize";
+import { v4 as uuidv4 } from "uuid";
 
 import { CommonAttributes } from "util/typing/modelCommonAttributes";
 import { UserInstance } from "./users";
@@ -51,6 +52,7 @@ export function UserGroupModelFactory(sequelize: Sequelize.Sequelize): Sequelize
 
   // Create the model
   const UserGroups = sequelize.define<UserGroupInstance, UserGroupCreationAttributes>("user_groups", attributes, { underscored: true, tableName: TABLE_NAME });
+  UserGroups.beforeCreate(group => { group.id = uuidv4(); });
 
   return UserGroups;
 }
