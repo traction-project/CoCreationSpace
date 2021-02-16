@@ -35,7 +35,7 @@ export interface TopicInstance extends Sequelize.Model<TopicAttributes, TopicCre
   removeHasInterests: Sequelize.BelongsToManyRemoveAssociationsMixin<UserInstance, UserInstance["id"]>;
   hasHasInterest: Sequelize.BelongsToManyHasAssociationMixin<UserInstance, UserInstance["id"]>;
   hasHasInterests: Sequelize.BelongsToManyHasAssociationsMixin<UserInstance, UserInstance["id"]>;
-  countHasInterests: Sequelize.BelongsToManyCountAssociationsMixin;
+  countHasInterest: Sequelize.BelongsToManyCountAssociationsMixin;
 }
 
 /**
