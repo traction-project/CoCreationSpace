@@ -12,7 +12,7 @@ import { PostInstance, PostAttributes } from "./post";
 import { EmojiReactionsInstance } from "./emoji_reactions";
 import { TopicInstance } from "./topic";
 import { NotificationAttributes, NotificationInstance } from "./notifications";
-import { UserGroupInstance } from "./user_groups";
+import { UserGroupInstance } from "./user_group";
 
 const [ SESSION_SECRET ] = getFromEnvironment("SESSION_SECRET");
 

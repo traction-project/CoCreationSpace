@@ -22,7 +22,7 @@ import { LikesModelFactory } from "./likes";
 import { EmojiReactionsModelFactory } from "./emoji_reactions";
 import { InterestModelFactory } from "./interest";
 import { NotificationsModelFactory } from "./notifications";
-import { UserGroupModelFactory } from "./user_groups";
+import { UserGroupModelFactory } from "./user_group";
 
 /**
  *  Class that contains all models created in the data base. Also, it is charge of
@@ -60,7 +60,7 @@ class DataBase {
     const Topics = TopicModelFactory(sequelize);
     const Users = UsersModelFactory(sequelize);
     const UserReferences = UserReferencesModelFactory(sequelize);
-    const UserGroups = UserGroupModelFactory(sequelize);
+    const UserGroup = UserGroupModelFactory(sequelize);
 
     this.models = {
       AudioContent,
@@ -82,7 +82,7 @@ class DataBase {
       Topics,
       Users,
       UserReferences,
-      UserGroups
+      UserGroup
     };
   }
 

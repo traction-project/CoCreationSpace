@@ -230,7 +230,7 @@ function userAssociations(models: DbInterface): void {
   models.Users.belongsTo(models.Preferences, { as: "preferences", foreignKey: "preferences_id" });
   models.Users.hasMany(models.Posts, { as: "post", foreignKey: "user_id" });
   models.Users.hasMany(models.Notifications, { as: "notifications", foreignKey: "user_id" });
-  models.Users.belongsToMany(models.UserGroups, { through: "user_group_users" });
+  models.Users.belongsToMany(models.UserGroup, { through: "user_group_users" });
 
   models.Users.belongsToMany(models.Permissions, {
     through: "user_permissions"
@@ -274,7 +274,7 @@ function userAssociations(models: DbInterface): void {
  * @param models DBInterface
  */
 function userGroupAssociations(models: DbInterface) {
-  models.UserGroups.belongsToMany(models.Users, { through: "user_group_users" });
+  models.UserGroup.belongsToMany(models.Users, { through: "user_group_users" });
 }
 
 function notificationAssociations(models: DbInterface) {

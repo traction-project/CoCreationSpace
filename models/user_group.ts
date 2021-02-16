@@ -51,8 +51,8 @@ export function UserGroupModelFactory(sequelize: Sequelize.Sequelize): Sequelize
   };
 
   // Create the model
-  const UserGroups = sequelize.define<UserGroupInstance, UserGroupCreationAttributes>("user_groups", attributes, { underscored: true, tableName: TABLE_NAME });
-  UserGroups.beforeCreate(group => { group.id = uuidv4(); });
+  const UserGroup = sequelize.define<UserGroupInstance, UserGroupCreationAttributes>("userGroup", attributes, { underscored: true, tableName: TABLE_NAME });
+  UserGroup.beforeCreate(group => { group.id = uuidv4(); });
 
-  return UserGroups;
+  return UserGroup;
 }
