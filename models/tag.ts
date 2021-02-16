@@ -24,7 +24,7 @@ export interface TagInstance extends Sequelize.Model<TagAttributes, TagCreationA
   removePosts: Sequelize.BelongsToManyRemoveAssociationsMixin<PostInstance, PostInstance["id"]>;
   hasPost: Sequelize.BelongsToManyHasAssociationMixin<PostInstance, PostInstance["id"]>;
   hasPosts: Sequelize.BelongsToManyHasAssociationsMixin<PostInstance, PostInstance["id"]>;
-  countPosts: Sequelize.BelongsToManyCountAssociationsMixin;
+  countPost: Sequelize.BelongsToManyCountAssociationsMixin;
 }
 
 /**
