@@ -5,7 +5,7 @@ const sequelize = new Sequelize("sqlite::memory:", { logging: false });
 
 import { db } from "../../models";
 
-describe("Data container model", () => {
+describe("Metadata model", () => {
   beforeAll(async () => {
     await db.createDB(sequelize);
   });

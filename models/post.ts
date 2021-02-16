@@ -60,11 +60,11 @@ export interface PostInstance extends Sequelize.Model<PostAttributes, PostCreati
   setPostReference: Sequelize.BelongsToManySetAssociationsMixin<PostInstance, PostInstance["id"]>;
   addPostReferences: Sequelize.BelongsToManyAddAssociationsMixin<PostInstance, PostInstance["id"]>;
   addPostReference: Sequelize.BelongsToManyAddAssociationMixin<PostInstance, PostInstance["id"]>;
-  removePostReferences: Sequelize.BelongsToManyRemoveAssociationMixin<PostInstance, PostInstance["id"]>;
-  removePostReference: Sequelize.BelongsToManyRemoveAssociationsMixin<PostInstance, PostInstance["id"]>;
-  hasPostReferences: Sequelize.BelongsToManyHasAssociationMixin<PostInstance, PostInstance["id"]>;
-  hasPostReference: Sequelize.BelongsToManyHasAssociationsMixin<PostInstance, PostInstance["id"]>;
-  countPostReferences: Sequelize.BelongsToManyCountAssociationsMixin;
+  removePostReference: Sequelize.BelongsToManyRemoveAssociationMixin<PostInstance, PostInstance["id"]>;
+  removePostReferences: Sequelize.BelongsToManyRemoveAssociationsMixin<PostInstance, PostInstance["id"]>;
+  hasPostReference: Sequelize.BelongsToManyHasAssociationMixin<PostInstance, PostInstance["id"]>;
+  hasPostReferences: Sequelize.BelongsToManyHasAssociationsMixin<PostInstance, PostInstance["id"]>;
+  countPostReference: Sequelize.BelongsToManyCountAssociationsMixin;
 
   getPostReferenced: Sequelize.BelongsToManyGetAssociationsMixin<PostInstance>;
   setPostReferenced: Sequelize.BelongsToManySetAssociationsMixin<PostInstance, PostInstance["id"]>;
@@ -72,8 +72,8 @@ export interface PostInstance extends Sequelize.Model<PostAttributes, PostCreati
   addPostReferenced: Sequelize.BelongsToManyAddAssociationMixin<PostInstance, PostInstance["id"]>;
   removePostReferenceds: Sequelize.BelongsToManyRemoveAssociationMixin<PostInstance, PostInstance["id"]>;
   removePostReferenced: Sequelize.BelongsToManyRemoveAssociationsMixin<PostInstance, PostInstance["id"]>;
-  hasPostReferenceds: Sequelize.BelongsToManyHasAssociationMixin<PostInstance, PostInstance["id"]>;
-  hasPostReferenced: Sequelize.BelongsToManyHasAssociationsMixin<PostInstance, PostInstance["id"]>;
+  hasPostReferenced: Sequelize.BelongsToManyHasAssociationMixin<PostInstance, PostInstance["id"]>;
+  hasPostReferenceds: Sequelize.BelongsToManyHasAssociationsMixin<PostInstance, PostInstance["id"]>;
   countPostReferenceds: Sequelize.BelongsToManyCountAssociationsMixin;
 
   getParentPost: Sequelize.BelongsToGetAssociationMixin<PostInstance>;
