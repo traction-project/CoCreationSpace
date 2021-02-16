@@ -46,7 +46,10 @@ export function UserGroupModelFactory(sequelize: Sequelize.Sequelize): Sequelize
     name: {
       type: Sequelize.DataTypes.STRING,
       allowNull: false,
-      unique: true
+      unique: true,
+      validate: {
+        notEmpty: true
+      }
     }
   };
 
