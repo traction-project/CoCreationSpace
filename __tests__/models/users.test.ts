@@ -1,9 +1,11 @@
 import { Sequelize } from "sequelize";
+import jwt from "jsonwebtoken";
 
 process.env["SESSION_SECRET"] = "sessionsecret";
 const sequelize = new Sequelize("sqlite::memory:", { logging: false });
 
 import { db } from "../../models";
+import { UserInstance } from "models/users";
 
 describe("Users model", () => {
   beforeAll(async () => {
@@ -147,5 +149,38 @@ describe("Users model", () => {
 
     await user.removeInterestedTopic(topic2);
     expect(await user.countInterestedTopics()).toEqual(1);
+  });
+
+  it("should take authorization object with token from user registered", async () => {
+    const { Users } = db.getModels();
+
+    const user = await Users.create(
+      {
+        username: "admin",
+        password: "password"
+      }
+    );
+    const token = user.generateToken(60);
+
+    const authObject = user.getAuth();
+    expect(authObject.username).toBeDefined();
+    expect(authObject.username).toEqual(user.username);
+    expect(authObject.token).toBeDefined();
+    expect(authObject.token).toEqual(token);
+  });
+
+  it("should generate a valid token from user registered", async () => {
+    const { Users } = db.getModels();
+
+    const user = await Users.create(
+      {
+        username: "admin",
+        password: "password"
+      }
+    );
+    const token = user.generateToken(60);
+    const decoded = (await jwt.verify(token, "sessionsecret")) as UserInstance;
+    expect(decoded).toBeDefined();
+    expect(decoded.id).toEqual(user.id);
   });
 });
