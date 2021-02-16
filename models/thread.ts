@@ -30,7 +30,7 @@ export interface ThreadInstance extends Sequelize.Model<ThreadAttributes, Thread
   removePosts: Sequelize.HasManyRemoveAssociationsMixin<PostInstance, PostInstance["id"]>;
   hasPost: Sequelize.HasManyHasAssociationMixin<PostInstance, PostInstance["id"]>;
   hasPosts: Sequelize.HasManyHasAssociationsMixin<PostInstance, PostInstance["id"]>;
-  countPosts: Sequelize.HasManyCountAssociationsMixin;
+  countPost: Sequelize.HasManyCountAssociationsMixin;
 }
 
 /**
