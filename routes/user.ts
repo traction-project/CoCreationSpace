@@ -168,4 +168,30 @@ router.post("/group/:id/join", authRequired, async (req, res) => {
   }
 });
 
+/**
+ * Makes the current user leave the group identified by the given id. Returns
+ * 200 on success, or 404 if the group with the given id cannot be found.
+ */
+router.post("/group/:id/leave", authRequired, async (req, res) => {
+  const { UserGroup } = db.getModels();
+
+  const { id } = req.params;
+  const user = req.user as UserInstance;
+
+  const group = await UserGroup.findByPk(id);
+
+  if (group) {
+    await user.removeUserGroup(group);
+
+    res.send({
+      status: "ok"
+    });
+  } else {
+    res.status(404).send({
+      status: "ERR",
+      message: "Group not found"
+    });
+  }
+});
+
 export default router;
