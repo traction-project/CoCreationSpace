@@ -158,7 +158,7 @@ router.post("/group/:id/join", authRequired, async (req, res) => {
     await user.addUserGroup(group);
 
     res.send({
-      status: "ok"
+      status: "OK"
     });
   } else {
     res.status(404).send({
@@ -184,7 +184,7 @@ router.post("/group/:id/leave", authRequired, async (req, res) => {
     await user.removeUserGroup(group);
 
     res.send({
-      status: "ok"
+      status: "OK"
     });
   } else {
     res.status(404).send({
