@@ -113,6 +113,60 @@ router.get("/all/user", authRequired, async (req, res) => {
 });
 
 /**
+ * Get all posts for the groups the current user is a member of.
+ */
+router.get("/all/group", async (req, res) => {
+  const user = req.user as UserInstance;
+  const { Posts, Users, UserGroup, DataContainer, Multimedia, Threads } = db.getModels();
+
+  let queryDataContainer = {
+    model: DataContainer,
+    as: "dataContainer",
+    include: [{
+      model: Multimedia,
+      as: "multimedia",
+      attributes: ["status", "id", "type"]
+    }]
+  };
+
+  const criteria = await buildCriteria(req.query, DataContainer);
+  queryDataContainer = Object.assign(queryDataContainer, criteria);
+
+  const groups = (await user.getUserGroups()).map((group) => group.id);
+
+  const posts = await Posts.findAll({
+    where: {
+      parent_post_id: null
+    } as any,
+    include: [{
+      model: Users,
+      as: "user",
+      where: { id: user.id },
+      include: [{
+        model: UserGroup,
+        as: "userGroups",
+        where: { id: groups }
+      }]
+    }, queryDataContainer, "comments", "tags", "emojiReactions", {
+      model: Threads,
+      as: "thread",
+      include: ["topic"]
+    }],
+    order: [
+      ["created_at", "DESC"]
+    ]
+  });
+
+  posts.forEach(post => {
+    if (post.user && isUser(post.user)) {
+      post.user.image = `${CLOUDFRONT_URL}/${post.user.image}`;
+    }
+  });
+
+  res.send(posts);
+});
+
+/**
  * Get Post by id
  */
 router.get("/id/:id", authRequired, async (req, res) => {
