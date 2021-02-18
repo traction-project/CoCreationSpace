@@ -60,7 +60,7 @@ const App: React.FC<AppProps> = () => {
               <NotificationList />
             </Route>
             <PrivateRoute path="/posts">
-              <PostList endpoint="/posts/all" />
+              <PostList endpoint="/posts/all/group" />
             </PrivateRoute>
             <PrivateRoute path="/post/:id/edit">
               <EditPost />
