@@ -6,6 +6,7 @@ import { getExtension, getFromEnvironment } from "../util";
 import { authRequired } from "../util/middleware";
 import { uploadToS3 } from "../util/s3";
 import { UserInstance } from "models/users";
+import { db } from "../models";
 
 const [ BUCKET_NAME, CLOUDFRONT_URL ] = getFromEnvironment("BUCKET_NAME", "CLOUDFRONT_URL");
 const router = Router();
@@ -139,6 +140,32 @@ router.delete("/interests", authRequired, async (req, res) => {
   return res.send(
     await user.getInterestedTopics()
   );
+});
+
+/**
+ * Makes the current user join the group identified by the given id. Returns
+ * 200 on success, or 404 if the group with the given id cannot be found.
+ */
+router.post("/group/:id/join", authRequired, async (req, res) => {
+  const { UserGroup } = db.getModels();
+
+  const { id } = req.params;
+  const user = req.user as UserInstance;
+
+  const group = await UserGroup.findByPk(id);
+
+  if (group) {
+    await user.addUserGroup(group);
+
+    res.send({
+      status: "ok"
+    });
+  } else {
+    res.status(404).send({
+      status: "ERR",
+      message: "Group not found"
+    });
+  }
 });
 
 export default router;
