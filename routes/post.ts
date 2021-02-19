@@ -142,8 +142,8 @@ router.get("/all/group", async (req, res) => {
     include: [{
       model: Users,
       as: "user",
-      where: { id: user.id },
       attributes: ["id", "username", "image"],
+      required: true,
       include: [{
         model: UserGroup,
         as: "userGroups",
