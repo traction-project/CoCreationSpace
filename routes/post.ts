@@ -92,6 +92,7 @@ router.get("/all/user", authRequired, async (req, res) => {
     include: [{
       model: Users,
       as: "user",
+      attributes: ["id", "username", "image"],
       where: { id: user.id }
     }, queryDataContainer, "comments", "tags", "emojiReactions", {
       model: Threads,
@@ -142,6 +143,7 @@ router.get("/all/group", async (req, res) => {
       model: Users,
       as: "user",
       where: { id: user.id },
+      attributes: ["id", "username", "image"],
       include: [{
         model: UserGroup,
         as: "userGroups",
