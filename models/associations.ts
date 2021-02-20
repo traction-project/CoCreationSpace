@@ -99,7 +99,7 @@ function multimediaAssociations(models: DbInterface): void {
   models.Multimedia.hasMany(models.AudioContent, { as: "audioContent", foreignKey: "multimedia_id" });
   models.Multimedia.hasMany(models.Metadata, { as: "metadata", foreignKey: "multimedia_id"});
   models.Multimedia.hasMany(models.Subtitles, { as: "subtitles", foreignKey: "multimedia_id"});
-  models.Multimedia.hasMany(models.MultimediaInteraction, { as: "multimediaInteractions", foreignKey: "user_id" });
+  models.Multimedia.hasMany(models.MultimediaInteraction);
 }
 
 /**
@@ -232,7 +232,7 @@ function userAssociations(models: DbInterface): void {
   models.Users.belongsTo(models.Preferences, { as: "preferences", foreignKey: "preferences_id" });
   models.Users.hasMany(models.Posts, { as: "post", foreignKey: "user_id" });
   models.Users.hasMany(models.Notifications, { as: "notifications", foreignKey: "user_id" });
-  models.Users.hasMany(models.MultimediaInteraction, { as: "multimediaInteractions", foreignKey: "user_id" });
+  models.Users.hasMany(models.MultimediaInteraction);
   models.Users.belongsToMany(models.UserGroup, { through: "user_group_users" });
 
   models.Users.belongsToMany(models.Permissions, {
@@ -285,8 +285,8 @@ function userGroupAssociations(models: DbInterface) {
  * @param models DBInterface
  */
 function multimediaInteractionsAssociations(models: DbInterface) {
-  models.MultimediaInteraction.belongsTo(models.Users, { as: "user", foreignKey: "user_id" });
-  models.MultimediaInteraction.belongsTo(models.Multimedia, { as: "multimedia", foreignKey: "multimedia_id" });
+  models.MultimediaInteraction.belongsTo(models.Users);
+  models.MultimediaInteraction.belongsTo(models.Multimedia);
 }
 
 /**

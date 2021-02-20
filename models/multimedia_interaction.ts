@@ -47,12 +47,6 @@ export function MultimediaInteractionModelFactory(sequelize: Sequelize.Sequelize
       allowNull: false,
       autoIncrement: false
     },
-    multimedia_id: {
-      type: Sequelize.DataTypes.UUID
-    },
-    user_id: {
-      type: Sequelize.DataTypes.UUID
-    },
     interaction: {
       type: Sequelize.DataTypes.JSON,
       allowNull: false
