@@ -101,8 +101,7 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
         video.on("pause", () => videoInteractionTracker.onPause(video.currentTime()));
         video.on("seeked", () => videoInteractionTracker.onSeek(video.currentTime()));
         video.on("ended", () => videoInteractionTracker.onEnd(video.currentTime()));
-        video.on("enterFullWindow", () => videoInteractionTracker.onFullscreen(video.currentTime()));
-        video.on("exitFullWindow", () => videoInteractionTracker.onFullscreen(video.currentTime()));
+        video.on("fullscreenchange", () => videoInteractionTracker.onFullscreen(video.currentTime()));
       }
     }
   };
