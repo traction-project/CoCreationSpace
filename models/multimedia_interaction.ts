@@ -24,9 +24,9 @@ export interface MultimediaInteractionInstance extends Sequelize.Model<Multimedi
   setUser: Sequelize.BelongsToSetAssociationMixin<UserInstance, UserInstance["id"]>;
   createUser: Sequelize.BelongsToCreateAssociationMixin<UserInstance>;
 
-  getMultimedia: Sequelize.BelongsToGetAssociationMixin<MultimediaInstance>;
-  setMultimedia: Sequelize.BelongsToSetAssociationMixin<MultimediaInstance, MultimediaInstance["id"]>;
-  createMultimedia: Sequelize.BelongsToCreateAssociationMixin<MultimediaInstance>;
+  getMultimedium: Sequelize.BelongsToGetAssociationMixin<MultimediaInstance>;
+  setMultimedium: Sequelize.BelongsToSetAssociationMixin<MultimediaInstance, MultimediaInstance["id"]>;
+  createMultimedium: Sequelize.BelongsToCreateAssociationMixin<MultimediaInstance>;
 }
 
 /**
