@@ -149,6 +149,7 @@ export const buildCriteria = async ({ q }: { q?: string }, model: ModelCtor<Mode
 
     Object.assign(criteria, where);
   }
+
   return criteria;
 };
 

@@ -37,6 +37,7 @@ class Associations {
     notificationAssociations(models);
     userGroupAssociations(models);
     multimediaInteractionsAssociations(models);
+    searchQueryAssociations(models);
 
     this.associatons = {
       datacontainerAssociations,
@@ -233,6 +234,7 @@ function userAssociations(models: DbInterface): void {
   models.Users.hasMany(models.Posts, { as: "post", foreignKey: "user_id" });
   models.Users.hasMany(models.Notifications, { as: "notifications", foreignKey: "user_id" });
   models.Users.hasMany(models.MultimediaInteraction);
+  models.Users.hasMany(models.SearchQuery);
   models.Users.belongsToMany(models.UserGroup, { through: "user_group_users" });
 
   models.Users.belongsToMany(models.Permissions, {
@@ -295,4 +297,12 @@ function multimediaInteractionsAssociations(models: DbInterface) {
  */
 function notificationAssociations(models: DbInterface) {
   models.Notifications.belongsTo(models.Users, { as: "user", foreignKey: "user_id" });
+}
+
+/**
+ * Create associations for the search_queries table
+ * @param models DBInterface
+ */
+function searchQueryAssociations(models: DbInterface) {
+  models.SearchQuery.belongsTo(models.Users);
 }

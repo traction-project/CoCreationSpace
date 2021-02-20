@@ -21,6 +21,7 @@ import { InterestInstance } from "models/interest";
 import { NotificationInstance } from "models/notifications";
 import { UserGroupInstance } from "models/user_group";
 import { MultimediaInteractionInstance } from "models/multimedia_interaction";
+import { SearchQueryInstance } from "models/search_query";
 
 /**
  *  Interface for the objects that containes all models from database
@@ -47,4 +48,5 @@ export interface DbInterface {
     UserReferences: ModelCtor<UserReferencesInstance>;
     UserGroup: ModelCtor<UserGroupInstance>;
     MultimediaInteraction: ModelCtor<MultimediaInteractionInstance>;
+    SearchQuery: ModelCtor<SearchQueryInstance>;
 }
