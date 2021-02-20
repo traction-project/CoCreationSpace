@@ -20,6 +20,7 @@ import { EmojiReactionsInstance } from "models/emoji_reactions";
 import { InterestInstance } from "models/interest";
 import { NotificationInstance } from "models/notifications";
 import { UserGroupInstance } from "models/user_group";
+import { MultimediaInteractionInstance } from "models/multimedia_interaction";
 
 /**
  *  Interface for the objects that containes all models from database
@@ -45,4 +46,5 @@ export interface DbInterface {
     Users: ModelCtor<UserInstance>;
     UserReferences: ModelCtor<UserReferencesInstance>;
     UserGroup: ModelCtor<UserGroupInstance>;
+    MultimediaInteraction: ModelCtor<MultimediaInteractionInstance>;
 }
