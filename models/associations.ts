@@ -99,7 +99,7 @@ function multimediaAssociations(models: DbInterface): void {
   models.Multimedia.hasMany(models.AudioContent, { as: "audioContent", foreignKey: "multimedia_id" });
   models.Multimedia.hasMany(models.Metadata, { as: "metadata", foreignKey: "multimedia_id"});
   models.Multimedia.hasMany(models.Subtitles, { as: "subtitles", foreignKey: "multimedia_id"});
-  models.Multimedia.hasMany(models.MultimediaInteraction);
+  models.Multimedia.hasMany(models.MultimediaInteraction, { foreignKey: "multimedia_id" });
 }
 
 /**
@@ -286,7 +286,7 @@ function userGroupAssociations(models: DbInterface) {
  */
 function multimediaInteractionsAssociations(models: DbInterface) {
   models.MultimediaInteraction.belongsTo(models.Users);
-  models.MultimediaInteraction.belongsTo(models.Multimedia);
+  models.MultimediaInteraction.belongsTo(models.Multimedia, { foreignKey: "multimedia_id" });
 }
 
 /**
