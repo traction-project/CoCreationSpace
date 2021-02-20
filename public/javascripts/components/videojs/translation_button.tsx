@@ -9,10 +9,11 @@ import { activateSubtitleTrack, hasSubtitleTrack } from "../../util";
 interface TranslationButtonProps {
   videoId: string;
   player: VideoJsPlayer;
+  onTrackChanged?: (languaceCode: string) => void;
 }
 
 const TranslationButton: React.FC<TranslationButtonProps> = (props) => {
-  const { videoId, player } = props;
+  const { videoId, player, onTrackChanged } = props;
   const { isOpen, openPortal, closePortal, Portal } = usePortal();
 
   const handleTranslationSuccess = (languageCode: string, subtitleId: string) => {
@@ -30,6 +31,7 @@ const TranslationButton: React.FC<TranslationButtonProps> = (props) => {
       }
 
       activateSubtitleTrack(player, languageCode);
+      onTrackChanged?.(languageCode);
     }
   };
 
@@ -57,15 +59,13 @@ const TranslationButton: React.FC<TranslationButtonProps> = (props) => {
 const vjsComponent = videojs.getComponent("Component");
 
 class vjsTranslationButton extends vjsComponent {
-  private playerInstance: videojs.Player;
+  private fnOnTrackChanged = (_: string) => {};
 
-  constructor(player: videojs.Player, private videoId: string, options: videojs.ComponentOptions) {
-    super(player, options);
-    this.playerInstance = player;
-
+  constructor(private playerInstance: videojs.Player, private videoId: string, options: videojs.ComponentOptions) {
+    super(playerInstance, options);
     this.mount = this.mount.bind(this);
 
-    player.ready(() => {
+    playerInstance.ready(() => {
       this.mount();
     });
 
@@ -74,11 +74,16 @@ class vjsTranslationButton extends vjsComponent {
     });
   }
 
+  public onTrackChanged(fnOnTrackChanged: (languaceCode: string) => void) {
+    this.fnOnTrackChanged = fnOnTrackChanged;
+  }
+
   mount() {
     ReactDOM.render(
       <TranslationButton
         player={this.playerInstance}
         videoId={this.videoId}
+        onTrackChanged={this.fnOnTrackChanged}
       />,
       this.el()
     );
