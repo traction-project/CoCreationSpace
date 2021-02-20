@@ -93,6 +93,10 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
 
       if (videoId) {
         const translationButton = new TranslationButton(video, videoId, {});
+        translationButton.onTrackChanged((languaceCode) => {
+          videoInteractionTracker?.onTrackChanged(video.currentTime(), languaceCode);
+        });
+
         video.controlBar.addChild(translationButton);
       }
 
