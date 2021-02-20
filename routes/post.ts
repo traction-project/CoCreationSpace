@@ -12,9 +12,24 @@ const [ CLOUDFRONT_URL ] = getFromEnvironment("CLOUDFRONT_URL");
 const router = Router();
 
 /**
+ * Log the given search query to the database.
+ *
+ * @param query Search query to be logged
+ */
+async function logSearchQuery(query: string | undefined, user: UserInstance) {
+  if (query) {
+    const { SearchQuery } = db.getModels();
+
+    const searchQuery = await SearchQuery.create({ query });
+    await searchQuery.setUser(user);
+  }
+}
+
+/**
  * Get all posts
  */
 router.get("/all", authRequired, async (req, res) => {
+  const user = req.user as UserInstance;
   const { Posts, DataContainer, Users, Multimedia, Threads } = db.getModels();
 
   let queryDataContainer = {
@@ -26,6 +41,8 @@ router.get("/all", authRequired, async (req, res) => {
       attributes: ["status", "id", "type"]
     }]
   };
+
+  await logSearchQuery(req.query["q"] as string, user);
 
   const criteria = await buildCriteria(req.query, DataContainer);
   queryDataContainer = Object.assign(queryDataContainer, criteria);
@@ -82,6 +99,8 @@ router.get("/all/user", authRequired, async (req, res) => {
     }]
   };
 
+  await logSearchQuery(req.query["q"] as string, user);
+
   const criteria = await buildCriteria(req.query, DataContainer);
   queryDataContainer = Object.assign(queryDataContainer, criteria);
 
@@ -129,6 +148,8 @@ router.get("/all/group", async (req, res) => {
       attributes: ["status", "id", "type"]
     }]
   };
+
+  await logSearchQuery(req.query["q"] as string, user);
 
   const criteria = await buildCriteria(req.query, DataContainer);
   queryDataContainer = Object.assign(queryDataContainer, criteria);
