@@ -1,6 +1,7 @@
 interface VideoInteraction {
-  type: "play" | "pause" | "end" | "seek" | "fullscreen",
+  type: "play" | "pause" | "end" | "seek" | "fullscreen" | "trackchange",
   timestamp: number;
+  data?: any;
 }
 
 export interface VideoInteractionTracker {
@@ -9,6 +10,7 @@ export interface VideoInteractionTracker {
   onSeek(timestamp: number): void;
   onEnd(timestamp: number): void;
   onFullscreen(timestamp: number): void;
+  onTrackChanged(timestamp: number, languageCode: string): void;
 }
 
 export class UserVideoInteractionTracker implements VideoInteractionTracker {
@@ -47,6 +49,16 @@ export class UserVideoInteractionTracker implements VideoInteractionTracker {
     this.sendInteraction({
       type: "fullscreen",
       timestamp
+    });
+  }
+
+  public onTrackChanged(timestamp: number, languageCode: string) {
+    this.sendInteraction({
+      type: "trackchange",
+      data: {
+        languageCode
+      },
+      timestamp,
     });
   }
 
