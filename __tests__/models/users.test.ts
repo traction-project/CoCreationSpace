@@ -253,4 +253,24 @@ describe("Users model", () => {
     await user.addUserGroup(group1);
     expect(await user.hasUserGroup(group1)).toBeTruthy();
   });
+
+  it("should list a user's multimedia interactions", async () => {
+    const { Users, MultimediaInteraction } = db.getModels();
+
+    const user = await Users.create({
+      username: "admin",
+      password: "password",
+    });
+
+    expect(await user.countMultimediaInteractions()).toEqual(0);
+
+    const interaction = await MultimediaInteraction.create({
+      interaction: { type: "play", timestamp: 1 }
+    });
+
+    await interaction.setUser(user);
+
+    expect(await user.countMultimediaInteractions()).toEqual(1);
+    expect(await user.hasMultimediaInteraction(interaction)).toBeTruthy();
+  });
 });

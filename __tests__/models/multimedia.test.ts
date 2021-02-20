@@ -114,4 +114,23 @@ describe("Multimedia model", () => {
 
     expect(mediaItem.viewCount).toEqual(1);
   });
+
+  it("should list a interactions with multimedia items by users", async () => {
+    const { Multimedia, MultimediaInteraction } = db.getModels();
+
+    const video = await Multimedia.create({
+      title: "video",
+    });
+
+    expect(await video.countMultimediaInteractions()).toEqual(0);
+
+    const interaction = await MultimediaInteraction.create({
+      interaction: { type: "play", timestamp: 1 }
+    });
+
+    await interaction.setMultimedium(video);
+
+    expect(await video.countMultimediaInteractions()).toEqual(1);
+    expect(await video.hasMultimediaInteraction(interaction)).toBeTruthy();
+  });
 });
