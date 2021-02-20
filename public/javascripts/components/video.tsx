@@ -9,6 +9,7 @@ import { PostType } from "./post/post";
 import { EmojiReaction } from "../util";
 import BlankVideo from "./blank_video";
 import useInterval from "./use_interval";
+import { UserVideoInteractionTracker } from "../video_interaction_tracker";
 
 interface VideoProps {
   id?: string;
@@ -98,6 +99,7 @@ const Video: React.FC<VideoProps> = (props) => {
             emojis={emojis}
             videoId={idVideo}
             onTimeUpdate={countView}
+            videoInteractionTracker={new UserVideoInteractionTracker(`/media/${idVideo}/interaction`)}
           />
         ) : (
           <BlankVideo />
