@@ -10,6 +10,7 @@ import { EmojiReaction } from "../util";
 import { addEmojiAnimation, addTooltip, createMarkers } from "./videojs/util";
 import { Marker } from "./videojs/types";
 import TranslationButton from "./videojs/translation_button";
+import { VideoInteractionTracker } from "../video_interaction_tracker";
 
 interface DashPlayerProps {
   manifest: string;
@@ -20,6 +21,7 @@ interface DashPlayerProps {
   videoId?: string;
   getPlayer?: (v: VideoJsPlayer) => void;
   onTimeUpdate?: (currentTime: number, duration: number, isPlaying: boolean) => void;
+  videoInteractionTracker?: VideoInteractionTracker;
 }
 
 const DashPlayer: React.FC<DashPlayerProps> = (props) => {
@@ -28,7 +30,7 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
   const [ player, setPlayer ] = useState<VideoJsPlayer>();
   const [ currentTime, setCurrentTime ] = useState<number>(0);
   const [ currentTimeRounded, setCurrentTimeRounded ] = useState<number>(0);
-  const { manifest, width, subtitles, comments, getPlayer, emojis, videoId, onTimeUpdate } = props;
+  const { manifest, width, subtitles, comments, getPlayer, emojis, videoId, onTimeUpdate, videoInteractionTracker } = props;
 
   useEffect(() => {
     if (videoNode === null) {
@@ -58,6 +60,7 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
     if (player) {
       const markers = getMarkers();
       createMarkers(player, markers, playerNode);
+
       if (comments || emojis) {
         player.off("timeupdate");
         player.on("timeupdate", handlePlayerTimeUpdated);
@@ -67,6 +70,7 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
 
   useEffect(() => {
     const timeRounded = Math.floor(currentTime);
+
     if (currentTimeRounded !== timeRounded) {
       setCurrentTimeRounded(timeRounded);
       addReactions(timeRounded);
@@ -91,6 +95,15 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
         const translationButton = new TranslationButton(video, videoId, {});
         video.controlBar.addChild(translationButton);
       }
+
+      if (videoInteractionTracker) {
+        video.on("play", () => videoInteractionTracker.onPlay(video.currentTime()));
+        video.on("pause", () => videoInteractionTracker.onPause(video.currentTime()));
+        video.on("seeked", () => videoInteractionTracker.onSeek(video.currentTime()));
+        video.on("ended", () => videoInteractionTracker.onEnd(video.currentTime()));
+        video.on("enterFullWindow", () => videoInteractionTracker.onFullscreen(video.currentTime()));
+        video.on("exitFullWindow", () => videoInteractionTracker.onFullscreen(video.currentTime()));
+      }
     }
   };
 
@@ -105,6 +118,7 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
     if (player) {
       if (comments) {
         const comment = comments.filter((comment) => comment.second && (Math.floor(comment.second) === timeRounded));
+
         if (comment.length > 0) {
           addTooltip(player, comment[0]);
         }
@@ -112,6 +126,7 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
 
       if (emojis) {
         const items = emojis.filter((item) => item.second && (Math.floor(item.second) === timeRounded));
+
         if (items.length > 0) {
           items.forEach((item, index) => {
             setTimeout(() => addEmojiAnimation(player, item), index * 100);
@@ -124,16 +139,20 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
   const getMarkers = (): Marker[] => {
     let secondsComment = comments?.map(comment => comment.second);
     secondsComment = secondsComment?.filter(second => second !== undefined);
+
     const markersComment: Marker[] = secondsComment ?
       secondsComment?.map(second => { return { type: "comment", second: second ? second : 0 }; })
       : [];
+
     const markersEmojis: Marker[] = emojis ?
       emojis?.map(item => { return { type: "emoji", second: item.second, emoji: item.emoji }; })
       : [];
+
     const markers: Marker[] = [
       ...markersComment,
       ...markersEmojis
     ];
+
     return markers;
   };
 
