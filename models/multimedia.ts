@@ -8,6 +8,7 @@ import { DataContainerAttributes, DataContainerInstance } from "./data_container
 import { AudioContentAttributes, AudioContentInstance } from "./audio_content";
 import { MetadataAttributes, MetadataInstance } from "./metadata";
 import { SubtitlesAttributes, SubtitlesInstance } from "./subtitles";
+import { MultimediaInteractionInstance } from "./multimedia_interaction";
 
 export interface MultimediaAttributes extends CommonAttributes {
   title: string;
@@ -76,6 +77,16 @@ export interface MultimediaInstance extends Sequelize.Model<MultimediaAttributes
   removeSubtitle: Sequelize.HasManyRemoveAssociationMixin<SubtitlesInstance, SubtitlesInstance["id"]>;
   removeSubtitles: Sequelize.HasManyRemoveAssociationsMixin<SubtitlesInstance, SubtitlesInstance["id"]>;
   createSubtitle: Sequelize.HasManyCreateAssociationMixin<SubtitlesInstance>;
+
+  getMultimediaInteractions: Sequelize.HasManyGetAssociationsMixin<MultimediaInteractionInstance>;
+  setMultimediaInteractions: Sequelize.HasManySetAssociationsMixin<MultimediaInteractionInstance, MultimediaInteractionInstance["id"]>;
+  addMultimediaInteractions: Sequelize.HasManyAddAssociationsMixin<MultimediaInteractionInstance, MultimediaInteractionInstance["id"]>;
+  addMultimediaInteraction: Sequelize.HasManyAddAssociationMixin<MultimediaInteractionInstance, MultimediaInteractionInstance["id"]>;
+  removeMultimediaInteraction: Sequelize.HasManyRemoveAssociationMixin<MultimediaInteractionInstance, MultimediaInteractionInstance["id"]>;
+  removeMultimediaInteractions: Sequelize.HasManyRemoveAssociationsMixin<MultimediaInteractionInstance, MultimediaInteractionInstance["id"]>;
+  hasMultimediaInteraction: Sequelize.HasManyHasAssociationMixin<MultimediaInteractionInstance, MultimediaInteractionInstance["id"]>;
+  hasMultimediaInteractions: Sequelize.HasManyHasAssociationsMixin<MultimediaInteractionInstance, MultimediaInteractionInstance["id"]>;
+  countMultimediaInteractions: Sequelize.HasManyCountAssociationsMixin;
 
   incrementViewCount: () => Promise<void>;
 }

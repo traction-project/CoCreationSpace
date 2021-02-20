@@ -13,6 +13,7 @@ import { EmojiReactionsInstance } from "./emoji_reactions";
 import { TopicInstance } from "./topic";
 import { NotificationAttributes, NotificationInstance } from "./notifications";
 import { UserGroupInstance } from "./user_group";
+import { MultimediaInteractionInstance } from "./multimedia_interaction";
 
 const [ SESSION_SECRET ] = getFromEnvironment("SESSION_SECRET");
 
@@ -144,6 +145,16 @@ export interface UserInstance extends Sequelize.Model<UsersAttributes, UsersCrea
   hasNotification: Sequelize.BelongsToManyHasAssociationMixin<NotificationInstance, NotificationInstance["id"]>;
   hasNotifications: Sequelize.BelongsToManyHasAssociationsMixin<NotificationInstance, NotificationInstance["id"]>;
   countNotifications: Sequelize.BelongsToManyCountAssociationsMixin;
+
+  getMultimediaInteractions: Sequelize.HasManyGetAssociationsMixin<MultimediaInteractionInstance>;
+  setMultimediaInteractions: Sequelize.HasManySetAssociationsMixin<MultimediaInteractionInstance, MultimediaInteractionInstance["id"]>;
+  addMultimediaInteractions: Sequelize.HasManyAddAssociationsMixin<MultimediaInteractionInstance, MultimediaInteractionInstance["id"]>;
+  addMultimediaInteraction: Sequelize.HasManyAddAssociationMixin<MultimediaInteractionInstance, MultimediaInteractionInstance["id"]>;
+  removeMultimediaInteraction: Sequelize.HasManyRemoveAssociationMixin<MultimediaInteractionInstance, MultimediaInteractionInstance["id"]>;
+  removeMultimediaInteractions: Sequelize.HasManyRemoveAssociationsMixin<MultimediaInteractionInstance, MultimediaInteractionInstance["id"]>;
+  hasMultimediaInteraction: Sequelize.HasManyHasAssociationMixin<MultimediaInteractionInstance, MultimediaInteractionInstance["id"]>;
+  hasMultimediaInteractions: Sequelize.HasManyHasAssociationsMixin<MultimediaInteractionInstance, MultimediaInteractionInstance["id"]>;
+  countMultimediaInteractions: Sequelize.HasManyCountAssociationsMixin;
 }
 
 /**

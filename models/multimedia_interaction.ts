@@ -2,8 +2,8 @@ import Sequelize, { Optional } from "sequelize";
 import { v4 as uuidv4 } from "uuid";
 
 import { CommonAttributes } from "util/typing/modelCommonAttributes";
-import { UsersAttributes } from "./users";
-import { MultimediaAttributes } from "./multimedia";
+import { UserInstance, UsersAttributes } from "./users";
+import { MultimediaInstance, MultimediaAttributes } from "./multimedia";
 
 export interface MultimediaInteractionAttributes extends CommonAttributes {
   multimedia: MultimediaAttributes | MultimediaAttributes["id"];
@@ -20,6 +20,13 @@ type MultimediaInteractionCreationAttributes = Optional<
  * MultimediaInteraction instance object interface
  */
 export interface MultimediaInteractionInstance extends Sequelize.Model<MultimediaInteractionAttributes, MultimediaInteractionCreationAttributes>, MultimediaInteractionAttributes {
+  getUser: Sequelize.BelongsToGetAssociationMixin<UserInstance>;
+  setUser: Sequelize.BelongsToSetAssociationMixin<UserInstance, UserInstance["id"]>;
+  createUser: Sequelize.BelongsToCreateAssociationMixin<UserInstance>;
+
+  getMultimedia: Sequelize.BelongsToGetAssociationMixin<MultimediaInstance>;
+  setMultimedia: Sequelize.BelongsToSetAssociationMixin<MultimediaInstance, MultimediaInstance["id"]>;
+  createMultimedia: Sequelize.BelongsToCreateAssociationMixin<MultimediaInstance>;
 }
 
 /**
