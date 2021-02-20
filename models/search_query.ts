@@ -7,6 +7,7 @@ import { UserInstance, UsersAttributes } from "./users";
 export interface SearchQueryAttributes extends CommonAttributes {
   user: UsersAttributes | UsersAttributes["id"];
   query: string;
+  resultcount?: number;
 }
 
 type SearchQueryCreationAttributes = Optional<
@@ -44,6 +45,9 @@ export function SearchQueryModelFactory(sequelize: Sequelize.Sequelize): Sequeli
     query: {
       type: Sequelize.DataTypes.STRING,
       allowNull: false
+    },
+    resultcount: {
+      type: Sequelize.DataTypes.INTEGER
     },
     created_at: {
       type: Sequelize.DataTypes.DATE,

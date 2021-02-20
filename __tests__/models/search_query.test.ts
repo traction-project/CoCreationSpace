@@ -28,6 +28,28 @@ describe("SearchQuery model", () => {
     expect(query.createdAt).toBeDefined();
     expect(query.updatedAt).toBeDefined();
 
+    expect(query.resultcount).toBeUndefined();
+    expect(query.user).toBeUndefined();
+
+    expect(query.createdAt).toEqual(query.updatedAt);
+    expect(query.query).toEqual("test");
+  });
+
+  it("should create a new instance with result count", async () => {
+    const { SearchQuery } = db.getModels();
+
+    const query = await SearchQuery.create({
+      query: "test",
+      resultcount: 10
+    });
+
+    expect(query).toBeDefined();
+
+    expect(query.id).toBeDefined();
+    expect(query.createdAt).toBeDefined();
+    expect(query.updatedAt).toBeDefined();
+    expect(query.resultcount).toEqual(10);
+
     expect(query.user).not.toBeDefined();
 
     expect(query.createdAt).toEqual(query.updatedAt);
