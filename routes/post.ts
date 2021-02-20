@@ -16,11 +16,11 @@ const router = Router();
  *
  * @param query Search query to be logged
  */
-async function logSearchQuery(query: string | undefined, user: UserInstance) {
+async function logSearchQuery(query: string | undefined, resultcount: number, user: UserInstance) {
   if (query) {
     const { SearchQuery } = db.getModels();
 
-    const searchQuery = await SearchQuery.create({ query });
+    const searchQuery = await SearchQuery.create({ query, resultcount });
     await searchQuery.setUser(user);
   }
 }
@@ -42,8 +42,6 @@ router.get("/all", authRequired, async (req, res) => {
     }]
   };
 
-  await logSearchQuery(req.query["q"] as string, user);
-
   const criteria = await buildCriteria(req.query, DataContainer);
   queryDataContainer = Object.assign(queryDataContainer, criteria);
 
@@ -62,6 +60,8 @@ router.get("/all", authRequired, async (req, res) => {
       include: ["topic"]
     }]
   });
+
+  await logSearchQuery(req.query["q"] as string, posts.length, user);
 
   posts.forEach(post => {
     if (post.user && isUser(post.user)) {
@@ -99,8 +99,6 @@ router.get("/all/user", authRequired, async (req, res) => {
     }]
   };
 
-  await logSearchQuery(req.query["q"] as string, user);
-
   const criteria = await buildCriteria(req.query, DataContainer);
   queryDataContainer = Object.assign(queryDataContainer, criteria);
 
@@ -122,6 +120,8 @@ router.get("/all/user", authRequired, async (req, res) => {
       ["created_at", "DESC"]
     ]
   });
+
+  await logSearchQuery(req.query["q"] as string, posts.length, user);
 
   posts.forEach(post => {
     if (post.user && isUser(post.user)) {
@@ -148,8 +148,6 @@ router.get("/all/group", async (req, res) => {
       attributes: ["status", "id", "type"]
     }]
   };
-
-  await logSearchQuery(req.query["q"] as string, user);
 
   const criteria = await buildCriteria(req.query, DataContainer);
   queryDataContainer = Object.assign(queryDataContainer, criteria);
@@ -179,6 +177,8 @@ router.get("/all/group", async (req, res) => {
       ["created_at", "DESC"]
     ]
   });
+
+  await logSearchQuery(req.query["q"] as string, posts.length, user);
 
   posts.forEach(post => {
     if (post.user && isUser(post.user)) {
