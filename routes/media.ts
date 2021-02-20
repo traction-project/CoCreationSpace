@@ -228,6 +228,32 @@ router.get("/:id/views", async (req, res) => {
   }
 });
 
+router.post("/:id/interaction", authRequired, async (req, res) => {
+  const { id } = req.params;
+  const user = req.user as UserInstance;
+  const { Multimedia, MultimediaInteraction } = db.getModels();
+
+  const mediaItem = await Multimedia.findByPk(id);
+
+  if (mediaItem) {
+    const interaction = await MultimediaInteraction.create({
+      interaction: req.body
+    });
+
+    await interaction.setMultimedium(mediaItem);
+    await interaction.setUser(user);
+
+    res.send({
+      status: "OK"
+    });
+  } else {
+    res.status(404).send({
+      status: "ERR",
+      message: "Media item not found"
+    });
+  }
+});
+
 router.get("/:id/status", async (req, res) => {
   const { id } = req.params;
   const { Multimedia } = db.getModels();
