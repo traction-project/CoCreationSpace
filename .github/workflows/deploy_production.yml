@@ -1,0 +1,47 @@
+name: Build and publish to production
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    name: Build docker image and push to registry
+    runs-on: ubuntu-18.04
+    env:
+      IMAGE_NAME: ${{ secrets.DOCKER_REGISTRY }}/traction-mediavault
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Extract tag name
+        run: echo "TAG_NAME=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+
+      - name: Get current revision SHA
+        run: git rev-parse HEAD > REVISION
+
+      - name: Login to registry
+        run: docker login -u ${{ secrets.DOCKER_USER }} -p "${{ secrets.DOCKER_PASS }}" ${{ secrets.DOCKER_REGISTRY }}
+
+      - name: Build Docker image
+        run: docker build . --file Dockerfile --tag $IMAGE_NAME:$TAG_NAME
+
+      - name: Run linter
+        run: docker run $IMAGE_NAME:$TAG_NAME yarn lint
+
+      - name: Run unit tests
+        run: docker run $IMAGE_NAME:$TAG_NAME yarn test
+
+      - name: Publish Docker image
+        run: docker push $IMAGE_NAME:$TAG_NAME
+
+  redeploy:
+    name: Call deploy hook
+    runs-on: ubuntu-18.04
+    needs: [ build ]
+    steps:
+      - uses: troeggla/workflow-webhook@v1.1.0
+        env:
+          webhook_url: http://mediavault.traction-project.eu:9000/hooks/mediavault-production
+          webhook_secret: ${{ secrets.WEBHOOK_SECRET }}
+
