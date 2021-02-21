@@ -15,6 +15,7 @@ import { NotificationAttributes, NotificationInstance } from "./notifications";
 import { UserGroupInstance } from "./user_group";
 import { MultimediaInteractionInstance } from "./multimedia_interaction";
 import { InternalNavigationStepInstance } from "./internal_navigation_step";
+import { SearchQueryInstance } from "./search_query";
 
 const [ SESSION_SECRET ] = getFromEnvironment("SESSION_SECRET");
 
@@ -166,6 +167,16 @@ export interface UserInstance extends Sequelize.Model<UsersAttributes, UsersCrea
   hasInternalNavigationStep: Sequelize.HasManyHasAssociationMixin<InternalNavigationStepInstance, InternalNavigationStepInstance["id"]>;
   hasInternalNavigationSteps: Sequelize.HasManyHasAssociationsMixin<InternalNavigationStepInstance, InternalNavigationStepInstance["id"]>;
   countInternalNavigationSteps: Sequelize.HasManyCountAssociationsMixin;
+
+  getSearchQueries: Sequelize.HasManyGetAssociationsMixin<SearchQueryInstance>;
+  setSearchQueries: Sequelize.HasManySetAssociationsMixin<SearchQueryInstance, SearchQueryInstance["id"]>;
+  addSearchQueries: Sequelize.HasManyAddAssociationsMixin<SearchQueryInstance, SearchQueryInstance["id"]>;
+  addSearchQuery: Sequelize.HasManyAddAssociationMixin<SearchQueryInstance, SearchQueryInstance["id"]>;
+  removeSearchQuery: Sequelize.HasManyRemoveAssociationMixin<SearchQueryInstance, SearchQueryInstance["id"]>;
+  removeSearchQueries: Sequelize.HasManyRemoveAssociationsMixin<SearchQueryInstance, SearchQueryInstance["id"]>;
+  hasSearchQuery: Sequelize.HasManyHasAssociationMixin<SearchQueryInstance, SearchQueryInstance["id"]>;
+  hasSearchQueries: Sequelize.HasManyHasAssociationsMixin<SearchQueryInstance, SearchQueryInstance["id"]>;
+  countSearchQueries: Sequelize.HasManyCountAssociationsMixin;
 }
 
 /**
