@@ -47,7 +47,7 @@ const App: React.FC<AppProps> = () => {
       <Startup condition={checkLogin}>
         <Router>
           <Header />
-          <HistoryTracker endpoint="/">
+          <HistoryTracker endpoint="/internalnavigation">
             <Switch>
               <Route path="/signup">
                 <Signup />

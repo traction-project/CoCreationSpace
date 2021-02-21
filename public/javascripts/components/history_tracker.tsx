@@ -16,18 +16,31 @@ interface HistoryTrackerProps extends HistoryTrackerConnectedProps {
 }
 
 const HistoryTracker: React.FC<HistoryTrackerProps> = (props) => {
-  const { children, login } = props;
+  const { children, endpoint, login } = props;
   const history = useHistory();
 
   useEffect(() => {
     const removeListener = history.listen((location, action) => {
-      console.log(location, action, login);
+      fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId: login.user?.id,
+          data: {
+            path: location.pathname,
+            search: location.search,
+            hash: location.hash,
+            state: location.state,
+            action
+          }
+        })
+      });
     });
 
     return () => {
       removeListener();
     };
-  }, []);
+  }, [login.loggedIn]);
 
   return (
     <>
