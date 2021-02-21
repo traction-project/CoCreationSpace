@@ -19,6 +19,7 @@ import Signup from "./signup/signup";
 import NotificationList from "./notifications/notification_list";
 import CookieBanner from "./cookie_banner";
 import EditPost from "./edit_post";
+import HistoryTracker from "./history_tracker";
 
 async function checkLogin() {
   const loginStatus = await verifyLoginStatus();
@@ -46,38 +47,40 @@ const App: React.FC<AppProps> = () => {
       <Startup condition={checkLogin}>
         <Router>
           <Header />
-          <Switch>
-            <Route path="/signup">
-              <Signup />
-            </Route>
-            <Route path="/login">
-              <Login />
-            </Route>
-            <PrivateRoute path="/upload">
-              <VideoUpload />
-            </PrivateRoute>
-            <Route path="/notifications">
-              <NotificationList />
-            </Route>
-            <PrivateRoute path="/posts">
-              <PostList endpoint="/posts/all/group" />
-            </PrivateRoute>
-            <PrivateRoute path="/post/:id/edit">
-              <EditPost />
-            </PrivateRoute>
-            <Route path="/post/:id">
-              <Post />
-            </Route>
-            <PrivateRoute path="/profile">
-              <Profile />
-            </PrivateRoute>
-            <PrivateRoute path="/userPosts">
-              <PostList endpoint="/posts/all/user" />
-            </PrivateRoute>
-            <Route path="/">
-              <Home />
-            </Route>
-          </Switch>
+          <HistoryTracker endpoint="/">
+            <Switch>
+              <Route path="/signup">
+                <Signup />
+              </Route>
+              <Route path="/login">
+                <Login />
+              </Route>
+              <PrivateRoute path="/upload">
+                <VideoUpload />
+              </PrivateRoute>
+              <Route path="/notifications">
+                <NotificationList />
+              </Route>
+              <PrivateRoute path="/posts">
+                <PostList endpoint="/posts/all/group" />
+              </PrivateRoute>
+              <PrivateRoute path="/post/:id/edit">
+                <EditPost />
+              </PrivateRoute>
+              <Route path="/post/:id">
+                <Post />
+              </Route>
+              <PrivateRoute path="/profile">
+                <Profile />
+              </PrivateRoute>
+              <PrivateRoute path="/userPosts">
+                <PostList endpoint="/posts/all/user" />
+              </PrivateRoute>
+              <Route path="/">
+                <Home />
+              </Route>
+            </Switch>
+          </HistoryTracker>
         </Router>
         <CookieBanner />
       </Startup>
