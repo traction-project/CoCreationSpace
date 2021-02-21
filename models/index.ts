@@ -25,6 +25,7 @@ import { NotificationsModelFactory } from "./notifications";
 import { UserGroupModelFactory } from "./user_group";
 import { MultimediaInteractionModelFactory } from "./multimedia_interaction";
 import { SearchQueryModelFactory } from "./search_query";
+import { InternalNavigationStepModelFactory } from "./internal_navigation_step";
 
 /**
  *  Class that contains all models created in the data base. Also, it is charge of
@@ -65,6 +66,7 @@ class DataBase {
     const UserGroup = UserGroupModelFactory(sequelize);
     const MultimediaInteraction = MultimediaInteractionModelFactory(sequelize);
     const SearchQuery = SearchQueryModelFactory(sequelize);
+    const InternalNavigationStep = InternalNavigationStepModelFactory(sequelize);
 
     this.models = {
       AudioContent,
@@ -88,7 +90,8 @@ class DataBase {
       UserReferences,
       UserGroup,
       MultimediaInteraction,
-      SearchQuery
+      SearchQuery,
+      InternalNavigationStep
     };
   }
 

@@ -14,6 +14,7 @@ import { TopicInstance } from "./topic";
 import { NotificationAttributes, NotificationInstance } from "./notifications";
 import { UserGroupInstance } from "./user_group";
 import { MultimediaInteractionInstance } from "./multimedia_interaction";
+import { InternalNavigationStepInstance } from "./internal_navigation_step";
 
 const [ SESSION_SECRET ] = getFromEnvironment("SESSION_SECRET");
 
@@ -155,6 +156,16 @@ export interface UserInstance extends Sequelize.Model<UsersAttributes, UsersCrea
   hasMultimediaInteraction: Sequelize.HasManyHasAssociationMixin<MultimediaInteractionInstance, MultimediaInteractionInstance["id"]>;
   hasMultimediaInteractions: Sequelize.HasManyHasAssociationsMixin<MultimediaInteractionInstance, MultimediaInteractionInstance["id"]>;
   countMultimediaInteractions: Sequelize.HasManyCountAssociationsMixin;
+
+  getInternalNavigationSteps: Sequelize.HasManyGetAssociationsMixin<InternalNavigationStepInstance>;
+  setInternalNavigationSteps: Sequelize.HasManySetAssociationsMixin<InternalNavigationStepInstance, InternalNavigationStepInstance["id"]>;
+  addInternalNavigationSteps: Sequelize.HasManyAddAssociationsMixin<InternalNavigationStepInstance, InternalNavigationStepInstance["id"]>;
+  addInternalNavigationStep: Sequelize.HasManyAddAssociationMixin<InternalNavigationStepInstance, InternalNavigationStepInstance["id"]>;
+  removeInternalNavigationStep: Sequelize.HasManyRemoveAssociationMixin<InternalNavigationStepInstance, InternalNavigationStepInstance["id"]>;
+  removeInternalNavigationSteps: Sequelize.HasManyRemoveAssociationsMixin<InternalNavigationStepInstance, InternalNavigationStepInstance["id"]>;
+  hasInternalNavigationStep: Sequelize.HasManyHasAssociationMixin<InternalNavigationStepInstance, InternalNavigationStepInstance["id"]>;
+  hasInternalNavigationSteps: Sequelize.HasManyHasAssociationsMixin<InternalNavigationStepInstance, InternalNavigationStepInstance["id"]>;
+  countInternalNavigationSteps: Sequelize.HasManyCountAssociationsMixin;
 }
 
 /**

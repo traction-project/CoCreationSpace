@@ -14,7 +14,6 @@ interface AssociationType {
 }
 
 class Associations {
-
   private associatons: AssociationType;
 
   getAssociatons(): AssociationType {
@@ -38,6 +37,7 @@ class Associations {
     userGroupAssociations(models);
     multimediaInteractionsAssociations(models);
     searchQueryAssociations(models);
+    internalNavigationStepAssociations(models);
 
     this.associatons = {
       datacontainerAssociations,
@@ -235,6 +235,7 @@ function userAssociations(models: DbInterface): void {
   models.Users.hasMany(models.Notifications, { as: "notifications", foreignKey: "user_id" });
   models.Users.hasMany(models.MultimediaInteraction);
   models.Users.hasMany(models.SearchQuery);
+  models.Users.hasMany(models.InternalNavigationStep);
   models.Users.belongsToMany(models.UserGroup, { through: "user_group_users" });
 
   models.Users.belongsToMany(models.Permissions, {
@@ -305,4 +306,12 @@ function notificationAssociations(models: DbInterface) {
  */
 function searchQueryAssociations(models: DbInterface) {
   models.SearchQuery.belongsTo(models.Users);
+}
+
+/**
+ * Create associations for the search_queries table
+ * @param models DBInterface
+ */
+function internalNavigationStepAssociations(models: DbInterface) {
+  models.InternalNavigationStep.belongsTo(models.Users);
 }
