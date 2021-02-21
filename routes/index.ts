@@ -104,4 +104,22 @@ router.get("/revision", (_, res) => {
   }
 });
 
+router.post("/internalnavigation", async (req, res) => {
+  const { InternalNavigationStep, Users } = db.getModels();
+
+  const navigationData: { userId: string, data: any } = req.body;
+  const navigationStep = await InternalNavigationStep.create({
+    data: navigationData.data
+  });
+
+  if (navigationData.userId) {
+    const user = await Users.findByPk(navigationData.userId);
+    user && navigationStep.setUser(user);
+  }
+
+  res.send({
+    status: "OK"
+  });
+});
+
 export default router;
