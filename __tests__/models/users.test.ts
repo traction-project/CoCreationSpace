@@ -273,4 +273,28 @@ describe("Users model", () => {
     expect(await user.countMultimediaInteractions()).toEqual(1);
     expect(await user.hasMultimediaInteraction(interaction)).toBeTruthy();
   });
+
+  it("should list a user's search queries", async () => {
+    const { Users, SearchQuery } = db.getModels();
+
+    const user = await Users.create({
+      username: "admin",
+      password: "password",
+    });
+
+    expect(await user.countSearchQueries()).toEqual(0);
+
+    const query = await SearchQuery.create({
+      query: "hello world"
+    });
+
+    await query.setUser(user);
+
+    expect(await user.countSearchQueries()).toEqual(1);
+    expect(await user.hasSearchQuery(query)).toBeTruthy();
+    expect(await user.hasSearchQueries([query])).toBeTruthy();
+
+    await user.removeSearchQueries([query]);
+    expect(await user.countSearchQueries()).toEqual(0);
+  });
 });
