@@ -17,7 +17,8 @@ router.get("/:id", async (req, res) => {
   if (image) {
     res.send({
       ...image,
-      url: `${CLOUDFRONT_URL}/${image.title}`
+      url: `${CLOUDFRONT_URL}/${image.title}`,
+      thumbnail: `${(image.thumbnails && image.thumbnails.length > 0) ? `${CLOUDFRONT_URL}/${image.thumbnails[0]}`: null}`
     });
   } else {
     res.status(404).send({

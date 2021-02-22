@@ -1,9 +1,10 @@
 import { Router } from "express";
 import Busboy from "busboy";
 import { v4 as uuid4 } from "uuid";
+import sharp from "sharp";
 
 import { db } from "../models";
-import { getExtension, getFromEnvironment } from "../util";
+import { getExtension, getFromEnvironment, streamToBuffer } from "../util";
 import { authRequired } from "../util/middleware";
 import { encodeDash } from "../util/transcode";
 import { uploadToS3 } from "../util/s3";
@@ -66,14 +67,31 @@ const processUploadedAudio = async (file: NodeJS.ReadableStream, filename: strin
 const processUploadedImage = async (file: NodeJS.ReadableStream, filename: string, userId: string) => {
   const { Multimedia } = db.getModels();
 
+  // Get file stream buffer
+  const bufferFile = await streamToBuffer(file);
+
+  // Upload image to S3
   const newName = uuid4() + getExtension(filename);
-  await uploadToS3(newName, file, BUCKET_NAME);
+  await uploadToS3(newName, bufferFile, BUCKET_NAME);
+
+  // Generate thumbnail.
+  // Set thumbnail width. Resize will set the height automatically to maintain aspect ratio.
+  const resizerImageBuffer = await sharp(bufferFile).resize(300).toBuffer();
+
+  // Upload thumbnail to S3.
+  const thumbnailName = uuid4() + getExtension(filename);
+  await uploadToS3(thumbnailName, resizerImageBuffer, BUCKET_NAME);
 
   const image: MultimediaInstance = Multimedia.build();
 
   image.title = newName;
   image.status = "done";
   image.type = "image";
+  if (image.thumbnails && image.thumbnails.length > 0) {
+    image.thumbnails?.push(thumbnailName);
+  } else {
+    image.thumbnails = [thumbnailName];
+  }
 
   await image.save();
   image.setUser(userId);
