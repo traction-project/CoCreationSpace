@@ -21,7 +21,7 @@ const Thumbnail: React.FC<ThumbnailProps> = ({ id, type, height = 100 }) => {
       fetch(`/images/${id}`).then((res) => {
         return res.json();
       }).then((data) => {
-        setUrl(data.url);
+        setUrl(data.thumbnail);
       });
     }
   }, []);
