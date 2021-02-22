@@ -1,5 +1,6 @@
 import sinon from "sinon";
 import aws from "aws-sdk";
+import { PassThrough } from "stream";
 
 process.env["SESSION_SECRET"] = "sessionsecret";
 
@@ -195,5 +196,33 @@ describe("Utility function findTerm()", () => {
     const result = util.findTerm(text, substring);
 
     expect(result).toBe("");
+  });
+});
+
+describe("Utility function streamToBuffer()", () =>{
+
+  it("should return buffer from readeablestream", async () => {
+    const readable = new PassThrough();
+    readable.push("test");
+    readable.push(null);
+    try {
+      const buffer = await util.streamToBuffer(readable);
+
+      expect(buffer).toBeDefined();
+      expect(buffer).toBeInstanceOf(Buffer);
+    } catch(error) {
+      fail();
+    }
+  });
+
+  it("should return catch error when stream emit error", async () => {
+    const readable = new PassThrough();
+    readable.push("test");
+    try {
+      util.streamToBuffer(readable);
+      readable.emit("error", new Error());
+    } catch(error) {
+      expect(error).toBeDefined();
+    }
   });
 });
