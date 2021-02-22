@@ -26,7 +26,7 @@ const processUploadedVideo = async (file: NodeJS.ReadableStream, filename: strin
 
   const video: MultimediaInstance = Multimedia.build();
 
-  video.title = filename;
+  video.title = newName;
   video.key = newName.split(".")[0];
   video.type = "video";
 
