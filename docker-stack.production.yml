@@ -8,9 +8,11 @@ services:
     environment:
       - WAIT_HOSTS=postgres:5432
       - NODE_ENV=production
-    volumes:
-      - /home/ubuntu/containers/web-prod/aws.json:/code/aws.json
-      - /home/ubuntu/containers/web-prod/.env:/code/.env
+      - AWS_CREDENTIAL_FILE_PATH=/run/secrets/aws_credentials
+      - ENV_FILE_PATH=/run/secrets/app_env
+    secrets:
+      - aws_credentials
+      - app_env
     deploy:
       restart_policy:
         condition: on-failure
@@ -18,12 +20,13 @@ services:
         max_attempts: 3
   postgres:
     image: postgres:12
-    volumes:
-      - /home/ubuntu/containers/postgres-prod:/var/lib/postgresql/data
     ports:
       - "5433:5432"
-    env_file:
-      - .env
+    environment:
+      - POSTGRES_DB=traction
+      - POSTGRES_USER=traction
+      - POSTGRES_PASSWORD=traction
+      - POSTGRES_HOST=postgres
     deploy:
       placement:
         constraints: [node.role == manager]
@@ -31,3 +34,10 @@ services:
         condition: on-failure
         delay: 5s
         max_attempts: 3
+volumes:
+  pgdata:
+secrets:
+  aws_credentials:
+    external: true
+  app_env:
+    external: true
