@@ -328,7 +328,7 @@ const CreatePost: React.FC<CreatePostProps> = ({ file }) => {
                   <button
                     type="submit"
                     className="button is-link is-fullwidth"
-                    disabled={watch("title")?.length == 0 || watch("description")?.length == 0 || fileUploads.length == 0 || fileUploads.some((u) => u.status == "progressing")}
+                    disabled={watch("title")?.length == 0 || watch("description")?.length == 0 || fileUploads.some((u) => u.status == "progressing")}
                   >
                     {t("Submit")}
                   </button>
