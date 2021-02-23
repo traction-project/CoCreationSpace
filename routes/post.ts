@@ -199,18 +199,24 @@ router.get("/id/:id", authRequired, async (req, res) => {
   const { id } = req.params;
   const user = req.user as UserInstance;
 
-  const { Posts } = db.getModels();
+  const { Posts, DataContainer, Multimedia } = db.getModels();
 
   const post = await Posts.findByPk(id, {
     include: [
       {
-        association: association.getAssociatons().postAssociations.PostDataContainer,
-        include: [ association.getAssociatons().datacontainerAssociations.DatacontainerMultimedia ]
+        model: DataContainer,
+        as: "dataContainer",
+        include: [{
+          model: Multimedia,
+          as: "multimedia",
+          attributes: ["status", "id", "type"],
+          include: ["emojiReactions"]
+        }]
       }, {
         model: Posts,
         as: "comments",
         include: ["dataContainer", "user"],
-      }, "postReference", "postReferenced", "user", "userReferenced", "tags", "emojiReactions"
+      }, "postReference", "postReferenced", "user", "userReferenced", "tags"
     ],
     order: [["comments","created_at", "desc"]],
   });
