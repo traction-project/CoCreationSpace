@@ -10,6 +10,8 @@ RUN yarn install && \
 
 FROM troeggla/node-traction-mediavault:alpine-3.11 AS backend
 
+HEALTHCHECK --start-period=30s CMD ["curl", "-f", "http://localhost:3000/revision"]
+
 ADD . /code/
 WORKDIR /code
 
