@@ -208,6 +208,35 @@ router.get("/:id/thumbnail", async (req, res) => {
   });
 });
 
+/**
+ * Add an emoji reaction to the given media item from the current user
+ */
+router.post("/:id/reaction", authRequired, async (req, res) => {
+  const { Multimedia, EmojiReactions } = db.getModels();
+
+  const { id } = req.params;
+  const user = req.user as UserInstance;
+
+  const mediaItem = await Multimedia.findByPk(id);
+
+  if (mediaItem && user && user.id) {
+    const { emoji, second } = req.body;
+
+    const reaction = await EmojiReactions.create({
+      emoji,
+      second,
+      multimedia_id: id,
+      user_id: user.id
+    });
+
+    return res.send(reaction);
+  } else {
+    return res.status(400).send({
+      message: "Media item not found"
+    });
+  }
+});
+
 router.post("/:id/view", async (req, res) => {
   const { id } = req.params;
   const { Multimedia } = db.getModels();

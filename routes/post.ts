@@ -461,29 +461,4 @@ router.post("/id/:id/unlike", authRequired, async (req, res) => {
 
 });
 
-/**
- * Reaction with emoji a post from user
- */
-router.post("/id/:id/reaction", authRequired, async (req, res) => {
-  const { id } = req.params;
-  const user = req.user as UserInstance;
-  const { emoji, second } = req.body;
-  const { Posts, EmojiReactions } = db.getModels();
-
-  const post = await Posts.findByPk(id);
-
-  if (post && user && user.id) {
-    const reaction = await EmojiReactions.create({
-      emoji,
-      second,
-      post_id: id,
-      user_id: user.id
-    });
-
-    return res.send(reaction);
-  } else {
-    return res.status(400).send({ message: "Post not found" });
-  }
-});
-
 export default router;
