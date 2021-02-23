@@ -195,7 +195,7 @@ router.get("/all/group", authRequired, async (req, res) => {
 /**
  * Get Post by id
  */
-router.get("/id/:id", authRequired, async (req, res) => {
+router.get("/:id", authRequired, async (req, res) => {
   const { id } = req.params;
   const user = req.user as UserInstance;
 
@@ -245,7 +245,7 @@ router.get("/id/:id", authRequired, async (req, res) => {
 /**
  * Get topmost parent of post with given ID
  */
-router.get("/id/:id/parent", authRequired, async (req, res) => {
+router.get("/:id/parent", authRequired, async (req, res) => {
   const { id } = req.params;
   const user = req.user as UserInstance;
 
@@ -358,7 +358,7 @@ router.post("/", authRequired, async (req, res) => {
   return res.send(postSaved);
 });
 
-router.post("/id/:id/edit", authRequired, async (req, res) => {
+router.post("/:id/edit", authRequired, async (req, res) => {
   const { id } = req.params;
   const { title, description } = req.body;
 
@@ -399,7 +399,7 @@ router.post("/id/:id/edit", authRequired, async (req, res) => {
 /**
  * Create comment from post with specific id
  */
-router.post("/id/:id", authRequired, async (req, res) => {
+router.post("/:id", authRequired, async (req, res) => {
   const { id } = req.params;
   const { text, multimedia, second } = req.body;
 
@@ -441,7 +441,7 @@ router.post("/id/:id", authRequired, async (req, res) => {
 /**
  * Like a post from user
  */
-router.post("/id/:id/like", authRequired, async (req, res) => {
+router.post("/:id/like", authRequired, async (req, res) => {
   const { id } = req.params;
   const user = req.user as UserInstance;
   const { Posts } = db.getModels();
@@ -460,7 +460,7 @@ router.post("/id/:id/like", authRequired, async (req, res) => {
 /**
  * Unlike a post from user
  */
-router.post("/id/:id/unlike", authRequired, async (req, res) => {
+router.post("/:id/unlike", authRequired, async (req, res) => {
   const { id } = req.params;
   const user = req.user as UserInstance;
   const { Posts } = db.getModels();
