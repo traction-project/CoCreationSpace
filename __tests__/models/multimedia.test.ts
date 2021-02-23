@@ -11,8 +11,10 @@ describe("Multimedia model", () => {
   });
 
   beforeEach(async () => {
-    const { Multimedia } = db.getModels();
+    const { Multimedia, EmojiReactions } = db.getModels();
+
     await Multimedia.destroy({ truncate: true });
+    await EmojiReactions.destroy({ truncate: true });
   });
 
   it("should create a multimedia entry with a array for the field 'resolutions'", async () => {
@@ -115,7 +117,7 @@ describe("Multimedia model", () => {
     expect(mediaItem.viewCount).toEqual(1);
   });
 
-  it("should list a interactions with multimedia items by users", async () => {
+  it("should list interactions with multimedia items by users", async () => {
     const { Multimedia, MultimediaInteraction } = db.getModels();
 
     const video = await Multimedia.create({
@@ -132,5 +134,29 @@ describe("Multimedia model", () => {
 
     expect(await video.countMultimediaInteractions()).toEqual(1);
     expect(await video.hasMultimediaInteraction(interaction)).toBeTruthy();
+  });
+
+  it("should list emoji-reactions associated to the multimedia item", async () => {
+    const { Multimedia, EmojiReactions, Users } = db.getModels();
+
+    const video = await Multimedia.create({
+      title: "video",
+    });
+
+    expect(await video.countEmojiReactions()).toEqual(0);
+
+    const user = await Users.create({ username: "admin" });
+    const reaction = await EmojiReactions.create({
+      emoji: "😋",
+      user_id: user.id,
+      multimedia_id: video.id,
+      second: 12.345
+    });
+
+    expect(await video.countEmojiReactions()).toEqual(1);
+    const associatedReactions = await video.getEmojiReactions();
+
+    expect(associatedReactions.length).toEqual(1);
+    expect(associatedReactions[0].id).toEqual(reaction.id);
   });
 });
