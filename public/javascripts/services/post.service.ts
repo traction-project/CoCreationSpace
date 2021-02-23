@@ -52,19 +52,3 @@ export const postComment = async (id: string | number, text: string, multimedia?
 
   return response;
 };
-
-/**
- * Send a emoji reaction from a post
- * @param id Post Id
- * @param emoji Emoji string
- * @param second Player current time
- */
-export const postEmojiReaction = async (id: string | number, emoji: string, second: number) => {
-  return await fetch(`/posts/id/${id}/reaction`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      emoji, second
-    })
-  });
-};
