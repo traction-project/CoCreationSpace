@@ -22,7 +22,7 @@ router.get("/all", async (req, res) => {
   return res.send(threads);
 });
 
-router.get("/id/:id", async (req, res) => {
+router.get("/:id", async (req, res) => {
   const { id } = req.params;
   const { Threads, Posts } = db.getModels();
 
