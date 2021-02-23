@@ -4,8 +4,7 @@
  * @param id Post Id
  */
 export const getPostId = async (id: string | number) => {
-  const URL = `/posts/${id}`;
-  const response = await fetch(URL);
+  const response = await fetch(`/posts/${id}`);
 
   return response;
 };
@@ -17,10 +16,9 @@ export const getPostId = async (id: string | number) => {
  */
 export const postLike = async (id: string | number, action: string) => {
   action = action.toLowerCase();
-  const URL = `/posts/${id}/${action}`;
-  const request = { method: "POST" };
-
-  const response = await fetch(URL, request);
+  const response = await fetch(`/posts/${id}/${action}`, {
+    method: "POST"
+  });
 
   return response;
 };
@@ -33,22 +31,30 @@ export const postLike = async (id: string | number, action: string) => {
  * @param second? Player time where the comment was written
  */
 export const postComment = async (id: string | number, text: string, multimedia?: Array<string>, second?: number) => {
-  const URL = `/posts/${id}`;
-  const headers = new Headers();
-  headers.append("Content-Type", "application/json");
   const bodyJson = {
     text,
     second,
     ...(multimedia && multimedia.length > 0 && {multimedia})
   };
-  const body = JSON.stringify(bodyJson);
-  const request =  {
-    method: "POST",
-    headers,
-    body
-  };
 
-  const response = await fetch(URL, request);
+  const response = await fetch(`/posts/${id}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(bodyJson)
+  });
 
   return response;
+};
+
+/**
+ * Delete the post with the given id and all its children.
+ *
+ * @param id Post id
+ */
+export const deletePost = async (id: string) => {
+  const respone = await fetch(`/posts/${id}`, {
+    method: "DELETE"
+  });
+
+  return respone;
 };
