@@ -38,7 +38,8 @@ router.get("/all", authRequired, async (req, res) => {
     include: [{
       model: Multimedia,
       as: "multimedia",
-      attributes: ["status", "id", "type"]
+      attributes: ["status", "id", "type"],
+      include: ["emojiReactions"]
     }]
   };
 
@@ -54,7 +55,7 @@ router.get("/all", authRequired, async (req, res) => {
       model: Users,
       as: "user",
       attributes: ["id", "username", "image"]
-    }, queryDataContainer, "comments", "tags", "emojiReactions", {
+    }, queryDataContainer, "comments", "tags", {
       model: Threads,
       as: "thread",
       include: ["topic"]
@@ -95,7 +96,8 @@ router.get("/all/user", authRequired, async (req, res) => {
     include: [{
       model: Multimedia,
       as: "multimedia",
-      attributes: ["status", "id", "type"]
+      attributes: ["status", "id", "type"],
+      include: ["emojiReactions"]
     }]
   };
 
@@ -111,7 +113,7 @@ router.get("/all/user", authRequired, async (req, res) => {
       as: "user",
       attributes: ["id", "username", "image"],
       where: { id: user.id }
-    }, queryDataContainer, "comments", "tags", "emojiReactions", {
+    }, queryDataContainer, "comments", "tags", {
       model: Threads,
       as: "thread",
       include: ["topic"]
@@ -145,7 +147,8 @@ router.get("/all/group", async (req, res) => {
     include: [{
       model: Multimedia,
       as: "multimedia",
-      attributes: ["status", "id", "type"]
+      attributes: ["status", "id", "type"],
+      include: ["emojiReactions"]
     }]
   };
 
@@ -168,7 +171,7 @@ router.get("/all/group", async (req, res) => {
         as: "userGroups",
         where: { id: groups }
       }]
-    }, queryDataContainer, "comments", "tags", "emojiReactions", {
+    }, queryDataContainer, "comments", "tags", {
       model: Threads,
       as: "thread",
       include: ["topic"]
