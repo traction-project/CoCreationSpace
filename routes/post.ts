@@ -249,7 +249,7 @@ router.get("/id/:id/parent", authRequired, async (req, res) => {
   const { id } = req.params;
   const user = req.user as UserInstance;
 
-  const { Posts } = db.getModels();
+  const { Posts, DataContainer, Multimedia } = db.getModels();
 
   let post: PostInstance | null;
   let parentPostId: string | undefined = id;
@@ -258,13 +258,19 @@ router.get("/id/:id/parent", authRequired, async (req, res) => {
     post = await Posts.findByPk(parentPostId, {
       include: [
         {
-          association: association.getAssociatons().postAssociations.PostDataContainer,
-          include: [ association.getAssociatons().datacontainerAssociations.DatacontainerMultimedia ]
+          model: DataContainer,
+          as: "dataContainer",
+          include: [{
+            model: Multimedia,
+            as: "multimedia",
+            attributes: ["status", "id", "type"],
+            include: ["emojiReactions"]
+          }]
         }, {
           model: Posts,
           as: "comments",
           include: ["dataContainer", "user"],
-        }, "postReference", "postReferenced", "user", "userReferenced", "tags", "emojiReactions"
+        }, "postReference", "postReferenced", "user", "userReferenced", "tags"
       ],
       order: [["comments","created_at", "desc"]],
     });
