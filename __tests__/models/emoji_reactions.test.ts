@@ -70,4 +70,42 @@ describe("EmojiReactions model", () => {
     const data = JSON.parse(JSON.stringify(reaction));
     expect(typeof(data.second)).toEqual("number");
   });
+
+  it("should retrieve the associated user from a EmojiReactions instance", async () => {
+    const { EmojiReactions, Users, Multimedia } = db.getModels();
+
+    const user = await Users.create({ username: "admin" });
+    const video = await Multimedia.create({ title: "video 3" });
+
+    const reaction = await EmojiReactions.build({
+      emoji: "😋",
+      user_id: user.id,
+      multimedia_id: video.id,
+      second: 12.345
+    }).save();
+
+    const associatedUser = await reaction.getUser();
+
+    expect(associatedUser).toBeDefined();
+    expect(associatedUser.id).toEqual(user.id);
+  });
+
+  it("should retrieve the associated media item from a EmojiReactions instance", async () => {
+    const { EmojiReactions, Users, Multimedia } = db.getModels();
+
+    const user = await Users.create({ username: "admin" });
+    const video = await Multimedia.create({ title: "video 3" });
+
+    const reaction = await EmojiReactions.build({
+      emoji: "😋",
+      user_id: user.id,
+      multimedia_id: video.id,
+      second: 12.345
+    }).save();
+
+    const associatedVideo = await reaction.getMultimedia();
+
+    expect(associatedVideo).toBeDefined();
+    expect(associatedVideo.id).toEqual(video.id);
+  });
 });
