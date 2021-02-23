@@ -77,7 +77,7 @@ function dataContainerAssociations(models: DbInterface) {
  * @param models DbInterface
  */
 function emojiReactionsAssociations(models: DbInterface) {
-  models.EmojiReactions.belongsTo(models.Posts, { as: "post", foreignKey: "post_id" });
+  models.EmojiReactions.belongsTo(models.Multimedia, { as: "multimedia", foreignKey: "multimedia_id" });
   models.EmojiReactions.belongsTo(models.Users, { as: "user", foreignKey: "user_id" });
 }
 
@@ -101,6 +101,7 @@ function multimediaAssociations(models: DbInterface): void {
   models.Multimedia.hasMany(models.Metadata, { as: "metadata", foreignKey: "multimedia_id"});
   models.Multimedia.hasMany(models.Subtitles, { as: "subtitles", foreignKey: "multimedia_id"});
   models.Multimedia.hasMany(models.MultimediaInteraction, { foreignKey: "multimedia_id" });
+  models.Multimedia.hasMany(models.EmojiReactions, { as: "emojiReactions", foreignKey: "multimedia_id" });
 }
 
 /**
@@ -155,11 +156,6 @@ function postsAssociations(models: DbInterface) {
     },
     foreignKey: "post_id",
     as: "likesUsers"
-  });
-
-  models.Posts.hasMany(models.EmojiReactions, {
-    as: "emojiReactions",
-    foreignKey: "post_id"
   });
 
   return {
