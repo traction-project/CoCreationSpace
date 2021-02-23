@@ -9,8 +9,8 @@ services:
       - WAIT_HOSTS=postgres:5432
       - NODE_ENV=production
     volumes:
-      - /home/ubuntu/containers/web/aws.json:/code/aws.json
-      - /home/ubuntu/containers/web/.env:/code/.env
+      - /home/ubuntu/containers/web-prod/aws.json:/code/aws.json
+      - /home/ubuntu/containers/web-prod/.env:/code/.env
     deploy:
       restart_policy:
         condition: on-failure
@@ -19,7 +19,7 @@ services:
   postgres:
     image: postgres:12
     volumes:
-      - /home/ubuntu/containers/postgres:/var/lib/postgresql/data
+      - /home/ubuntu/containers/postgres-prod:/var/lib/postgresql/data
     ports:
       - "5433:5432"
     env_file:
