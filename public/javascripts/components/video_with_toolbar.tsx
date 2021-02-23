@@ -4,15 +4,15 @@ import { VideoJsPlayer } from "video.js";
 import { PostType } from "./post/post";
 import { Trans } from "react-i18next";
 
-import { postEmojiReaction } from "../services/post.service";
+import { postEmojiReaction } from "../services/multimedia.service";
 import { addEmojiAnimation } from "./videojs/util";
 import { EmojiReaction } from "../util";
+import { MultimediaItem } from "./post/post";
 
 import Video from "./video";
 
 interface VideoWithToolbarProps {
-  post: PostType;
-  id?: string;
+  mediaItem: MultimediaItem;
   markers?: number[];
   comments?: PostType[];
   emojis?: EmojiReaction[];
@@ -22,11 +22,12 @@ interface VideoWithToolbarProps {
 const EMOJIS = ["👍","💓","😊","😍","😂","😡"];
 
 const VideoWithToolbar: React.FC<VideoWithToolbarProps> = (props) => {
-  const { post, id: videoId } = props;
+  const { mediaItem } = props;
+  const videoId = mediaItem.id;
 
   const [ player, setPlayer ] = useState<VideoJsPlayer>();
   const [ viewCount, setViewCount ] = useState<number>();
-  const [ emojiReactions, setEmojiReactions ] = useState<EmojiReaction[]>((post as any).emojiReactions.map(({ emoji, second }: EmojiReaction) => {
+  const [ emojiReactions, setEmojiReactions ] = useState(mediaItem.emojiReactions.map(({ emoji, second }) => {
     return { emoji, second };
   }));
 
@@ -73,7 +74,7 @@ const VideoWithToolbar: React.FC<VideoWithToolbarProps> = (props) => {
 
   return (
     <>
-      <Video {...props} getPlayer={callbackPlayer} emojis={emojiReactions} />
+      <Video {...props} id={mediaItem.id} getPlayer={callbackPlayer} emojis={emojiReactions} />
 
       <nav className="level is-mobile" style={{position: "relative"}}>
         <div className="level-left">

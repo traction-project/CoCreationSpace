@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import classNames from "classnames";
 
-import { CommonType, convertHMS } from "../../util";
+import { CommonType, convertHMS, EmojiReaction } from "../../util";
 import UserLogo, { UserType } from "../user_logo";
 import CommentList from "./comment_list";
 import NewComment from "./new_comment";
@@ -19,10 +19,11 @@ import VideoWithToolbar from "../video_with_toolbar";
 import { LoginState } from "../../reducers/login";
 import { ApplicationState } from "../../store";
 
-interface MultimediaItem {
+export interface MultimediaItem {
   id: string;
   status: string;
   type: string;
+  emojiReactions: Array<EmojiReaction>;
 }
 
 interface DataContainerType {
@@ -210,8 +211,7 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
             <div className="column is-8-desktop is-10-tablet">
               {(selectedItem.type == "video") ? (
                 <VideoWithToolbar
-                  id={selectedItem.id}
-                  post={post}
+                  mediaItem={selectedItem}
                   getPlayer={callbackPlayer}
                   comments={comments}
                 />
