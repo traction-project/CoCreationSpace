@@ -12,6 +12,7 @@ import { ApplicationState } from "../../store";
 import RegistrationForm from "./registration_form";
 import ProfilePictureUploadForm from "./profile_picture_upload_form";
 import InterestSelectForm from "./interest_select_form";
+import JoinGroupForm from "./join_group_form";
 
 interface SignupActionProps {
   loginActions: LoginActions;
@@ -62,6 +63,16 @@ const Signup: React.FC<SignupProps> = (props) => {
                     />
                   </>
                 ) : (step == 3) ? (
+                  <>
+                    <h4 className="title is-4">{t("Select a group to join")}</h4>
+
+                    <JoinGroupForm
+                      onComplete={() => {
+                        setStep(step + 1);
+                      }}
+                    />
+                  </>
+                ) : (step == 4) ? (
                   <>
                     <h4 className="title is-4">{t("Select Interest Topics")}</h4>
 
