@@ -18,7 +18,7 @@ import Profile from "./profile";
 import Signup from "./signup/signup";
 import NotificationList from "./notifications/notification_list";
 import CookieBanner from "./cookie_banner";
-import EditPost from "./edit_post";
+import EditPost from "./post/edit_post";
 import HistoryTracker from "./history_tracker";
 
 async function checkLogin() {

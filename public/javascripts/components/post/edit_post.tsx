@@ -4,8 +4,8 @@ import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useParams, useHistory } from "react-router-dom";
 
-import { PostType } from "./post/post";
-import { getPostId } from "../services/post.service";
+import { PostType } from "./post";
+import { getPostId } from "../../services/post.service";
 
 interface EditPostProps {
 }
