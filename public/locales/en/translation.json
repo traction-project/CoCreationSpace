@@ -73,5 +73,6 @@
     "Edit": "Edit",
     "Translate Subtitles": "Translate Subtitles",
     "view-count": "<0>{{viewCount}}</0> views",
-    "Delete": "Delete"
+    "Delete": "Delete",
+    "Select a Group to Join": "Select a group to join"
 }
