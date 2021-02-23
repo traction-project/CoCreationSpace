@@ -19,7 +19,7 @@ router.get("/all", async (req, res) => {
 /**
  * Get topic with given id and its associated threads
  */
-router.get("/id/:id", async (req, res) => {
+router.get("/:id", async (req, res) => {
   const { id } = req.params;
   const { Threads, Topics } = db.getModels();
 
@@ -37,7 +37,7 @@ router.get("/id/:id", async (req, res) => {
  * Adds an interest in the topic given by the id for the currently logged in
  * user. Returns an updated list of interests for the user.
  */
-router.post("/id/:id/interest", authRequired, async (req, res) => {
+router.post("/:id/interest", authRequired, async (req, res) => {
   const { id } = req.params;
   const user = req.user as UserInstance;
   const { Topics } = db.getModels();
