@@ -19,15 +19,15 @@ describe("EmojiReactions model", () => {
   });
 
   it("should initialise a new object", async () => {
-    const { EmojiReactions, Users, Posts } = db.getModels();
+    const { EmojiReactions, Users, Multimedia } = db.getModels();
 
     const user = await Users.create({ username: "admin" });
-    const post = await Posts.create({ title: "post 1" });
+    const video = await Multimedia.create({ title: "video 1" });
 
     const reaction = await EmojiReactions.build({
       emoji: "😋",
       user_id: user.id,
-      post_id: post.id
+      multimedia_id: video.id
     }).save();
 
     expect(reaction.id).toBeDefined();
@@ -35,15 +35,15 @@ describe("EmojiReactions model", () => {
   });
 
   it("should have a numeric field 'second'", async () => {
-    const { EmojiReactions, Users, Posts } = db.getModels();
+    const { EmojiReactions, Users, Multimedia } = db.getModels();
 
     const user = await Users.create({ username: "admin" });
-    const post = await Posts.create({ title: "post 2" });
+    const video = await Multimedia.create({ title: "video 2" });
 
     const reaction = await EmojiReactions.build({
       emoji: "😋",
       user_id: user.id,
-      post_id: post.id,
+      multimedia_id: video.id,
       second: 12.345
     }).save();
 
@@ -52,15 +52,15 @@ describe("EmojiReactions model", () => {
   });
 
   it("should have a numeric field 'second' even after JSON conversion", async () => {
-    const { EmojiReactions, Users, Posts } = db.getModels();
+    const { EmojiReactions, Users, Multimedia } = db.getModels();
 
     const user = await Users.create({ username: "admin" });
-    const post = await Posts.create({ title: "post 3" });
+    const video = await Multimedia.create({ title: "video 3" });
 
     const reaction = await EmojiReactions.build({
       emoji: "😋",
       user_id: user.id,
-      post_id: post.id,
+      multimedia_id: video.id,
       second: 12.345
     }).save();
 
