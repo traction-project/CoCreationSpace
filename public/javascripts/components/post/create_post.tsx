@@ -4,12 +4,12 @@ import { useHistory } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useForm } from "react-hook-form";
 
-import { getFilesFromList, postFile, ResponseUploadType } from "../util";
-import Dropzone from "./dropzone";
-import Video from "./video";
-import ProgressBox from "./progress_box";
-import BlankVideo from "./blank_video";
-import Image from "./image";
+import { getFilesFromList, postFile, ResponseUploadType } from "../../util";
+import Dropzone from "../dropzone";
+import Video from "../video";
+import ProgressBox from "../progress_box";
+import BlankVideo from "../blank_video";
+import Image from "../image";
 
 interface FileUpload {
   status: "progressing" | "failed" | "done";
@@ -20,11 +20,11 @@ interface FileUpload {
   type?: string;
 }
 
-interface VideoUploadProps {
+interface CreatePostProps {
   file?: File;
 }
 
-const VideoUpload: React.FC<VideoUploadProps> = ({ file }) => {
+const CreatePost: React.FC<CreatePostProps> = ({ file }) => {
   const history = useHistory();
   const { t } = useTranslation();
   const { handleSubmit, register, setValue, getValues, watch } = useForm();
@@ -354,4 +354,4 @@ const VideoUpload: React.FC<VideoUploadProps> = ({ file }) => {
   );
 };
 
-export default VideoUpload;
+export default CreatePost;
