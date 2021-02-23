@@ -12,8 +12,8 @@ import passport from "passport";
 import aws from "aws-sdk";
 import Umzug from "umzug";
 
-dotenv.config();
-aws.config.loadFromPath("./aws.json");
+dotenv.config({ path: process.env.ENV_FILE_PATH });
+aws.config.loadFromPath(process.env.AWS_CREDENTIAL_FILE_PATH || "./aws.json");
 
 import { getFromEnvironment } from "./util";
 import { snsMiddleware, subscribeToSNSTopic } from "./util/sns";
