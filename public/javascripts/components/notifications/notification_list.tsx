@@ -50,7 +50,7 @@ const NotificationList: React.FC<NotificationListProps> = (props) => {
       });
 
       if (res.ok) {
-        const res = await fetch(`/posts/id/${postId}/parent`);
+        const res = await fetch(`/posts/${postId}/parent`);
         const data = await res.json();
 
         history.push(`/post/${data.id}`);

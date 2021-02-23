@@ -27,7 +27,7 @@ const EditPost: React.FC<EditPostProps> = () => {
   }, []);
 
   const handleFormSubmission = handleSubmit(async ({ title, description }) => {
-    const res = await fetch(`/posts/id/${id}/edit`, {
+    const res = await fetch(`/posts/${id}/edit`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

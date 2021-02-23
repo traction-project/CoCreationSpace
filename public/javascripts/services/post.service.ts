@@ -4,7 +4,7 @@
  * @param id Post Id
  */
 export const getPostId = async (id: string | number) => {
-  const URL = `/posts/id/${id}`;
+  const URL = `/posts/${id}`;
   const response = await fetch(URL);
 
   return response;
@@ -17,7 +17,7 @@ export const getPostId = async (id: string | number) => {
  */
 export const postLike = async (id: string | number, action: string) => {
   action = action.toLowerCase();
-  const URL = `/posts/id/${id}/${action}`;
+  const URL = `/posts/${id}/${action}`;
   const request = { method: "POST" };
 
   const response = await fetch(URL, request);
@@ -33,7 +33,7 @@ export const postLike = async (id: string | number, action: string) => {
  * @param second? Player time where the comment was written
  */
 export const postComment = async (id: string | number, text: string, multimedia?: Array<string>, second?: number) => {
-  const URL = `/posts/id/${id}`;
+  const URL = `/posts/${id}`;
   const headers = new Headers();
   headers.append("Content-Type", "application/json");
   const bodyJson = {
