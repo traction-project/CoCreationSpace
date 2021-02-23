@@ -21,7 +21,7 @@ router.get("/all", async (req, res) => {
 /**
  * Get tag by id
  */
-router.get("/id/:id", async (req, res) => {
+router.get("/:id", async (req, res) => {
   const { id } = req.params;
   const { Tags, Posts, DataContainer } = db.getModels();
 
