@@ -8,7 +8,7 @@ import { PostAttributes, PostInstance } from "./post";
 export interface EmojiReactionsAttributes extends CommonAttributes{
     emoji: string;
     second?: number;
-    post_id: string;
+    multimedia_id: string;
     user_id: string;
     user?: UsersAttributes | UsersAttributes["id"];
     post?: PostAttributes | PostAttributes["id"];
@@ -23,8 +23,8 @@ export interface EmojiReactionsInstance extends Sequelize.Model<EmojiReactionsAt
   getUser: Sequelize.BelongsToGetAssociationMixin<UserInstance>;
   setUser: Sequelize.BelongsToSetAssociationMixin<UserInstance, UserInstance["id"]>;
 
-  getPost: Sequelize.BelongsToGetAssociationMixin<PostInstance>;
-  setPost: Sequelize.BelongsToSetAssociationMixin<PostInstance, PostInstance["id"]>;
+  getMultimedia: Sequelize.BelongsToGetAssociationMixin<PostInstance>;
+  setMultimedia: Sequelize.BelongsToSetAssociationMixin<PostInstance, PostInstance["id"]>;
 }
 
 /**
@@ -50,7 +50,7 @@ export function EmojiReactionsModelFactory(sequelize: Sequelize.Sequelize): Sequ
     second: {
       type: Sequelize.DataTypes.DOUBLE
     },
-    post_id: {
+    multimedia_id: {
       type: Sequelize.DataTypes.UUIDV4,
       allowNull: false
     },
