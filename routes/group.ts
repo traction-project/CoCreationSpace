@@ -7,6 +7,19 @@ import { db } from "../models";
 const router = Router();
 
 /**
+ * Returns all groups with their name and ids.
+ */
+router.get("/all", authRequired, async (req, res) => {
+  const { UserGroup } = db.getModels();
+
+  const groups = await UserGroup.findAll({
+    attributes: ["id", "name"]
+  });
+
+  res.send(groups);
+});
+
+/**
  * Makes the current user join the group identified by the given id. Returns
  * 200 on success, or 404 if the group with the given id cannot be found.
  */
