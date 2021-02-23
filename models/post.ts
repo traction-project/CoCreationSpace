@@ -6,26 +6,24 @@ import { UsersAttributes, UserInstance } from "./users";
 import { ThreadAttributes, ThreadInstance } from "./thread";
 import { TagAttributes, TagInstance } from "./tag";
 import { DataContainerAttributes, DataContainerInstance } from "./data_container";
-import { EmojiReactionsAttributes, EmojiReactionsInstance } from "./emoji_reactions";
 
 export interface PostAttributes extends CommonAttributes{
-    title?: string;
-    second?: number;
-    parent_post_id?: string;
-    user_id?: string;
-    thread_id?: string;
-    karma_points?: number;
-    dataContainer?: DataContainerAttributes | DataContainerAttributes["id"];
-    emojiReactions?: EmojiReactionsAttributes | EmojiReactionsAttributes["id"];
-    comments?: PostAttributes | PostAttributes["id"];
-    likesUsers?: UsersAttributes | UsersAttributes["id"];
-    parentPost?: PostAttributes | PostAttributes["id"];
-    postReference?: PostAttributes | PostAttributes["id"];
-    postReferenced?: PostAttributes | PostAttributes["id"];
-    user?: UsersAttributes | UsersAttributes["id"];
-    userReferenced?: UsersAttributes | UsersAttributes["id"];
-    thread?: ThreadAttributes | ThreadAttributes["id"];
-    tags?: TagAttributes | TagAttributes["id"];
+  title?: string;
+  second?: number;
+  parent_post_id?: string;
+  user_id?: string;
+  thread_id?: string;
+  karma_points?: number;
+  dataContainer?: DataContainerAttributes | DataContainerAttributes["id"];
+  comments?: PostAttributes | PostAttributes["id"];
+  likesUsers?: UsersAttributes | UsersAttributes["id"];
+  parentPost?: PostAttributes | PostAttributes["id"];
+  postReference?: PostAttributes | PostAttributes["id"];
+  postReferenced?: PostAttributes | PostAttributes["id"];
+  user?: UsersAttributes | UsersAttributes["id"];
+  userReferenced?: UsersAttributes | UsersAttributes["id"];
+  thread?: ThreadAttributes | ThreadAttributes["id"];
+  tags?: TagAttributes | TagAttributes["id"];
 }
 
 type PostCreationAttributes = Optional<PostAttributes, "id" | "createdAt" | "updatedAt">;
@@ -105,16 +103,6 @@ export interface PostInstance extends Sequelize.Model<PostAttributes, PostCreati
   hasTag: Sequelize.BelongsToManyHasAssociationMixin<TagInstance, TagInstance["id"]>;
   hasTags: Sequelize.BelongsToManyHasAssociationsMixin<TagInstance, TagInstance["id"]>;
   countTags: Sequelize.BelongsToManyCountAssociationsMixin;
-
-  getEmojiReactions: Sequelize.HasManyGetAssociationsMixin<EmojiReactionsInstance>;
-  setEmojiReactions: Sequelize.HasManySetAssociationsMixin<EmojiReactionsInstance, EmojiReactionsInstance["id"]>;
-  addEmojiReactions: Sequelize.HasManyAddAssociationsMixin<EmojiReactionsInstance, EmojiReactionsInstance["id"]>;
-  addEmojiReaction: Sequelize.HasManyAddAssociationMixin<EmojiReactionsInstance, EmojiReactionsInstance["id"]>;
-  removeEmojiReaction: Sequelize.HasManyRemoveAssociationMixin<EmojiReactionsInstance, EmojiReactionsInstance["id"]>;
-  removeEmojiReactions: Sequelize.HasManyRemoveAssociationsMixin<EmojiReactionsInstance, EmojiReactionsInstance["id"]>;
-  hasEmojiReaction: Sequelize.HasManyHasAssociationMixin<EmojiReactionsInstance, EmojiReactionsInstance["id"]>;
-  hasEmojiReactions: Sequelize.HasManyHasAssociationsMixin<EmojiReactionsInstance, EmojiReactionsInstance["id"]>;
-  countEmojiReactions: Sequelize.HasManyCountAssociationsMixin;
 }
 
 /**
