@@ -10,6 +10,7 @@ services:
       - NODE_ENV=production
       - AWS_CREDENTIAL_FILE_PATH=/run/secrets/aws_credentials
       - ENV_FILE_PATH=/run/secrets/app_env
+      - ENABLE_ANALYTICS=true
     secrets:
       - aws_credentials
       - app_env

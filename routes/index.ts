@@ -36,7 +36,7 @@ router.use("/images", ImageRouter);
 router.use("/groups", GroupRouter);
 
 router.get("/", (_, res) => {
-  res.render("index", { title: "MediaVault", env: process.env.NODE_ENV });
+  res.render("index", { title: "MediaVault", enableAnalytics: process.env.ENABLE_ANALYTICS == "true" });
 });
 
 router.post("/login", passport.authenticate("local"), (req, res) => {
