@@ -5,7 +5,12 @@ services:
     image: registry.dis.cwi.nl/traction-mediavault
     restart: always
     volumes:
-      - .:/code
+      - ./aws.json:/code/aws.json
+      - ./.env:/code/.env
+      - ./bin:/code/bin
+      - ./sequelize:/code/sequelize
+      - ./public:/code/public
+      - ./views:/code/views
     ports:
       - "3000:3000"
     depends_on:
