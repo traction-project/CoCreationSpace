@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useHistory } from "react-router-dom";
 import { VideoJsPlayer } from "video.js";
 import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
@@ -11,7 +11,7 @@ import UserLogo, { UserType } from "../user_logo";
 import CommentList from "./comment_list";
 import NewComment from "./new_comment";
 import { TagData } from "../post_list/post_list";
-import { getPostId, postComment, postLike } from "../../services/post.service";
+import { getPostId, postComment, postLike, deletePost } from "../../services/post.service";
 import { addTooltip } from "../videojs/util";
 import Image from "../image";
 import Thumbnail from "../thumbnail";
@@ -63,6 +63,8 @@ interface PostProps {
 
 const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
   const { t } = useTranslation();
+  const history = useHistory();
+
   const { id } = useParams<{ id: string }>();
   const idPost = props.post ? props.post.id : id;
   const { callbackClickTime } = props;
@@ -159,6 +161,16 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
     }
   };
 
+  const handleDeletePost = (id: string) => {
+    return async () => {
+      const res = await deletePost(id);
+
+      if (res.ok) {
+        history.goBack();
+      }
+    };
+  };
+
   const callbackPlayer = async (newPlayer: VideoJsPlayer) => {
     await setPlayer(newPlayer);
   };
@@ -186,7 +198,11 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
                       {post.createdAt && new Date(post.createdAt).toLocaleDateString()}&emsp;
                       {post.createdAt && new Date(post.createdAt).toLocaleTimeString()}&emsp;
                       {(props.login.user?.id == post.user.id) && (
-                        <Link to={`/post/${post.id}/edit`}>{t("Edit")}</Link>
+                        <>
+                          <Link to={`/post/${post.id}/edit`}>{t("Edit")}</Link>
+                          &emsp;
+                          <a onClick={handleDeletePost(post.id)}>{t("Delete")}</a>
+                        </>
                       )}
                     </small>
                     <br />
