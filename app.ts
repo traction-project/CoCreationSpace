@@ -198,6 +198,8 @@ async function setupSNSEndpoint() {
 }
 
 async function launch() {
+  console.log("Current environment:", process.env.NODE_ENV || "unknown");
+
   await setupDatabase();
   await setupDatabaseSeeds();
 
