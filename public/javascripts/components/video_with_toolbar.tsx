@@ -43,9 +43,9 @@ const VideoWithToolbar: React.FC<VideoWithToolbarProps> = (props) => {
   }, []);
 
   const handleClickEmojiItem = async (emoji: string) => {
-    if (player) {
+    if (player && videoId) {
       const second = player.currentTime();
-      const response = await postEmojiReaction(post.id, emoji, second);
+      const response = await postEmojiReaction(videoId, emoji, second);
 
       if (response.ok) {
         const data = await response.json();
