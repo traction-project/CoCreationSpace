@@ -103,6 +103,8 @@ export interface PostInstance extends Sequelize.Model<PostAttributes, PostCreati
   hasTag: Sequelize.BelongsToManyHasAssociationMixin<TagInstance, TagInstance["id"]>;
   hasTags: Sequelize.BelongsToManyHasAssociationsMixin<TagInstance, TagInstance["id"]>;
   countTags: Sequelize.BelongsToManyCountAssociationsMixin;
+
+  destroyWithComments: () => Promise<void>;
 }
 
 /**
@@ -136,6 +138,19 @@ export function PostModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mode
   const Post = sequelize.define<PostInstance, PostCreationAttributes>("post", attributes, { underscored: true, tableName: TABLE_NAME });
 
   Post.beforeCreate(post => { post.id = uuidv4(); });
+
+  /**
+   * Deletes the current post instance and all its children recursively.
+   */
+  Post.prototype.destroyWithComments = async function () {
+    const comments = await this.getComments();
+
+    await Promise.all(comments.map((postComment: PostInstance) => {
+      return postComment.destroyWithComments();
+    }));
+
+    await this.destroy();
+  };
 
   return Post;
 }
