@@ -439,6 +439,30 @@ router.post("/:id", authRequired, async (req, res) => {
 });
 
 /**
+ * Deletes the post associated to the given id. Also deletes all child posts
+ * recursively. Returns HTTP 404 if the post with the given id cannot be found.
+ */
+router.delete("/:id", authRequired, async (req, res) => {
+  const { id } = req.params;
+  const { Posts } = db.getModels();
+
+  const post = await Posts.findByPk(id);
+
+  if (post) {
+    await post.destroyWithComments();
+
+    res.send({
+      status: "OK"
+    });
+  } else {
+    res.status(404).send({
+      status: "ERR",
+      message: "Post not found"
+    });
+  }
+});
+
+/**
  * Like a post from user
  */
 router.post("/:id/like", authRequired, async (req, res) => {
