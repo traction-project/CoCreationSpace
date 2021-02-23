@@ -13,6 +13,7 @@ import TopicRouter from "./topic";
 import TranslateRouter from "./translate";
 import UserRouter from "./user";
 import NotificationRouter from "./notification";
+import GroupRouter from "./group";
 
 import { UserInstance } from "../models/users";
 import { db } from "../models";
@@ -32,6 +33,7 @@ router.use("/users", UserRouter);
 router.use("/media", MediaRouter);
 router.use("/notifications", NotificationRouter);
 router.use("/images", ImageRouter);
+router.use("/groups", GroupRouter);
 
 router.get("/", (_, res) => {
   res.render("index", { title: "MediaVault", env: process.env.NODE_ENV });
