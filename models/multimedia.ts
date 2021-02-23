@@ -9,6 +9,7 @@ import { AudioContentAttributes, AudioContentInstance } from "./audio_content";
 import { MetadataAttributes, MetadataInstance } from "./metadata";
 import { SubtitlesAttributes, SubtitlesInstance } from "./subtitles";
 import { MultimediaInteractionInstance } from "./multimedia_interaction";
+import { EmojiReactionsAttributes, EmojiReactionsInstance } from "./emoji_reactions";
 
 export interface MultimediaAttributes extends CommonAttributes {
   title: string;
@@ -31,6 +32,7 @@ export interface MultimediaAttributes extends CommonAttributes {
   audioContent?: AudioContentAttributes | AudioContentAttributes["id"];
   metadata?: MetadataAttributes | MetadataAttributes["id"];
   subtitle?: SubtitlesAttributes | SubtitlesAttributes["id"];
+  emojiReactions?: EmojiReactionsAttributes | EmojiReactionsAttributes["id"];
 }
 
 type MultimediaCreationAttributes = Optional<MultimediaAttributes, "id" | "createdAt" | "updatedAt">;
@@ -87,6 +89,16 @@ export interface MultimediaInstance extends Sequelize.Model<MultimediaAttributes
   hasMultimediaInteraction: Sequelize.HasManyHasAssociationMixin<MultimediaInteractionInstance, MultimediaInteractionInstance["id"]>;
   hasMultimediaInteractions: Sequelize.HasManyHasAssociationsMixin<MultimediaInteractionInstance, MultimediaInteractionInstance["id"]>;
   countMultimediaInteractions: Sequelize.HasManyCountAssociationsMixin;
+
+  getEmojiReactions: Sequelize.HasManyGetAssociationsMixin<EmojiReactionsInstance>;
+  setEmojiReactions: Sequelize.HasManySetAssociationsMixin<EmojiReactionsInstance, EmojiReactionsInstance["id"]>;
+  addEmojiReactions: Sequelize.HasManyAddAssociationsMixin<EmojiReactionsInstance, EmojiReactionsInstance["id"]>;
+  addEmojiReaction: Sequelize.HasManyAddAssociationMixin<EmojiReactionsInstance, EmojiReactionsInstance["id"]>;
+  removeEmojiReaction: Sequelize.HasManyRemoveAssociationMixin<EmojiReactionsInstance, EmojiReactionsInstance["id"]>;
+  removeEmojiReactions: Sequelize.HasManyRemoveAssociationsMixin<EmojiReactionsInstance, EmojiReactionsInstance["id"]>;
+  hasEmojiReaction: Sequelize.HasManyHasAssociationMixin<EmojiReactionsInstance, EmojiReactionsInstance["id"]>;
+  hasEmojiReactions: Sequelize.HasManyHasAssociationsMixin<EmojiReactionsInstance, EmojiReactionsInstance["id"]>;
+  countEmojiReactions: Sequelize.HasManyCountAssociationsMixin;
 
   incrementViewCount: () => Promise<void>;
 }
