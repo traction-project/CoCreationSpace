@@ -72,5 +72,6 @@
     "Edit Post": "Editar Publicación",
     "Edit": "Editar",
     "Translate Subtitles": "Traducir subtítulos",
-    "view-count": "<0>{{viewCount}}</0> views"
+    "view-count": "<0>{{viewCount}}</0> views",
+    "Delete": "Borrar"
 }

@@ -72,5 +72,6 @@
     "Edit Post": "Edit Post",
     "Edit": "Edit",
     "Translate Subtitles": "Translate Subtitles",
-    "view-count": "<0>{{viewCount}}</0> views"
+    "view-count": "<0>{{viewCount}}</0> views",
+    "Delete": "Delete"
 }
