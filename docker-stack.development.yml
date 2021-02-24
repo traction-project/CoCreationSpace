@@ -7,9 +7,12 @@ services:
     command: sh -c "/wait && yarn start"
     environment:
       - WAIT_HOSTS=postgres:5432
-    volumes:
-      - /home/ubuntu/containers/web/aws.json:/code/aws.json
-      - /home/ubuntu/containers/web/.env:/code/.env
+      - NODE_ENV=development
+      - AWS_CREDENTIAL_FILE_PATH=/run/secrets/aws_credentials
+      - ENV_FILE_PATH=/run/secrets/app_env_dev
+    secrets:
+      - aws_credentials
+      - app_env_dev
     deploy:
       restart_policy:
         condition: on-failure
@@ -17,12 +20,13 @@ services:
         max_attempts: 3
   postgres:
     image: postgres:12
-    volumes:
-      - /home/ubuntu/containers/postgres:/var/lib/postgresql/data
     ports:
       - "5432:5432"
-    env_file:
-      - .env
+    environment:
+      - POSTGRES_DB=traction
+      - POSTGRES_USER=traction
+      - POSTGRES_PASSWORD=traction
+      - POSTGRES_HOST=postgres
     deploy:
       placement:
         constraints: [node.role == manager]
@@ -30,3 +34,10 @@ services:
         condition: on-failure
         delay: 5s
         max_attempts: 3
+volumes:
+  pgdata:
+secrets:
+  aws_credentials:
+    external: true
+  app_env_dev:
+    external: true
