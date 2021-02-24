@@ -36,8 +36,7 @@ jobs:
     runs-on: ubuntu-18.04
     needs: [ build ]
     steps:
-      - uses: troeggla/workflow-webhook@v1.1.0
+      - uses: troeggla/workflow-simple-webhook@v1.0.0
         env:
           webhook_url: http://mediavault.traction-project.eu:9000/hooks/mediavault-development
-          webhook_secret: ${{ secrets.WEBHOOK_SECRET }}
 
