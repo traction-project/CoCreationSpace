@@ -7,6 +7,7 @@ import { UserInstance } from "models/users";
 import association from "../models/associations";
 import { TagInstance } from "models/tag";
 import { PostInstance } from "models/post";
+import { MultimediaAttributes } from "models/multimedia";
 
 const [ CLOUDFRONT_URL ] = getFromEnvironment("CLOUDFRONT_URL");
 const router = Router();
@@ -227,6 +228,16 @@ router.get("/:id", authRequired, async (req, res) => {
 
     if (post.user && isUser(post.user)) {
       post.user.image = `${CLOUDFRONT_URL}/${post.user.image}`;
+    }
+
+    if (post.dataContainer && post.dataContainer instanceof Object) {
+      const { multimedia } = post.dataContainer;
+
+      if (multimedia && multimedia.length > 0) {
+        post.dataContainer.multimedia = (multimedia as Array<MultimediaAttributes>).map(
+          (multimedia: MultimediaAttributes) => multimedia.title = `${CLOUDFRONT_URL}/${multimedia.title}`
+        );
+      }
     }
 
     const postJSON = post.toJSON();
