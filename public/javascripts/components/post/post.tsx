@@ -23,11 +23,8 @@ export interface MultimediaItem {
   id: string;
   status: string;
   type: string;
-<<<<<<< HEAD
   emojiReactions: Array<EmojiReaction>;
-=======
   title: string;
->>>>>>> 1f4671e... Added download bottom in post component
 }
 
 interface DataContainerType {
