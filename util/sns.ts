@@ -107,6 +107,8 @@ export function confirmSubscription(headers: SNSSubcriptionsHeaders, body: SNSSu
     }, (err, res) => {
       if (err) {
         return reject(err);
+      } else if (!res.SubscriptionArn) {
+        return reject(new Error("Subscription ARN undefined"));
       } else {
         return resolve(res.SubscriptionArn);
       }

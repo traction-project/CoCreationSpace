@@ -135,8 +135,10 @@ export function encodeAudio(pipeline: string, input: string): Promise<string> {
     transcoder.createJob(params, (err, data) => {
       if (err) {
         reject(err);
+      } else if (!data.Job || !data.Job.Id) {
+        reject(new Error("Job ID undefined"));
       } else {
-        resolve(data.Job?.Id);
+        resolve(data.Job.Id);
       }
     });
   });
