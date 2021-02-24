@@ -1,4 +1,4 @@
-version: '3.6'
+version: "3.6"
 services:
   web:
     image: registry.dis.cwi.nl/traction-mediavault
@@ -18,6 +18,10 @@ services:
         condition: on-failure
         delay: 5s
         max_attempts: 3
+      update_config:
+        parallelism: 2
+        delay: 10s
+        order: start-first
   postgres:
     image: postgres:12
     ports:
