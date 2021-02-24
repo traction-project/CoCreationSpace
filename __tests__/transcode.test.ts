@@ -116,9 +116,13 @@ describe("Utility function encodeAudio()", () => {
       }
     });
 
-    expect(
-      await transcode.encodeAudio("my_pipeline", "audio.mp3")
-    ).toBeUndefined();
+    try {
+      await transcode.encodeAudio("my_pipeline", "audio.mp3");
+      fail();
+    } catch (err) {
+      expect(err).toBeDefined();
+      expect(err.message).toEqual("Job ID undefined");
+    }
   });
 
   it("should reject the promise returning an error", async () => {
