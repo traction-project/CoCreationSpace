@@ -23,7 +23,11 @@ export interface MultimediaItem {
   id: string;
   status: string;
   type: string;
+<<<<<<< HEAD
   emojiReactions: Array<EmojiReaction>;
+=======
+  title: string;
+>>>>>>> 1f4671e... Added download bottom in post component
 }
 
 interface DataContainerType {
@@ -254,6 +258,13 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
                 <span className="level-item">
                   {likes}
                 </span>
+                {(selectedItem) &&(
+                  <a href={selectedItem.title} className="level-item" download>
+                    <span className="icon is-small">
+                      <i className="fas fa-download"/>
+                    </span>
+                  </a>
+                )}
               </div>
             </nav>
           </div>
