@@ -52,22 +52,24 @@ const EditPost: React.FC<EditPostProps> = () => {
             <h1 className="title">{t("Edit Post")}</h1>
 
             <form onSubmit={handleFormSubmission}>
-              <div className="field">
-                <label className="label">{t("Title")}</label>
-                <div className="control">
-                  <input
-                    className="input"
-                    type="text"
-                    defaultValue={post.title}
-                    placeholder={`${t("Add title")}...`}
-                    name="title"
-                    required={true}
-                    ref={register({
-                      required: true
-                    })}
-                  />
+              {(post.parent_post_id == null) && (
+                <div className="field">
+                  <label className="label">{t("Title")}</label>
+                  <div className="control">
+                    <input
+                      className="input"
+                      type="text"
+                      defaultValue={post.title}
+                      placeholder={`${t("Add title")}...`}
+                      name="title"
+                      required={true}
+                      ref={register({
+                        required: true
+                      })}
+                    />
+                  </div>
                 </div>
-              </div>
+              )}
               <div className="field">
                 <label className="label">{t("Description")}</label>
                 <div className="control">
