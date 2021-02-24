@@ -185,10 +185,12 @@ export function getAllMethods(toCheck: any) {
 
 /**
  * Get Buffer from stream
+ *
  * @param file Readable stream
  */
 export async function streamToBuffer(file: NodeJS.ReadableStream): Promise<Buffer> {
   const chunks: any[] = [];
+
   return new Promise<Buffer>((resolve, reject) => {
     file.on("data", (chunk) => chunks.push(chunk));
     file.on("error", (err) => reject(err));

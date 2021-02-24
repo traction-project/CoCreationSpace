@@ -199,18 +199,18 @@ describe("Utility function findTerm()", () => {
   });
 });
 
-describe("Utility function streamToBuffer()", () =>{
-
+describe("Utility function streamToBuffer()", () => {
   it("should return buffer from readeablestream", async () => {
     const readable = new PassThrough();
     readable.push("test");
     readable.push(null);
+
     try {
       const buffer = await util.streamToBuffer(readable);
 
       expect(buffer).toBeDefined();
       expect(buffer).toBeInstanceOf(Buffer);
-    } catch(error) {
+    } catch (error) {
       fail();
     }
   });
@@ -218,10 +218,14 @@ describe("Utility function streamToBuffer()", () =>{
   it("should return catch error when stream emit error", async () => {
     const readable = new PassThrough();
     readable.push("test");
+
     try {
-      util.streamToBuffer(readable);
-      readable.emit("error", new Error());
-    } catch(error) {
+      setTimeout(() => {
+        readable.emit("error", new Error());
+      }, 100);
+
+      await util.streamToBuffer(readable);
+    } catch (error) {
       expect(error).toBeDefined();
     }
   });
