@@ -36,7 +36,7 @@ router.post("/receive", (req, res) => {
       insertVideoTranscript(data.detail.TranscriptionJobName);
     } else if (data.pipelineId && data.state == "COMPLETED") {
       // process transcoder notification
-      insertVideoMetadata(data);
+      insertMetadata(data);
     }
   }
 
@@ -63,27 +63,35 @@ export async function insertVideoTranscript(jobName: string) {
   }
 }
 
-export async function insertVideoMetadata(data: any) {
+export async function insertMetadata(data: any) {
   const { jobId, outputs } = data;
   const thumbnailPattern: string = outputs[0].thumbnailPattern;
 
-  const thumbnails = Range(0, Math.floor(outputs[0].duration / 300) + 1).map((n) => {
+  const thumbnails = thumbnailPattern && Range(0, Math.floor(outputs[0].duration / 300) + 1).map((n) => {
     return thumbnailPattern.replace(
       "{count}",
       (n + 1).toString().padStart(5, "0")
     ) + ".png";
   });
 
+  const resolutions = outputs.filter((o: any) => o.height).map((o: any) => o.height);
+
   const { Multimedia } = db.getModels();
-  const video = await Multimedia.findOne({ where : { transcodingJobId: jobId } });
+  const media = await Multimedia.findOne({ where : { transcodingJobId: jobId } });
 
-  if (video) {
-    video.status = "done";
-    video.thumbnails = thumbnails;
-    video.resolutions = outputs.filter((o: any) => o.height).map((o: any) => o.height);
-    video.duration = outputs[0].duration;
+  if (media) {
+    media.status = "done";
+    media.duration = outputs[0].duration;
 
-    video.save();
+    if (resolutions.length > 0) {
+      media.resolutions = resolutions;
+    }
+
+    if (thumbnails) {
+      media.thumbnails = thumbnails;
+    }
+
+    media.save();
   }
 }
 
