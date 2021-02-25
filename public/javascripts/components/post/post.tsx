@@ -129,9 +129,9 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
     setShowComments(!showComments);
   };
 
-  const handleSubmitNewComment = async ({ comment, multimedia }: { comment: string, multimedia?: Array<string> }) => {
+  const handleSubmitNewComment = async ({ comment, selectedGettimestamp, multimedia }: { comment: string, selectedGettimestamp: boolean, multimedia?: Array<string> }) => {
     const second = player ? player.currentTime() : null;
-    const responseComment = (second) ? (
+    const responseComment = (second && selectedGettimestamp) ? (
       await postComment(idPost, comment, multimedia, second)
     ) : (
       await postComment(idPost, comment, multimedia)
@@ -289,7 +289,11 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
         <div className="columns">
           <div className="column">
             {(showNewComment) && (
-              <NewComment handleSubmitNewComment={handleSubmitNewComment} handleClickCancel={handleClickCancel}></NewComment>
+              <NewComment
+                handleSubmitNewComment={handleSubmitNewComment}
+                handleClickCancel={handleClickCancel}
+                enableTimestamp={(selectedItem && selectedItem.type == "video")}>
+              </NewComment>
             )}
 
             {(!!comments && comments.length > 0) && (

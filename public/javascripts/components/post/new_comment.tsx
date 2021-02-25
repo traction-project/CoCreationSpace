@@ -9,6 +9,7 @@ import FileUpload from "./new_comment_file_upload";
 interface NewCommentProps {
     handleSubmitNewComment: ({comment, multimedia}: {comment: string, multimedia?: Array<string>}) => void;
     handleClickCancel: () => void;
+    enableTimestamp?: boolean;
 }
 
 const NewComment: React.FC<NewCommentProps> = (props) => {
@@ -17,6 +18,7 @@ const NewComment: React.FC<NewCommentProps> = (props) => {
   const [ files, setFiles ] = useState<Array<File>>([]);
   const [ multimedia, setMultimedia ] = useState<Array<string>>([]);
   const [ loading, setLoading ] = useState<boolean>(false);
+  const [selectedGettimestamp, setSelectedGettimestamp] = useState<boolean>(false);
 
   const { handleSubmit, register, errors, reset } = useForm();
 
@@ -46,11 +48,16 @@ const NewComment: React.FC<NewCommentProps> = (props) => {
   const handleClickComment = handleSubmit(({ comment }) => {
     const commentContent = {
       comment,
+      selectedGettimestamp,
       ...(multimedia && multimedia.length > 0 && {multimedia})
     };
     props.handleSubmitNewComment(commentContent);
     cleanUp();
   });
+
+  const handleSelectGetTimestamp = () => {
+    setSelectedGettimestamp(!selectedGettimestamp);
+  };
 
   const cleanUp = () => {
     setMultimedia([]);
@@ -84,6 +91,12 @@ const NewComment: React.FC<NewCommentProps> = (props) => {
             }))}
           </div>
         )}
+        {(props.enableTimestamp) &&
+          <>
+            <input type="checkbox" defaultChecked={selectedGettimestamp} onChange={handleSelectGetTimestamp}></input>
+            <label style={{marginLeft: "0.2rem"}}>Add comment to video timeline</label>
+          </>
+        }
         <div className="form-group" style={{padding: ".5em 0"}}>
           <button className="button is-info" disabled={loading}>
             {t("Comment")}
