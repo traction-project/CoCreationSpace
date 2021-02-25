@@ -6,11 +6,12 @@ import { postFile } from "../../util";
 
 interface ProfilePictureUploadFormProps {
   currentImage: string;
+  skippable?: boolean;
   onComplete?: (newImage: string) => void;
 }
 
 const ProfilePictureUploadForm: React.FC<ProfilePictureUploadFormProps> = (props) => {
-  const { currentImage, onComplete } = props;
+  const { currentImage, skippable, onComplete } = props;
   const { t } = useTranslation();
 
   const [ error, setError ] = useState<string>();
@@ -82,6 +83,17 @@ const ProfilePictureUploadForm: React.FC<ProfilePictureUploadFormProps> = (props
             </span>
           </label>
         </div>
+
+        {(skippable == true) && (
+          <>
+            <br />
+            <div>
+              <button className="button is-info" onClick={() => onComplete?.(currentImage)}>
+                {t("Skip")}
+              </button>
+            </div>
+          </>
+        )}
       </div>
     </React.Fragment>
   );

@@ -53,6 +53,7 @@ const Signup: React.FC<SignupProps> = (props) => {
 
                     <ProfilePictureUploadForm
                       currentImage={user.image!}
+                      skippable={true}
                       onComplete={(image) => {
                         props.loginActions.setLoggedInUser(
                           user.id, user.username, image
