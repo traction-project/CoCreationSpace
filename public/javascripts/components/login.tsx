@@ -64,7 +64,7 @@ const Login: React.FC<LoginProps> = (props) => {
                       ref={register}
                     />
                     <span className="icon is-small is-left">
-                      <i className="fa fa-envelope" />
+                      <i className="fa fa-user" />
                     </span>
                   </div>
                 </div>
