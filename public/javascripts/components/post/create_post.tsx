@@ -166,6 +166,10 @@ const CreatePost: React.FC<CreatePostProps> = ({ file }) => {
       return (
         <Video id={id} />
       );
+    } else if (type == "audio"){
+      return (
+        <Video id={id} />
+      );
     } else {
       return (
         <Image id={id} />

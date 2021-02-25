@@ -217,6 +217,11 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
                   emojis={selectedItem.emojiReactions}
                   onTimeUpdate={(time) => currentTime.current = time}
                 />
+              ) : (selectedItem.type == "audio") ? (
+                <VideoWithToolbar
+                  id={selectedItem.id}
+                  emojis={selectedItem.emojiReactions}
+                />
               ) : (
                 <Image id={selectedItem.id} />
               )}
