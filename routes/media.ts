@@ -6,7 +6,7 @@ import sharp from "sharp";
 import { db } from "../models";
 import { getExtension, getFromEnvironment, streamToBuffer } from "../util";
 import { authRequired } from "../util/middleware";
-import { encodeDash } from "../util/transcode";
+import { encodeDash, encodeAudio } from "../util/transcode";
 import { uploadToS3 } from "../util/s3";
 import { transcribeMediaFile } from "../util/transcribe";
 import { MultimediaInstance } from "../models/multimedia";
@@ -49,14 +49,23 @@ const processUploadedAudio = async (file: NodeJS.ReadableStream, filename: strin
 
   const newName = uuid4() + getExtension(filename);
   await uploadToS3(newName, file, BUCKET_NAME);
+
   transcribeMediaFile("en-US", newName, BUCKET_NAME);
+  const jobId = await encodeAudio(ETS_PIPELINE, newName);
 
   const audio: MultimediaInstance = Multimedia.build();
 
   audio.title = newName;
-  audio.transcriptionJobId = newName.split(".")[0];
-  audio.status = "done";
+  audio.key = newName.split(".")[0];
   audio.type = "audio";
+
+  if (jobId) {
+    audio.transcodingJobId = jobId;
+    audio.transcriptionJobId = newName.split(".")[0];
+    audio.status = "processing";
+  } else {
+    audio.status = "error";
+  }
 
   await audio.save();
   audio.setUser(userId);
