@@ -102,10 +102,10 @@ function groupConnectionsByUserId(clients: Array<InterestSubscription>): Map<str
 export async function broadcastNotification(post: PostInstance) {
   const { Notifications, Users } = db.getModels();
 
-  const user = await post.getUser();
+  const author = await post.getUser();
   const thread = await post.getThread();
 
-  if (!thread || !user) {
+  if (!thread || !author) {
     return;
   }
 
@@ -118,7 +118,7 @@ export async function broadcastNotification(post: PostInstance) {
   const data = {
     topic: { id: topic.id, title: topic.title },
     post: { id: post.id, title: post.title },
-    creator: { id: user.id, username: user.username, image: `${CLOUDFRONT_URL}/${user.image}` }
+    creator: { id: author.id, username: author.username, image: `${CLOUDFRONT_URL}/${author.image}` }
   };
   const notificationDataHash = crypto.createHash("sha256").update(JSON.stringify(data)).digest("hex");
 
@@ -132,7 +132,7 @@ export async function broadcastNotification(post: PostInstance) {
     const interests = await getUserInterests(recipient);
     if (interests.find((t) => t == topic.id)) {
       // Don't send notification if client is creator of post
-      if (user.id == recipient.id) {
+      if (author.id == recipient.id) {
         return;
       }
 
