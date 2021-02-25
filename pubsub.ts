@@ -5,6 +5,7 @@ import crypto from "crypto";
 
 import { getFromEnvironment } from "./util";
 import { db } from "./models";
+import { UserInstance } from "models/users";
 
 const [ CLOUDFRONT_URL ] = getFromEnvironment("CLOUDFRONT_URL");
 
@@ -21,22 +22,15 @@ const clients: Array<InterestSubscription> = [];
  * interested in. If there is no user with the given ID, an empty array is
  * returned.
  *
- * @param userId ID of user to fetch interests for
+ * @param user User object to fetch interests for
  * @returns A promise which resolves to an array of interest IDs
  */
-async function getUserInterests(userId: string): Promise<Array<string>> {
-  const { Users } = db.getModels();
-  const user = await Users.findByPk(userId);
+async function getUserInterests(user: UserInstance): Promise<Array<string>> {
+  const topics = await user.getInterestedTopics();
 
-  if (user) {
-    const topics = await user.getInterestedTopics();
-
-    return topics.map((t) => {
-      return t.id;
-    });
-  }
-
-  return [];
+  return topics.map((t) => {
+    return t.id;
+  });
 }
 
 /**
@@ -106,7 +100,7 @@ function groupConnectionsByUserId(clients: Array<InterestSubscription>): Map<str
  * @param post Post for whose topic a broadcast should be sent
  */
 export async function broadcastNotification(post: PostInstance) {
-  const { Notifications } = db.getModels();
+  const { Notifications, Users } = db.getModels();
 
   const user = await post.getUser();
   const thread = await post.getThread();
@@ -129,26 +123,31 @@ export async function broadcastNotification(post: PostInstance) {
   const notificationDataHash = crypto.createHash("sha256").update(JSON.stringify(data)).digest("hex");
 
   groupConnectionsByUserId(clients).forEach(async (sockets, userId) => {
-    const interests = await getUserInterests(userId);
+    const recipient = await Users.findByPk(userId);
 
+    if (!recipient) {
+      return;
+    }
+
+    const interests = await getUserInterests(recipient);
     if (interests.find((t) => t == topic.id)) {
       // Don't send notification if client is creator of post
-      if (user.id == userId) {
+      if (user.id == recipient.id) {
         return;
       }
 
-      console.log("Creating notification with hash", notificationDataHash, "for", userId);
+      console.log("Creating notification with hash", notificationDataHash, "for", recipient.id);
 
       const notification = await Notifications.create({
         data,
-        user_id: userId,
+        user_id: recipient.id,
         hash: notificationDataHash
       } as any);
 
       console.log("Sending notification to", sockets.length, "connections...");
 
       sockets.forEach((socket) => {
-        console.log("Sending notification to connection for", userId);
+        console.log("Sending notification to connection for", recipient.id);
 
         socket.send(JSON.stringify({
           type: "message",
