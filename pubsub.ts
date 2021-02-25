@@ -93,6 +93,20 @@ function groupConnectionsByUserId(clients: Array<InterestSubscription>): Map<str
 }
 
 /**
+ * Checks whether two given users have groups in common. Returns if they are
+ * both members of some group together and returns true, or false otherwise.
+ *
+ * @param author Author of the post
+ * @param recipient Recipient of the notification
+ */
+async function haveCommonGroups(author: UserInstance, recipient: UserInstance): Promise<boolean> {
+  const authorGroups = (await author.getUserGroups()).map((g) => g.id);
+  const recipientGroups = new Set((await recipient.getUserGroups()).map((g) => g.id));
+
+  return authorGroups.some((g) => recipientGroups.has(g));
+}
+
+/**
  * Broadcasts a notification message to all clients which are subscribed to the
  * topic that the given post belongs to. The message contains topic id and
  * title and the id and title of the post.
@@ -126,6 +140,11 @@ export async function broadcastNotification(post: PostInstance) {
     const recipient = await Users.findByPk(userId);
 
     if (!recipient) {
+      return;
+    }
+
+    // Check if author and recipient share a group
+    if (!await haveCommonGroups(author, recipient)) {
       return;
     }
 
