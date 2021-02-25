@@ -94,7 +94,7 @@ const NewComment: React.FC<NewCommentProps> = (props) => {
         {(props.enableTimestamp) &&
           <>
             <input type="checkbox" defaultChecked={selectedGettimestamp} onChange={handleSelectGetTimestamp}></input>
-            <label style={{marginLeft: "0.2rem"}}>Add comment to video timeline</label>
+            <label style={{marginLeft: "0.2rem"}}>{t("Check timeline")}</label>
           </>
         }
         <div className="form-group" style={{padding: ".5em 0"}}>
