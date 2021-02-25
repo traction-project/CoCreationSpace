@@ -320,10 +320,6 @@ router.get("/:id/parent", authRequired, async (req, res) => {
 router.post("/", authRequired, async (req, res) => {
   const { text, title, multimedia, tags, topicId } = req.body;
 
-  if (!text) {
-    return res.status(400).send({ message: "Field text not present"});
-  }
-
   const user = req.user as UserInstance;
   const { Posts, Tags, Threads, DataContainer } = db.getModels();
 
