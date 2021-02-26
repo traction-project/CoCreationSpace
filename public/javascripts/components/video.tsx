@@ -11,11 +11,12 @@ import { EmojiReaction } from "javascripts/util";
 interface VideoProps {
   id: string;
   emojis?: Array<EmojiReaction>;
+  onTimeUpdate?: (currentTime: number) => void;
 }
 
 const Video: React.FC<VideoProps> = (props) => {
   const { t } = useTranslation();
-  const { id, emojis } = props;
+  const { id, emojis, onTimeUpdate } = props;
 
   const totalPlayTime = useRef(0);
   const lastTimestamp = useRef(0);
@@ -76,6 +77,11 @@ const Video: React.FC<VideoProps> = (props) => {
     lastTimestamp.current = time;
   };
 
+  const timeUpdate = (time: number, duration: number, isPlaying: boolean) => {
+    countView(time, duration, isPlaying);
+    onTimeUpdate?.(time);
+  };
+
   useEffect(fetchVideo, [id]);
   useInterval(fetchVideo, (videoStatus == "processing") ? 3000 : null);
 
@@ -88,7 +94,7 @@ const Video: React.FC<VideoProps> = (props) => {
             subtitles={availableSubtitles}
             videoId={id}
             emojis={emojis}
-            onTimeUpdate={countView}
+            onTimeUpdate={timeUpdate}
             videoInteractionTracker={new UserVideoInteractionTracker(`/media/${id}/interaction`)}
           />
         ) : (

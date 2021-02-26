@@ -35,6 +35,27 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
   const [ timelineEmojis, setTimelineEmojis ] = useState<Array<TimelineEmoji>>([]);
   const [ animatedEmojis, setAnimatedEmojis ] = useState<Array<EmojiReaction>>([]);
 
+  const placeEmojis = () => {
+    if (emojis) {
+      setTimelineEmojis(emojis.map((emoji) => {
+        return {
+          ...emoji,
+          progressPosition: emoji.second * 100 / videoNode.current?.duration!
+        };
+      }));
+    }
+  };
+
+  const updateAnimatedEmojis = () => {
+    if (emojis) {
+      const time = videoNode.current?.currentTime!;
+
+      setAnimatedEmojis(emojis.filter(({ second }) => {
+        return time >= second - 0.25 && time <= second + 0.25;
+      }));
+    }
+  };
+
   useEffect(() => {
     if (videoNode.current == null) {
       return;
@@ -83,6 +104,9 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
     videoNode.current.addEventListener("seeked", videoSeeked);
     videoNode.current.addEventListener("ended", videoEnded);
 
+    videoNode.current?.addEventListener("loadedmetadata", placeEmojis);
+    videoNode.current?.addEventListener("timeupdate", updateAnimatedEmojis);
+
     return () => {
       document.removeEventListener("fullscreenchange", fullscreenChange);
 
@@ -99,26 +123,8 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
   }, [manifest]);
 
   useEffect(() => {
-    videoNode.current?.addEventListener("loadedmetadata", () => {
-      if (emojis) {
-        setTimelineEmojis(emojis.map((emoji) => {
-          return {
-            ...emoji,
-            progressPosition: emoji.second * 100 / videoNode.current?.duration!
-          };
-        }));
-      }
-    });
-
-    videoNode.current?.addEventListener("timeupdate", () => {
-      if (emojis) {
-        const time = videoNode.current?.currentTime!;
-
-        setAnimatedEmojis(emojis.filter(({ emoji, second}) => {
-          return time >= second - 0.25 && time <= second + 0.25;
-        }));
-      }
-    });
+    placeEmojis();
+    updateAnimatedEmojis();
   }, [emojis]);
 
   const toggleFullscreen = () => {
