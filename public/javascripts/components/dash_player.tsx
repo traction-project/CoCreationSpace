@@ -177,12 +177,16 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
     ]);
 
     if (videoNode.current) {
+      videoInteractionTracker?.onTrackChanged(videoNode.current.currentTime, languageCode);
       activateSubtitleTrack(videoNode.current, languageCode);
     }
   };
 
   const handleDisableSubtitles = () => {
-    videoNode.current && disableSubtitles(videoNode.current);
+    if (videoNode.current) {
+      videoInteractionTracker?.onTrackChanged(videoNode.current.currentTime, "");
+      disableSubtitles(videoNode.current);
+    }
   };
 
   return (
