@@ -33,6 +33,7 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
   const [ isPlaying, setPlaying ] = useState(false);
   const [ progress, setProgress ] = useState(0);
   const [ timelineEmojis, setTimelineEmojis ] = useState<Array<TimelineEmoji>>([]);
+  const [ animatedEmoji, setAnimatedEmoji ] = useState<string>();
 
   useEffect(() => {
     if (videoNode.current == null) {
@@ -108,6 +109,19 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
         }));
       }
     });
+
+    videoNode.current?.addEventListener("timeupdate", () => {
+      const timeRounded = Math.floor(videoNode.current?.currentTime!);
+
+      emojis?.forEach(({ emoji, second }, i) => {
+        if (Math.floor(second) == timeRounded) {
+          setTimeout(() => {
+            console.log("Animating", emoji);
+            setAnimatedEmoji(emoji);
+          }, i * 100);
+        }
+      });
+    });
   }, [emojis]);
 
   const toggleFullscreen = () => {
@@ -154,6 +168,7 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
         <span style={{ width: 50, cursor: "pointer" }} onClick={togglePlayback} className="icon">
           <i className={classNames("fas", { "fa-pause": isPlaying, "fa-play": !isPlaying })} />
         </span>
+
         <div style={{ position: "relative", flexGrow: 1, cursor: "pointer", borderLeft: "1px solid #555555", borderRight: "1px solid #555555" }} onClick={seekPlayer}>
           <div style={{ position: "absolute", height: "100%", width: `${progress * 100}%`, backgroundColor: "rgba(255, 255, 255, 0.7)"}} />
 
@@ -163,10 +178,16 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
             );
           })}
         </div>
+
         <TranslationButton videoId={videoId} />
+
         <span style={{ width: 40, cursor: "pointer" }} onClick={toggleFullscreen} className="icon">
           <i className={classNames("fas", { "fa-compress": isFullscreen, "fa-expand": !isFullscreen })} />
         </span>
+
+        {(animatedEmoji) && (
+          <span className="emoji-animation">{animatedEmoji}</span>
+        )}
       </div>
     </div>
   );
