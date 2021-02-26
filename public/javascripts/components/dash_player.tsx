@@ -26,11 +26,16 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
 
   const [ isFullscreen, setFullscreen ] = useState(document.fullscreenElement != undefined);
   const [ isPlaying, setPlaying ] = useState(false);
+  const [ progress, setProgress ] = useState(0);
 
   useEffect(() => {
     if (videoNode.current == null) {
       return;
     }
+
+    setProgress(0);
+    setPlaying(false);
+    setFullscreen(false);
 
     const player = MediaPlayer().create();
     player.initialize(videoNode.current, manifest, false);
@@ -55,14 +60,22 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
       setPlaying(false);
     };
 
+    const videoProgress = () => {
+      setProgress(player.time() / player.duration());
+    };
+
     document.addEventListener("fullscreenchange", fullscreenChange);
+
     videoNode.current.addEventListener("play", playbackStarted);
     videoNode.current.addEventListener("pause", playbackPaused);
+    videoNode.current.addEventListener("timeupdate", videoProgress);
 
     return () => {
       document.removeEventListener("fullscreenchange", fullscreenChange);
+
       videoNode.current?.removeEventListener("play", playbackStarted);
       videoNode.current?.removeEventListener("pause", playbackPaused);
+      videoNode.current?.removeEventListener("timeupdate", videoProgress);
 
       player.reset();
     };
@@ -97,12 +110,14 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
           );
         })}
       </video>
-      <div style={{ position: "absolute", bottom: 0, left: 0, width: "100%", height: 50, backgroundColor: "rgba(0, 0, 0, 0.7)", color: "#FFFFFF" }}>
-        <span onClick={togglePlayback} className="icon">
+      <div style={{ position: "absolute", bottom: 0, left: 0, width: "100%", height: 25, backgroundColor: "rgba(0, 0, 0, 0.7)", color: "#FFFFFF", display: "flex" }}>
+        <span style={{ width: 50 }} onClick={togglePlayback} className="icon">
           <i className={classNames("fas", { "fa-pause": isPlaying, "fa-play": !isPlaying })} />
         </span>
-        &emsp;
-        <span onClick={toggleFullscreen} className="icon">
+        <div style={{ flexGrow: 1 }}>
+          <div style={{ height: "100%", width: `${progress * 100}%`, backgroundColor: "rgba(255, 255, 255, 0.7)"}} />
+        </div>
+        <span style={{ width: 50 }} onClick={toggleFullscreen} className="icon">
           <i className={classNames("fas", { "fa-compress": isFullscreen, "fa-expand": !isFullscreen })} />
         </span>
       </div>
