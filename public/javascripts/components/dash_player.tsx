@@ -186,7 +186,7 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
       <video autoPlay={false} ref={videoNode} style={{ width: "100%", height: "100%" }}>
         {subtitles.map((s, i) => {
           return (
-            <track key={s.url} src={s.url} label={s.language} srcLang={s.language} default={true} />
+            <track key={s.url} src={s.url} label={s.language} srcLang={s.language} />
           );
         })}
       </video>
