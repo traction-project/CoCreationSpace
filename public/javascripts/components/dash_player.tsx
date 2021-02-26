@@ -6,7 +6,7 @@ import classNames from "classnames";
 import { PostType } from "./post/post";
 import { activateSubtitleTrack, disableSubtitles, EmojiReaction } from "../util";
 import { VideoInteractionTracker } from "../video_interaction_tracker";
-import TranslationButton from "./videojs/translation_button";
+import TranslationButton from "./translation_button";
 
 interface TimelineEmoji extends EmojiReaction {
   progressPosition: number;

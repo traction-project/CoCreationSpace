@@ -1,7 +1,7 @@
 import React from "react";
 import usePortal from "react-useportal";
 
-import TranslationModal from "../post/translation_modal";
+import TranslationModal from "./translation_modal";
 
 interface TranslationButtonProps {
   videoId: string;

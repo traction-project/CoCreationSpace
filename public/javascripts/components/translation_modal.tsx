@@ -2,7 +2,7 @@ import * as React from "react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import LanguageSelector from "../language_selector";
+import LanguageSelector from "./language_selector";
 
 interface TranslationModalProps {
   id: string;
