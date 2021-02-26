@@ -8,6 +8,10 @@ import { EmojiReaction } from "../util";
 import { VideoInteractionTracker } from "../video_interaction_tracker";
 import TranslationButton from "./videojs/translation_button";
 
+interface TimelineEmoji extends EmojiReaction {
+  progressPosition: number;
+}
+
 interface DashPlayerProps {
   manifest: string;
   subtitles: Array<{ language: string, url: string }>;
@@ -20,7 +24,7 @@ interface DashPlayerProps {
 }
 
 const DashPlayer: React.FC<DashPlayerProps> = (props) => {
-  const { manifest, subtitles, videoId, videoInteractionTracker } = props;
+  const { manifest, subtitles, videoId, videoInteractionTracker, emojis, onTimeUpdate } = props;
 
   const wrapperNode = useRef<HTMLDivElement>(null);
   const videoNode = useRef<HTMLVideoElement>(null);
@@ -28,6 +32,7 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
   const [ isFullscreen, setFullscreen ] = useState(document.fullscreenElement != undefined);
   const [ isPlaying, setPlaying ] = useState(false);
   const [ progress, setProgress ] = useState(0);
+  const [ timelineEmojis, setTimelineEmojis ] = useState<Array<TimelineEmoji>>([]);
 
   useEffect(() => {
     if (videoNode.current == null) {
@@ -65,6 +70,7 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
     };
 
     const videoProgress = () => {
+      onTimeUpdate?.(player.time(), player.duration(), !player.isPaused());
       setProgress(player.time() / player.duration());
     };
 
@@ -90,6 +96,19 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
       player.reset();
     };
   }, [manifest]);
+
+  useEffect(() => {
+    videoNode.current?.addEventListener("loadedmetadata", () => {
+      if (emojis) {
+        setTimelineEmojis(emojis.map((emoji) => {
+          return {
+            ...emoji,
+            progressPosition: emoji.second * 100 / videoNode.current?.duration!
+          };
+        }));
+      }
+    });
+  }, [emojis]);
 
   const toggleFullscreen = () => {
     if (document.fullscreenElement) {
@@ -135,8 +154,14 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
         <span style={{ width: 50, cursor: "pointer" }} onClick={togglePlayback} className="icon">
           <i className={classNames("fas", { "fa-pause": isPlaying, "fa-play": !isPlaying })} />
         </span>
-        <div style={{ flexGrow: 1, cursor: "pointer", borderLeft: "1px solid #555555", borderRight: "1px solid #555555" }} onClick={seekPlayer}>
-          <div style={{ height: "100%", width: `${progress * 100}%`, backgroundColor: "rgba(255, 255, 255, 0.7)"}} />
+        <div style={{ position: "relative", flexGrow: 1, cursor: "pointer", borderLeft: "1px solid #555555", borderRight: "1px solid #555555" }} onClick={seekPlayer}>
+          <div style={{ position: "absolute", height: "100%", width: `${progress * 100}%`, backgroundColor: "rgba(255, 255, 255, 0.7)"}} />
+
+          {timelineEmojis.map(({ progressPosition, emoji }, i) => {
+            return (
+              <span key={i} className="video-marker" style={{ left: `${progressPosition}%`}}>{emoji}</span>
+            );
+          })}
         </div>
         <TranslationButton videoId={videoId} />
         <span style={{ width: 40, cursor: "pointer" }} onClick={toggleFullscreen} className="icon">

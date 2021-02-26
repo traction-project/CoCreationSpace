@@ -212,8 +212,8 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
             <div className="column is-8-desktop is-10-tablet">
               {(selectedItem.type == "video") ? (
                 <VideoWithToolbar
-                  mediaItem={selectedItem}
-                  comments={comments}
+                  id={selectedItem.id}
+                  emojis={selectedItem.emojiReactions}
                 />
               ) : (
                 <Image id={selectedItem.id} />

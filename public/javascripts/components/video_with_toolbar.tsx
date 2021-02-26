@@ -1,30 +1,21 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
-import { PostType } from "./post/post";
 import { Trans } from "react-i18next";
 
 import { EmojiReaction } from "../util";
-import { MultimediaItem } from "./post/post";
-
 import Video from "./video";
 
 interface VideoWithToolbarProps {
-  mediaItem: MultimediaItem;
-  markers?: number[];
-  comments?: PostType[];
-  emojis?: EmojiReaction[];
+  id: string;
+  emojis: Array<EmojiReaction>;
 }
 
 const EMOJIS = ["👍","💓","😊","😍","😂","😡"];
 
 const VideoWithToolbar: React.FC<VideoWithToolbarProps> = (props) => {
-  const { mediaItem } = props;
-  const videoId = mediaItem.id;
+  const { id: videoId, emojis } = props;
 
   const [ viewCount, setViewCount ] = useState<number>();
-  const [ emojiReactions ] = useState(mediaItem.emojiReactions.map(({ emoji, second }) => {
-    return { emoji, second };
-  }));
 
   useEffect(() => {
     if (videoId) {
@@ -40,7 +31,7 @@ const VideoWithToolbar: React.FC<VideoWithToolbarProps> = (props) => {
 
   return (
     <>
-      <Video {...props} id={mediaItem.id} emojis={emojiReactions} />
+      <Video id={videoId} emojis={emojis} />
 
       <nav className="level is-mobile" style={{position: "relative"}}>
         <div className="level-left">

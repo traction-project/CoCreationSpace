@@ -1,27 +1,21 @@
 import * as React from "react";
 import { useState, useEffect, useRef } from "react";
-import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 import DashPlayer from "./dash_player";
-import { PostType } from "./post/post";
-import { EmojiReaction } from "../util";
 import BlankVideo from "./blank_video";
 import useInterval from "./use_interval";
 import { UserVideoInteractionTracker } from "../video_interaction_tracker";
+import { EmojiReaction } from "javascripts/util";
 
 interface VideoProps {
-  id?: string;
-  markers?: number[];
-  comments?: PostType[];
-  emojis?: EmojiReaction[];
+  id: string;
+  emojis?: Array<EmojiReaction>;
 }
 
 const Video: React.FC<VideoProps> = (props) => {
   const { t } = useTranslation();
-  const { id } = useParams<{ id: string }>();
-  const { id: idAttribute, comments, emojis } = props;
-  const idVideo = idAttribute ? idAttribute : id;
+  const { id, emojis } = props;
 
   const totalPlayTime = useRef(0);
   const lastTimestamp = useRef(0);
@@ -32,13 +26,13 @@ const Video: React.FC<VideoProps> = (props) => {
   const [ videoStatus, setVideoStatus ] = useState<string | undefined>();
 
   const fetchVideo = () => {
-    fetch(`/media/${idVideo}/status`).then((res) => {
+    fetch(`/media/${id}/status`).then((res) => {
       return res.json();
     }).then(({ status }) => {
       setVideoStatus(status);
 
       if (status == "done") {
-        fetch(`/media/${idVideo}/subtitles`).then((res) => {
+        fetch(`/media/${id}/subtitles`).then((res) => {
           return res.json();
         }).then((data) => {
           setAvailableSubtitles(data.map((s: any) => {
@@ -48,7 +42,7 @@ const Video: React.FC<VideoProps> = (props) => {
             };
           }));
 
-          return fetch(`/media/${idVideo}`);
+          return fetch(`/media/${id}`);
         }).then(async (res) => {
           if (res.ok) {
             const data = await res.json();
@@ -67,7 +61,7 @@ const Video: React.FC<VideoProps> = (props) => {
 
     if (duration < 30 && time >= duration) {
       viewCounted.current = true;
-      fetch(`/media/${idVideo}/view`, { method: "POST" });
+      fetch(`/media/${id}/view`, { method: "POST" });
     }
 
     if (isPlaying) {
@@ -75,14 +69,14 @@ const Video: React.FC<VideoProps> = (props) => {
 
       if (totalPlayTime.current >= 30) {
         viewCounted.current = true;
-        fetch(`/media/${idVideo}/view`, { method: "POST" });
+        fetch(`/media/${id}/view`, { method: "POST" });
       }
     }
 
     lastTimestamp.current = time;
   };
 
-  useEffect(fetchVideo, [idVideo]);
+  useEffect(fetchVideo, [id]);
   useInterval(fetchVideo, (videoStatus == "processing") ? 3000 : null);
 
   if (videoStatus === "done") {
@@ -92,11 +86,10 @@ const Video: React.FC<VideoProps> = (props) => {
           <DashPlayer
             manifest={videoUrl}
             subtitles={availableSubtitles}
-            comments={comments}
+            videoId={id}
             emojis={emojis}
-            videoId={idVideo}
             onTimeUpdate={countView}
-            videoInteractionTracker={new UserVideoInteractionTracker(`/media/${idVideo}/interaction`)}
+            videoInteractionTracker={new UserVideoInteractionTracker(`/media/${id}/interaction`)}
           />
         ) : (
           <BlankVideo />
