@@ -6,6 +6,7 @@ import classNames from "classnames";
 import { PostType } from "./post/post";
 import { EmojiReaction } from "../util";
 import { VideoInteractionTracker } from "../video_interaction_tracker";
+import TranslationButton from "./videojs/translation_button";
 
 interface DashPlayerProps {
   manifest: string;
@@ -13,13 +14,13 @@ interface DashPlayerProps {
   width?: number;
   comments?: PostType[];
   emojis?: EmojiReaction[];
-  videoId?: string;
+  videoId: string;
   onTimeUpdate?: (currentTime: number, duration: number, isPlaying: boolean) => void;
   videoInteractionTracker?: VideoInteractionTracker;
 }
 
 const DashPlayer: React.FC<DashPlayerProps> = (props) => {
-  const { manifest, subtitles, videoInteractionTracker } = props;
+  const { manifest, subtitles, videoId, videoInteractionTracker } = props;
 
   const wrapperNode = useRef<HTMLDivElement>(null);
   const videoNode = useRef<HTMLVideoElement>(null);
@@ -130,14 +131,15 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
           );
         })}
       </video>
-      <div style={{ position: "absolute", bottom: 0, left: 0, width: "100%", height: 25, backgroundColor: "rgba(0, 0, 0, 0.7)", color: "#FFFFFF", display: "flex" }}>
+      <div style={{ position: "absolute", bottom: 0, left: 0, width: "100%", height: 24, backgroundColor: "rgba(0, 0, 0, 0.7)", color: "#FFFFFF", display: "flex" }}>
         <span style={{ width: 50, cursor: "pointer" }} onClick={togglePlayback} className="icon">
           <i className={classNames("fas", { "fa-pause": isPlaying, "fa-play": !isPlaying })} />
         </span>
-        <div style={{ flexGrow: 1, cursor: "pointer" }} onClick={seekPlayer}>
+        <div style={{ flexGrow: 1, cursor: "pointer", borderLeft: "1px solid #555555", borderRight: "1px solid #555555" }} onClick={seekPlayer}>
           <div style={{ height: "100%", width: `${progress * 100}%`, backgroundColor: "rgba(255, 255, 255, 0.7)"}} />
         </div>
-        <span style={{ width: 50, cursor: "pointer" }} onClick={toggleFullscreen} className="icon">
+        <TranslationButton videoId={videoId} />
+        <span style={{ width: 40, cursor: "pointer" }} onClick={toggleFullscreen} className="icon">
           <i className={classNames("fas", { "fa-compress": isFullscreen, "fa-expand": !isFullscreen })} />
         </span>
       </div>

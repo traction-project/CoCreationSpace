@@ -5,25 +5,23 @@ import TranslationModal from "../post/translation_modal";
 
 interface TranslationButtonProps {
   videoId: string;
-  onTrackChanged?: (languaceCode: string) => void;
+  onTranslationSuccess?: (languaceCode: string) => void;
 }
 
 const TranslationButton: React.FC<TranslationButtonProps> = (props) => {
-  const { videoId, onTrackChanged } = props;
+  const { videoId, onTranslationSuccess } = props;
   const { isOpen, openPortal, closePortal, Portal } = usePortal();
 
   const handleTranslationSuccess = (languageCode: string, subtitleId: string) => {
     console.log("Translation success");
-    onTrackChanged?.(languageCode);
+    onTranslationSuccess?.(languageCode);
   };
 
   return (
     <>
-      <button className="bjs-fullscreen-control vjs-control vjs-button is-clickable" onClick={openPortal}>
-        <span className="icon">
-          <i className="fas fa-lg fa-language" />
-        </span>
-      </button>
+      <span className="icon" style={{ width: 40, cursor: "pointer" }} onClick={openPortal}>
+        <i className="fas fa-lg fa-language" />
+      </span>
 
       {isOpen && (
         <Portal>
