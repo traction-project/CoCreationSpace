@@ -1,15 +1,9 @@
 import * as React from "react";
-import { useEffect, useRef, useState } from "react";
-import videojs, { VideoJsPlayer } from "video.js";
-import classNames from "classnames";
-
-import "videojs-contrib-dash";
+import { useEffect, useRef } from "react";
+import { MediaPlayer } from "dashjs";
 
 import { PostType } from "./post/post";
 import { EmojiReaction } from "../util";
-import { addEmojiAnimation, addTooltip, createMarkers } from "./videojs/util";
-import { Marker } from "./videojs/types";
-import TranslationButton from "./videojs/translation_button";
 import { VideoInteractionTracker } from "../video_interaction_tracker";
 
 interface DashPlayerProps {
@@ -19,7 +13,6 @@ interface DashPlayerProps {
   comments?: PostType[];
   emojis?: EmojiReaction[];
   videoId?: string;
-  getPlayer?: (v: VideoJsPlayer) => void;
   onTimeUpdate?: (currentTime: number, duration: number, isPlaying: boolean) => void;
   videoInteractionTracker?: VideoInteractionTracker;
 }
@@ -27,147 +20,64 @@ interface DashPlayerProps {
 const DashPlayer: React.FC<DashPlayerProps> = (props) => {
   const playerNode = useRef<HTMLDivElement>(null);
   const videoNode = useRef<HTMLVideoElement>(null);
-  const [ player, setPlayer ] = useState<VideoJsPlayer>();
-  const [ currentTime, setCurrentTime ] = useState<number>(0);
-  const [ currentTimeRounded, setCurrentTimeRounded ] = useState<number>(0);
-  const { manifest, width, subtitles, comments, getPlayer, emojis, videoId, onTimeUpdate, videoInteractionTracker } = props;
+
+  const { manifest, subtitles, videoInteractionTracker } = props;
 
   useEffect(() => {
-    if (videoNode === null) {
+    if (videoNode.current === null) {
       return;
     }
 
-    const video = videojs(videoNode.current, {
-      width,
-      autoplay: false,
-      controls: true,
-      controlBar: {
-        pictureInPictureToggle: false
-      } as any
-    }, () => {
-      initPlayer(video);
-    });
+    const player = MediaPlayer().create();
+    player.initialize(videoNode.current, manifest, false);
 
-    setPlayer(video);
-    getPlayer && getPlayer(video);
+    if (videoInteractionTracker) {
+      player.on("play", () => videoInteractionTracker.onPlay(player.time()));
+      player.on("pause", () => videoInteractionTracker.onPause(player.time()));
+      player.on("seeked", () => videoInteractionTracker.onSeek(player.time()));
+      player.on("ended", () => videoInteractionTracker.onEnd(player.time()));
+      player.on("fullscreenchange", () => videoInteractionTracker.onFullscreen(player.time()));
+    }
 
     return () => {
-      player && player.dispose();
+      player && player.reset();
     };
   }, [manifest]);
 
-  useEffect(() => {
-    if (player) {
-      const markers = getMarkers();
-      createMarkers(player, markers, playerNode);
-
-      if (comments || emojis) {
-        player.off("timeupdate");
-        player.on("timeupdate", handlePlayerTimeUpdated);
-      }
-    }
-  }, [comments?.length, player, emojis]);
-
-  useEffect(() => {
-    const timeRounded = Math.floor(currentTime);
-
-    if (currentTimeRounded !== timeRounded) {
-      setCurrentTimeRounded(timeRounded);
-      addReactions(timeRounded);
-    }
-  }, [currentTime]);
-
-  const initPlayer = (video: VideoJsPlayer) => {
-    if (video) {
-      video.src({
-        src: manifest,
-        type: "application/dash+xml"
-      });
-
-      const markers = getMarkers();
-      if (markers) {
-        video.on("loadedmetadata", () => {
-          createMarkers(video, markers, playerNode);
-        });
-      }
-
-      if (videoId) {
-        const translationButton = new TranslationButton(video, videoId, {});
-        translationButton.onTrackChanged((languaceCode) => {
-          videoInteractionTracker?.onTrackChanged(video.currentTime(), languaceCode);
-        });
-
-        video.controlBar.addChild(translationButton);
-      }
-
-      if (videoInteractionTracker) {
-        video.on("play", () => videoInteractionTracker.onPlay(video.currentTime()));
-        video.on("pause", () => videoInteractionTracker.onPause(video.currentTime()));
-        video.on("seeked", () => videoInteractionTracker.onSeek(video.currentTime()));
-        video.on("ended", () => videoInteractionTracker.onEnd(video.currentTime()));
-        video.on("fullscreenchange", () => videoInteractionTracker.onFullscreen(video.currentTime()));
-      }
+  const toggleFullscreen = () => {
+    if (document.fullscreenElement) {
+      document.exitFullscreen();
+    } else {
+      playerNode.current?.requestFullscreen();
     }
   };
 
-  const handlePlayerTimeUpdated = () => {
-    if (player) {
-      setCurrentTime(player.currentTime());
-      onTimeUpdate?.(player.currentTime(), player.duration(), !player.paused());
+  const togglePlayback = () => {
+    if (!videoNode.current) {
+      return;
     }
-  };
 
-  const addReactions = (timeRounded: number) => {
-    if (player) {
-      if (comments) {
-        const comment = comments.filter((comment) => comment.second && (Math.floor(comment.second) === timeRounded));
-
-        if (comment.length > 0) {
-          addTooltip(player, comment[0]);
-        }
-      }
-
-      if (emojis) {
-        const items = emojis.filter((item) => item.second && (Math.floor(item.second) === timeRounded));
-
-        if (items.length > 0) {
-          items.forEach((item, index) => {
-            setTimeout(() => addEmojiAnimation(player, item), index * 100);
-          });
-        }
-      }
+    if (videoNode.current.paused) {
+      videoNode.current.play();
+    } else {
+      videoNode.current.pause();
     }
-  };
-
-  const getMarkers = (): Marker[] => {
-    let secondsComment = comments?.map(comment => comment.second);
-    secondsComment = secondsComment?.filter(second => second !== undefined);
-
-    const markersComment: Marker[] = secondsComment ?
-      secondsComment?.map(second => { return { type: "comment", second: second ? second : 0 }; })
-      : [];
-
-    const markersEmojis: Marker[] = emojis ?
-      emojis?.map(item => { return { type: "emoji", second: item.second, emoji: item.emoji }; })
-      : [];
-
-    const markers: Marker[] = [
-      ...markersComment,
-      ...markersEmojis
-    ];
-
-    return markers;
   };
 
   return (
-    <div ref={playerNode} data-vjs-player>
-      <video autoPlay={false} disablePictureInPicture={true} ref={videoNode} className={classNames("video-js", "vjs-16-9", "vjs-big-play-centered", { "vjs-fill": width == undefined })}>
+    <div ref={playerNode} style={{ position: "relative" }}>
+      <video autoPlay={false} ref={videoNode} style={{ width: "100%", height: "100%" }}>
         {subtitles.map((s, i) => {
           return (
             <track key={i} src={s.url} label={s.language} srcLang={s.language} default={true} />
           );
         })}
       </video>
+      <div style={{ position: "absolute", bottom: 0, left: 0, width: "100%", height: 50, backgroundColor: "rgba(0, 0, 0, 0.7)", color: "#FFFFFF" }}>
+        <span onClick={togglePlayback}>Play/Pause</span>
+        &emsp;
+        <span onClick={toggleFullscreen}>Fullscreen</span>
+      </div>
     </div>
   );
 };
