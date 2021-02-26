@@ -131,13 +131,13 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
         })}
       </video>
       <div style={{ position: "absolute", bottom: 0, left: 0, width: "100%", height: 25, backgroundColor: "rgba(0, 0, 0, 0.7)", color: "#FFFFFF", display: "flex" }}>
-        <span style={{ width: 50 }} onClick={togglePlayback} className="icon">
+        <span style={{ width: 50, cursor: "pointer" }} onClick={togglePlayback} className="icon">
           <i className={classNames("fas", { "fa-pause": isPlaying, "fa-play": !isPlaying })} />
         </span>
-        <div style={{ flexGrow: 1 }} onClick={seekPlayer}>
+        <div style={{ flexGrow: 1, cursor: "pointer" }} onClick={seekPlayer}>
           <div style={{ height: "100%", width: `${progress * 100}%`, backgroundColor: "rgba(255, 255, 255, 0.7)"}} />
         </div>
-        <span style={{ width: 50 }} onClick={toggleFullscreen} className="icon">
+        <span style={{ width: 50, cursor: "pointer" }} onClick={toggleFullscreen} className="icon">
           <i className={classNames("fas", { "fa-compress": isFullscreen, "fa-expand": !isFullscreen })} />
         </span>
       </div>
