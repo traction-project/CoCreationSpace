@@ -9,12 +9,13 @@ import Video from "./video";
 interface VideoWithToolbarProps {
   id: string;
   emojis: Array<EmojiReaction>;
+  onTimeUpdate?: (currentTime: number) => void;
 }
 
 const EMOJIS = ["👍","💓","😊","😍","😂","😡"];
 
 const VideoWithToolbar: React.FC<VideoWithToolbarProps> = (props) => {
-  const { id: videoId, emojis } = props;
+  const { id: videoId, emojis, onTimeUpdate } = props;
 
   const currentVideoTime = useRef(0);
   const [ viewCount, setViewCount ] = useState<number>();
@@ -61,6 +62,7 @@ const VideoWithToolbar: React.FC<VideoWithToolbarProps> = (props) => {
         id={videoId}
         emojis={emojiReactions}
         onTimeUpdate={(time) => {
+          onTimeUpdate?.(time);
           currentVideoTime.current = time;
         }}
       />
