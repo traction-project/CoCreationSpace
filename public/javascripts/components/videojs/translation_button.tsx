@@ -5,7 +5,7 @@ import TranslationModal from "../post/translation_modal";
 
 interface TranslationButtonProps {
   videoId: string;
-  onTranslationSuccess?: (languaceCode: string) => void;
+  onTranslationSuccess?: (languaceCode: string, subtitleId: string) => void;
 }
 
 const TranslationButton: React.FC<TranslationButtonProps> = (props) => {
@@ -14,7 +14,7 @@ const TranslationButton: React.FC<TranslationButtonProps> = (props) => {
 
   const handleTranslationSuccess = (languageCode: string, subtitleId: string) => {
     console.log("Translation success");
-    onTranslationSuccess?.(languageCode);
+    onTranslationSuccess?.(languageCode, subtitleId);
   };
 
   return (

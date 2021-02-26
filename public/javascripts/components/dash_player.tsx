@@ -12,9 +12,15 @@ interface TimelineEmoji extends EmojiReaction {
   progressPosition: number;
 }
 
+interface Subtitles {
+  language: string;
+  url: string;
+  active?: boolean;
+}
+
 interface DashPlayerProps {
   manifest: string;
-  subtitles: Array<{ language: string, url: string }>;
+  subtitles: Array<Subtitles>;
   width?: number;
   comments?: PostType[];
   emojis?: EmojiReaction[];
@@ -24,7 +30,7 @@ interface DashPlayerProps {
 }
 
 const DashPlayer: React.FC<DashPlayerProps> = (props) => {
-  const { manifest, subtitles, videoId, videoInteractionTracker, emojis, onTimeUpdate } = props;
+  const { manifest, videoId, videoInteractionTracker, emojis, onTimeUpdate } = props;
 
   const wrapperNode = useRef<HTMLDivElement>(null);
   const videoNode = useRef<HTMLVideoElement>(null);
@@ -34,6 +40,7 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
   const [ progress, setProgress ] = useState(0);
   const [ timelineEmojis, setTimelineEmojis ] = useState<Array<TimelineEmoji>>([]);
   const [ animatedEmojis, setAnimatedEmojis ] = useState<Array<EmojiReaction>>([]);
+  const [ subtitles, setSubtitles ] = useState<Array<Subtitles>>([]);
 
   const placeEmojis = () => {
     if (emojis) {
@@ -127,6 +134,10 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
     updateAnimatedEmojis();
   }, [emojis]);
 
+  useEffect(() => {
+    setSubtitles(props.subtitles.map((s, i) => (i == 0) ? { ...s, active: true } : s));
+  }, [props.subtitles]);
+
   const toggleFullscreen = () => {
     if (document.fullscreenElement) {
       document.exitFullscreen();
@@ -158,15 +169,26 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
     }
   };
 
+  const handleTranslationSuccess = (languageCode: string, subtitleId: string) => {
+    setSubtitles([
+      {
+        language: languageCode,
+        url: `/media/subtitles/${subtitleId}`,
+        active: true
+      }
+    ]);
+  };
+
   return (
     <div ref={wrapperNode} style={{ position: "relative" }}>
       <video autoPlay={false} ref={videoNode} style={{ width: "100%", height: "100%" }}>
         {subtitles.map((s, i) => {
           return (
-            <track key={i} src={s.url} label={s.language} srcLang={s.language} default={true} />
+            <track key={s.url} src={s.url} label={s.language} srcLang={s.language} default={s.active == true} />
           );
         })}
       </video>
+
       <div style={{ position: "absolute", bottom: 0, left: 0, width: "100%", height: 24, backgroundColor: "rgba(0, 0, 0, 0.7)", color: "#FFFFFF", display: "flex" }}>
         <span style={{ width: 50, cursor: "pointer" }} onClick={togglePlayback} className="icon">
           <i className={classNames("fas", { "fa-pause": isPlaying, "fa-play": !isPlaying })} />
@@ -182,7 +204,10 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
           })}
         </div>
 
-        <TranslationButton videoId={videoId} />
+        <TranslationButton
+          videoId={videoId}
+          onTranslationSuccess={handleTranslationSuccess}
+        />
 
         <span style={{ width: 40, cursor: "pointer" }} onClick={toggleFullscreen} className="icon">
           <i className={classNames("fas", { "fa-compress": isFullscreen, "fa-expand": !isFullscreen })} />
