@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams, Link, useHistory } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
@@ -67,6 +67,7 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
   const { id } = useParams<{ id: string }>();
   const idPost = props.post ? props.post.id : id;
   const { callbackClickTime } = props;
+  const currentTime = useRef(0);
 
   const [post, setPost] = useState<PostType>();
   const [isLike, setIsLike] = useState<boolean>(false);
@@ -127,7 +128,7 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
   };
 
   const handleSubmitNewComment = async ({ comment, selectedGettimestamp, multimedia }: { comment: string, selectedGettimestamp: boolean, multimedia?: Array<string> }) => {
-    const second = null;
+    const second = currentTime.current;
 
     const responseComment = (second && selectedGettimestamp) ? (
       await postComment(idPost, comment, multimedia, second)
@@ -214,6 +215,7 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
                 <VideoWithToolbar
                   id={selectedItem.id}
                   emojis={selectedItem.emojiReactions}
+                  onTimeUpdate={(time) => currentTime.current = time}
                 />
               ) : (
                 <Image id={selectedItem.id} />
