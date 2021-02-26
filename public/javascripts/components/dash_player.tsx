@@ -33,7 +33,7 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
   const [ isPlaying, setPlaying ] = useState(false);
   const [ progress, setProgress ] = useState(0);
   const [ timelineEmojis, setTimelineEmojis ] = useState<Array<TimelineEmoji>>([]);
-  const [ animatedEmoji, setAnimatedEmoji ] = useState<string>();
+  const [ animatedEmojis, setAnimatedEmojis ] = useState<Array<EmojiReaction>>([]);
 
   useEffect(() => {
     if (videoNode.current == null) {
@@ -111,16 +111,13 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
     });
 
     videoNode.current?.addEventListener("timeupdate", () => {
-      const timeRounded = Math.floor(videoNode.current?.currentTime!);
+      if (emojis) {
+        const time = videoNode.current?.currentTime!;
 
-      emojis?.forEach(({ emoji, second }, i) => {
-        if (Math.floor(second) == timeRounded) {
-          setTimeout(() => {
-            console.log("Animating", emoji);
-            setAnimatedEmoji(emoji);
-          }, i * 100);
-        }
-      });
+        setAnimatedEmojis(emojis.filter(({ emoji, second}) => {
+          return time >= second - 0.25 && time <= second + 0.25;
+        }));
+      }
     });
   }, [emojis]);
 
@@ -185,9 +182,11 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
           <i className={classNames("fas", { "fa-compress": isFullscreen, "fa-expand": !isFullscreen })} />
         </span>
 
-        {(animatedEmoji) && (
-          <span className="emoji-animation">{animatedEmoji}</span>
-        )}
+        {animatedEmojis.map(({emoji, second}) => {
+          return (
+            <span key={second} className="emoji-animation">{emoji}</span>
+          );
+        })}
       </div>
     </div>
   );
