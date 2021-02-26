@@ -4,7 +4,7 @@ import { MediaPlayer } from "dashjs";
 import classNames from "classnames";
 
 import { PostType } from "./post/post";
-import { activateSubtitleTrack, EmojiReaction } from "../util";
+import { activateSubtitleTrack, disableSubtitles, EmojiReaction } from "../util";
 import { VideoInteractionTracker } from "../video_interaction_tracker";
 import TranslationButton from "./videojs/translation_button";
 
@@ -181,6 +181,10 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
     }
   };
 
+  const handleDisableSubtitles = () => {
+    videoNode.current && disableSubtitles(videoNode.current);
+  };
+
   return (
     <div ref={wrapperNode} style={{ position: "relative" }}>
       <video autoPlay={false} ref={videoNode} style={{ width: "100%", height: "100%" }}>
@@ -209,6 +213,7 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
         <TranslationButton
           videoId={videoId}
           onTranslationSuccess={handleTranslationSuccess}
+          onSubtitlesDisabled={handleDisableSubtitles}
         />
 
         <span style={{ width: 40, cursor: "pointer" }} onClick={toggleFullscreen} className="icon">

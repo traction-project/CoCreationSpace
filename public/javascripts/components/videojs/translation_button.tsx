@@ -6,10 +6,11 @@ import TranslationModal from "../post/translation_modal";
 interface TranslationButtonProps {
   videoId: string;
   onTranslationSuccess?: (languaceCode: string, subtitleId: string) => void;
+  onSubtitlesDisabled?: () => void;
 }
 
 const TranslationButton: React.FC<TranslationButtonProps> = (props) => {
-  const { videoId, onTranslationSuccess } = props;
+  const { videoId, onTranslationSuccess, onSubtitlesDisabled } = props;
   const { isOpen, openPortal, closePortal, Portal } = usePortal();
 
   const handleTranslationSuccess = (languageCode: string, subtitleId: string) => {
@@ -28,6 +29,7 @@ const TranslationButton: React.FC<TranslationButtonProps> = (props) => {
           <TranslationModal
             id={videoId}
             onSuccess={handleTranslationSuccess}
+            onDisable={onSubtitlesDisabled}
             onClose={closePortal}
           />
         </Portal>

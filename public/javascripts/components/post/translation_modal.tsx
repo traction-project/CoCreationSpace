@@ -8,10 +8,11 @@ interface TranslationModalProps {
   id: string;
   onClose: () => void;
   onSuccess: (languageCode: string, subtitleId: string) => void;
+  onDisable?: () => void;
 }
 
 const TranslationModal: React.FC<TranslationModalProps> = (props) => {
-  const { id, onSuccess, onClose } = props;
+  const { id, onSuccess, onClose, onDisable } = props;
   const { t } = useTranslation();
   const [ targetLanguage, setTargetLanguage ] = useState<string>("en");
 
@@ -29,6 +30,11 @@ const TranslationModal: React.FC<TranslationModalProps> = (props) => {
     } catch (e) {
       console.error(e);
     }
+  };
+
+  const handleDisable = () => {
+    onDisable?.();
+    onClose();
   };
 
   return (
@@ -55,6 +61,12 @@ const TranslationModal: React.FC<TranslationModalProps> = (props) => {
             <div className="control">
               <button className="button is-link is-light" onClick={onClose}>{t("Cancel")}</button>
             </div>
+
+            {(onDisable) && (
+              <div className="control ml-6">
+                <button className="button is-danger is-light" onClick={handleDisable}>{t("Disable subtitles")}</button>
+              </div>
+            )}
           </div>
         </div>
       </div>
