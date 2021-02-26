@@ -21,7 +21,7 @@ interface DashPlayerProps {
 const DashPlayer: React.FC<DashPlayerProps> = (props) => {
   const { manifest, subtitles, videoInteractionTracker } = props;
 
-  const playerNode = useRef<HTMLDivElement>(null);
+  const wrapperNode = useRef<HTMLDivElement>(null);
   const videoNode = useRef<HTMLVideoElement>(null);
 
   const [ isFullscreen, setFullscreen ] = useState(document.fullscreenElement != undefined);
@@ -85,7 +85,7 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
     if (document.fullscreenElement) {
       document.exitFullscreen();
     } else {
-      playerNode.current?.requestFullscreen();
+      wrapperNode.current?.requestFullscreen();
     }
   };
 
@@ -101,8 +101,19 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
     }
   };
 
+  const seekPlayer = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.pageX - rect.left;
+
+    const progress = x / rect.width;
+
+    if (videoNode.current) {
+      videoNode.current.currentTime = progress * videoNode.current.duration;
+    }
+  };
+
   return (
-    <div ref={playerNode} style={{ position: "relative" }}>
+    <div ref={wrapperNode} style={{ position: "relative" }}>
       <video autoPlay={false} ref={videoNode} style={{ width: "100%", height: "100%" }}>
         {subtitles.map((s, i) => {
           return (
@@ -114,7 +125,7 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
         <span style={{ width: 50 }} onClick={togglePlayback} className="icon">
           <i className={classNames("fas", { "fa-pause": isPlaying, "fa-play": !isPlaying })} />
         </span>
-        <div style={{ flexGrow: 1 }}>
+        <div style={{ flexGrow: 1 }} onClick={seekPlayer}>
           <div style={{ height: "100%", width: `${progress * 100}%`, backgroundColor: "rgba(255, 255, 255, 0.7)"}} />
         </div>
         <span style={{ width: 50 }} onClick={toggleFullscreen} className="icon">
