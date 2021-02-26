@@ -20,7 +20,7 @@ const TranslationButton: React.FC<TranslationButtonProps> = (props) => {
 
   return (
     <>
-      <span className="icon" style={{ width: 40, cursor: "pointer" }} onClick={openPortal}>
+      <span className="controlbutton icon" onClick={openPortal}>
         <i className="fas fa-lg fa-language" />
       </span>
 

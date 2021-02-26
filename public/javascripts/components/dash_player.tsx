@@ -186,8 +186,8 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
   };
 
   return (
-    <div ref={wrapperNode} style={{ position: "relative" }}>
-      <video autoPlay={false} ref={videoNode} style={{ width: "100%", height: "100%" }}>
+    <div ref={wrapperNode} className="dash-player">
+      <video autoPlay={false} ref={videoNode}>
         {subtitles.map((s, i) => {
           return (
             <track key={s.url} src={s.url} label={s.language} srcLang={s.language} />
@@ -195,13 +195,13 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
         })}
       </video>
 
-      <div style={{ position: "absolute", bottom: 0, left: 0, width: "100%", height: 24, backgroundColor: "rgba(0, 0, 0, 0.7)", color: "#FFFFFF", display: "flex" }}>
-        <span style={{ width: 50, cursor: "pointer" }} onClick={togglePlayback} className="icon">
+      <div className="controlbar">
+        <span onClick={togglePlayback} className="controlbutton icon">
           <i className={classNames("fas", { "fa-pause": isPlaying, "fa-play": !isPlaying })} />
         </span>
 
-        <div style={{ position: "relative", flexGrow: 1, cursor: "pointer", borderLeft: "1px solid #555555", borderRight: "1px solid #555555" }} onClick={seekPlayer}>
-          <div style={{ position: "absolute", height: "100%", width: `${progress * 100}%`, backgroundColor: "rgba(255, 255, 255, 0.7)"}} />
+        <div className="seekbar" onClick={seekPlayer}>
+          <div className="progressbar" style={{ width: `${progress * 100}%` }} />
 
           {timelineEmojis.map(({ progressPosition, emoji }, i) => {
             return (
@@ -216,7 +216,7 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
           onSubtitlesDisabled={handleDisableSubtitles}
         />
 
-        <span style={{ width: 40, cursor: "pointer" }} onClick={toggleFullscreen} className="icon">
+        <span onClick={toggleFullscreen} className="controlbutton icon">
           <i className={classNames("fas", { "fa-compress": isFullscreen, "fa-expand": !isFullscreen })} />
         </span>
 
