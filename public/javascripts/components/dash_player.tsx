@@ -1,6 +1,7 @@
 import * as React from "react";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { MediaPlayer } from "dashjs";
+import classNames from "classnames";
 
 import { PostType } from "./post/post";
 import { EmojiReaction } from "../util";
@@ -18,13 +19,16 @@ interface DashPlayerProps {
 }
 
 const DashPlayer: React.FC<DashPlayerProps> = (props) => {
+  const { manifest, subtitles, videoInteractionTracker } = props;
+
   const playerNode = useRef<HTMLDivElement>(null);
   const videoNode = useRef<HTMLVideoElement>(null);
 
-  const { manifest, subtitles, videoInteractionTracker } = props;
+  const [ isFullscreen, setFullscreen ] = useState(document.fullscreenElement != undefined);
+  const [ isPlaying, setPlaying ] = useState(false);
 
   useEffect(() => {
-    if (videoNode.current === null) {
+    if (videoNode.current == null) {
       return;
     }
 
@@ -32,15 +36,35 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
     player.initialize(videoNode.current, manifest, false);
 
     if (videoInteractionTracker) {
-      player.on("play", () => videoInteractionTracker.onPlay(player.time()));
-      player.on("pause", () => videoInteractionTracker.onPause(player.time()));
       player.on("seeked", () => videoInteractionTracker.onSeek(player.time()));
       player.on("ended", () => videoInteractionTracker.onEnd(player.time()));
-      player.on("fullscreenchange", () => videoInteractionTracker.onFullscreen(player.time()));
     }
 
+    const fullscreenChange = () => {
+      videoInteractionTracker?.onFullscreen(player.time());
+      setFullscreen(document.fullscreenElement != undefined);
+    };
+
+    const playbackStarted = () => {
+      videoInteractionTracker?.onPlay(player.time());
+      setPlaying(true);
+    };
+
+    const playbackPaused = () => {
+      videoInteractionTracker?.onPause(player.time());
+      setPlaying(false);
+    };
+
+    document.addEventListener("fullscreenchange", fullscreenChange);
+    videoNode.current.addEventListener("play", playbackStarted);
+    videoNode.current.addEventListener("pause", playbackPaused);
+
     return () => {
-      player && player.reset();
+      document.removeEventListener("fullscreenchange", fullscreenChange);
+      videoNode.current?.removeEventListener("play", playbackStarted);
+      videoNode.current?.removeEventListener("pause", playbackPaused);
+
+      player.reset();
     };
   }, [manifest]);
 
@@ -74,9 +98,13 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
         })}
       </video>
       <div style={{ position: "absolute", bottom: 0, left: 0, width: "100%", height: 50, backgroundColor: "rgba(0, 0, 0, 0.7)", color: "#FFFFFF" }}>
-        <span onClick={togglePlayback}>Play/Pause</span>
+        <span onClick={togglePlayback} className="icon">
+          <i className={classNames("fas", { "fa-pause": isPlaying, "fa-play": !isPlaying })} />
+        </span>
         &emsp;
-        <span onClick={toggleFullscreen}>Fullscreen</span>
+        <span onClick={toggleFullscreen} className="icon">
+          <i className={classNames("fas", { "fa-compress": isFullscreen, "fa-expand": !isFullscreen })} />
+        </span>
       </div>
     </div>
   );
