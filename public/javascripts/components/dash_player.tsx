@@ -4,7 +4,7 @@ import { MediaPlayer } from "dashjs";
 import classNames from "classnames";
 
 import { PostType } from "./post/post";
-import { EmojiReaction } from "../util";
+import { activateSubtitleTrack, EmojiReaction } from "../util";
 import { VideoInteractionTracker } from "../video_interaction_tracker";
 import TranslationButton from "./videojs/translation_button";
 
@@ -15,7 +15,6 @@ interface TimelineEmoji extends EmojiReaction {
 interface Subtitles {
   language: string;
   url: string;
-  active?: boolean;
 }
 
 interface DashPlayerProps {
@@ -173,10 +172,13 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
     setSubtitles([
       {
         language: languageCode,
-        url: `/media/subtitles/${subtitleId}`,
-        active: true
+        url: `/media/subtitles/${subtitleId}`
       }
     ]);
+
+    if (videoNode.current) {
+      activateSubtitleTrack(videoNode.current, languageCode);
+    }
   };
 
   return (
@@ -184,7 +186,7 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
       <video autoPlay={false} ref={videoNode} style={{ width: "100%", height: "100%" }}>
         {subtitles.map((s, i) => {
           return (
-            <track key={s.url} src={s.url} label={s.language} srcLang={s.language} default={s.active == true} />
+            <track key={s.url} src={s.url} label={s.language} srcLang={s.language} default={true} />
           );
         })}
       </video>
