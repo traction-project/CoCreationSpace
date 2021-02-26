@@ -40,7 +40,7 @@ export class UserVideoInteractionTracker implements VideoInteractionTracker {
 
   public onEnd(timestamp: number) {
     this.sendInteraction({
-      type: "play",
+      type: "end",
       timestamp
     });
   }

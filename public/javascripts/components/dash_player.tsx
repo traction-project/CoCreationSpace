@@ -57,7 +57,11 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
 
     const videoSeeked = () => {
       videoInteractionTracker?.onSeek(player.time());
-    }
+    };
+
+    const videoEnded = () => {
+      videoInteractionTracker?.onEnd(player.time());
+    };
 
     const videoProgress = () => {
       setProgress(player.time() / player.duration());
@@ -69,6 +73,7 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
     videoNode.current.addEventListener("pause", playbackPaused);
     videoNode.current.addEventListener("timeupdate", videoProgress);
     videoNode.current.addEventListener("seeked", videoSeeked);
+    videoNode.current.addEventListener("ended", videoEnded);
 
     return () => {
       document.removeEventListener("fullscreenchange", fullscreenChange);
@@ -78,6 +83,7 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
         videoNode.current.removeEventListener("pause", playbackPaused);
         videoNode.current.removeEventListener("timeupdate", videoProgress);
         videoNode.current.removeEventListener("seeked", videoSeeked);
+        videoNode.current.removeEventListener("ended", videoEnded);
       }
 
       player.reset();
