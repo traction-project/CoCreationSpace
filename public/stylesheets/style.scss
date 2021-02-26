@@ -687,7 +687,7 @@ a.header__item:hover {
 
 .emoji-animation {
   position: absolute;
-  left: 0;
+  left: 25px;
   bottom: 25px;
   opacity: 0;
   animation-name: emoji-move;
@@ -699,11 +699,11 @@ a.header__item:hover {
   0% {
     transform: translateY(0);
     opacity: 1;
-    font-size: 30px;
+    font-size: 40px;
   }
 
   50% {
-    font-size: 25px;
+    font-size: 30px;
     opacity: .7;
   }
 
