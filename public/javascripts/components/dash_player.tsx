@@ -40,11 +40,6 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
     const player = MediaPlayer().create();
     player.initialize(videoNode.current, manifest, false);
 
-    if (videoInteractionTracker) {
-      player.on("seeked", () => videoInteractionTracker.onSeek(player.time()));
-      player.on("ended", () => videoInteractionTracker.onEnd(player.time()));
-    }
-
     const fullscreenChange = () => {
       videoInteractionTracker?.onFullscreen(player.time());
       setFullscreen(document.fullscreenElement != undefined);
@@ -60,6 +55,10 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
       setPlaying(false);
     };
 
+    const videoSeeked = () => {
+      videoInteractionTracker?.onSeek(player.time());
+    }
+
     const videoProgress = () => {
       setProgress(player.time() / player.duration());
     };
@@ -69,13 +68,17 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
     videoNode.current.addEventListener("play", playbackStarted);
     videoNode.current.addEventListener("pause", playbackPaused);
     videoNode.current.addEventListener("timeupdate", videoProgress);
+    videoNode.current.addEventListener("seeked", videoSeeked);
 
     return () => {
       document.removeEventListener("fullscreenchange", fullscreenChange);
 
-      videoNode.current?.removeEventListener("play", playbackStarted);
-      videoNode.current?.removeEventListener("pause", playbackPaused);
-      videoNode.current?.removeEventListener("timeupdate", videoProgress);
+      if (videoNode.current) {
+        videoNode.current.removeEventListener("play", playbackStarted);
+        videoNode.current.removeEventListener("pause", playbackPaused);
+        videoNode.current.removeEventListener("timeupdate", videoProgress);
+        videoNode.current.removeEventListener("seeked", videoSeeked);
+      }
 
       player.reset();
     };
