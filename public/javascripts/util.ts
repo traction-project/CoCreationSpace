@@ -152,6 +152,77 @@ export const availableLanguages = {
 };
 
 /**
+ * Activates the subtitle track for the given language in the given HTML video
+ * element. If no such track if found, the function returns false.
+ *
+ * @param player A HTML video element
+ * @param languageCode The language code of the track to activate
+ * @returns True if the track was activated, false otherwise
+ */
+export function activateSubtitleTrack(player: HTMLVideoElement, languageCode: string): boolean {
+  const tracks = player.textTracks;
+  let found = false;
+
+  for (let i=0; i<tracks.length; i++) {
+    if (tracks[i].language == languageCode) {
+      tracks[i].mode = "showing";
+      found = true;
+    } else {
+      tracks[i].mode = "hidden";
+    }
+  }
+
+  return found;
+}
+
+/**
+ * Deactivates all subtitle tracks for the given video element.
+ *
+ * @param player A HTML video element
+ */
+export function disableSubtitles(player: HTMLVideoElement) {
+  const tracks = player.textTracks;
+
+  for (let i=0; i<tracks.length; i++) {
+    tracks[i].mode = "hidden";
+  }
+}
+
+/**
+ * Activates first subtitle track for the given video element, if
+ * available.
+ *
+ * @param player A HTML video element
+ */
+export function enableSubtitles(player: HTMLVideoElement) {
+  const tracks = player.textTracks;
+
+  if (tracks.length > 0) {
+    tracks[0].mode = "showing";
+  }
+}
+
+/**
+ * Checks if the given player has a subtitle track identified by the given
+ * language code.
+ *
+ * @param player A HTML video element
+ * @param languageCode The language code of the track to search
+ * @returns True if the player has a track with the given code, false otherwise
+ */
+export function hasSubtitleTrack(player: HTMLVideoElement, languageCode: string): boolean {
+  const tracks = player.textTracks;
+
+  for (let i=0; i<tracks.length; i++) {
+    if (tracks[i].language == languageCode) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+/**
  * Verify login status with server. Returns true if the user is logged in and
  * false otherwise or if an error occurs.
  *
