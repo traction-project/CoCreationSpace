@@ -578,14 +578,6 @@ a.header__item:hover {
   bottom: 0;
 }
 
-.vjs-has-started.vjs-user-inactive.vjs-playing .reaction-container {
-  bottom: 0;
-}
-
-.vjs-has-started .reaction-container {
-  bottom: 3em;
-}
-
 .reaction-list {
   overflow: auto;
   display: flex;
@@ -679,14 +671,6 @@ a.header__item:hover {
   display: none;
 }
 
-.vjs-has-started.vjs-user-inactive.vjs-playing .emoji-container {
-  bottom: 0;
-}
-
-.vjs-has-started .emoji-container {
-  bottom: 1em;
-}
-
 .emoji-item {
   cursor: pointer;
   transition: all .3s;
@@ -709,14 +693,6 @@ a.header__item:hover {
   animation-name: emoji-move;
   animation-duration: 1s;
   animation-timing-function: ease-out;
-}
-
-.vjs-has-started.vjs-user-inactive.vjs-playing .emoji-animation {
-  bottom: 0;
-}
-
-.vjs-has-started .emoji-animation {
-  bottom: 1em;
 }
 
 @keyframes emoji-move {
@@ -751,14 +727,6 @@ a.header__item:hover {
   font-size: 1.5em;
   letter-spacing: 1px;
   background-color: rgba(80, 79, 79, 0.3);
-}
-
-.vjs-has-started.vjs-user-inactive.vjs-playing .tooltip-container {
-  bottom: 0;
-}
-
-.vjs-has-started .tooltip-container {
-  bottom: 2em;
 }
 
 .tooltip__username {
