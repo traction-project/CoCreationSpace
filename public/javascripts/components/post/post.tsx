@@ -1,7 +1,6 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
 import { useParams, Link, useHistory } from "react-router-dom";
-import { VideoJsPlayer } from "video.js";
 import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import classNames from "classnames";
@@ -12,7 +11,6 @@ import CommentList from "./comment_list";
 import NewComment from "./new_comment";
 import { TagData } from "../post_list/post_list";
 import { getPostId, postComment, postLike, deletePost } from "../../services/post.service";
-import { addTooltip } from "../videojs/util";
 import Image from "../image";
 import Thumbnail from "../thumbnail";
 import VideoWithToolbar from "../video_with_toolbar";
@@ -76,7 +74,6 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
   const [showNewComment, setShowNewComment] = useState<boolean>(false);
   const [comments, setComments] = useState<PostType[]>([]);
   const [showComments, setShowComments] = useState(false);
-  const [player, setPlayer] = useState<VideoJsPlayer>();
   const [selectedItem, setSelectedItem ] = useState<MultimediaItem>();
 
   useEffect(() => {
@@ -130,7 +127,8 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
   };
 
   const handleSubmitNewComment = async ({ comment, selectedGettimestamp, multimedia }: { comment: string, selectedGettimestamp: boolean, multimedia?: Array<string> }) => {
-    const second = player ? player.currentTime() : null;
+    const second = null;
+
     const responseComment = (second && selectedGettimestamp) ? (
       await postComment(idPost, comment, multimedia, second)
     ) : (
@@ -138,10 +136,6 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
     );
 
     if (responseComment.ok) {
-      if (player) {
-        const resJson = await responseComment.json();
-        addTooltip(player, resJson);
-      }
       const responsePost = await getPostId(idPost);
 
       if (responsePost.ok) {
@@ -156,12 +150,6 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
     setShowNewComment(false);
   };
 
-  const handleClickTime = (second: number) => {
-    if (player) {
-      player.currentTime(second);
-    }
-  };
-
   const handleDeletePost = (id: string) => {
     return async () => {
       const res = await deletePost(id);
@@ -170,10 +158,6 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
         history.goBack();
       }
     };
-  };
-
-  const callbackPlayer = async (newPlayer: VideoJsPlayer) => {
-    await setPlayer(newPlayer);
   };
 
   if (!post) {
@@ -229,7 +213,6 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
               {(selectedItem.type == "video") ? (
                 <VideoWithToolbar
                   mediaItem={selectedItem}
-                  getPlayer={callbackPlayer}
                   comments={comments}
                 />
               ) : (
@@ -303,7 +286,7 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
             )}
 
             {(showComments) && (
-              <CommentList posts={comments} callbackClickTime={handleClickTime} />
+              <CommentList posts={comments} />
             )}
           </div>
         </div>

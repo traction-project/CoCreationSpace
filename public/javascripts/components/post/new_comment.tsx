@@ -18,7 +18,7 @@ const NewComment: React.FC<NewCommentProps> = (props) => {
   const [ files, setFiles ] = useState<Array<File>>([]);
   const [ multimedia, setMultimedia ] = useState<Array<string>>([]);
   const [ loading, setLoading ] = useState<boolean>(false);
-  const [selectedGettimestamp, setSelectedGettimestamp] = useState<boolean>(false);
+  const [ selectedGettimestamp, setSelectedGettimestamp ] = useState<boolean>(false);
 
   const { handleSubmit, register, errors, reset } = useForm();
 

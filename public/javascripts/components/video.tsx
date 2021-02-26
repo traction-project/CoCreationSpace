@@ -1,7 +1,6 @@
 import * as React from "react";
 import { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
-import { VideoJsPlayer } from "video.js";
 import { useTranslation } from "react-i18next";
 
 import DashPlayer from "./dash_player";
@@ -16,13 +15,12 @@ interface VideoProps {
   markers?: number[];
   comments?: PostType[];
   emojis?: EmojiReaction[];
-  getPlayer?: (v: VideoJsPlayer) => void;
 }
 
 const Video: React.FC<VideoProps> = (props) => {
   const { t } = useTranslation();
   const { id } = useParams<{ id: string }>();
-  const { id: idAttribute, comments, getPlayer, emojis } = props;
+  const { id: idAttribute, comments, emojis } = props;
   const idVideo = idAttribute ? idAttribute : id;
 
   const totalPlayTime = useRef(0);
@@ -95,7 +93,6 @@ const Video: React.FC<VideoProps> = (props) => {
             manifest={videoUrl}
             subtitles={availableSubtitles}
             comments={comments}
-            getPlayer={getPlayer}
             emojis={emojis}
             videoId={idVideo}
             onTimeUpdate={countView}

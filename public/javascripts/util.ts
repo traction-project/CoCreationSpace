@@ -1,5 +1,4 @@
 import { ThunkAction } from "redux-thunk";
-import { VideoJsPlayer } from "video.js";
 import { ApplicationState } from "./store";
 
 /**
@@ -151,77 +150,6 @@ export const availableLanguages = {
   "vi": "Tiếng Việt",
   "zh": "中文",
 };
-
-/**
- * Activates the subtitle track for the given language in the given video.js
- * player instance. If no such track if found, the function returns false.
- *
- * @param player A video.js player instance
- * @param languageCode The language code of the track to activate
- * @returns True if the track was activated, false otherwise
- */
-export function activateSubtitleTrack(player: VideoJsPlayer, languageCode: string): boolean {
-  const tracks = player.textTracks();
-  let found = false;
-
-  for (let i=0; i<tracks.length; i++) {
-    if (tracks[i].language == languageCode) {
-      tracks[i].mode = "showing";
-      found = true;
-    } else {
-      tracks[i].mode = "hidden";
-    }
-  }
-
-  return found;
-}
-
-/**
- * Deactivates all subtitle tracks for the given video.js player instance.
- *
- * @param player A video.js player instance
- */
-export function disableSubtitles(player: VideoJsPlayer) {
-  const tracks = player.textTracks();
-
-  for (let i=0; i<tracks.length; i++) {
-    tracks[i].mode = "hidden";
-  }
-}
-
-/**
- * Activates first subtitle track for the given video.js player instance, if
- * available.
- *
- * @param player A video.js player instance
- */
-export function enableSubtitles(player: VideoJsPlayer) {
-  const tracks = player.textTracks();
-
-  if (tracks.length > 0) {
-    tracks[0].mode = "showing";
-  }
-}
-
-/**
- * Checks if the given player has a subtitle track identified by the given
- * language code.
- *
- * @param player A video.js player instance
- * @param languageCode The language code of the track to search
- * @returns True if the player has a track with the given code, false otherwise
- */
-export function hasSubtitleTrack(player: VideoJsPlayer, languageCode: string): boolean {
-  const tracks = player.textTracks();
-
-  for (let i=0; i<tracks.length; i++) {
-    if (tracks[i].language == languageCode) {
-      return true;
-    }
-  }
-
-  return false;
-}
 
 /**
  * Verify login status with server. Returns true if the user is logged in and
