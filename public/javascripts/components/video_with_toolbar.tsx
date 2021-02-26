@@ -27,7 +27,7 @@ const VideoWithToolbar: React.FC<VideoWithToolbarProps> = (props) => {
         setViewCount(views);
       });
     }
-  }, []);
+  }, [videoId]);
 
   return (
     <>
