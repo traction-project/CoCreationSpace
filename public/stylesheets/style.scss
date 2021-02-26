@@ -704,7 +704,7 @@ a.header__item:hover {
 .emoji-animation {
   position: absolute;
   left: 0;
-  bottom: 0;
+  bottom: 25px;
   opacity: 0;
   animation-name: emoji-move;
   animation-duration: 1s;
