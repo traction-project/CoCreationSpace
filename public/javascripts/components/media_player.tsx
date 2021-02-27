@@ -8,14 +8,14 @@ import useInterval from "./use_interval";
 import { UserVideoInteractionTracker } from "../video_interaction_tracker";
 import { EmojiReaction } from "javascripts/util";
 
-interface VideoProps {
+interface MediaPlayerProps {
   id: string;
   emojis?: Array<EmojiReaction>;
   onTimeUpdate?: (currentTime: number) => void;
   type?: "video" | "audio";
 }
 
-const Video: React.FC<VideoProps> = (props) => {
+const MediaPlayer: React.FC<MediaPlayerProps> = (props) => {
   const { t } = useTranslation();
   const { id, emojis, onTimeUpdate, type = "video" } = props;
 
@@ -111,4 +111,4 @@ const Video: React.FC<VideoProps> = (props) => {
   }
 };
 
-export default Video;
+export default MediaPlayer;

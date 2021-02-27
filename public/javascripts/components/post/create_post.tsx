@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 
 import { getFilesFromList, postFile, ResponseUploadType } from "../../util";
 import Dropzone from "../dropzone";
-import Video from "../video";
+import MediaPlayer from "../media_player";
 import ProgressBox from "../progress_box";
 import BlankVideo from "../blank_video";
 import Image from "../image";
@@ -164,11 +164,11 @@ const CreatePost: React.FC<CreatePostProps> = ({ file }) => {
   const renderMediaItem = (id: string, type: string) => {
     if (type == "video") {
       return (
-        <Video id={id} />
+        <MediaPlayer id={id} />
       );
     } else if (type == "audio"){
       return (
-        <Video id={id} />
+        <MediaPlayer type="audio" id={id} />
       );
     } else {
       return (

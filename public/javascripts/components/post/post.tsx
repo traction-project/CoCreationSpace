@@ -13,7 +13,7 @@ import { TagData } from "../post_list/post_list";
 import { getPostId, postComment, postLike, deletePost } from "../../services/post.service";
 import Image from "../image";
 import Thumbnail from "../thumbnail";
-import VideoWithToolbar from "../video_with_toolbar";
+import MediaPlayerWithToolbar from "../media_player_with_toolbar";
 import { LoginState } from "../../reducers/login";
 import { ApplicationState } from "../../store";
 
@@ -212,13 +212,13 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
           <div className="columns is-centered">
             <div className="column is-8-desktop is-10-tablet">
               {(selectedItem.type == "video") ? (
-                <VideoWithToolbar
+                <MediaPlayerWithToolbar
                   id={selectedItem.id}
                   emojis={selectedItem.emojiReactions}
                   onTimeUpdate={(time) => currentTime.current = time}
                 />
               ) : (selectedItem.type == "audio") ? (
-                <VideoWithToolbar
+                <MediaPlayerWithToolbar
                   id={selectedItem.id}
                   emojis={selectedItem.emojiReactions}
                   type="audio"

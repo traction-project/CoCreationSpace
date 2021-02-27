@@ -4,9 +4,9 @@ import { Trans } from "react-i18next";
 
 import { postEmojiReaction } from "../services/multimedia.service";
 import { EmojiReaction } from "../util";
-import Video from "./video";
+import MediaPlayer from "./media_player";
 
-interface VideoWithToolbarProps {
+interface MediaPlayerWithToolbarProps {
   id: string;
   emojis: Array<EmojiReaction>;
   onTimeUpdate?: (currentTime: number) => void;
@@ -15,7 +15,7 @@ interface VideoWithToolbarProps {
 
 const EMOJIS = ["👍","💓","😊","😍","😂","😡"];
 
-const VideoWithToolbar: React.FC<VideoWithToolbarProps> = (props) => {
+const MediaPlayerWithToolbar: React.FC<MediaPlayerWithToolbarProps> = (props) => {
   const { id: videoId, emojis, onTimeUpdate, type = "video" } = props;
 
   const currentVideoTime = useRef(0);
@@ -59,7 +59,7 @@ const VideoWithToolbar: React.FC<VideoWithToolbarProps> = (props) => {
 
   return (
     <>
-      <Video
+      <MediaPlayer
         id={videoId}
         emojis={emojiReactions}
         onTimeUpdate={(time) => {
@@ -92,4 +92,4 @@ const VideoWithToolbar: React.FC<VideoWithToolbarProps> = (props) => {
   );
 };
 
-export default VideoWithToolbar;
+export default MediaPlayerWithToolbar;
