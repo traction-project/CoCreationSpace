@@ -767,6 +767,16 @@ a.header__item:hover {
   width: 50px;
 }
 
+.controlbar .timecode {
+  width: 70px;
+  height: 24px;
+
+  border-right: 1px solid #555555;
+
+  line-height: 24px;
+  text-align: center;
+}
+
 .controlbar .seekbar {
   position: relative;
   flex-grow: 1;

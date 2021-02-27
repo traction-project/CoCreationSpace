@@ -8,6 +8,7 @@ import { VideoInteractionTracker } from "../../video_interaction_tracker";
 import TranslationButton from "./translation_button";
 import ControlBarToggle from "./control_bar_toggle";
 import SeekBar from "./seek_bar";
+import TimeCode from "./time_code";
 
 export interface TimelineEmoji extends EmojiReaction {
   progressPosition: number;
@@ -38,6 +39,7 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
   const [ isFullscreen, setFullscreen ] = useState(document.fullscreenElement != undefined);
   const [ isPlaying, setPlaying ] = useState(false);
   const [ progress, setProgress ] = useState(0);
+  const [ time, setTime ] = useState(0);
   const [ timelineEmojis, setTimelineEmojis ] = useState<Array<TimelineEmoji>>([]);
   const [ animatedEmojis, setAnimatedEmojis ] = useState<Array<EmojiReaction>>([]);
   const [ subtitles, setSubtitles ] = useState<Array<Subtitles>>([]);
@@ -100,6 +102,8 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
 
     const videoProgress = () => {
       onTimeUpdate?.(player.time(), player.duration(), !player.isPaused());
+
+      setTime(player.time());
       setProgress(player.time() / player.duration());
     };
 
@@ -209,6 +213,8 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
           onSeek={seekPlayer}
           timelineEmojis={timelineEmojis}
         />
+
+        <TimeCode time={time} />
 
         <TranslationButton
           videoId={videoId}
