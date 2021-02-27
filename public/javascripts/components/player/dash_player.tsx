@@ -3,9 +3,9 @@ import { useEffect, useRef, useState } from "react";
 import { MediaPlayer } from "dashjs";
 import classNames from "classnames";
 
-import { PostType } from "./post/post";
-import { activateSubtitleTrack, disableSubtitles, EmojiReaction } from "../util";
-import { VideoInteractionTracker } from "../video_interaction_tracker";
+import { PostType } from "../post/post";
+import { activateSubtitleTrack, disableSubtitles, EmojiReaction } from "../../util";
+import { VideoInteractionTracker } from "../../video_interaction_tracker";
 import TranslationButton from "./translation_button";
 
 interface TimelineEmoji extends EmojiReaction {

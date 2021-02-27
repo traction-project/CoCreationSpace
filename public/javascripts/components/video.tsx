@@ -2,7 +2,7 @@ import * as React from "react";
 import { useState, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 
-import DashPlayer from "./dash_player";
+import DashPlayer from "./player/dash_player";
 import BlankVideo from "./blank_video";
 import useInterval from "./use_interval";
 import { UserVideoInteractionTracker } from "../video_interaction_tracker";
