@@ -233,11 +233,13 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
           onSubtitlesDisabled={handleDisableSubtitles}
         />
 
-        <ControlBarToggle
-          onButtonToggled={toggleFullscreen}
-          isToggled={isFullscreen}
-          icons={["fa-compress", "fa-expand"]}
-        />
+        {(type == "video") && (
+          <ControlBarToggle
+            onButtonToggled={toggleFullscreen}
+            isToggled={isFullscreen}
+            icons={["fa-compress", "fa-expand"]}
+          />
+        )}
 
         {animatedEmojis.map(({emoji, second}) => {
           return (
