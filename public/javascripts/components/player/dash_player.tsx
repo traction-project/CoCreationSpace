@@ -9,6 +9,7 @@ import TranslationButton from "./translation_button";
 import ControlBarToggle from "./control_bar_toggle";
 import SeekBar from "./seek_bar";
 import TimeCode from "./time_code";
+import AudioVisualiser from "./audio_visualiser";
 
 export interface TimelineEmoji extends EmojiReaction {
   progressPosition: number;
@@ -203,13 +204,16 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
           })}
         </video>
       ) : (
-        <audio autoPlay={false} ref={videoNode}>
-          {subtitles.map((s, i) => {
-            return (
-              <track key={s.url} src={s.url} label={s.language} srcLang={s.language} />
-            );
-          })}
-        </audio>
+        <>
+          <AudioVisualiser audioRef={videoNode} />
+          <audio autoPlay={false} ref={videoNode}>
+            {subtitles.map((s, i) => {
+              return (
+                <track key={s.url} src={s.url} label={s.language} srcLang={s.language} />
+              );
+            })}
+          </audio>
+        </>
       )}
 
       <div className="controlbar">
