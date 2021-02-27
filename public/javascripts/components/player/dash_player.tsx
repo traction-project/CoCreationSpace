@@ -1,12 +1,12 @@
 import * as React from "react";
 import { useEffect, useRef, useState } from "react";
 import { MediaPlayer } from "dashjs";
-import classNames from "classnames";
 
 import { PostType } from "../post/post";
 import { activateSubtitleTrack, disableSubtitles, EmojiReaction } from "../../util";
 import { VideoInteractionTracker } from "../../video_interaction_tracker";
 import TranslationButton from "./translation_button";
+import ControlBarToggle from "./control_bar_toggle";
 
 interface TimelineEmoji extends EmojiReaction {
   progressPosition: number;
@@ -200,9 +200,11 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
       </video>
 
       <div className="controlbar">
-        <span onClick={togglePlayback} className="controlbutton icon">
-          <i className={classNames("fas", { "fa-pause": isPlaying, "fa-play": !isPlaying })} />
-        </span>
+        <ControlBarToggle
+          onButtonToggled={togglePlayback}
+          isToggled={isPlaying}
+          icons={["fa-pause", "fa-play"]}
+        />
 
         <div className="seekbar" onClick={seekPlayer}>
           <div className="progressbar" style={{ width: `${progress * 100}%` }} />
@@ -220,9 +222,11 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
           onSubtitlesDisabled={handleDisableSubtitles}
         />
 
-        <span onClick={toggleFullscreen} className="controlbutton icon">
-          <i className={classNames("fas", { "fa-compress": isFullscreen, "fa-expand": !isFullscreen })} />
-        </span>
+        <ControlBarToggle
+          onButtonToggled={toggleFullscreen}
+          isToggled={isFullscreen}
+          icons={["fa-compress", "fa-expand"]}
+        />
 
         {animatedEmojis.map(({emoji, second}) => {
           return (
