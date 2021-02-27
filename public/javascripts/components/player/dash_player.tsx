@@ -7,8 +7,9 @@ import { activateSubtitleTrack, disableSubtitles, EmojiReaction } from "../../ut
 import { VideoInteractionTracker } from "../../video_interaction_tracker";
 import TranslationButton from "./translation_button";
 import ControlBarToggle from "./control_bar_toggle";
+import SeekBar from "./seek_bar";
 
-interface TimelineEmoji extends EmojiReaction {
+export interface TimelineEmoji extends EmojiReaction {
   progressPosition: number;
 }
 
@@ -159,12 +160,7 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
     }
   };
 
-  const seekPlayer = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.pageX - rect.left;
-
-    const progress = x / rect.width;
-
+  const seekPlayer = (progress: number) => {
     if (videoNode.current) {
       videoNode.current.currentTime = progress * videoNode.current.duration;
     }
@@ -208,15 +204,11 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
           icons={["fa-pause", "fa-play"]}
         />
 
-        <div className="seekbar" onClick={seekPlayer}>
-          <div className="progressbar" style={{ width: `${progress * 100}%` }} />
-
-          {timelineEmojis.map(({ progressPosition, emoji }, i) => {
-            return (
-              <span key={i} className="video-marker" style={{ left: `${progressPosition}%`}}>{emoji}</span>
-            );
-          })}
-        </div>
+        <SeekBar
+          progress={progress}
+          onSeek={seekPlayer}
+          timelineEmojis={timelineEmojis}
+        />
 
         <TranslationButton
           videoId={videoId}
