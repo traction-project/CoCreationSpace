@@ -110,8 +110,8 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
     videoNode.current.addEventListener("seeked", videoSeeked);
     videoNode.current.addEventListener("ended", videoEnded);
 
-    videoNode.current?.addEventListener("loadedmetadata", placeEmojis);
-    videoNode.current?.addEventListener("timeupdate", updateAnimatedEmojis);
+    videoNode.current.addEventListener("loadedmetadata", placeEmojis);
+    videoNode.current.addEventListener("timeupdate", updateAnimatedEmojis);
 
     return () => {
       document.removeEventListener("fullscreenchange", fullscreenChange);
@@ -122,6 +122,8 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
         videoNode.current.removeEventListener("timeupdate", videoProgress);
         videoNode.current.removeEventListener("seeked", videoSeeked);
         videoNode.current.removeEventListener("ended", videoEnded);
+        videoNode.current.removeEventListener("loadedmetadata", placeEmojis);
+        videoNode.current.removeEventListener("timeupdate", updateAnimatedEmojis);
       }
 
       player.reset();
