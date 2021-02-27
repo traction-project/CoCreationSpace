@@ -221,6 +221,7 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
                 <VideoWithToolbar
                   id={selectedItem.id}
                   emojis={selectedItem.emojiReactions}
+                  type="audio"
                 />
               ) : (
                 <Image id={selectedItem.id} />

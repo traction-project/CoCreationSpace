@@ -12,11 +12,12 @@ interface VideoProps {
   id: string;
   emojis?: Array<EmojiReaction>;
   onTimeUpdate?: (currentTime: number) => void;
+  type?: "video" | "audio";
 }
 
 const Video: React.FC<VideoProps> = (props) => {
   const { t } = useTranslation();
-  const { id, emojis, onTimeUpdate } = props;
+  const { id, emojis, onTimeUpdate, type = "video" } = props;
 
   const totalPlayTime = useRef(0);
   const lastTimestamp = useRef(0);
@@ -95,6 +96,7 @@ const Video: React.FC<VideoProps> = (props) => {
             videoId={id}
             emojis={emojis}
             onTimeUpdate={timeUpdate}
+            type={type}
             videoInteractionTracker={new UserVideoInteractionTracker(`/media/${id}/interaction`)}
           />
         ) : (

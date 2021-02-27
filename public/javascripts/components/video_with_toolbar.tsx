@@ -10,12 +10,13 @@ interface VideoWithToolbarProps {
   id: string;
   emojis: Array<EmojiReaction>;
   onTimeUpdate?: (currentTime: number) => void;
+  type?: "video" | "audio";
 }
 
 const EMOJIS = ["👍","💓","😊","😍","😂","😡"];
 
 const VideoWithToolbar: React.FC<VideoWithToolbarProps> = (props) => {
-  const { id: videoId, emojis, onTimeUpdate } = props;
+  const { id: videoId, emojis, onTimeUpdate, type = "video" } = props;
 
   const currentVideoTime = useRef(0);
   const [ viewCount, setViewCount ] = useState<number>();
@@ -65,6 +66,7 @@ const VideoWithToolbar: React.FC<VideoWithToolbarProps> = (props) => {
           onTimeUpdate?.(time);
           currentVideoTime.current = time;
         }}
+        type={type}
       />
 
       <nav className="level is-mobile" style={{position: "relative"}}>

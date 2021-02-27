@@ -28,10 +28,11 @@ interface DashPlayerProps {
   videoId: string;
   onTimeUpdate?: (currentTime: number, duration: number, isPlaying: boolean) => void;
   videoInteractionTracker?: VideoInteractionTracker;
+  type?: "video" | "audio";
 }
 
 const DashPlayer: React.FC<DashPlayerProps> = (props) => {
-  const { manifest, videoId, videoInteractionTracker, emojis, onTimeUpdate } = props;
+  const { manifest, videoId, videoInteractionTracker, emojis, onTimeUpdate, type = "video" } = props;
 
   const wrapperNode = useRef<HTMLDivElement>(null);
   const videoNode = useRef<HTMLVideoElement>(null);
@@ -193,13 +194,23 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
 
   return (
     <div ref={wrapperNode} className="dash-player">
-      <video autoPlay={false} ref={videoNode}>
-        {subtitles.map((s, i) => {
-          return (
-            <track key={s.url} src={s.url} label={s.language} srcLang={s.language} />
-          );
-        })}
-      </video>
+      {(type == "video") ? (
+        <video autoPlay={false} ref={videoNode}>
+          {subtitles.map((s, i) => {
+            return (
+              <track key={s.url} src={s.url} label={s.language} srcLang={s.language} />
+            );
+          })}
+        </video>
+      ) : (
+        <audio autoPlay={false} ref={videoNode}>
+          {subtitles.map((s, i) => {
+            return (
+              <track key={s.url} src={s.url} label={s.language} srcLang={s.language} />
+            );
+          })}
+        </audio>
+      )}
 
       <div className="controlbar">
         <ControlBarToggle
