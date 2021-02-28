@@ -37,6 +37,7 @@ export interface PostType extends CommonType {
   dataContainer?: DataContainerType;
   comments?: PostType[];
   karma_points?: number;
+  multimedia_ref?: string;
   postReference?: PostType[];
   postReferenced?: PostType[];
   user: UserType;
@@ -57,7 +58,7 @@ interface PostProps {
   post?: {
     id: string;
   };
-  callbackClickTime?: (s: number) => void;
+  callbackClickTime?: (s: number, multimediaRef: string) => void;
 }
 
 const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
@@ -152,6 +153,16 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
     setShowNewComment(false);
   };
 
+  const handleClickTime = (second: number, multimediaRef: string) => {
+    const foundMediaItem = post?.dataContainer?.multimedia?.find((mediaItem) => {
+      return mediaItem.id == multimediaRef;
+    });
+
+    if (foundMediaItem) {
+      setSelectedItem(foundMediaItem);
+    }
+  };
+
   const handleDeletePost = (id: string) => {
     return async () => {
       const res = await deletePost(id);
@@ -196,7 +207,7 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
                     <br />
 
                     {(post.second) && (
-                      <a style={{marginRight: "5px"}} onClick={() => callbackClickTime && callbackClickTime(post.second ? post.second : 0)}>
+                      <a style={{marginRight: "5px"}} onClick={() => callbackClickTime && callbackClickTime(post.second ? post.second : 0, post.multimedia_ref!)}>
                         <strong>{convertHMS(post.second)}</strong>
                       </a>
                     )}
@@ -295,7 +306,7 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
             )}
 
             {(showComments) && (
-              <CommentList posts={comments} />
+              <CommentList posts={comments} callbackClickTime={handleClickTime} />
             )}
           </div>
         </div>

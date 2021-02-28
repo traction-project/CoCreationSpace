@@ -3,7 +3,7 @@ import Post, { PostType } from "./post";
 
 interface CommentListProps {
     posts?: PostType[];
-    callbackClickTime?: (s: number) => void;
+    callbackClickTime?: (s: number, multimediaRef: string) => void;
 }
 
 const CommentList: React.FC<CommentListProps> = ({ posts, callbackClickTime }) => {
