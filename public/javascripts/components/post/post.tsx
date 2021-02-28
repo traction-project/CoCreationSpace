@@ -23,6 +23,7 @@ export interface MultimediaItem {
   type: string;
   emojiReactions: Array<EmojiReaction>;
   title: string;
+  startTime?: number;
 }
 
 interface DataContainerType {
@@ -159,7 +160,10 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
     });
 
     if (foundMediaItem) {
-      setSelectedItem(foundMediaItem);
+      setSelectedItem({
+        ...foundMediaItem,
+        startTime: second
+      });
     }
   };
 
@@ -228,11 +232,13 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
                   id={selectedItem.id}
                   emojis={selectedItem.emojiReactions}
                   onTimeUpdate={(time) => currentTime.current = time}
+                  startTime={selectedItem.startTime}
                 />
               ) : (selectedItem.type == "audio") ? (
                 <MediaPlayerWithToolbar
                   id={selectedItem.id}
                   emojis={selectedItem.emojiReactions}
+                  startTime={selectedItem.startTime}
                   type="audio"
                 />
               ) : (

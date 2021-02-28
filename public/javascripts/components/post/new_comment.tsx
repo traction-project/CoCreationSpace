@@ -92,10 +92,10 @@ const NewComment: React.FC<NewCommentProps> = (props) => {
           </div>
         )}
         {(props.enableTimestamp) &&
-          <>
-            <input type="checkbox" defaultChecked={selectedGettimestamp} onChange={handleSelectGetTimestamp}></input>
-            <label style={{marginLeft: "0.2rem"}}>{t("Check timeline")}</label>
-          </>
+          <label className="checkbox">
+            <input type="checkbox" defaultChecked={selectedGettimestamp} onChange={handleSelectGetTimestamp} />
+            <span style={{ marginLeft: "0.2rem" }}>{t("Check timeline")}</span>
+          </label>
         }
         <div className="form-group" style={{padding: ".5em 0"}}>
           <button className="button is-info" disabled={loading}>
