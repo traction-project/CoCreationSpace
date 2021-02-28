@@ -62,6 +62,16 @@ export function encodeDash(pipeline: string, input: string, hasAudio = true): Pr
           `dash-audio/${inputBasename}`,
         ],
       },
+      {
+        Format: "HLSv4",
+        Name: `${inputBasename}`,
+        OutputKeys: [
+          `dash-4m/${inputBasename}`,
+          `dash-2m/${inputBasename}`,
+          `dash-1m/${inputBasename}`,
+          `dash-audio/${inputBasename}`,
+        ],
+      },
     ]
   };
 
@@ -120,6 +130,13 @@ export function encodeAudio(pipeline: string, input: string): Promise<string> {
     Playlists: [
       {
         Format: "MPEG-DASH",
+        Name: `${inputBasename}`,
+        OutputKeys: [
+          `dash-audio/${inputBasename}`
+        ],
+      },
+      {
+        Format: "HLSv4",
         Name: `${inputBasename}`,
         OutputKeys: [
           `dash-audio/${inputBasename}`
