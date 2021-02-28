@@ -13,6 +13,7 @@ export interface PostAttributes extends CommonAttributes{
   parent_post_id?: string;
   user_id?: string;
   thread_id?: string;
+  multimedia_ref?: string;
   karma_points?: number;
   dataContainer?: DataContainerAttributes | DataContainerAttributes["id"];
   comments?: PostAttributes | PostAttributes["id"];
@@ -131,6 +132,9 @@ export function PostModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mode
     },
     karma_points: {
       type: Sequelize.DataTypes.INTEGER
+    },
+    multimedia_ref: {
+      type: Sequelize.DataTypes.UUID
     }
   };
 
