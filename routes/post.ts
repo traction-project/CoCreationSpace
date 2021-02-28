@@ -408,7 +408,7 @@ router.post("/:id/edit", authRequired, async (req, res) => {
  */
 router.post("/:id", authRequired, async (req, res) => {
   const { id } = req.params;
-  const { text, multimedia, second } = req.body;
+  const { text, multimedia, second, currentItemId } = req.body;
 
   if (!text) {
     return res.status(400).send({ message: "Field text not present"});
@@ -427,6 +427,7 @@ router.post("/:id", authRequired, async (req, res) => {
     parent_post_id: id,
     user_id: user.id,
     thread_id: parentPost.thread_id,
+    multimedia_ref: currentItemId,
     dataContainer: DataContainer.build({
       text_content: text
     }),
