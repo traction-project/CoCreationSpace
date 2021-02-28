@@ -15,6 +15,10 @@ export interface TimelineEmoji extends EmojiReaction {
   progressPosition: number;
 }
 
+export interface TimelineComment extends PostType {
+  progressPosition: number;
+}
+
 interface Subtitles {
   language: string;
   url: string;
@@ -34,7 +38,7 @@ interface DashPlayerProps {
 }
 
 const DashPlayer: React.FC<DashPlayerProps> = (props) => {
-  const { manifest, videoId, videoInteractionTracker, emojis, onTimeUpdate, type = "video", startTime = 0 } = props;
+  const { manifest, videoId, videoInteractionTracker, emojis, comments, onTimeUpdate, type = "video", startTime = 0 } = props;
 
   const wrapperNode = useRef<HTMLDivElement>(null);
   const videoNode = useRef<HTMLVideoElement>(null);
@@ -43,9 +47,11 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
   const [ isPlaying, setPlaying ] = useState(false);
   const [ progress, setProgress ] = useState(0);
   const [ time, setTime ] = useState(0);
+  const [ subtitles, setSubtitles ] = useState<Array<Subtitles>>([]);
+
   const [ timelineEmojis, setTimelineEmojis ] = useState<Array<TimelineEmoji>>([]);
   const [ animatedEmojis, setAnimatedEmojis ] = useState<Array<EmojiReaction>>([]);
-  const [ subtitles, setSubtitles ] = useState<Array<Subtitles>>([]);
+  const [ timelineComments, setTimelineComments ] = useState<Array<TimelineComment>>([]);
 
   const placeMarkers = () => {
     if (videoNode.current) {
@@ -57,6 +63,15 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
         return {
           ...emoji,
           progressPosition: emoji.second * 100 / videoNode.current?.duration!
+        };
+      }));
+    }
+
+    if (comments) {
+      setTimelineComments(comments.map((comment) => {
+        return {
+          ...comment,
+          progressPosition: comment.second! * 100 / videoNode.current?.duration!
         };
       }));
     }
@@ -232,6 +247,7 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
           progress={progress}
           onSeek={seekPlayer}
           timelineEmojis={timelineEmojis}
+          timelineComments={timelineComments}
         />
 
         <TimeCode time={time} />
