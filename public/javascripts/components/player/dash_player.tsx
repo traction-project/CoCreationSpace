@@ -30,10 +30,11 @@ interface DashPlayerProps {
   onTimeUpdate?: (currentTime: number, duration: number, isPlaying: boolean) => void;
   videoInteractionTracker?: VideoInteractionTracker;
   type?: "video" | "audio";
+  startTime?: number;
 }
 
 const DashPlayer: React.FC<DashPlayerProps> = (props) => {
-  const { manifest, videoId, videoInteractionTracker, emojis, onTimeUpdate, type = "video" } = props;
+  const { manifest, videoId, videoInteractionTracker, emojis, onTimeUpdate, type = "video", startTime = 0 } = props;
 
   const wrapperNode = useRef<HTMLDivElement>(null);
   const videoNode = useRef<HTMLVideoElement>(null);
@@ -46,7 +47,11 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
   const [ animatedEmojis, setAnimatedEmojis ] = useState<Array<EmojiReaction>>([]);
   const [ subtitles, setSubtitles ] = useState<Array<Subtitles>>([]);
 
-  const placeEmojis = () => {
+  const placeMarkers = () => {
+    if (videoNode.current) {
+      videoNode.current.currentTime = startTime;
+    }
+
     if (emojis) {
       setTimelineEmojis(emojis.map((emoji) => {
         return {
@@ -117,7 +122,7 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
     videoNode.current.addEventListener("seeked", videoSeeked);
     videoNode.current.addEventListener("ended", videoEnded);
 
-    videoNode.current.addEventListener("loadedmetadata", placeEmojis);
+    videoNode.current.addEventListener("loadedmetadata", placeMarkers);
     videoNode.current.addEventListener("timeupdate", updateAnimatedEmojis);
 
     return () => {
@@ -129,7 +134,7 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
         videoNode.current.removeEventListener("timeupdate", videoProgress);
         videoNode.current.removeEventListener("seeked", videoSeeked);
         videoNode.current.removeEventListener("ended", videoEnded);
-        videoNode.current.removeEventListener("loadedmetadata", placeEmojis);
+        videoNode.current.removeEventListener("loadedmetadata", placeMarkers);
         videoNode.current.removeEventListener("timeupdate", updateAnimatedEmojis);
       }
 
@@ -138,7 +143,7 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
   }, [manifest]);
 
   useEffect(() => {
-    placeEmojis();
+    placeMarkers();
     updateAnimatedEmojis();
   }, [emojis]);
 
