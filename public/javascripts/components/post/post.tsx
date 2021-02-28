@@ -264,7 +264,7 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
                 <span className="level-item">
                   {likes}
                 </span>
-                {(selectedItem) &&(
+                {(selectedItem) && (
                   <a href={selectedItem.title} className="level-item" download>
                     <span className="icon is-small">
                       <i className="fas fa-download"/>
@@ -301,7 +301,7 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
               <NewComment
                 handleSubmitNewComment={handleSubmitNewComment}
                 handleClickCancel={handleClickCancel}
-                enableTimestamp={(selectedItem && selectedItem.type == "video")}>
+                enableTimestamp={(selectedItem && (selectedItem.type == "video" || selectedItem.type == "audio"))}>
               </NewComment>
             )}
 
