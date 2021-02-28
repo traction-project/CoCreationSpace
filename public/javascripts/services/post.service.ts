@@ -29,11 +29,13 @@ export const postLike = async (id: string | number, action: string) => {
  * @param text Text content
  * @param multimedia? Array of numbers that references multimedia files
  * @param second? Player time where the comment was written
+ * @param currentItemId? If param 'second' is set, this is the id of the media item that the comment is associated to
  */
-export const postComment = async (id: string | number, text: string, multimedia?: Array<string>, second?: number) => {
+export const postComment = async (id: string | number, text: string, multimedia?: Array<string>, second?: number, currentItemId?: string) => {
   const bodyJson = {
     text,
     second,
+    currentItemId,
     ...(multimedia && multimedia.length > 0 && {multimedia})
   };
 

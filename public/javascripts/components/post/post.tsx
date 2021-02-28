@@ -129,9 +129,10 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
 
   const handleSubmitNewComment = async ({ comment, selectedGettimestamp, multimedia }: { comment: string, selectedGettimestamp: boolean, multimedia?: Array<string> }) => {
     const second = currentTime.current;
+    const currentItemId = selectedItem?.id;
 
-    const responseComment = (second && selectedGettimestamp) ? (
-      await postComment(idPost, comment, multimedia, second)
+    const responseComment = (second && currentItemId && selectedGettimestamp) ? (
+      await postComment(idPost, comment, multimedia, second, currentItemId)
     ) : (
       await postComment(idPost, comment, multimedia)
     );
