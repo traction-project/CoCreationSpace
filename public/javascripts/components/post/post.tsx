@@ -10,7 +10,7 @@ import UserLogo, { UserType } from "../user_logo";
 import CommentList from "./comment_list";
 import NewComment from "./new_comment";
 import { TagData } from "../post_list/post_list";
-import { getPostId, postComment, postLike, deletePost } from "../../services/post.service";
+import { getPostId, postComment, postLike, deletePost, getCommentsForItem } from "../../services/post.service";
 import Image from "../image";
 import Thumbnail from "../thumbnail";
 import MediaPlayerWithToolbar from "../media_player_with_toolbar";
@@ -231,6 +231,7 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
                 <MediaPlayerWithToolbar
                   id={selectedItem.id}
                   emojis={selectedItem.emojiReactions}
+                  comments={getCommentsForItem(comments, selectedItem)}
                   onTimeUpdate={(time) => currentTime.current = time}
                   startTime={selectedItem.startTime}
                 />
@@ -238,6 +239,7 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
                 <MediaPlayerWithToolbar
                   id={selectedItem.id}
                   emojis={selectedItem.emojiReactions}
+                  comments={getCommentsForItem(comments, selectedItem)}
                   startTime={selectedItem.startTime}
                   type="audio"
                 />

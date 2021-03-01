@@ -7,10 +7,12 @@ import BlankVideo from "./blank_video";
 import useInterval from "./use_interval";
 import { UserVideoInteractionTracker } from "../video_interaction_tracker";
 import { EmojiReaction } from "javascripts/util";
+import { PostType } from "./post/post";
 
 interface MediaPlayerProps {
   id: string;
   emojis?: Array<EmojiReaction>;
+  comments?: Array<PostType>;
   onTimeUpdate?: (currentTime: number) => void;
   type?: "video" | "audio";
   startTime?: number;
@@ -18,7 +20,7 @@ interface MediaPlayerProps {
 
 const MediaPlayer: React.FC<MediaPlayerProps> = (props) => {
   const { t } = useTranslation();
-  const { id, emojis, onTimeUpdate, startTime, type = "video" } = props;
+  const { id, emojis, comments, onTimeUpdate, startTime, type = "video" } = props;
 
   const totalPlayTime = useRef(0);
   const lastTimestamp = useRef(0);
@@ -96,6 +98,7 @@ const MediaPlayer: React.FC<MediaPlayerProps> = (props) => {
             subtitles={availableSubtitles}
             videoId={id}
             emojis={emojis}
+            comments={comments}
             onTimeUpdate={timeUpdate}
             type={type}
             startTime={startTime}

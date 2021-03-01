@@ -30,7 +30,7 @@ const SeekBar: React.FC<SeekBarProps> = (props) => {
 
       {timelineComments.map(({ progressPosition }, i) => {
         return (
-          <i key={i} className="fas fa-comment video-marker" style={{ left: `${progressPosition}%`}} />
+          <i key={i} className="fas fa-comment video-marker" style={{ left: `${progressPosition}%`, marginTop: 4 }} />
         );
       })}
     </div>

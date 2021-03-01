@@ -4,11 +4,13 @@ import { Trans } from "react-i18next";
 
 import { postEmojiReaction } from "../services/multimedia.service";
 import { EmojiReaction } from "../util";
+import { PostType } from "./post/post";
 import MediaPlayer from "./media_player";
 
 interface MediaPlayerWithToolbarProps {
   id: string;
   emojis: Array<EmojiReaction>;
+  comments: Array<PostType>;
   onTimeUpdate?: (currentTime: number) => void;
   type?: "video" | "audio";
   startTime?: number;
@@ -17,7 +19,7 @@ interface MediaPlayerWithToolbarProps {
 const EMOJIS = ["👍","💓","😊","😍","😂","😡"];
 
 const MediaPlayerWithToolbar: React.FC<MediaPlayerWithToolbarProps> = (props) => {
-  const { id: videoId, emojis, onTimeUpdate, startTime, type = "video" } = props;
+  const { id: videoId, emojis, comments, onTimeUpdate, startTime, type = "video" } = props;
 
   const currentVideoTime = useRef(0);
   const [ viewCount, setViewCount ] = useState<number>();
@@ -63,6 +65,7 @@ const MediaPlayerWithToolbar: React.FC<MediaPlayerWithToolbarProps> = (props) =>
       <MediaPlayer
         id={videoId}
         emojis={emojiReactions}
+        comments={comments}
         onTimeUpdate={(time) => {
           onTimeUpdate?.(time);
           currentVideoTime.current = time;
