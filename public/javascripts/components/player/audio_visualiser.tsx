@@ -28,6 +28,7 @@ const AudioVisualiser: React.FC<AudioVisualiserProps> = (props) => {
       return;
     }
 
+    const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
     const audioContext = new AudioContext();
 
     const analyser = audioContext.createAnalyser();
