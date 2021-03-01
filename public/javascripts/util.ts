@@ -297,3 +297,21 @@ export function getFilesFromList(fileList?: FileList | null): Array<File> {
 
   return files;
 }
+
+/**
+ * Checks whether the client supports native HLS streaming. This function will
+ * return false if the player definitely does not support it. If the function
+ * returns true, it is merely an indication that it might be possible. Whether
+ * it is actually possible cannot be known until playback is attempted.
+ *
+ * @returns False if the client does not support it, true if it might.
+ */
+export function supportsNativeHLS(): boolean {
+  const videoElement = document.createElement("video");
+
+  if (videoElement.canPlayType("application/vnd.apple.mpegurl") == "") {
+    return false;
+  }
+
+  return true;
+}
