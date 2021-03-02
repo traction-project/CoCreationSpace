@@ -75,5 +75,7 @@
     "view-count": "<0>{{viewCount}}</0> views",
     "Delete": "Borrar",
     "Select a group to join": "__STRING_NOT_TRANSLATED__",
-    "Check timeline": "Añadir comentario al actual tiempo del video"
+    "Check timeline": "Añadir comentario al actual tiempo del video",
+    "Disable subtitles": "__STRING_NOT_TRANSLATED__",
+    "Skip": "__STRING_NOT_TRANSLATED__"
 }

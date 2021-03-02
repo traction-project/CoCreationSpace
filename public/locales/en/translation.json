@@ -75,5 +75,7 @@
     "view-count": "<0>{{viewCount}}</0> views",
     "Delete": "Delete",
     "Select a group to join": "Select a group to join",
-    "Check timeline": "Add comment to video timeline"
+    "Check timeline": "Add comment to video timeline",
+    "Disable subtitles": "Disable subtitles",
+    "Skip": "Skip"
 }
