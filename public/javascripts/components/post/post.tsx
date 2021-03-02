@@ -240,6 +240,7 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
                   id={selectedItem.id}
                   emojis={selectedItem.emojiReactions}
                   comments={getCommentsForItem(comments, selectedItem)}
+                  onTimeUpdate={(time) => currentTime.current = time}
                   startTime={selectedItem.startTime}
                   type="audio"
                 />
