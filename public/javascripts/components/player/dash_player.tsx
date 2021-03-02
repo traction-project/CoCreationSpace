@@ -160,7 +160,7 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
   useEffect(() => {
     placeMarkers();
     updateAnimatedEmojis();
-  }, [emojis]);
+  }, [emojis, comments]);
 
   useEffect(() => {
     setSubtitles(props.subtitles.map((s, i) => (i == 0) ? { ...s, active: true } : s));
