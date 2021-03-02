@@ -54,10 +54,6 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
   const [ timelineComments, setTimelineComments ] = useState<Array<TimelineComment>>([]);
 
   const placeMarkers = () => {
-    if (videoNode.current) {
-      videoNode.current.currentTime = startTime;
-    }
-
     if (emojis) {
       setTimelineEmojis(emojis.map((emoji) => {
         return {
@@ -161,6 +157,12 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
     placeMarkers();
     updateAnimatedEmojis();
   }, [emojis, comments]);
+
+  useEffect(() => {
+    if (videoNode.current) {
+      videoNode.current.currentTime = startTime;
+    }
+  }, [startTime]);
 
   useEffect(() => {
     setSubtitles(props.subtitles.map((s, i) => (i == 0) ? { ...s, active: true } : s));
