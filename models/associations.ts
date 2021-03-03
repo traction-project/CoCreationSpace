@@ -38,6 +38,7 @@ class Associations {
     multimediaInteractionsAssociations(models);
     searchQueryAssociations(models);
     internalNavigationStepAssociations(models);
+    asyncJobAssociations(models);
 
     this.associatons = {
       datacontainerAssociations,
@@ -102,6 +103,7 @@ function multimediaAssociations(models: DbInterface): void {
   models.Multimedia.hasMany(models.Subtitles, { as: "subtitles", foreignKey: "multimedia_id"});
   models.Multimedia.hasMany(models.MultimediaInteraction, { foreignKey: "multimedia_id" });
   models.Multimedia.hasMany(models.EmojiReactions, { as: "emojiReactions", foreignKey: "multimedia_id" });
+  models.Multimedia.hasMany(models.AsyncJob);
 }
 
 /**
@@ -310,4 +312,12 @@ function searchQueryAssociations(models: DbInterface) {
  */
 function internalNavigationStepAssociations(models: DbInterface) {
   models.InternalNavigationStep.belongsTo(models.Users);
+}
+
+/**
+ * Create associations for the async_jobs table
+ * @param models DBInterface
+ */
+function asyncJobAssociations(models: DbInterface) {
+  models.AsyncJob.belongsTo(models.Multimedia);
 }
