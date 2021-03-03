@@ -28,15 +28,18 @@ describe("InternalNavigationStep model", () => {
 
     expect(query.data).toBeUndefined();
     expect(query.user).toBeUndefined();
+    expect(query.userAgent).toBeUndefined();
 
     expect(query.createdAt).toEqual(query.updatedAt);
   });
 
   it("should create a new instance with data", async () => {
     const { InternalNavigationStep } = db.getModels();
+    const userAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 11_2_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.192 Safari/537.36";
 
     const query = await InternalNavigationStep.create({
-      data: { message: "Hello World" }
+      data: { message: "Hello World" },
+      userAgent
     });
 
     expect(query).toBeDefined();
@@ -44,11 +47,13 @@ describe("InternalNavigationStep model", () => {
     expect(query.id).toBeDefined();
     expect(query.createdAt).toBeDefined();
     expect(query.updatedAt).toBeDefined();
+    expect(query.userAgent).toBeDefined();
 
     expect(query.user).toBeUndefined();
 
     expect(query.createdAt).toEqual(query.updatedAt);
     expect(query.data).toEqual({ message: "Hello World" });
+    expect(query.userAgent).toEqual(userAgent);
   });
 
   it("should associate a new instance to a user", async () => {

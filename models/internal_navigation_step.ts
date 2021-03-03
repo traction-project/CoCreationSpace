@@ -7,6 +7,7 @@ import { UserInstance, UsersAttributes } from "./users";
 export interface InternalNavigationStepAttributes extends CommonAttributes {
   user: UsersAttributes | UsersAttributes["id"];
   data?: any;
+  userAgent?: string;
 }
 
 type InternalNavigationStepCreationAttributes = Optional<
@@ -43,6 +44,9 @@ export function InternalNavigationStepModelFactory(sequelize: Sequelize.Sequeliz
     },
     data: {
       type: Sequelize.DataTypes.JSON
+    },
+    userAgent: {
+      type: Sequelize.DataTypes.STRING
     },
     created_at: {
       type: Sequelize.DataTypes.DATE,
