@@ -111,7 +111,8 @@ router.post("/internalnavigation", async (req, res) => {
 
   const navigationData: { userId: string, data: any } = req.body;
   const navigationStep = await InternalNavigationStep.create({
-    data: navigationData.data
+    data: navigationData.data,
+    userAgent: req.get("User-Agent")
   });
 
   if (navigationData.userId) {
