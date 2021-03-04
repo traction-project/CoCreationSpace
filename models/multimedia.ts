@@ -10,6 +10,7 @@ import { MetadataAttributes, MetadataInstance } from "./metadata";
 import { SubtitlesAttributes, SubtitlesInstance } from "./subtitles";
 import { MultimediaInteractionInstance } from "./multimedia_interaction";
 import { EmojiReactionsAttributes, EmojiReactionsInstance } from "./emoji_reactions";
+import { AsyncJobInstance } from "./async_job";
 
 export interface MultimediaAttributes extends CommonAttributes {
   title: string;
@@ -99,6 +100,16 @@ export interface MultimediaInstance extends Sequelize.Model<MultimediaAttributes
   hasEmojiReaction: Sequelize.HasManyHasAssociationMixin<EmojiReactionsInstance, EmojiReactionsInstance["id"]>;
   hasEmojiReactions: Sequelize.HasManyHasAssociationsMixin<EmojiReactionsInstance, EmojiReactionsInstance["id"]>;
   countEmojiReactions: Sequelize.HasManyCountAssociationsMixin;
+
+  getAsyncJobs: Sequelize.HasManyGetAssociationsMixin<AsyncJobInstance>;
+  setAsyncJobs: Sequelize.HasManySetAssociationsMixin<AsyncJobInstance, AsyncJobInstance["id"]>;
+  addAsyncJobs: Sequelize.HasManyAddAssociationsMixin<AsyncJobInstance, AsyncJobInstance["id"]>;
+  addAsyncJob: Sequelize.HasManyAddAssociationMixin<AsyncJobInstance, AsyncJobInstance["id"]>;
+  removeAsyncJob: Sequelize.HasManyRemoveAssociationMixin<AsyncJobInstance, AsyncJobInstance["id"]>;
+  removeAsyncJobs: Sequelize.HasManyRemoveAssociationsMixin<AsyncJobInstance, AsyncJobInstance["id"]>;
+  hasAsyncJob: Sequelize.HasManyHasAssociationMixin<AsyncJobInstance, AsyncJobInstance["id"]>;
+  hasAsyncJobs: Sequelize.HasManyHasAssociationsMixin<AsyncJobInstance, AsyncJobInstance["id"]>;
+  countAsyncJobs: Sequelize.HasManyCountAssociationsMixin;
 
   incrementViewCount: () => Promise<void>;
 }

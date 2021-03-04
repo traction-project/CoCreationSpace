@@ -11,10 +11,11 @@ describe("Multimedia model", () => {
   });
 
   beforeEach(async () => {
-    const { Multimedia, EmojiReactions } = db.getModels();
+    const { AsyncJob, Multimedia, EmojiReactions } = db.getModels();
 
     await Multimedia.destroy({ truncate: true });
     await EmojiReactions.destroy({ truncate: true });
+    await AsyncJob.destroy({ truncate: true });
   });
 
   it("should create a multimedia entry with a array for the field 'resolutions'", async () => {
@@ -134,6 +135,25 @@ describe("Multimedia model", () => {
 
     expect(await video.countMultimediaInteractions()).toEqual(1);
     expect(await video.hasMultimediaInteraction(interaction)).toBeTruthy();
+  });
+
+  it("should list async-jobs associated to the multimedia item", async () => {
+    const { Multimedia, AsyncJob } = db.getModels();
+
+    const video = await Multimedia.create({
+      title: "video",
+    });
+
+    const job = await AsyncJob.create({
+      type: "transcode_dash",
+      jobId: "some_job_id"
+    });
+
+    expect(await video.countAsyncJobs()).toEqual(0);
+    await video.addAsyncJob(job);
+
+    expect(await video.countAsyncJobs()).toEqual(1);
+    expect(await video.hasAsyncJob(job)).toBeTruthy();
   });
 
   it("should list emoji-reactions associated to the multimedia item", async () => {

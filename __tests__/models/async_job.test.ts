@@ -11,8 +11,10 @@ describe("AsyncJob model", () => {
   });
 
   beforeEach(async () => {
-    const { AsyncJob } = db.getModels();
+    const { AsyncJob, Multimedia } = db.getModels();
+
     await AsyncJob.destroy({ truncate: true });
+    await Multimedia.destroy({ truncate: true });
   });
 
   it("should create a new empty instance", async () => {
