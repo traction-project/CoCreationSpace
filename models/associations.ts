@@ -103,7 +103,7 @@ function multimediaAssociations(models: DbInterface): void {
   models.Multimedia.hasMany(models.Subtitles, { as: "subtitles", foreignKey: "multimedia_id"});
   models.Multimedia.hasMany(models.MultimediaInteraction, { foreignKey: "multimedia_id" });
   models.Multimedia.hasMany(models.EmojiReactions, { as: "emojiReactions", foreignKey: "multimedia_id" });
-  models.Multimedia.hasMany(models.AsyncJob);
+  models.Multimedia.hasMany(models.AsyncJob, { foreignKey: "multimedia_id" });
 }
 
 /**
@@ -319,5 +319,5 @@ function internalNavigationStepAssociations(models: DbInterface) {
  * @param models DBInterface
  */
 function asyncJobAssociations(models: DbInterface) {
-  models.AsyncJob.belongsTo(models.Multimedia);
+  models.AsyncJob.belongsTo(models.Multimedia, { foreignKey: "multimedia_id" });
 }
