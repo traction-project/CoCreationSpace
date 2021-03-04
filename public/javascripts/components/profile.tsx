@@ -12,6 +12,7 @@ import { LoginState } from "../reducers/login";
 import LanguageSwitcher from "./language_switcher";
 import ProfilePictureUploadForm from "./signup/profile_picture_upload_form";
 import InterestSelectForm from "./signup/interest_select_form";
+import JoinGroupForm from "./signup/join_group_form";
 
 interface ProfileActionProps {
   loginActions: LoginActions;
@@ -130,6 +131,18 @@ const Profile: React.FC<ProfileProps> = (props) => {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+
+        <div className="columns">
+          <div className="column">
+            <h5 className="title is-5">{t("Update Group Membership")}</h5>
+            <JoinGroupForm
+              onComplete={() => {
+                setDisplayNotification("success");
+                setTimeout(() => setDisplayNotification(undefined), 3000);
+              }}
+            />
           </div>
         </div>
 
