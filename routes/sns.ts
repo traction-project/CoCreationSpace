@@ -43,15 +43,27 @@ router.post("/receive", (req, res) => {
   res.send("");
 });
 
-export async function insertVideoTranscript(jobName: string) {
-  const { language, transcript } = await fetchTranscript(jobName);
-  const { Multimedia, Subtitles } = db.getModels();
+export async function insertVideoTranscript(jobId: string) {
+  const { language, transcript } = await fetchTranscript(jobId);
+  const { AsyncJob, Subtitles } = db.getModels();
 
-  const video = await Multimedia.findOne({ where: { key: jobName } });
+  const job = await AsyncJob.findOne({ where : {
+    type: "transcribe",
+    jobId
+  }});
 
-  if (video) {
-    video.transcript = transcript;
-    video.save();
+  if (!job) {
+    return;
+  }
+
+  job.status = "done";
+  job.save();
+
+  const media = await job.getMultimedium();
+
+  if (media) {
+    media.transcript = transcript;
+    media.save();
 
     const subtitles = Subtitles.build();
 
@@ -59,12 +71,14 @@ export async function insertVideoTranscript(jobName: string) {
     subtitles.content = transcribeOutputToVTT(transcript);
 
     await subtitles.save();
-    subtitles.setMultimedia(video);
+    subtitles.setMultimedia(media);
   }
 }
 
 export async function insertMetadata(data: any) {
   const { jobId, outputs } = data;
+  const { AsyncJob } = db.getModels();
+
   const thumbnailPattern: string = outputs[0].thumbnailPattern;
 
   const thumbnails = thumbnailPattern && Range(0, Math.floor(outputs[0].duration / 300) + 1).map((n) => {
@@ -76,8 +90,19 @@ export async function insertMetadata(data: any) {
 
   const resolutions = outputs.filter((o: any) => o.height).map((o: any) => o.height);
 
-  const { Multimedia } = db.getModels();
-  const media = await Multimedia.findOne({ where : { transcodingJobId: jobId } });
+  const job = await AsyncJob.findOne({ where : {
+    type: "transcode_dash",
+    jobId
+  }});
+
+  if (!job) {
+    return;
+  }
+
+  job.status = "done";
+  job.save();
+
+  const media = await job.getMultimedium();
 
   if (media) {
     media.status = "done";
