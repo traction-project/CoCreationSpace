@@ -11,12 +11,13 @@ import { uploadToS3 } from "../util/s3";
 import { transcribeMediaFile } from "../util/transcribe";
 import { MultimediaInstance } from "../models/multimedia";
 import { UserInstance } from "../models/users";
+import { AsyncJobInstance } from "models/async_job";
 
 const [ BUCKET_NAME, ETS_PIPELINE, CLOUDFRONT_URL ] = getFromEnvironment("BUCKET_NAME", "ETS_PIPELINE", "CLOUDFRONT_URL");
 const router = Router();
 
 const processUploadedVideo = async (file: NodeJS.ReadableStream, filename: string, userId: string) => {
-  const { Multimedia } = db.getModels();
+  const { Multimedia, AsyncJob } = db.getModels();
 
   const newName = uuid4() + getExtension(filename);
   await uploadToS3(newName, file, BUCKET_NAME);
@@ -30,16 +31,22 @@ const processUploadedVideo = async (file: NodeJS.ReadableStream, filename: strin
   video.key = newName.split(".")[0];
   video.type = "video";
 
+  let jobs: Array<AsyncJobInstance> = [];
+
   if (jobId) {
-    video.transcodingJobId = jobId;
-    video.transcriptionJobId = newName.split(".")[0];
+    jobs = await AsyncJob.bulkCreate([
+      { type: "transcode_dash", jobId },
+      { type: "transcribe", jobId: newName.split(".")[0] }
+    ]);
+
     video.status = "processing";
   } else {
     video.status = "error";
   }
 
   await video.save();
-  video.setUser(userId);
+  await video.setUser(userId);
+  await video.setAsyncJobs(jobs);
 
   return video.id;
 };
