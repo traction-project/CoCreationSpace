@@ -58,6 +58,9 @@ const Profile: React.FC<ProfileProps> = (props) => {
     <section className="section">
       <div className="container">
         <h1 className="title">{t("Edit Profile")}</h1>
+        <h2 className="subtitle">{user.username}</h2>
+
+        <hr/>
 
         <div className="columns is-vcentered">
           <div className="column is-one-quarter">
