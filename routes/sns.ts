@@ -105,7 +105,10 @@ export async function insertMetadata(data: any) {
   const media = await job.getMultimedium();
 
   if (media) {
-    media.status = "done";
+    if (await media.isDoneTranscoding()) {
+      media.status = "done";
+    }
+
     media.duration = outputs[0].duration;
 
     if (resolutions.length > 0) {
