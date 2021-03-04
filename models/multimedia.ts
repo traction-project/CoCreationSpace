@@ -1,4 +1,4 @@
-import Sequelize, { Optional } from "sequelize";
+import Sequelize, { Optional, Op } from "sequelize";
 import { v4 as uuidv4} from "uuid";
 
 import { CommonAttributes } from "util/typing/modelCommonAttributes";
@@ -112,6 +112,7 @@ export interface MultimediaInstance extends Sequelize.Model<MultimediaAttributes
   countAsyncJobs: Sequelize.HasManyCountAssociationsMixin;
 
   incrementViewCount: () => Promise<void>;
+  isDoneTranscoding: () => Promise<boolean>;
 }
 
 /**
@@ -190,6 +191,17 @@ export function MultimediaModelFactory(sequelize: Sequelize.Sequelize): Sequeliz
   Multimedia.prototype.incrementViewCount = async function () {
     await this.increment("viewCount");
     await this.reload();
+  };
+
+  Multimedia.prototype.isDoneTranscoding = async function () {
+    const processingJobCount = await this.countAsyncJobs({
+      where: {
+        type: { [Op.like]: "transcode_%" },
+        status: "processing"
+      }
+    });
+
+    return processingJobCount == 0;
   };
 
   return Multimedia;

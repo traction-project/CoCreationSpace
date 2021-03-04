@@ -156,6 +156,69 @@ describe("Multimedia model", () => {
     expect(await video.hasAsyncJob(job)).toBeTruthy();
   });
 
+  it("should return whether an associated job is still processing", async () => {
+    const { Multimedia, AsyncJob } = db.getModels();
+
+    const video = await Multimedia.create({
+      title: "video",
+    });
+
+    const job = await AsyncJob.create({
+      type: "transcode_dash",
+      jobId: "some_job_id"
+    });
+
+    video.addAsyncJob(job);
+    expect(await video.isDoneTranscoding()).toBeFalsy();
+
+    job.status = "done";
+    await job.save();
+
+    expect(await video.isDoneTranscoding()).toBeTruthy();
+  });
+
+  it("should return true when all associated job is still processing", async () => {
+    const { Multimedia, AsyncJob } = db.getModels();
+
+    const video = await Multimedia.create({
+      title: "video",
+    });
+
+    const job1 = await AsyncJob.create({
+      type: "transcode_dash",
+      jobId: "some_job_id"
+    });
+
+    const job2 = await AsyncJob.create({
+      type: "transcode_dash",
+      jobId: "some_other_job_id"
+    });
+
+    video.addAsyncJobs([job1, job2]);
+
+    expect(await video.isDoneTranscoding()).toBeFalsy();
+
+    job1.status = "done";
+    await job1.save();
+
+    expect(await video.isDoneTranscoding()).toBeFalsy();
+
+    job2.status = "done";
+    await job2.save();
+
+    expect(await video.isDoneTranscoding()).toBeTruthy();
+
+    job2.status = "processing";
+    await job2.save();
+
+    expect(await video.isDoneTranscoding()).toBeFalsy();
+
+    job2.status = "error";
+    await job2.save();
+
+    expect(await video.isDoneTranscoding()).toBeTruthy();
+  });
+
   it("should list emoji-reactions associated to the multimedia item", async () => {
     const { Multimedia, EmojiReactions, Users } = db.getModels();
 
