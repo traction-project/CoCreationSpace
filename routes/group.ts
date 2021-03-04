@@ -20,6 +20,18 @@ router.get("/all", authRequired, async (req, res) => {
 });
 
 /**
+ * Returns the groups that the current user is a member of
+ */
+router.get("/me", authRequired, async (req, res) => {
+  const user = req.user as UserInstance;
+  const groups = await user.getUserGroups({
+    attributes: ["id", "name"]
+  });
+
+  res.send(groups);
+});
+
+/**
  * Makes the current user join the group identified by the given id. Returns
  * 200 on success, or 404 if the group with the given id cannot be found.
  */
