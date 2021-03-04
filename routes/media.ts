@@ -52,7 +52,7 @@ const processUploadedVideo = async (file: NodeJS.ReadableStream, filename: strin
 };
 
 const processUploadedAudio = async (file: NodeJS.ReadableStream, filename: string, userId: string) => {
-  const { Multimedia } = db.getModels();
+  const { AsyncJob, Multimedia } = db.getModels();
 
   const newName = uuid4() + getExtension(filename);
   await uploadToS3(newName, file, BUCKET_NAME);
@@ -66,16 +66,22 @@ const processUploadedAudio = async (file: NodeJS.ReadableStream, filename: strin
   audio.key = newName.split(".")[0];
   audio.type = "audio";
 
+  let jobs: Array<AsyncJobInstance> = [];
+
   if (jobId) {
-    audio.transcodingJobId = jobId;
-    audio.transcriptionJobId = newName.split(".")[0];
+    jobs = await AsyncJob.bulkCreate([
+      { type: "transcode_dash", jobId },
+      { type: "transcribe", jobId: newName.split(".")[0] }
+    ]);
+
     audio.status = "processing";
   } else {
     audio.status = "error";
   }
 
   await audio.save();
-  audio.setUser(userId);
+  await audio.setUser(userId);
+  await audio.setAsyncJobs(jobs);
 
   return audio.id;
 };
