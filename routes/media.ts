@@ -6,7 +6,7 @@ import sharp from "sharp";
 import { db } from "../models";
 import { getExtension, getFromEnvironment, streamToBuffer } from "../util";
 import { authRequired } from "../util/middleware";
-import { encodeDash, encodeAudio } from "../util/transcode";
+import { encodeDash, encodeAudio, encodeHLS, encodeHLSAudio } from "../util/transcode";
 import { uploadToS3 } from "../util/s3";
 import { transcribeMediaFile } from "../util/transcribe";
 import { MultimediaInstance } from "../models/multimedia";
@@ -23,7 +23,8 @@ const processUploadedVideo = async (file: NodeJS.ReadableStream, filename: strin
   await uploadToS3(newName, file, BUCKET_NAME);
 
   transcribeMediaFile("en-US", newName, BUCKET_NAME);
-  const jobId = await encodeDash(ETS_PIPELINE, newName);
+  const dashJobId = await encodeDash(ETS_PIPELINE, newName);
+  const hlsJobId = await encodeHLS(ETS_PIPELINE, newName);
 
   const video: MultimediaInstance = Multimedia.build();
 
@@ -33,9 +34,10 @@ const processUploadedVideo = async (file: NodeJS.ReadableStream, filename: strin
 
   let jobs: Array<AsyncJobInstance> = [];
 
-  if (jobId) {
+  if (dashJobId && hlsJobId) {
     jobs = await AsyncJob.bulkCreate([
-      { type: "transcode_dash", jobId },
+      { type: "transcode_dash", jobId: dashJobId },
+      { type: "transcode_hls", jobId: hlsJobId },
       { type: "transcribe", jobId: newName.split(".")[0] }
     ]);
 
@@ -58,7 +60,8 @@ const processUploadedAudio = async (file: NodeJS.ReadableStream, filename: strin
   await uploadToS3(newName, file, BUCKET_NAME);
 
   transcribeMediaFile("en-US", newName, BUCKET_NAME);
-  const jobId = await encodeAudio(ETS_PIPELINE, newName);
+  const dashJobId = await encodeAudio(ETS_PIPELINE, newName);
+  const hlsJobId = await encodeHLSAudio(ETS_PIPELINE, newName);
 
   const audio: MultimediaInstance = Multimedia.build();
 
@@ -68,9 +71,10 @@ const processUploadedAudio = async (file: NodeJS.ReadableStream, filename: strin
 
   let jobs: Array<AsyncJobInstance> = [];
 
-  if (jobId) {
+  if (dashJobId && hlsJobId) {
     jobs = await AsyncJob.bulkCreate([
-      { type: "transcode_dash", jobId },
+      { type: "transcode_dash", jobId: dashJobId },
+      { type: "transcode_hls", jobId: hlsJobId },
       { type: "transcribe", jobId: newName.split(".")[0] }
     ]);
 
