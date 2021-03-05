@@ -1,9 +1,9 @@
 import * as React from "react";
 import { useEffect, useRef, useState } from "react";
-import { MediaPlayer } from "dashjs";
+import { MediaPlayer, MediaPlayerClass } from "dashjs";
 
 import { PostType } from "../post/post";
-import { activateSubtitleTrack, disableSubtitles, EmojiReaction } from "../../util";
+import { activateSubtitleTrack, disableSubtitles, EmojiReaction, supportsNativeHLS } from "../../util";
 import { VideoInteractionTracker } from "../../video_interaction_tracker";
 import TranslationButton from "./translation_button";
 import ControlBarToggle from "./control_bar_toggle";
@@ -92,8 +92,19 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
     setPlaying(false);
     setFullscreen(false);
 
-    const player = MediaPlayer().create();
-    player.initialize(videoNode.current, manifest, false);
+    let player: MediaPlayerClass | undefined;
+
+    if (!supportsNativeHLS()) {
+      player = MediaPlayer().create();
+      player.initialize(videoNode.current, manifest, false);
+
+      console.log("Setting up DASH player");
+    } else {
+      const hlsManifest = manifest.replace(/\.mpd$/, ".m3u8");
+      videoNode.current.src = hlsManifest;
+
+      console.log("Setting up HLS player with manifest", hlsManifest);
+    }
 
     const fullscreenChange = () => {
       videoInteractionTracker?.onFullscreen(videoNode.current?.currentTime || 0);
@@ -155,7 +166,7 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
         videoNode.current.removeEventListener("timeupdate", updateAnimatedEmojis);
       }
 
-      player.reset();
+      player?.reset();
     };
   }, [manifest]);
 
