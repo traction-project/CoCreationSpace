@@ -9,15 +9,16 @@ interface Group {
 }
 
 interface JoinGroupFormProps {
+  multiSelect?: boolean;
   onComplete?: () => void;
 }
 
 const JoinGroupForm: React.FC<JoinGroupFormProps> = (props) => {
-  const { onComplete } = props;
+  const { onComplete, multiSelect = false } = props;
 
   const { t } = useTranslation();
   const [ groups, setGroups ] = useState<Array<Group>>([]);
-  const [ selectedGroup, setSelectedGroup ] = useState<string>();
+  const [ selectedGroups, setSelectedGroups ] = useState<Array<string>>([]);
   const [ error, setError ] = useState<string>();
 
   useEffect(() => {
@@ -32,19 +33,29 @@ const JoinGroupForm: React.FC<JoinGroupFormProps> = (props) => {
 
   const onGroupSelected = (id: string) => {
     return () => {
-      setSelectedGroup(id);
+      if (multiSelect) {
+        setSelectedGroups(Array.from(
+          new Set(
+            [...selectedGroups, id]
+          )
+        ));
+      } else {
+        setSelectedGroups([id]);
+      }
     };
   };
 
   const onSubmit = async () => {
-    if (!selectedGroup) {
+    if (selectedGroups.length == 0) {
       return;
     }
 
     try {
-      await fetch(`/groups/${selectedGroup}/join`, {
-        method: "POST",
-      });
+      await Promise.all(selectedGroups.map((selectedGroup) => {
+        return fetch(`/groups/${selectedGroup}/join`, {
+          method: "POST",
+        });
+      }));
 
       onComplete?.();
     } catch (err) {
@@ -71,7 +82,7 @@ const JoinGroupForm: React.FC<JoinGroupFormProps> = (props) => {
           <span
             key={id}
             onClick={onGroupSelected(id)}
-            className={classNames("tag", "is-large", "is-primary", { "is-light": id != selectedGroup })}
+            className={classNames("tag", "is-large", "is-primary", { "is-light": selectedGroups.find((groupId) => groupId == id) })}
           >
             {name}
           </span>
@@ -80,7 +91,7 @@ const JoinGroupForm: React.FC<JoinGroupFormProps> = (props) => {
 
       <hr/>
 
-      <button className="button is-info" disabled={selectedGroup == undefined} onClick={onSubmit}>
+      <button className="button is-info" disabled={selectedGroups.length == 0} onClick={onSubmit}>
         {t("Submit")}
       </button>
     </React.Fragment>
