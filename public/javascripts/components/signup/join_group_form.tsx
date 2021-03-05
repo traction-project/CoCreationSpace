@@ -58,12 +58,23 @@ const JoinGroupForm: React.FC<JoinGroupFormProps> = (props) => {
     }
 
     try {
+      // Leave all groups which were previously selected, but not anymore
+      await Promise.all(initialGroups.filter((initialGroup) => {
+        return !selectedGroups.find((selectedGroup) => selectedGroup == initialGroup);
+      }).map((group) => {
+        return fetch(`/groups/${group}/leave`, {
+          method: "POST"
+        });
+      }));
+
+      // Join selected groups
       await Promise.all(selectedGroups.map((selectedGroup) => {
         return fetch(`/groups/${selectedGroup}/join`, {
           method: "POST",
         });
       }));
 
+      setInitialGroups(selectedGroups);
       onComplete?.();
     } catch (err) {
       setError(err);
