@@ -96,33 +96,39 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
     player.initialize(videoNode.current, manifest, false);
 
     const fullscreenChange = () => {
-      videoInteractionTracker?.onFullscreen(player.time());
+      videoInteractionTracker?.onFullscreen(videoNode.current?.currentTime || 0);
       setFullscreen(document.fullscreenElement != undefined);
     };
 
     const playbackStarted = () => {
-      videoInteractionTracker?.onPlay(player.time());
+      videoInteractionTracker?.onPlay(videoNode.current?.currentTime || 0);
       setPlaying(true);
     };
 
     const playbackPaused = () => {
-      videoInteractionTracker?.onPause(player.time());
+      videoInteractionTracker?.onPause(videoNode.current?.currentTime || 0);
       setPlaying(false);
     };
 
     const videoSeeked = () => {
-      videoInteractionTracker?.onSeek(player.time());
+      videoInteractionTracker?.onSeek(videoNode.current?.currentTime || 0);
     };
 
     const videoEnded = () => {
-      videoInteractionTracker?.onEnd(player.time());
+      videoInteractionTracker?.onEnd(videoNode.current?.currentTime || 0);
     };
 
     const videoProgress = () => {
-      onTimeUpdate?.(player.time(), player.duration(), !player.isPaused());
+      onTimeUpdate?.(
+        videoNode.current?.currentTime || 0,
+        videoNode.current?.duration || 0,
+        !videoNode.current?.paused
+      );
 
-      setTime(player.time());
-      setProgress(player.time() / player.duration());
+      setTime(videoNode.current?.currentTime || 0);
+      setProgress(
+        (videoNode.current?.currentTime || 0) / (videoNode.current?.duration || 1)
+      );
     };
 
     document.addEventListener("fullscreenchange", fullscreenChange);
