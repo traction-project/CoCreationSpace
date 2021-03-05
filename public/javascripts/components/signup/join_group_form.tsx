@@ -19,6 +19,7 @@ const JoinGroupForm: React.FC<JoinGroupFormProps> = (props) => {
   const { t } = useTranslation();
   const [ groups, setGroups ] = useState<Array<Group>>([]);
   const [ selectedGroups, setSelectedGroups ] = useState<Array<string>>([]);
+  const [ initialGroups, setInitialGroups ] = useState<Array<string>>([]);
   const [ error, setError ] = useState<string>();
 
   useEffect(() => {
@@ -26,6 +27,12 @@ const JoinGroupForm: React.FC<JoinGroupFormProps> = (props) => {
       return res.json();
     }).then((groups: Array<Group>) => {
       setGroups(groups);
+      return fetch("/groups/me");
+    }).then((res) => {
+      return res.json();
+    }).then((myGroups: Array<{ id: string }>) => {
+      setInitialGroups(myGroups.map((g) => g.id));
+      setSelectedGroups(myGroups.map((g) => g.id));
     }).catch((err) => {
       setError(err);
     });
@@ -82,7 +89,7 @@ const JoinGroupForm: React.FC<JoinGroupFormProps> = (props) => {
           <span
             key={id}
             onClick={onGroupSelected(id)}
-            className={classNames("tag", "is-large", "is-primary", { "is-light": selectedGroups.find((groupId) => groupId == id) })}
+            className={classNames("tag", "is-large", "is-primary", { "is-light": !selectedGroups.find((groupId) => groupId == id) })}
           >
             {name}
           </span>
