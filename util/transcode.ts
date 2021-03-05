@@ -256,7 +256,7 @@ export function encodeHLSAudio(pipeline: string, input: string): Promise<string>
     OutputKeyPrefix: "transcoded/",
     Outputs: [
       {
-        Key: `dash-audio/${inputBasename}`,
+        Key: `hls-audio/${inputBasename}`,
         PresetId: "1351620000001-200060",
         SegmentDuration: "10"
       }
