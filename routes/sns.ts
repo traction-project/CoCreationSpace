@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { Op } from "sequelize";
 
 import { getFromEnvironment, Range } from "../util";
 import { fetchTranscript, transcribeOutputToVTT } from "../util/transcribe";
@@ -91,7 +92,7 @@ export async function insertMetadata(data: any) {
   const resolutions = outputs.filter((o: any) => o.height).map((o: any) => o.height);
 
   const job = await AsyncJob.findOne({ where : {
-    type: "transcode_dash",
+    type: { [Op.like]: "transcode_%" },
     jobId
   }});
 
