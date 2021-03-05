@@ -454,9 +454,17 @@ router.delete("/:id", authRequired, async (req, res) => {
   const { id } = req.params;
   const { Posts } = db.getModels();
 
+  const user = req.user as UserInstance;
   const post = await Posts.findByPk(id);
 
   if (post) {
+    if (post.user_id != user.id) {
+      return res.status(400).send({
+        status: "ERR",
+        message: "Not allowed to delete post"
+      });
+    }
+
     await post.destroyWithComments();
 
     res.send({
