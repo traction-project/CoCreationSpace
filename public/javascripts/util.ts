@@ -304,7 +304,7 @@ export function getFilesFromList(fileList?: FileList | null): Array<File> {
  * returns true, it is merely an indication that it might be possible. Whether
  * it is actually possible cannot be known until playback is attempted.
  *
- * @returns False if the client does not support it, true if it might.
+ * @returns False if the client does not support it, true if it might
  */
 export function supportsNativeHLS(): boolean {
   const videoElement = document.createElement("video");
@@ -314,4 +314,18 @@ export function supportsNativeHLS(): boolean {
   }
 
   return true;
+}
+
+/**
+ * Checks whether the client supports DASH. This is done by checking whether
+ * the `window` object has a property `MediaSource`.
+ *
+ * @returns True if DASH is supported, false otherwise
+ */
+export function supportsDash(): boolean {
+  if (window.MediaSource) {
+    return true;
+  }
+
+  return false;
 }

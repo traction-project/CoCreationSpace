@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { MediaPlayer, MediaPlayerClass } from "dashjs";
 
 import { PostType } from "../post/post";
-import { activateSubtitleTrack, disableSubtitles, EmojiReaction, supportsNativeHLS } from "../../util";
+import { activateSubtitleTrack, disableSubtitles, EmojiReaction, supportsDash } from "../../util";
 import { VideoInteractionTracker } from "../../video_interaction_tracker";
 import TranslationButton from "./translation_button";
 import ControlBarToggle from "./control_bar_toggle";
@@ -94,7 +94,7 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
 
     let player: MediaPlayerClass | undefined;
 
-    if (!supportsNativeHLS()) {
+    if (supportsDash()) {
       player = MediaPlayer().create();
       player.initialize(videoNode.current, manifest, false);
 
