@@ -13,7 +13,7 @@ module.exports = {
       list: ["i18next.t", "i18n.t", "this.i18n.tr", "t"],
       extensions: [".ts"],
     },
-    lngs: ["en", "de", "es"],
+    lngs: ["en", "de", "es", "pt"],
     ns: [
       "translation",
     ],
