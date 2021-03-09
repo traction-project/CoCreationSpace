@@ -6,7 +6,8 @@ import i18n from "../i18n";
 const availableTranslations: { [key: string]: string } = {
   en: "English",
   de: "Deutsch",
-  es: "Español"
+  es: "Español",
+  ga: "Gaeilge"
 };
 
 function processDetectedLanguage() {
