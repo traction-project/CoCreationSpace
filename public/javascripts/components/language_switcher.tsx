@@ -7,7 +7,8 @@ const availableTranslations: { [key: string]: string } = {
   en: "English",
   de: "Deutsch",
   es: "Español",
-  ga: "Gaeilge"
+  ga: "Gaeilge",
+  pt: "Português"
 };
 
 function processDetectedLanguage() {
