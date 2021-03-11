@@ -1,6 +1,5 @@
 import * as React from "react";
 import { useEffect, useRef, useState } from "react";
-import { MediaPlayer, MediaPlayerClass } from "dashjs";
 
 import { PostType } from "../post/post";
 import { activateSubtitleTrack, disableSubtitles, EmojiReaction, supportsDash } from "../../util";
@@ -92,13 +91,15 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
     setPlaying(false);
     setFullscreen(false);
 
-    let player: MediaPlayerClass | undefined;
+    let player: any | undefined;
 
     if (supportsDash()) {
-      player = MediaPlayer().create();
-      player.initialize(videoNode.current, manifest, false);
+      import("dashjs").then(({ MediaPlayer }) => {
+        player = MediaPlayer().create();
+        player.initialize(videoNode.current!, manifest, false);
 
-      console.log("Setting up DASH player");
+        console.log("Setting up DASH player");
+      });
     } else {
       const hlsManifest = manifest.replace(/\.mpd$/, ".m3u8");
       videoNode.current.src = hlsManifest;
