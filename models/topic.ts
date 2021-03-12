@@ -4,6 +4,7 @@ import { v4 as uuidv4} from "uuid";
 import { CommonAttributes } from "util/typing/modelCommonAttributes";
 import { ThreadAttributes, ThreadInstance } from "./thread";
 import { UserInstance } from "./users";
+import { UserGroupInstance } from "./user_group";
 
 export interface TopicAttributes extends CommonAttributes{
     title: string;
@@ -36,6 +37,9 @@ export interface TopicInstance extends Sequelize.Model<TopicAttributes, TopicCre
   hasHasInterest: Sequelize.BelongsToManyHasAssociationMixin<UserInstance, UserInstance["id"]>;
   hasHasInterests: Sequelize.BelongsToManyHasAssociationsMixin<UserInstance, UserInstance["id"]>;
   countHasInterest: Sequelize.BelongsToManyCountAssociationsMixin;
+
+  getUserGroup: Sequelize.BelongsToGetAssociationMixin<UserGroupInstance>;
+  setUserGroup: Sequelize.BelongsToSetAssociationMixin<UserGroupInstance, UserGroupInstance["id"]>;
 }
 
 /**

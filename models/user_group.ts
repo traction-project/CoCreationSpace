@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 
 import { CommonAttributes } from "util/typing/modelCommonAttributes";
 import { UserInstance } from "./users";
+import { TopicInstance } from "./topic";
 
 export interface UserGroupAttributes extends CommonAttributes {
     name: string;
@@ -23,6 +24,17 @@ export interface UserGroupInstance extends Sequelize.Model<UserGroupAttributes, 
   hasUser: Sequelize.BelongsToManyHasAssociationMixin<UserInstance, UserInstance["id"]>;
   hasUsers: Sequelize.BelongsToManyHasAssociationsMixin<UserInstance, UserInstance["id"]>;
   countUsers: Sequelize.BelongsToManyCountAssociationsMixin;
+
+  getTopics: Sequelize.HasManyGetAssociationsMixin<TopicInstance>;
+  setTopics: Sequelize.HasManySetAssociationsMixin<TopicInstance, TopicInstance["id"]>;
+  addTopics: Sequelize.HasManyAddAssociationsMixin<TopicInstance, TopicInstance["id"]>;
+  addTopic: Sequelize.HasManyAddAssociationMixin<TopicInstance, TopicInstance["id"]>;
+  createTopic: Sequelize.HasManyCreateAssociationMixin<TopicInstance>;
+  removeTopic: Sequelize.HasManyRemoveAssociationMixin<TopicInstance, TopicInstance["id"]>;
+  removeTopics: Sequelize.HasManyRemoveAssociationsMixin<TopicInstance, TopicInstance["id"]>;
+  hasTopic: Sequelize.HasManyHasAssociationMixin<TopicInstance, TopicInstance["id"]>;
+  hasTopics: Sequelize.HasManyHasAssociationsMixin<TopicInstance, TopicInstance["id"]>;
+  countTopics: Sequelize.HasManyCountAssociationsMixin;
 }
 
 /**
