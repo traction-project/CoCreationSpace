@@ -1,0 +1,84 @@
+import { Sequelize } from "sequelize";
+
+process.env["SESSION_SECRET"] = "sessionsecret";
+const sequelize = new Sequelize("sqlite::memory:", { logging: false });
+
+import { db } from "../../models";
+
+describe("Topics model", () => {
+  beforeAll(async () => {
+    await db.createDB(sequelize);
+  });
+
+  beforeEach(async () => {
+    const { Topics, Threads } = db.getModels();
+
+    await Topics.destroy({ truncate: true });
+    await Threads.destroy({ truncate: true });
+  });
+
+  it("should create a new topic with just a title", async () => {
+    const { Topics } = db.getModels();
+
+    const topic = await Topics.build({
+      title: "test"
+    }).save();
+
+    expect(topic.title).toEqual("test");
+
+    expect(topic.id).toBeDefined();
+    expect(topic.createdAt).toBeDefined();
+    expect(topic.updatedAt).toBeDefined();
+
+    expect(topic.createdAt).toEqual(topic.updatedAt);
+  });
+
+  it("should allow multiple topics with the same title", async () => {
+    const { Topics } = db.getModels();
+
+    const topic1 = await Topics.create({
+      title: "test"
+    });
+
+    expect(topic1).toBeDefined();
+    expect(topic1.title).toEqual("test");
+
+    const topic2 = await Topics.create({
+      title: "test"
+    });
+
+    expect(topic2).toBeDefined();
+    expect(topic2.title).toEqual("test");
+  });
+
+  it("should not have any threads initially", async () => {
+    const { Topics } = db.getModels();
+
+    const topic = await Topics.create({
+      title: "test"
+    });
+
+    expect(await topic.countThreads()).toEqual(0);
+    expect(await topic.getThreads()).toEqual([]);
+  });
+
+  it("should associate a thread with a topic", async () => {
+    const { Topics, Threads } = db.getModels();
+
+    const topic = await Topics.create({
+      title: "test"
+    });
+
+    const thread = await Threads.create({
+      th_title: "a thread"
+    });
+
+    expect(await topic.countThreads()).toEqual(0);
+    expect(await topic.getThreads()).toEqual([]);
+
+    await thread.setTopic(topic);
+
+    expect(await topic.countThreads()).toEqual(1);
+    expect(await topic.hasThread(thread)).toBeTruthy();
+  });
+});
