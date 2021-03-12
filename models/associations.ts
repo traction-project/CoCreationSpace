@@ -202,6 +202,7 @@ function tagAssociations(models: DbInterface): void {
  * @param models DbInterface
  */
 function topicAssociations(models: DbInterface): void {
+  models.Topics.belongsTo(models.UserGroup);
   models.Topics.hasMany(models.Threads, { as: "thread", foreignKey: "topic_id" });
   models.Topics.belongsToMany(models.Users, {
     through: {
@@ -279,6 +280,7 @@ function userAssociations(models: DbInterface): void {
  */
 function userGroupAssociations(models: DbInterface) {
   models.UserGroup.belongsToMany(models.Users, { through: "user_group_users" });
+  models.UserGroup.hasMany(models.Topics);
 }
 
 /**
