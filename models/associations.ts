@@ -203,7 +203,7 @@ function tagAssociations(models: DbInterface): void {
  */
 function topicAssociations(models: DbInterface): void {
   models.Topics.belongsTo(models.UserGroup);
-  models.Topics.hasMany(models.Threads, { as: "thread", foreignKey: "topic_id" });
+  models.Topics.hasMany(models.Threads, { as: "threads", foreignKey: "topic_id" });
   models.Topics.belongsToMany(models.Users, {
     through: {
       model: models.Interests,
