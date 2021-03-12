@@ -11,10 +11,11 @@ describe("UserGroup model", () => {
   });
 
   beforeEach(async () => {
-    const { Users, UserGroup } = db.getModels();
+    const { Users, UserGroup, Topics } = db.getModels();
 
     await UserGroup.destroy({ truncate: true });
     await Users.destroy({ truncate: true });
+    await Topics.destroy({ truncate: true });
   });
 
   it("should create a new group with just a name", async () => {
@@ -121,5 +122,36 @@ describe("UserGroup model", () => {
     await group.removeUser(user1);
     expect(await group.countUsers()).toEqual(1);
     expect((await group.getUsers())[0].username).toEqual(user2.username);
+  });
+
+  it("should not have any topics initially", async () => {
+    const { UserGroup } = db.getModels();
+
+    const group = await UserGroup.create({
+      name: "test"
+    });
+
+    expect(await group.countTopics()).toEqual(0);
+    expect(await group.getTopics()).toEqual([]);
+  });
+
+  it("should be able to associate a topic to a group", async () => {
+    const { UserGroup, Topics } = db.getModels();
+
+    const group = await UserGroup.create({
+      name: "test"
+    });
+
+    const topic = await Topics.create({
+      title: "a topic"
+    });
+
+    expect(await group.countTopics()).toEqual(0);
+    expect(await group.getTopics()).toEqual([]);
+
+    await group.addTopic(topic);
+
+    expect(await group.countTopics()).toEqual(1);
+    expect(await group.hasTopic(topic)).toBeTruthy();
   });
 });

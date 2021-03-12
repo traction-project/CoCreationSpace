@@ -11,10 +11,11 @@ describe("Topics model", () => {
   });
 
   beforeEach(async () => {
-    const { Topics, Threads } = db.getModels();
+    const { Topics, Threads, UserGroup } = db.getModels();
 
     await Topics.destroy({ truncate: true });
     await Threads.destroy({ truncate: true });
+    await UserGroup.destroy({ truncate: true });
   });
 
   it("should create a new topic with just a title", async () => {
@@ -80,5 +81,25 @@ describe("Topics model", () => {
 
     expect(await topic.countThreads()).toEqual(1);
     expect(await topic.hasThread(thread)).toBeTruthy();
+  });
+
+  it("should be able to associate a topic to a group", async () => {
+    const { UserGroup, Topics } = db.getModels();
+
+    const group = await UserGroup.create({
+      name: "test"
+    });
+
+    const topic = await Topics.create({
+      title: "a topic"
+    });
+
+    expect(await topic.getUserGroup()).toBeNull();
+
+    topic.setUserGroup(group);
+    const associatedGroup = await topic.getUserGroup();
+
+    expect(associatedGroup).not.toBeNull();
+    expect(associatedGroup.name).toEqual("test");
   });
 });
