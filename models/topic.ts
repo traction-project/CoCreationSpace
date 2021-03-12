@@ -60,8 +60,7 @@ export function TopicModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mod
     },
     title: {
       type: Sequelize.DataTypes.STRING,
-      allowNull: false,
-      unique: true
+      allowNull: false
     }
   };
 
