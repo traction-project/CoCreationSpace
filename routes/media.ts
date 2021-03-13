@@ -181,9 +181,14 @@ router.post("/upload", authRequired, (req, res) => {
           type: "image"
         });
       } else {
-        res.status(400).send({
-          status: "ERR",
-          message: `Unsupported MIME type ${mimetype}`
+        const fileId = await processUploadedFile(
+          file, filename, user.id
+        );
+
+        res.send({
+          status: "OK",
+          id: fileId,
+          type: "file"
         });
       }
     } catch (e) {
