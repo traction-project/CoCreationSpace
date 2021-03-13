@@ -32,14 +32,14 @@ const CreatePost: React.FC<CreatePostProps> = ({ file }) => {
   const [ fileUploads, setFileUploads ] = useState<Array<FileUpload>>([]);
   const [ displayNotification, setDisplayNotification] = useState<"success" | "error">();
   const [ tags, setTags ] = useState<Array<string>>([]);
-  const [ topics, setTopics ] = useState<Array<[string, string]>>([]);
+  const [ topics, setTopics ] = useState<Array<[string, string, string]>>([]);
 
   useEffect(() => {
     fetch("/topics/group").then((res) => {
       return res.json();
     }).then((topics) => {
-      setTopics(topics.map((t: { id: string, title: string }) => {
-        return [t.id, t.title];
+      setTopics(topics.map((t: { id: string, title: string, userGroup: { name: string } }) => {
+        return [t.id, t.title, t.userGroup.name];
       }));
     });
   }, []);
@@ -269,9 +269,9 @@ const CreatePost: React.FC<CreatePostProps> = ({ file }) => {
                 <div className="control">
                   <div className="select">
                     <select name="topic" ref={register}>
-                      {topics.map(([id, name]) => {
+                      {topics.map(([id, name, group]) => {
                         return (
-                          <option key={id} value={id}>{name}</option>
+                          <option key={id} value={id}>{name} ({group})</option>
                         );
                       })}
                     </select>
