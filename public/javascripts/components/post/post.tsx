@@ -203,6 +203,7 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
                     <small className="list-item__date">
                       {post.createdAt && new Date(post.createdAt).toLocaleDateString()}&emsp;
                       {post.createdAt && new Date(post.createdAt).toLocaleTimeString()}&emsp;
+                      in <i>{post.thread.topic.userGroup.name}</i>&emsp;
                       {(props.login.user?.id == post.user.id) && (
                         <>
                           <Link to={`/post/${post.id}/edit`}>{t("Edit")}</Link>

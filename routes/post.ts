@@ -204,10 +204,24 @@ router.get("/:id", authRequired, async (req, res) => {
   const { id } = req.params;
   const user = req.user as UserInstance;
 
-  const { Posts, DataContainer, Multimedia } = db.getModels();
+  const { Posts, DataContainer, Multimedia, Topics, Threads, UserGroup } = db.getModels();
 
   const post = await Posts.findByPk(id, {
     include: [
+      {
+        model: Threads,
+        as: "thread",
+        required: true,
+        include: [{
+          model: Topics,
+          as: "topic",
+          required: true,
+          include: [{
+            model: UserGroup,
+            as: "userGroup"
+          }]
+        }]
+      },
       {
         model: DataContainer,
         as: "dataContainer",
