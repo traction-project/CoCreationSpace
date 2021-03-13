@@ -29,6 +29,7 @@ const processUploadedVideo = async (file: NodeJS.ReadableStream, filename: strin
   const video: MultimediaInstance = Multimedia.build();
 
   video.title = newName;
+  video.file = filename;
   video.key = newName.split(".")[0];
   video.type = "video";
 
@@ -66,6 +67,7 @@ const processUploadedAudio = async (file: NodeJS.ReadableStream, filename: strin
   const audio: MultimediaInstance = Multimedia.build();
 
   audio.title = newName;
+  audio.file = filename;
   audio.key = newName.split(".")[0];
   audio.type = "audio";
 
@@ -111,8 +113,10 @@ const processUploadedImage = async (file: NodeJS.ReadableStream, filename: strin
   const image: MultimediaInstance = Multimedia.build();
 
   image.title = newName;
+  image.file = filename;
   image.status = "done";
   image.type = "image";
+
   if (image.thumbnails && image.thumbnails.length > 0) {
     image.thumbnails?.push(thumbnailName);
   } else {
@@ -134,6 +138,7 @@ const processUploadedFile = async (stream: NodeJS.ReadableStream, filename: stri
   const file: MultimediaInstance = Multimedia.build();
 
   file.title = newName;
+  file.file = filename;
   file.key = newName.split(".")[0];
   file.type = "file";
   file.status = "done";
@@ -287,6 +292,9 @@ router.post("/:id/reaction", authRequired, async (req, res) => {
   }
 });
 
+/**
+ * Increment the view count for a media item
+ */
 router.post("/:id/view", async (req, res) => {
   const { id } = req.params;
   const { Multimedia } = db.getModels();
@@ -307,6 +315,9 @@ router.post("/:id/view", async (req, res) => {
   }
 });
 
+/**
+ * Retrieve the view count for a media item
+ */
 router.get("/:id/views", async (req, res) => {
   const { id } = req.params;
   const { Multimedia } = db.getModels();
