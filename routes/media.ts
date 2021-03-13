@@ -125,6 +125,25 @@ const processUploadedImage = async (file: NodeJS.ReadableStream, filename: strin
   return image.id;
 };
 
+const processUploadedFile = async (stream: NodeJS.ReadableStream, filename: string, userId: string) => {
+  const { Multimedia } = db.getModels();
+
+  const newName = uuid4() + getExtension(filename);
+  await uploadToS3(newName, stream, BUCKET_NAME);
+
+  const file: MultimediaInstance = Multimedia.build();
+
+  file.title = newName;
+  file.key = newName.split(".")[0];
+  file.type = "file";
+  file.status = "done";
+
+  await file.save();
+  await file.setUser(userId);
+
+  return file.id;
+};
+
 router.post("/upload", authRequired, (req, res) => {
   const busboy = new Busboy({ headers: req.headers });
   const user = req.user as UserInstance;
