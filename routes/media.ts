@@ -245,6 +245,24 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+/**
+ * Retrieve the original filename for the media item with the given id.
+ */
+router.get("/:id/name", async (req, res) => {
+  const { id } = req.params;
+
+  const { Multimedia } = db.getModels();
+  const mediaItem = await Multimedia.findByPk(id);
+
+  if (mediaItem) {
+    return res.send({
+      originalName: mediaItem.file
+    });
+  } else {
+    res.status(404).send("");
+  }
+});
+
 router.get("/:id/thumbnail", async (req, res) => {
   const { id } = req.params;
 
