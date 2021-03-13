@@ -35,7 +35,7 @@ const CreatePost: React.FC<CreatePostProps> = ({ file }) => {
   const [ topics, setTopics ] = useState<Array<[string, string]>>([]);
 
   useEffect(() => {
-    fetch("/topics/all").then((res) => {
+    fetch("/topics/group").then((res) => {
       return res.json();
     }).then((topics) => {
       setTopics(topics.map((t: { id: string, title: string }) => {

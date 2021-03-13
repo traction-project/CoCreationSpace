@@ -17,6 +17,29 @@ router.get("/all", async (req, res) => {
 });
 
 /**
+ * Get all topics for the groups the logged in user is a member of
+ */
+router.get("/group", authRequired, async (req, res) => {
+  const user = req.user as UserInstance;
+  const { Topics, UserGroup } = db.getModels();
+
+  const groups = (await user.getUserGroups()).map((group) => group.id);
+
+  const topics = await Topics.findAll({
+    include: [{
+      model: UserGroup,
+      as: "userGroup",
+      required: true,
+      where: {
+        id: groups
+      }
+    }]
+  });
+
+  return res.send(topics);
+});
+
+/**
  * Get topic with given id and its associated threads
  */
 router.get("/:id", async (req, res) => {
