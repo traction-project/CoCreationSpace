@@ -29,7 +29,8 @@ const PostEntry: React.FC<PostEntryProps> = (props) => {
           <strong className="post-title">{post.title ? post.title : t("Post")}</strong>
           <small className="list-item__date">
             {post.createdAt && new Date(post.createdAt).toLocaleDateString()}&emsp;
-            {post.createdAt && new Date(post.createdAt).toLocaleTimeString()}
+            {post.createdAt && new Date(post.createdAt).toLocaleTimeString()}&emsp;
+            in <i>{post.thread.topic.userGroup.name}</i>
           </small>
 
           <p className="mt-2">

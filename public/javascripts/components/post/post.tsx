@@ -45,7 +45,11 @@ export interface PostType extends CommonType {
   thread: {
     id: string,
     title: string,
-    topic: { id: string, title: string }
+    topic: {
+      id: string,
+      title: string,
+      userGroup: { id: string, name: string }
+    }
   };
   userReferenced?: UserType[];
   tags?: TagData[];
