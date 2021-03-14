@@ -10,24 +10,27 @@ export interface UserType extends CommonType {
 
 interface UserLogoProps {
   user: UserType;
+  hideName?: boolean;
 }
 
-const UserLogo: React.FC<UserLogoProps> = (props) => {
+const UserLogo: React.FC<UserLogoProps> = ({ user, hideName = false }) => {
   const { t } = useTranslation();
 
   return (
     <figure className="media-left" style={{width: "min-content", paddingRight: "1rem"}}>
       <span className="image is-64x64">
-        {(props.user.image) ? (
-          <img src={props.user.image} alt="Logo"/>
+        {(user.image) ? (
+          <img src={user.image} alt="Logo"/>
         ) : (
           <img src="/images/default.png" alt="Logo"/>
         )}
       </span>
-      {(props.user && props.user.username) ? (
-        <p>{props.user.username}</p>
-      ) : (
-        <p>{t("Anonymous")}</p>
+      {(!hideName) && (
+        (user.username) ? (
+          <p>{user.username}</p>
+        ) : (
+          <p>{t("Anonymous")}</p>
+        )
       )}
     </figure>
   );
