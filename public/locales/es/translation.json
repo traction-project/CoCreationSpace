@@ -78,5 +78,7 @@
     "Check timeline": "Añadir comentario al actual tiempo del video",
     "Disable subtitles": "__STRING_NOT_TRANSLATED__",
     "Skip": "__STRING_NOT_TRANSLATED__",
-    "Update Group Membership": "__STRING_NOT_TRANSLATED__"
+    "Update Group Membership": "__STRING_NOT_TRANSLATED__",
+    "Delete Post": "__STRING_NOT_TRANSLATED__",
+    "Are you sure you want to delete this post?": "__STRING_NOT_TRANSLATED__"
 }

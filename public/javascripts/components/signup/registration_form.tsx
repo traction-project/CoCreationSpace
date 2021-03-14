@@ -59,7 +59,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = (props) => {
               </Trans>
             ) : (
               <Trans i18nKey="registration-error-unknown">
-                <strong>Registration failed!</strong> An onknown error occurred.
+                <strong>Registration failed!</strong> An unknown error occurred.
               </Trans>
             )}
           </div>

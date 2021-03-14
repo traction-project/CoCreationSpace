@@ -45,7 +45,7 @@ const ProfilePictureUploadForm: React.FC<ProfilePictureUploadFormProps> = (props
         <article className="message is-danger">
           <div className="message-body">
             <Trans i18nKey="image-upload-error">
-              <strong>Image upload failed!</strong> An onknown error occurred.
+              <strong>Image upload failed!</strong> An unknown error occurred.
             </Trans>
           </div>
         </article>

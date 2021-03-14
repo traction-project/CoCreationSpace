@@ -81,5 +81,11 @@
     "Comment_1": "Déan trácht",
     "Comment_2": "Tráchtanna",
     "Comment_3": "Tráchtanna",
-    "Comment_4": "Tráchtanna"
+    "Comment_4": "Tráchtanna",
+    "Disable subtitles": "__STRING_NOT_TRANSLATED__",
+    "Delete Post": "__STRING_NOT_TRANSLATED__",
+    "Are you sure you want to delete this post?": "__STRING_NOT_TRANSLATED__",
+    "Check timeline": "__STRING_NOT_TRANSLATED__",
+    "Update Group Membership": "__STRING_NOT_TRANSLATED__",
+    "Skip": "__STRING_NOT_TRANSLATED__"
 }

@@ -87,7 +87,7 @@ const JoinGroupForm: React.FC<JoinGroupFormProps> = (props) => {
         <article className="message is-danger">
           <div className="message-body">
             <Trans i18nKey="interests-error-unknown">
-              <strong>Selection failed!</strong> An onknown error occurred.
+              <strong>Selection failed!</strong> An unknown error occurred.
             </Trans>
           </div>
         </article>
