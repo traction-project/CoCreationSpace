@@ -55,12 +55,12 @@ router.post("/login", passport.authenticate("local"), (req, res) => {
 
 router.post("/register", async (req, res) => {
   const { Users } = db.getModels();
-  const { username, password, preferredLanguage } = req.body;
+  const { username, password, email, preferredLanguage } = req.body;
 
   const userExists = await Users.findOne({ where: { username } });
 
   if (!userExists) {
-    const newUser = Users.build({ username, preferredLanguage });
+    const newUser = Users.build({ username, email, preferredLanguage });
     newUser.setPassword(password);
 
     try {

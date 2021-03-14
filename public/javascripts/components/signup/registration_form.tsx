@@ -16,12 +16,12 @@ const RegistrationForm: React.FC<RegistrationFormProps> = (props) => {
   const { t } = useTranslation();
   const { handleSubmit, register, errors, watch } = useForm({});
 
-  const handleButtonSubmitClick = handleSubmit(async ({ username, password, preferredLanguage }) => {
+  const handleButtonSubmitClick = handleSubmit(async ({ username, password, email, preferredLanguage }) => {
     try {
       const res = await fetch("/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password, preferredLanguage })
+        body: JSON.stringify({ username, password, email, preferredLanguage })
       });
 
       if (res.ok) {
@@ -84,6 +84,22 @@ const RegistrationForm: React.FC<RegistrationFormProps> = (props) => {
           </span>
         </div>
         {errors.username && <p className="help is-danger">{t("required")}</p>}
+      </div>
+
+      <div className="field">
+        <label htmlFor="" className="label">{t("E-Mail")}</label>
+        <div className="control has-icons-left">
+          <input
+            type="email"
+            placeholder={t("E-Mail")}
+            name="email"
+            className="input"
+            ref={register}
+          />
+          <span className="icon is-small is-left">
+            <i className="fa fa-envelope" />
+          </span>
+        </div>
       </div>
 
       <div className="field">
