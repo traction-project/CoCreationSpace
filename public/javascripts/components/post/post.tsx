@@ -16,6 +16,7 @@ import Thumbnail from "../thumbnail";
 import MediaPlayerWithToolbar from "../media_player_with_toolbar";
 import { LoginState } from "../../reducers/login";
 import { ApplicationState } from "../../store";
+import File from "../file";
 
 export interface MultimediaItem {
   id: string;
@@ -249,8 +250,10 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
                   startTime={selectedItem.startTime}
                   type="audio"
                 />
-              ) : (
+              ) : (selectedItem.type == "image") ? (
                 <Image id={selectedItem.id} />
+              ) : (
+                <File id={selectedItem.id} />
               )}
             </div>
           </div>

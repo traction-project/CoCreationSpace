@@ -10,6 +10,7 @@ import MediaPlayer from "../media_player";
 import ProgressBox from "../progress_box";
 import BlankVideo from "../blank_video";
 import Image from "../image";
+import File from "../file";
 
 interface FileUpload {
   status: "progressing" | "failed" | "done";
@@ -170,9 +171,13 @@ const CreatePost: React.FC<CreatePostProps> = ({ file }) => {
       return (
         <MediaPlayer type="audio" id={id} />
       );
-    } else {
+    } else if (type == "image" ){
       return (
         <Image id={id} />
+      );
+    } else {
+      return (
+        <File id={id} />
       );
     }
   };
