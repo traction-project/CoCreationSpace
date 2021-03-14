@@ -77,6 +77,8 @@ const AudioVisualiser: React.FC<AudioVisualiserProps> = (props) => {
               }
             }
           };
+        } else {
+          trackList[i].oncuechange = () => {};
         }
       }
     };
