@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface AudioVisualiserProps {
   audioRef: React.RefObject<HTMLAudioElement>;
@@ -10,6 +10,8 @@ const AudioVisualiser: React.FC<AudioVisualiserProps> = (props) => {
 
   const wrapperRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  const [ activeCue, setActiveCue ] = useState<string>();
 
   useEffect(() => {
     if (!audioRef.current || !canvasRef.current || !wrapperRef.current) {
@@ -71,7 +73,7 @@ const AudioVisualiser: React.FC<AudioVisualiserProps> = (props) => {
             if (track.activeCues) {
               for (let i=0; i<track.activeCues.length; i++) {
                 const cue = track.activeCues[i] as VTTCue;
-                console.log(cue.text);
+                setActiveCue(cue.text);
               }
             }
           };
@@ -87,6 +89,12 @@ const AudioVisualiser: React.FC<AudioVisualiserProps> = (props) => {
   return (
     <div ref={wrapperRef} className="audiovis">
       <canvas ref={canvasRef} className="audiovis" />
+
+      {(activeCue && activeCue.length > 0) && (
+        <div className="cue">
+          <p>{activeCue}</p>
+        </div>
+      )}
     </div>
   );
 };
