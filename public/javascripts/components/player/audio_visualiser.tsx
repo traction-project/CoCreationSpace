@@ -63,6 +63,7 @@ const AudioVisualiser: React.FC<AudioVisualiserProps> = (props) => {
     loop();
 
     audioRef.current.textTracks.onchange = (e) => {
+      let newTrackActivated = false;
       const trackList = e.currentTarget as TextTrackList;
 
       for (let i=0; i<trackList.length; i++) {
@@ -77,9 +78,15 @@ const AudioVisualiser: React.FC<AudioVisualiserProps> = (props) => {
               }
             }
           };
+
+          newTrackActivated = true;
         } else {
           trackList[i].oncuechange = () => {};
         }
+      }
+
+      if (!newTrackActivated) {
+        setActiveCue(undefined);
       }
     };
 
