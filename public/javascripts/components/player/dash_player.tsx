@@ -106,6 +106,27 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
       console.log("Setting up HLS player with manifest", hlsManifest);
     }
 
+    if (type == "audio") {
+      videoNode.current.textTracks.onchange = (e) => {
+        const trackList = e.currentTarget as TextTrackList;
+
+        for (let i=0; i<trackList.length; i++) {
+          if (trackList[i].mode == "showing") {
+            trackList[i].oncuechange = (e) => {
+              const track = e.currentTarget as TextTrack;
+
+              if (track.activeCues) {
+                for (let i=0; i<track.activeCues.length; i++) {
+                  const cue = track.activeCues[i] as VTTCue;
+                  console.log(cue.text);
+                }
+              }
+            };
+          }
+        }
+      };
+    }
+
     const fullscreenChange = () => {
       videoInteractionTracker?.onFullscreen(videoNode.current?.currentTime || 0);
       setFullscreen(document.fullscreenElement != undefined);
