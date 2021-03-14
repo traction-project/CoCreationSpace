@@ -297,4 +297,49 @@ describe("Users model", () => {
     await user.removeSearchQueries([query]);
     expect(await user.countSearchQueries()).toEqual(0);
   });
+
+  it("should initialise a new object with empty email address", async () => {
+    const { Users } = db.getModels();
+
+    const user = await Users.create({
+      username: "admin",
+    });
+
+    expect(user.email).toBeUndefined();
+  });
+
+  it("should initialise a new object with given email address", async () => {
+    const { Users } = db.getModels();
+
+    const user = await Users.create({
+      username: "admin",
+      email: "admin@test.com"
+    });
+
+    expect(user.email).toEqual("admin@test.com");
+  });
+
+  it("should make sure that email addresses are unique", async () => {
+    const { Users } = db.getModels();
+
+    const user1 = await Users.create({
+      username: "admin",
+      email: "admin@test.com"
+    });
+
+    expect(user1.email).toEqual("admin@test.com");
+
+    try {
+      await Users.create({
+        username: "admin2",
+        email: "admin@test.com"
+      });
+
+      fail();
+    } catch (e) {
+      expect(e).toBeDefined();
+      expect(e.fields.length).toEqual(1);
+      expect(e.fields[0]).toEqual("email");
+    }
+  });
 });
