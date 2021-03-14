@@ -35,6 +35,7 @@ export interface UsersAttributes extends CommonAttributes {
   notification?: NotificationAttributes | NotificationAttributes["id"];
   postReferenced?: PostAttributes | PostAttributes["id"];
   emojiReactions?: EmojiReactionsInstance | EmojiReactionsInstance["id"];
+  resettoken?: string;
 }
 
 type UsersCreationAttributes = Optional<UsersAttributes, "id" | "createdAt" | "updatedAt">;
@@ -227,6 +228,9 @@ export function UsersModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mod
     },
     preferences_id: {
       type: Sequelize.DataTypes.UUID
+    },
+    resettoken: {
+      type: Sequelize.DataTypes.STRING
     }
   };
 
