@@ -23,14 +23,15 @@ const PostThumbnailEntry: React.FC<PostThumbnailEntryProps> = (props) => {
 
   return (
     <article className="media is-clickable" onClick={navigateTo(`/post/${post.id}`)}>
-      <UserLogo user={post.user} />
+      <UserLogo user={post.user} hideName />
 
       <div className="media-content">
         <div className="content">
           <strong className="post-title">{post.title ? post.title : t("Post")}</strong>
           <small className="list-item__date">
             {post.createdAt && new Date(post.createdAt).toLocaleDateString()}&emsp;
-            {post.createdAt && new Date(post.createdAt).toLocaleTimeString()}
+            {post.createdAt && new Date(post.createdAt).toLocaleTimeString()}&emsp;
+            in <i>{post.thread.topic.userGroup.name}</i> by <i>{post.user.username}</i>
           </small>
 
           <div className="m-4" style={{ display: "flex", flexWrap: "wrap" }}>

@@ -22,7 +22,7 @@ const PostEntry: React.FC<PostEntryProps> = (props) => {
 
   return (
     <article className="media is-clickable" onClick={navigateTo(`/post/${post.id}`)}>
-      <UserLogo user={post.user} />
+      <UserLogo user={post.user} hideName />
 
       <div className="media-content">
         <div className="content">
@@ -30,7 +30,7 @@ const PostEntry: React.FC<PostEntryProps> = (props) => {
           <small className="list-item__date">
             {post.createdAt && new Date(post.createdAt).toLocaleDateString()}&emsp;
             {post.createdAt && new Date(post.createdAt).toLocaleTimeString()}&emsp;
-            in <i>{post.thread.topic.userGroup.name}</i>
+            in <i>{post.thread.topic.userGroup.name}</i> by <i>{post.user.username}</i>
           </small>
 
           <p className="mt-2">
