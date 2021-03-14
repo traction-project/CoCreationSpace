@@ -4,19 +4,21 @@ import { useParams, Link, useHistory } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import classNames from "classnames";
+import usePortal from "react-useportal";
 
 import { CommonType, convertHMS, EmojiReaction } from "../../util";
 import UserLogo, { UserType } from "../user_logo";
 import CommentList from "./comment_list";
 import NewComment from "./new_comment";
 import { TagData } from "../post_list/post_list";
-import { getPostId, postComment, postLike, deletePost, getCommentsForItem } from "../../services/post.service";
+import { getPostId, postComment, postLike, getCommentsForItem } from "../../services/post.service";
 import Image from "../image";
 import Thumbnail from "../thumbnail";
 import MediaPlayerWithToolbar from "../media_player_with_toolbar";
 import { LoginState } from "../../reducers/login";
 import { ApplicationState } from "../../store";
 import File from "../file";
+import DeletePostModal from "./delete_post_modal";
 
 export interface MultimediaItem {
   id: string;
@@ -75,6 +77,7 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
   const idPost = props.post ? props.post.id : id;
   const { callbackClickTime } = props;
   const currentTime = useRef(0);
+  const { isOpen, openPortal, closePortal, Portal } = usePortal();
 
   const [post, setPost] = useState<PostType>();
   const [isLike, setIsLike] = useState<boolean>(false);
@@ -172,14 +175,10 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
     }
   };
 
-  const handleDeletePost = (id: string) => {
-    return async () => {
-      const res = await deletePost(id);
-
-      if (res.ok) {
-        history.goBack();
-      }
-    };
+  const handleDeletePost = (postDeleted: boolean) => {
+    if (postDeleted) {
+      history.goBack();
+    }
   };
 
   if (!post) {
@@ -209,7 +208,7 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
                         <>
                           <Link to={`/post/${post.id}/edit`}>{t("Edit")}</Link>
                           &emsp;
-                          <a onClick={handleDeletePost(post.id)}>{t("Delete")}</a>
+                          <a onClick={openPortal}>{t("Delete")}</a>
                         </>
                       )}
                     </small>
@@ -328,6 +327,16 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
           </div>
         </div>
       </div>
+
+      {isOpen && (
+        <Portal>
+          <DeletePostModal
+            id={idPost}
+            onDelete={handleDeletePost}
+            onClose={closePortal}
+          />
+        </Portal>
+      )}
     </section>
   );
 };
