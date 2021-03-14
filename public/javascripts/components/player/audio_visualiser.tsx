@@ -60,6 +60,25 @@ const AudioVisualiser: React.FC<AudioVisualiserProps> = (props) => {
 
     loop();
 
+    audioRef.current.textTracks.onchange = (e) => {
+      const trackList = e.currentTarget as TextTrackList;
+
+      for (let i=0; i<trackList.length; i++) {
+        if (trackList[i].mode == "showing") {
+          trackList[i].oncuechange = (e) => {
+            const track = e.currentTarget as TextTrack;
+
+            if (track.activeCues) {
+              for (let i=0; i<track.activeCues.length; i++) {
+                const cue = track.activeCues[i] as VTTCue;
+                console.log(cue.text);
+              }
+            }
+          };
+        }
+      }
+    };
+
     audioRef.current.onplay = () => {
       audioContext.resume();
     };
