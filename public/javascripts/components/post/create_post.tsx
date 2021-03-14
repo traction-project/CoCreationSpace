@@ -241,7 +241,7 @@ const CreatePost: React.FC<CreatePostProps> = ({ file }) => {
 
         <div className="columns is-centered">
           <div className="column is-10">
-            <form onSubmit={handleFormSubmission}>
+            <form onSubmit={handleFormSubmission} onKeyDown={(e) => (e.key == "Enter") && e.preventDefault()}>
               <div className="field">
                 <label className="label">{t("Title")}</label>
                 <div className="control">
