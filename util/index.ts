@@ -1,5 +1,6 @@
 import aws from "aws-sdk";
 import { ModelCtor, Model, Op } from "sequelize";
+import { createTransport } from "nodemailer";
 
 import { UsersAttributes } from "../models/users";
 
@@ -195,5 +196,53 @@ export async function streamToBuffer(file: NodeJS.ReadableStream): Promise<Buffe
     file.on("data", (chunk) => chunks.push(chunk));
     file.on("error", (err) => reject(err));
     file.on("end", () => resolve(Buffer.concat(chunks)));
+  });
+}
+
+/**
+ * Send an email with the given subject and body to the given recipient using
+ * the given sender address. Authentication for the SMTP server needs to be
+ * supplied as a string of the following shape: username:password@hostname:port
+ *
+ * The function returns a promise which resolves if the message was sent
+ * successfully, or rejects with an error otherwise.
+ *
+ * @param sender The sender address
+ * @param recipient The recipient address
+ * @param subject The subject of the e-mail to be sent
+ * @param body The body of the e-mail in plain text
+ * @param smtpAddress Hostname, port and credentials for the SMTP server
+ * @returns A promise which resolves upon successful sending of the message
+ */
+export async function sendEmail(sender: string, recipient: string, subject: string, body: string, smtpAddress: string): Promise<void> {
+  const [ credentials, hostname ] = smtpAddress.split("@");
+
+  const [ user, pass ] = credentials.split(":");
+  const [ host, port ] = hostname.split(":");
+
+  const transport = createTransport({
+    host,
+    port: parseInt(port),
+    auth: {
+      user, pass
+    }
+  });
+
+  const message = {
+    from: sender,
+    to: recipient,
+    subject: subject,
+    text: body
+  };
+
+  return new Promise((resolve, reject) => {
+    transport.sendMail(message, (err, info) => {
+      if (err) {
+        reject(err);
+      } else {
+        console.log(info);
+        resolve();
+      }
+    });
   });
 }
