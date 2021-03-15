@@ -3,12 +3,12 @@ import { AsyncAction, BasicAction, PayloadAction } from "../util";
 
 import i18n from "../i18n";
 
-export type SET_LOGGED_IN_USER = PayloadAction<"SET_LOGGED_IN_USER", { id: string, username: string, image: string }>;
-function setLoggedInUser(id: string, username: string, image: string): SET_LOGGED_IN_USER {
+export type SET_LOGGED_IN_USER = PayloadAction<"SET_LOGGED_IN_USER", { id: string, username: string, image: string, email?: string }>;
+function setLoggedInUser(id: string, username: string, image: string, email?: string): SET_LOGGED_IN_USER {
   return {
     type: "SET_LOGGED_IN_USER",
     payload: {
-      id, username, image
+      id, username, image, email
     }
   };
 }
@@ -51,7 +51,8 @@ export function performLogin(username: string, password: string): AsyncAction<vo
       dispatch(setLoggedInUser(
         user.id,
         user.username,
-        user.image
+        user.image,
+        user.email
       ));
 
       if (user.preferredLanguage) {

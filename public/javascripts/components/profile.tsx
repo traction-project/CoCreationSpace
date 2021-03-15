@@ -83,6 +83,23 @@ const Profile: React.FC<ProfileProps> = (props) => {
 
             <form onSubmit={handleButtonApplyClick}>
               <div className="field">
+                <label htmlFor="" className="label">{t("E-Mail")}</label>
+                <div className="control has-icons-left">
+                  <input
+                    type="email"
+                    placeholder={t("E-Mail")}
+                    name="email"
+                    defaultValue={user.email}
+                    className="input"
+                    ref={register()}
+                  />
+                  <span className="icon is-small is-left">
+                    <i className="fa fa-lock"></i>
+                  </span>
+                </div>
+              </div>
+
+              <div className="field">
                 <label htmlFor="" className="label">{t("Password")}</label>
                 <div className="control has-icons-left">
                   <input
@@ -96,7 +113,6 @@ const Profile: React.FC<ProfileProps> = (props) => {
                     <i className="fa fa-lock"></i>
                   </span>
                 </div>
-                {errors.password && <p className="help is-danger">{t("required")}</p>}
               </div>
 
               <div className="field">
