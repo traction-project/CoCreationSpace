@@ -35,7 +35,7 @@ export interface UsersAttributes extends CommonAttributes {
   notification?: NotificationAttributes | NotificationAttributes["id"];
   postReferenced?: PostAttributes | PostAttributes["id"];
   emojiReactions?: EmojiReactionsInstance | EmojiReactionsInstance["id"];
-  resettoken?: string;
+  resettoken?: string | null;
 }
 
 type UsersCreationAttributes = Optional<UsersAttributes, "id" | "createdAt" | "updatedAt">;
