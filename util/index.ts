@@ -1,5 +1,8 @@
 import aws from "aws-sdk";
+import path from "path";
+import fs from "fs";
 import { ModelCtor, Model, Op } from "sequelize";
+import { Application } from "express";
 import { createTransport } from "nodemailer";
 
 import { UsersAttributes } from "../models/users";
@@ -221,7 +224,7 @@ type SMTPData = [
  * @param sender The sender address
  * @param recipient The recipient address
  * @param subject The subject of the e-mail to be sent
- * @param body The body of the e-mail in plain text
+ * @param body The body of the e-mail
  * @param smtpData An object containing STMP host, port, user and password
  * @returns A promise which resolves upon successful sending of the message
  */
@@ -239,7 +242,7 @@ export async function sendEmail(sender: string, recipient: string, subject: stri
     from: sender,
     to: recipient,
     subject: subject,
-    text: body
+    html: body
   };
 
   return new Promise((resolve, reject) => {
@@ -249,6 +252,31 @@ export async function sendEmail(sender: string, recipient: string, subject: stri
       } else {
         console.log(info);
         resolve();
+      }
+    });
+  });
+}
+
+/**
+ * Loads a template from the template directory by name and returns the
+ * template contents as a string.
+ *
+ * @param app Reference to an Express application
+ * @param templateName Name of the template to load
+ * @returns The string contained in the template
+ */
+export async function loadTemplate(app: Application, templateName: string): Promise<string> {
+  const viewDir = app.get("views");
+  const engine = app.get("view engine");
+
+  const templatePath = path.join(viewDir, `${templateName}.${engine}`);
+
+  return new Promise((resolve, reject) => {
+    fs.readFile(templatePath, (err, data) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(data.toString());
       }
     });
   });
