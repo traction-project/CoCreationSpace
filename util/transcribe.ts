@@ -142,8 +142,6 @@ export function fetchTranscript(jobName: string): Promise<{ language: string, tr
         return reject(new Error("Could not retrieve transcript URI from job"));
       }
 
-      console.log("Transcript language:",data.TranscriptionJob.LanguageCode, "confidence:", data.TranscriptionJob.IdentifiedLanguageScore);
-
       // Download transcript from given url
       fetch(transcriptUri).then((res) => {
         return res.json();

@@ -18,7 +18,7 @@ describe("Utility function transcribeMediaFile()", () => {
     });
 
     expect(
-      await transcribe.transcribeMediaFile("en_us", "some_path/some_file.mp4", "some_bucket")
+      await transcribe.transcribeMediaFile("some_path/some_file.mp4", "some_bucket")
     ).toBeUndefined();
   });
 
@@ -30,7 +30,7 @@ describe("Utility function transcribeMediaFile()", () => {
     });
 
     try {
-      await transcribe.transcribeMediaFile("en_us", "some_path/some_file.mp4", "some_bucket");
+      await transcribe.transcribeMediaFile("some_path/some_file.mp4", "some_bucket");
       fail();
     } catch (err) {
       expect(err).toBeDefined();
