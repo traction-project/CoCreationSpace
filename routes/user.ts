@@ -52,7 +52,7 @@ router.get("/profile", authRequired, (req, res) => {
 });
 
 /**
- * Modify user account (username and password)
+ * Modify user account (email, preferred language and password)
  */
 router.put("/", authRequired, async (req, res) => {
   const user = req.user as UserInstance;
@@ -64,6 +64,21 @@ router.put("/", authRequired, async (req, res) => {
     try {
       await user.save();
     } catch(err) {
+      res.status(500);
+
+      return res.send({
+        status: "ERR",
+        message: err.message
+      });
+    }
+  }
+
+  if (body.email && body.email.length > 0) {
+    user.email = body.email;
+
+    try {
+      await user.save();
+    } catch (err) {
       res.status(500);
 
       return res.send({
