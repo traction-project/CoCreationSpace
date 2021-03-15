@@ -113,7 +113,7 @@ router.post("/requestreset", async (req, res) => {
   if (!user) {
     return res.status(404).send({
       status: "ERR",
-      message: "No such user"
+      message: "No such e-mail"
     });
   }
 
@@ -127,6 +127,39 @@ router.post("/requestreset", async (req, res) => {
     `Use this token to reset your password: ${user.resettoken}`,
     SMTP_ADDRESS
   );
+
+  res.send({
+    status: "OK"
+  });
+});
+
+/**
+ * Resets the password for the account associated with the given reset token to
+ * the provided value.
+ */
+router.post("/resetpassword", async (req, res) => {
+  const { Users } = db.getModels();
+  const { resettoken, password } = req.body;
+
+  if (!resettoken || !password) {
+    return res.status(400).send({
+      status: "ERR",
+      message: "Invalid input data"
+    });
+  }
+
+  const user = await Users.findOne({ where: { resettoken }});
+
+  if (!user) {
+    return res.status(404).send({
+      status: "ERR",
+      message: "No such reset token"
+    });
+  }
+
+  user.resettoken = undefined;
+  user.setPassword(password);
+  await user.save();
 
   res.send({
     status: "OK"
