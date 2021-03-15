@@ -21,6 +21,7 @@ import CookieBanner from "./cookie_banner";
 import EditPost from "./post/edit_post";
 import HistoryTracker from "./history_tracker";
 import RequestReset from "./request_reset";
+import ResetPassword from "./reset_password";
 
 async function checkLogin() {
   const loginStatus = await verifyLoginStatus();
@@ -58,6 +59,9 @@ const App: React.FC<AppProps> = () => {
               </Route>
               <Route path="/requestreset">
                 <RequestReset />
+              </Route>
+              <Route path="/resetpassword/:resettoken">
+                <ResetPassword />
               </Route>
               <PrivateRoute path="/upload">
                 <CreatePost />
