@@ -88,5 +88,9 @@
     "Check timeline": "__STRING_NOT_TRANSLATED__",
     "Update Group Membership": "__STRING_NOT_TRANSLATED__",
     "Skip": "__STRING_NOT_TRANSLATED__",
-    "E-Mail": "__STRING_NOT_TRANSLATED__"
+    "E-Mail": "__STRING_NOT_TRANSLATED__",
+    "request-reset-error": "<0>Error!</0> Could not request password reset for the given e-mail address.",
+    "Request password reset": "__STRING_NOT_TRANSLATED__",
+    "Request reset": "__STRING_NOT_TRANSLATED__",
+    "Reset password": "__STRING_NOT_TRANSLATED__"
 }

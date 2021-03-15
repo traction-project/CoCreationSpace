@@ -81,5 +81,9 @@
     "Update Group Membership": "Gruppenmitgliedschaft aktualisieren",
     "Delete Post": "Beitrag löschen",
     "Are you sure you want to delete this post?": "Bist du dir sicher, dass du diesen Beitrag löschen möchtest?",
-    "E-Mail": "E-Mail"
+    "E-Mail": "E-Mail",
+    "request-reset-error": "<0>Fehler!</0> Konnte Anfrage zur Passwortrücksetzung nicht abschließen.",
+    "Request password reset": "Passwortrücksetzung anfordern",
+    "Request reset": "Passwortrücksetzung",
+    "Reset password": "Passwort zurücksetzen"
 }

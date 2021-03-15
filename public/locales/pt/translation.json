@@ -81,5 +81,9 @@
     "Update Group Membership": "Atualizar associações de grupo",
     "Delete Post": "__STRING_NOT_TRANSLATED__",
     "Are you sure you want to delete this post?": "__STRING_NOT_TRANSLATED__",
-    "E-Mail": "__STRING_NOT_TRANSLATED__"
+    "E-Mail": "__STRING_NOT_TRANSLATED__",
+    "request-reset-error": "<0>Error!</0> Could not request password reset for the given e-mail address.",
+    "Request password reset": "__STRING_NOT_TRANSLATED__",
+    "Request reset": "__STRING_NOT_TRANSLATED__",
+    "Reset password": "__STRING_NOT_TRANSLATED__"
 }
