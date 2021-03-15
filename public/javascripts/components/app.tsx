@@ -20,6 +20,7 @@ import NotificationList from "./notifications/notification_list";
 import CookieBanner from "./cookie_banner";
 import EditPost from "./post/edit_post";
 import HistoryTracker from "./history_tracker";
+import RequestReset from "./request_reset";
 
 async function checkLogin() {
   const loginStatus = await verifyLoginStatus();
@@ -54,6 +55,9 @@ const App: React.FC<AppProps> = () => {
               </Route>
               <Route path="/login">
                 <Login />
+              </Route>
+              <Route path="/requestreset">
+                <RequestReset />
               </Route>
               <PrivateRoute path="/upload">
                 <CreatePost />

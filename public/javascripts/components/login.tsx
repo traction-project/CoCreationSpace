@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Dispatch, bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { Trans, useTranslation } from "react-i18next";
 import { useForm } from "react-hook-form";
 
@@ -84,10 +84,14 @@ const Login: React.FC<LoginProps> = (props) => {
                     </span>
                   </div>
                 </div>
-                <div className="field">
+                <div className="field" style={{ display: "flex", justifyContent: "space-between" }}>
                   <button type="submit" disabled={submitDisabled} className="button is-info">
                     {t("Login")}
                   </button>
+
+                  <p>
+                    <Link to="/requestreset">Forgot password?</Link>
+                  </p>
                 </div>
               </form>
             </div>
