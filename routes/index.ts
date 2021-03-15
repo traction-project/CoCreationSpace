@@ -2,6 +2,7 @@ import { Router } from "express";
 import passport from "passport";
 import { readFileSync } from "fs";
 import { v4 as uuidv4 } from "uuid";
+import { render } from "ejs";
 
 import APIRouter from "./api";
 import SNSRouter from "./sns";
@@ -18,7 +19,7 @@ import GroupRouter from "./group";
 
 import { UserInstance } from "../models/users";
 import { db } from "../models";
-import { getFromEnvironment, sendEmail } from "../util";
+import { getFromEnvironment, loadTemplate, sendEmail } from "../util";
 
 const [ CLOUDFRONT_URL, SMTP_ADDRESS, SMTP_CREDENTIALS ] = getFromEnvironment("CLOUDFRONT_URL", "SMTP_ADDRESS", "SMTP_CREDENTIALS");
 const router = Router();
@@ -123,11 +124,13 @@ router.post("/requestreset", async (req, res) => {
   const [ host, port ] = SMTP_ADDRESS.split(":");
   const [ username, pass ] = SMTP_CREDENTIALS.split(":");
 
+  const template = await loadTemplate(req.app, "resetpassword");
+
   await sendEmail(
-    "noreply@traction-project.eu",
+    "TRACTION <noreply@traction-project.eu>",
     user.email!,
     "Reset the password for your TRACTION account",
-    `Use this token to reset your password: ${user.resettoken}`,
+    render(template, { token: user.resettoken }),
     [host, parseInt(port), username, pass]
   );
 
