@@ -50,6 +50,7 @@ router.post("/login", passport.authenticate("local"), (req, res) => {
       id: user.id,
       username: user.username,
       image: `${CLOUDFRONT_URL}/${user.image}`,
+      email: user.email,
       preferredLanguage: user.preferredLanguage
     }
   });
