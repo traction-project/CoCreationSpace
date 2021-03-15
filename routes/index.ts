@@ -131,7 +131,7 @@ router.post("/requestreset", async (req, res) => {
     "TRACTION <noreply@traction-project.eu>",
     user.email!,
     "Reset the password for your TRACTION account",
-    render(template, { token: user.resettoken }),
+    render(template, { username: user.username, token: user.resettoken }),
     [host, parseInt(port), username, pass]
   );
 
