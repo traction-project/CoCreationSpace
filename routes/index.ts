@@ -20,7 +20,7 @@ import { UserInstance } from "../models/users";
 import { db } from "../models";
 import { getFromEnvironment, sendEmail } from "../util";
 
-const [ CLOUDFRONT_URL, SMTP_ADDRESS ] = getFromEnvironment("CLOUDFRONT_URL", "SMTP_ADDRESS");
+const [ CLOUDFRONT_URL, SMTP_ADDRESS, SMTP_CREDENTIALS ] = getFromEnvironment("CLOUDFRONT_URL", "SMTP_ADDRESS", "SMTP_CREDENTIALS");
 const router = Router();
 
 router.use("/api", APIRouter);
@@ -120,12 +120,15 @@ router.post("/requestreset", async (req, res) => {
   user.resettoken = uuidv4();
   await user.save();
 
+  const [ host, port ] = SMTP_ADDRESS.split(":");
+  const [ username, pass ] = SMTP_CREDENTIALS.split(":");
+
   await sendEmail(
-    "team@traction-project.eu",
+    "noreply@traction-project.eu",
     user.email!,
     "Reset the password for your TRACTION account",
     `Use this token to reset your password: ${user.resettoken}`,
-    SMTP_ADDRESS
+    [host, parseInt(port), username, pass]
   );
 
   res.send({

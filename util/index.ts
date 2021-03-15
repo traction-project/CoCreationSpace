@@ -200,9 +200,20 @@ export async function streamToBuffer(file: NodeJS.ReadableStream): Promise<Buffe
 }
 
 /**
+ * Labelled tuple representing credentials for a SMTP server.
+ */
+type SMTPData = [
+  host: string,
+  port: number,
+  user: string,
+  pass: string
+]
+
+/**
  * Send an email with the given subject and body to the given recipient using
  * the given sender address. Authentication for the SMTP server needs to be
- * supplied as a string of the following shape: username:password@hostname:port
+ * supplied as a string of the following shape:
+ * "username password hostname port"
  *
  * The function returns a promise which resolves if the message was sent
  * successfully, or rejects with an error otherwise.
@@ -211,18 +222,14 @@ export async function streamToBuffer(file: NodeJS.ReadableStream): Promise<Buffe
  * @param recipient The recipient address
  * @param subject The subject of the e-mail to be sent
  * @param body The body of the e-mail in plain text
- * @param smtpAddress Hostname, port and credentials for the SMTP server
+ * @param smtpData An object containing STMP host, port, user and password
  * @returns A promise which resolves upon successful sending of the message
  */
-export async function sendEmail(sender: string, recipient: string, subject: string, body: string, smtpAddress: string): Promise<void> {
-  const [ credentials, hostname ] = smtpAddress.split("@");
-
-  const [ user, pass ] = credentials.split(":");
-  const [ host, port ] = hostname.split(":");
+export async function sendEmail(sender: string, recipient: string, subject: string, body: string, smtpData: SMTPData): Promise<void> {
+  const [ host, port, user, pass ] = smtpData;
 
   const transport = createTransport({
-    host,
-    port: parseInt(port),
+    host, port,
     auth: {
       user, pass
     }
