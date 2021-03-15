@@ -1,6 +1,7 @@
 import { Router } from "express";
 import passport from "passport";
 import { readFileSync } from "fs";
+import { v4 as uuidv4 } from "uuid";
 
 import APIRouter from "./api";
 import SNSRouter from "./sns";
@@ -17,9 +18,9 @@ import GroupRouter from "./group";
 
 import { UserInstance } from "../models/users";
 import { db } from "../models";
-import { getFromEnvironment } from "../util";
+import { getFromEnvironment, sendEmail } from "../util";
 
-const [ CLOUDFRONT_URL ] = getFromEnvironment("CLOUDFRONT_URL");
+const [ CLOUDFRONT_URL, SMTP_ADDRESS ] = getFromEnvironment("CLOUDFRONT_URL", "SMTP_ADDRESS");
 const router = Router();
 
 router.use("/api", APIRouter);
@@ -85,6 +86,47 @@ router.post("/register", async (req, res) => {
 
 router.post("/logout", (req, res) => {
   req.logout();
+
+  res.send({
+    status: "OK"
+  });
+});
+
+/**
+ * Allows for requesting the reset of the password for the account associated
+ * to the given e-mail address by setting a reset token on the account and
+ * sending an e-mail with a password reset link.
+ */
+router.post("/requestreset", async (req, res) => {
+  const { Users } = db.getModels();
+  const { email } = req.body;
+
+  if (!email) {
+    return res.status(400).send({
+      status: "ERR",
+      message: "No e-mail address supplied"
+    });
+  }
+
+  const user = await Users.findOne({ where: { email }});
+
+  if (!user) {
+    return res.status(404).send({
+      status: "ERR",
+      message: "No such user"
+    });
+  }
+
+  user.resettoken = uuidv4();
+  await user.save();
+
+  await sendEmail(
+    "team@traction-project.eu",
+    user.email!,
+    "Reset the password for your TRACTION account",
+    `Use this token to reset your password: ${user.resettoken}`,
+    SMTP_ADDRESS
+  );
 
   res.send({
     status: "OK"
