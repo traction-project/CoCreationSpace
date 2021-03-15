@@ -68,17 +68,16 @@ export interface TranscribeOutput {
 }
 
 /**
- * Starts a new transcription job for the given media file using the given
- * language. Language codes need to be supplied as ISO language codes, e.g.
- * `en-us` or `de-de`. The functions returns a promise which resolves once the
- * job was submitted successfully or rejects with an error otherwise.
+ * Starts a new transcription job for the given media file. The job will try to
+ * automatically detect the language of the supplied media file. The functions
+ * returns a promise which resolves once the job was submitted successfully or
+ * rejects with an error otherwise.
  *
- * @param inputLanguage Language code for the language used in the input file
  * @param inputFile URI of the input media file for which the transcript shall be generated
  * @param bucketName Name of the bucket that the input file is located in
  * @returns Promise which resolves upon completion
  */
-export function transcribeMediaFile(inputLanguage: string, inputFile: string, bucketName: string): Promise<void> {
+export function transcribeMediaFile(inputFile: string, bucketName: string): Promise<void> {
   const jobName = inputFile.split(".")[0];
   const s3url = `s3://${bucketName}/${inputFile}`;
 

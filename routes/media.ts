@@ -22,7 +22,7 @@ const processUploadedVideo = async (file: NodeJS.ReadableStream, filename: strin
   const newName = uuid4() + getExtension(filename);
   await uploadToS3(newName, file, BUCKET_NAME);
 
-  transcribeMediaFile("en-US", newName, BUCKET_NAME);
+  transcribeMediaFile(newName, BUCKET_NAME);
   const dashJobId = await encodeDash(ETS_PIPELINE, newName);
   const hlsJobId = await encodeHLS(ETS_PIPELINE, newName);
 
@@ -60,7 +60,7 @@ const processUploadedAudio = async (file: NodeJS.ReadableStream, filename: strin
   const newName = uuid4() + getExtension(filename);
   await uploadToS3(newName, file, BUCKET_NAME);
 
-  transcribeMediaFile("en-US", newName, BUCKET_NAME);
+  transcribeMediaFile(newName, BUCKET_NAME);
   const dashJobId = await encodeAudio(ETS_PIPELINE, newName);
   const hlsJobId = await encodeHLSAudio(ETS_PIPELINE, newName);
 
