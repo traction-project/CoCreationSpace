@@ -1436,12 +1436,12 @@ available-typed-arrays@^1.0.0, available-typed-arrays@^1.0.2:
   dependencies:
     array-filter "^1.0.0"
 
-aws-sdk@^2.641.0:
-  version "2.670.0"
-  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.670.0.tgz#d54d18b9245df7b89bea96102e5bdebd99587701"
-  integrity sha512-hGRnZtp1wDUh6hZRBHO0Ki7thx/xbRlIEiTKlWes+f/0E1Nhm3KpelsBZ3L/Q6y1ragwkQd4Q720AmWEqemLyA==
+aws-sdk@^2.863.0:
+  version "2.863.0"
+  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.863.0.tgz#602d244a947ce31c8d84de73f9a5b74e7cb95f5b"
+  integrity sha512-krr0047EOl9qpRdhPoyYxI7+viVUpX+t+Vjbf+alXdOE172DC+hFi8y6egIM1xVV4KkMFm0y0EykBWgA93XNNA==
   dependencies:
-    buffer "4.9.1"
+    buffer "4.9.2"
     events "1.1.1"
     ieee754 "1.1.13"
     jmespath "0.15.0"
@@ -1678,10 +1678,10 @@ buffer-writer@2.0.0:
   resolved "https://registry.yarnpkg.com/buffer-writer/-/buffer-writer-2.0.0.tgz#ce7eb81a38f7829db09c873f2fbb792c0c98ec04"
   integrity sha512-a7ZpuTZU1TRtnwyCNW3I5dc0wWNC3VR9S++Ewyk2HHZdrO3CQJqSpd+95Us590V6AL7JqUAH2IwZ/398PmNFgw==
 
-buffer@4.9.1:
-  version "4.9.1"
-  resolved "https://registry.yarnpkg.com/buffer/-/buffer-4.9.1.tgz#6d1bb601b07a4efced97094132093027c95bc298"
-  integrity sha1-bRu2AbB6TvztlwlBMgkwJ8lbwpg=
+buffer@4.9.2:
+  version "4.9.2"
+  resolved "https://registry.yarnpkg.com/buffer/-/buffer-4.9.2.tgz#230ead344002988644841ab0244af8c44bbe3ef8"
+  integrity sha512-xq+q3SRMOxGivLhBNaUdC64hDTQwejJ+H0T/NB1XMtTVEwNTrfFF3gAxiyW0Bu/xWEGhjVKgUcMhCrUy2+uCWg==
   dependencies:
     base64-js "^1.0.2"
     ieee754 "^1.1.4"

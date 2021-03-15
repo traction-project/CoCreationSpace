@@ -11,7 +11,7 @@
     "build": "webpack"
   },
   "dependencies": {
-    "aws-sdk": "^2.641.0",
+    "aws-sdk": "^2.863.0",
     "busboy": "^0.3.1",
     "connect-session-sequelize": "^7.0.1",
     "cookie-parser": "~1.4.4",
