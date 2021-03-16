@@ -106,14 +106,15 @@ export function transcribeMediaFile(inputFile: string, bucketName: string): Prom
  * Tries to retrieve the transcript associated with the given job name. If the
  * transcription job was marked as `COMPLETED` and has a transcription file URI
  * available, the transcript is downloaded and the returned promise is resolved
- * receiving it and its associated language code as values. If the job is not
+ * receiving it, its associated language code and the confidence with which the
+ * langauge of the transcript was identified as values. If the job is not
  * completed yet, resulted in error or the call failed altogether, the promise
  * is rejected.
  *
  * @param jobName Name of the job for which the transcript shall be retrieved
- * @returns A promise resolving to the retrieved transcript alongside a language code
+ * @returns A promise resolving to the retrieved transcript alongside a language code and confidence
  */
-export function fetchTranscript(jobName: string): Promise<{ language: string, transcript: TranscribeOutput }> {
+export function fetchTranscript(jobName: string): Promise<{ language: string, transcript: TranscribeOutput, confidence: number }> {
   return new Promise((resolve, reject) => {
     const transcribe = new aws.TranscribeService();
 
@@ -135,6 +136,8 @@ export function fetchTranscript(jobName: string): Promise<{ language: string, tr
 
       // Get language code
       const transcriptLanguage = data.TranscriptionJob.LanguageCode!;
+      // Get language identification confidence
+      const confidence = data.TranscriptionJob.IdentifiedLanguageScore || 0;
       // Get transcript url
       const transcriptUri = data.TranscriptionJob.Transcript?.TranscriptFileUri!;
 
@@ -148,6 +151,7 @@ export function fetchTranscript(jobName: string): Promise<{ language: string, tr
       }).then((transcript) => {
         resolve({
           language: transcriptLanguage,
+          confidence,
           transcript
         });
       });

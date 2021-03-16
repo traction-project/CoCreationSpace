@@ -45,7 +45,7 @@ router.post("/receive", (req, res) => {
 });
 
 export async function insertVideoTranscript(jobId: string) {
-  const { language, transcript } = await fetchTranscript(jobId);
+  const { language, transcript, confidence } = await fetchTranscript(jobId);
   const { AsyncJob, Subtitles } = db.getModels();
 
   const job = await AsyncJob.findOne({ where : {
@@ -69,6 +69,7 @@ export async function insertVideoTranscript(jobId: string) {
     const subtitles = Subtitles.build();
 
     subtitles.language = language;
+    subtitles.confidence = confidence;
     subtitles.content = transcribeOutputToVTT(transcript);
 
     await subtitles.save();
