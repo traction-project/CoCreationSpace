@@ -31,6 +31,8 @@ services:
       - POSTGRES_USER=traction
       - POSTGRES_PASSWORD=traction
       - POSTGRES_HOST=postgres
+    volumes:
+      - pgdata:/var/lib/postgresql/data
     deploy:
       placement:
         constraints: [node.role == manager]
