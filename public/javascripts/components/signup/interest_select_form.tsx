@@ -23,7 +23,7 @@ const InterestSelectForm: React.FC<InterestSelectFormProps> = (props) => {
 
   useEffect(() => {
     Promise.all([
-      fetch("/topics/all"),
+      fetch("/topics/group"),
       fetch("/users/interests")
     ]).then(([topics, interests]) => {
       return Promise.all([
