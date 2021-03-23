@@ -67,7 +67,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = (props) => {
       )}
 
       <div className="field">
-        <label htmlFor="" className="label">{t("Username")}</label>
+        <label htmlFor="" className="label">{t("Username")} *</label>
         <div className="control has-icons-left">
           <input
             type="text"
@@ -119,7 +119,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = (props) => {
       </div>
 
       <div className="field">
-        <label htmlFor="" className="label">{t("Password")}</label>
+        <label htmlFor="" className="label">{t("Password")} *</label>
         <div className="control has-icons-left">
           <input
             type="password"
@@ -139,7 +139,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = (props) => {
       </div>
 
       <div className="field">
-        <label htmlFor="" className="label">{t("Confirm Password")}</label>
+        <label htmlFor="" className="label">{t("Confirm Password")} *</label>
         <div className="control has-icons-left">
           <input
             type="password"
@@ -166,7 +166,11 @@ const RegistrationForm: React.FC<RegistrationFormProps> = (props) => {
         </div>
       </div>
 
-      <div className="field">
+      <p>
+        * {t("required")}
+      </p>
+
+      <div className="field pt-4">
         <button type="submit" className="button is-info">
           {t("Submit")}
         </button>
