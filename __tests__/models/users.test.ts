@@ -342,4 +342,15 @@ describe("Users model", () => {
       expect(e.fields[0]).toEqual("email");
     }
   });
+
+  it("should initialise a new object with a participant code", async () => {
+    const { Users } = db.getModels();
+
+    const user = await Users.create({
+      username: "admin",
+      participantCode: "participant1"
+    });
+
+    expect(user.participantCode).toEqual("participant1");
+  });
 });
