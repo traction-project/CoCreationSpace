@@ -124,7 +124,8 @@ router.get("/all/user", authRequired, async (req, res) => {
         required: true,
         include: [{
           model: UserGroup,
-          as: "userGroup"
+          as: "userGroup",
+          required: true
         }]
       }]
     }],
