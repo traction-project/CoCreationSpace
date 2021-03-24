@@ -89,7 +89,7 @@ router.get("/all", authRequired, async (req, res) => {
  */
 router.get("/all/user", authRequired, async (req, res) => {
   const user = req.user as UserInstance;
-  const { Posts, Users, DataContainer, Multimedia, Threads } = db.getModels();
+  const { Posts, Users, DataContainer, Multimedia, Threads, Topics, UserGroup } = db.getModels();
 
   let queryDataContainer = {
     model: DataContainer,
@@ -117,7 +117,16 @@ router.get("/all/user", authRequired, async (req, res) => {
     }, queryDataContainer, "comments", "tags", {
       model: Threads,
       as: "thread",
-      include: ["topic"]
+      required: true,
+      include: [{
+        model: Topics,
+        as: "topic",
+        required: true,
+        include: [{
+          model: UserGroup,
+          as: "userGroup"
+        }]
+      }]
     }],
     order: [
       ["created_at", "DESC"]
