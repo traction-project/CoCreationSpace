@@ -395,7 +395,7 @@ router.post("/", authRequired, async (req, res) => {
 
 router.post("/:id/edit", authRequired, async (req, res) => {
   const { id } = req.params;
-  const { title, description } = req.body;
+  const { title, description, multimedia } = req.body;
 
   const { Posts, DataContainer } = db.getModels();
   const user = req.user as UserInstance;
@@ -420,6 +420,11 @@ router.post("/:id/edit", authRequired, async (req, res) => {
       await dataContainer.save();
     }
 
+    if (multimedia) {
+      await dataContainer.setMultimedia(multimedia);
+      await dataContainer.save();
+    }
+    
     return res.send({
       status: "OK"
     });
