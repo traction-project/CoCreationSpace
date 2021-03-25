@@ -4,8 +4,9 @@ import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useParams, useHistory } from "react-router-dom";
 
-import { PostType } from "./post";
+import { MultimediaItem, PostType } from "./post";
 import { getPostId } from "../../services/post.service";
+import Thumbnail from "../thumbnail";
 
 interface EditPostProps {
 }
@@ -17,21 +18,34 @@ const EditPost: React.FC<EditPostProps> = () => {
   const { t } = useTranslation();
 
   const [ post, setPost ] = useState<PostType>();
+  const [ multimedia, setMultimedia ] = useState<MultimediaItem[]>([]);
 
   useEffect(() => {
     getPostId(id).then((res) => {
       return res.json();
     }).then((data) => {
       setPost(data);
+      if (data?.dataContainer && data.dataContainer.multimedia) {
+        setMultimedia(data.dataContainer.multimedia);
+      }
     });
   }, []);
 
+  const handleButtonRemove = (ev: React.MouseEvent<HTMLAnchorElement, MouseEvent>, multimediaId: string) => {
+    ev.preventDefault();
+    const multimediaFiltered = multimedia.filter(multimedia => multimedia.id !== multimediaId);
+    setMultimedia(multimediaFiltered);
+  }
+
   const handleFormSubmission = handleSubmit(async ({ title, description }) => {
+    const multimediaIdArray = multimedia.map(m => m.id);
     const res = await fetch(`/posts/${id}/edit`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        title, description
+        title, 
+        description, 
+        multimedia: multimediaIdArray
       })
     });
 
@@ -83,19 +97,26 @@ const EditPost: React.FC<EditPostProps> = () => {
                 </div>
               </div>
 
-              {post.dataContainer?.multimedia &&
-               post.dataContainer.multimedia.map((multimedia, index) => {
-                 return (
-                   <div key={index} className="field">
-                     <label className="label">{t("Multimedia")}</label>
-                     <div className="control">
-                       <p>{multimedia.id}</p>
-                     </div>
-                   </div>
-                 );
-               })
+              {multimedia.length > 0 && 
+                <div className="field is-flex is-flex-wrap-wrap">
+                  {multimedia.map((multimedia, index) => {
+                    return (
+                        <div key={index} className="is-flex is-align-items-center mr-4">
+                          <div className="is-flex-grow-0 is-flex-shrink-0">
+                            <Thumbnail
+                              id={multimedia.id}
+                              type={multimedia.type}
+                            />
+                          </div>
+                          <div className="is-flex-grow-0 is-flex-shrink-0">
+                            <a className="delete" onClick={(ev) => handleButtonRemove(ev, multimedia.id)}></a>
+                          </div>
+                        </div>
+                    );
+                  })}
+                </div>
               }
-
+              
               <div className="field pt-4">
                 <div className="control">
                   <button
