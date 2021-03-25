@@ -424,7 +424,7 @@ router.post("/:id/edit", authRequired, async (req, res) => {
       await dataContainer.setMultimedia(multimedia);
       await dataContainer.save();
     }
-    
+
     return res.send({
       status: "OK"
     });

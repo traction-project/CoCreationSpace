@@ -21,7 +21,7 @@ const EditPost: React.FC<EditPostProps> = () => {
   const [ post, setPost ] = useState<PostType>();
   const [ multimedia, setMultimedia ] = useState<{id: string, type: string }[]>([]);
   const [ loading, setLoading ] = useState<boolean>(false);
-  const [ fileToUpload, setFileToUpload ] = useState<File>()
+  const [ fileToUpload, setFileToUpload ] = useState<File>();
 
   useEffect(() => {
     getPostId(id).then((res) => {
@@ -30,11 +30,11 @@ const EditPost: React.FC<EditPostProps> = () => {
       setPost(data);
       if (data?.dataContainer && data.dataContainer.multimedia) {
         const multimediaArray = data.dataContainer.multimedia.map(
-          (m: MultimediaItem) => { 
-            return { 
-              id: m.id, 
-              type: m.type 
-            } 
+          (m: MultimediaItem) => {
+            return {
+              id: m.id,
+              type: m.type
+            };
           }
         );
         setMultimedia(multimediaArray);
@@ -51,7 +51,7 @@ const EditPost: React.FC<EditPostProps> = () => {
         setLoading(true);
       }
     }
-  }
+  };
 
   const addMultimedia = (id: string, type: string) => {
     const newMultimedia = multimedia;
@@ -64,7 +64,7 @@ const EditPost: React.FC<EditPostProps> = () => {
     ev.preventDefault();
     const multimediaFiltered = multimedia.filter(multimedia => multimedia.id !== multimediaId);
     setMultimedia(multimediaFiltered);
-  }
+  };
 
   const handleFormSubmission = handleSubmit(async ({ title, description }) => {
     const multimediaIdArray = multimedia.map(m => m.id);
@@ -72,8 +72,8 @@ const EditPost: React.FC<EditPostProps> = () => {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        title, 
-        description, 
+        title,
+        description,
         multimedia: multimediaIdArray
       })
     });
@@ -128,21 +128,21 @@ const EditPost: React.FC<EditPostProps> = () => {
 
               {multimedia.length > 0 &&
                 <>
-                  <label className="label">{t("Media")}</label> 
+                  <label className="label">{t("Media")}</label>
                   <div className="field is-flex is-flex-wrap-wrap">
                     {multimedia.map((multimedia) => {
                       return (
-                          <div key={multimedia.id} className="box is-flex is-flex-direction-column is-align-items-center" style={{marginBottom: "1.5rem"}}>
-                            <Thumbnail
-                              id={multimedia.id}
-                              type={multimedia.type}
-                            />
-                            <a onClick={(ev) => handleButtonRemove(ev, multimedia.id)}>
-                              <span className="icon is-medium">
-                                <i className="fas fa-trash fa-lg"></i>
-                              </span>
-                            </a>
-                          </div>
+                        <div key={multimedia.id} className="box is-flex is-flex-direction-column is-align-items-center" style={{marginBottom: "1.5rem"}}>
+                          <Thumbnail
+                            id={multimedia.id}
+                            type={multimedia.type}
+                          />
+                          <a onClick={(ev) => handleButtonRemove(ev, multimedia.id)}>
+                            <span className="icon is-medium">
+                              <i className="fas fa-trash fa-lg"></i>
+                            </span>
+                          </a>
+                        </div>
                       );
                     })}
                   </div>
@@ -171,7 +171,7 @@ const EditPost: React.FC<EditPostProps> = () => {
                   </span>
                 </label>
               </div>
-              
+
               <div className="field pt-4">
                 <div className="control">
                   <button
