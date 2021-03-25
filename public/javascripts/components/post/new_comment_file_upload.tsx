@@ -5,7 +5,7 @@ import { postFile, ResponseUploadType } from "../../util";
 
 interface FileUploadProps {
   fileToUpload: File;
-  addMultimedia: (id: string) => void;
+  addMultimedia: (id: string, type?: string) => void;
   setLoading: (value: boolean) => void;
 }
 
@@ -33,10 +33,10 @@ const FileUpload: React.FC<FileUploadProps> = ({ fileToUpload, addMultimedia, se
         const responseJson: ResponseUploadType = JSON.parse(response);
 
         setFile(fileUpload);
-        addMultimedia(responseJson.id);
+        addMultimedia(responseJson.id, responseJson.type);
       } finally {
-        setLoading(false);
         setTotal(0);
+        setLoading(false);
       }
     }
   };
