@@ -110,6 +110,7 @@ export const findTerm = (value: string, term: string): string => {
   if (value.includes(term)){
     return value;
   }
+
   return "";
 };
 

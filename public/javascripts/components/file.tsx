@@ -34,7 +34,10 @@ const File: React.FC<FileProps> = (props) => {
   return (
     <div style={wrapperStyle}>
       <div style={innerStyle}>
-        <p>{originalName}</p>
+        <div>
+          <img style={{ height: 150 }} src="/images/file-file-solid.png" />
+          <p style={{ textAlign: "center" }}>{originalName}</p>
+        </div>
       </div>
     </div>
   );
