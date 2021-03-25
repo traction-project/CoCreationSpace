@@ -8,12 +8,14 @@ interface FileProps {
 const File: React.FC<FileProps> = (props) => {
   const { id } = props;
   const [ originalName, setOriginalName ] = useState<string>();
+  const [ downloadUrl, setDownloadUrl ] = useState<string>();
 
   useEffect(() => {
     fetch(`/media/${id}/name`).then((res) => {
       return res.json();
-    }).then(({ originalName }) => {
+    }).then(({ originalName, downloadUrl }) => {
       setOriginalName(originalName);
+      setDownloadUrl(downloadUrl);
     });
   }, [id]);
 
@@ -35,8 +37,10 @@ const File: React.FC<FileProps> = (props) => {
     <div style={wrapperStyle}>
       <div style={innerStyle}>
         <div>
-          <img style={{ height: 150 }} src="/images/file-file-solid.png" />
-          <p style={{ textAlign: "center" }}>{originalName}</p>
+          <a href={downloadUrl} download={originalName}>
+            <img style={{ height: 150 }} src="/images/file-file-solid.png" />
+            <p style={{ textAlign: "center" }}>{originalName}</p>
+          </a>
         </div>
       </div>
     </div>
