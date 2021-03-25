@@ -256,7 +256,8 @@ router.get("/:id/name", async (req, res) => {
 
   if (mediaItem) {
     return res.send({
-      originalName: mediaItem.file
+      originalName: mediaItem.file,
+      downloadUrl: `${CLOUDFRONT_URL}/${mediaItem.title}`
     });
   } else {
     res.status(404).send("");
