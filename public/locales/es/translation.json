@@ -85,5 +85,6 @@
     "request-reset-error": "<0>¡Error!</0> No se ha podido solicitar el cambio de contraseña para dicho correo electrónico",
     "Request password reset": "Solicitar una nueva contraseña",
     "Request reset": "Solicitar cambio",
-    "Reset password": "Cambiar contraseña"
+    "Reset password": "Cambiar contraseña",
+    "Upload new file": "Subir un nuevo archivo"
 }

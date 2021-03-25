@@ -85,5 +85,6 @@
     "request-reset-error": "<0>Error!</0> Could not request password reset for the given e-mail address.",
     "Request password reset": "Request password reset",
     "Request reset": "Request reset",
-    "Reset password": "Reset password"
+    "Reset password": "Reset password",
+    "Upload new file": "Upload new file"
 }
