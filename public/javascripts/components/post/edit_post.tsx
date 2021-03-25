@@ -7,6 +7,7 @@ import { useParams, useHistory } from "react-router-dom";
 import { MultimediaItem, PostType } from "./post";
 import { getPostId } from "../../services/post.service";
 import Thumbnail from "../thumbnail";
+import FileUpload from "./new_comment_file_upload";
 
 interface EditPostProps {
 }
@@ -18,7 +19,9 @@ const EditPost: React.FC<EditPostProps> = () => {
   const { t } = useTranslation();
 
   const [ post, setPost ] = useState<PostType>();
-  const [ multimedia, setMultimedia ] = useState<MultimediaItem[]>([]);
+  const [ multimedia, setMultimedia ] = useState<{id: string, type: string }[]>([]);
+  const [ loading, setLoading ] = useState<boolean>(false);
+  const [ fileToUpload, setFileToUpload ] = useState<File>()
 
   useEffect(() => {
     getPostId(id).then((res) => {
@@ -26,10 +29,36 @@ const EditPost: React.FC<EditPostProps> = () => {
     }).then((data) => {
       setPost(data);
       if (data?.dataContainer && data.dataContainer.multimedia) {
-        setMultimedia(data.dataContainer.multimedia);
+        const multimediaArray = data.dataContainer.multimedia.map(
+          (m: MultimediaItem) => { 
+            return { 
+              id: m.id, 
+              type: m.type 
+            } 
+          }
+        );
+        setMultimedia(multimediaArray);
       }
     });
   }, []);
+
+  const addFile = async (filesToUpload: FileList) => {
+    if (filesToUpload && filesToUpload.length > 0) {
+      const file = filesToUpload.item(0);
+
+      if (file) {
+        setFileToUpload(file);
+        setLoading(true);
+      }
+    }
+  }
+
+  const addMultimedia = (id: string, type: string) => {
+    const newMultimedia = multimedia;
+
+    newMultimedia.push({ id, type });
+    setMultimedia(newMultimedia);
+  };
 
   const handleButtonRemove = (ev: React.MouseEvent<HTMLAnchorElement, MouseEvent>, multimediaId: string) => {
     ev.preventDefault();
@@ -97,31 +126,58 @@ const EditPost: React.FC<EditPostProps> = () => {
                 </div>
               </div>
 
-              {multimedia.length > 0 && 
-                <div className="field is-flex is-flex-wrap-wrap">
-                  {multimedia.map((multimedia, index) => {
-                    return (
-                        <div key={index} className="is-flex is-align-items-center mr-4">
-                          <div className="is-flex-grow-0 is-flex-shrink-0">
+              {multimedia.length > 0 &&
+                <>
+                  <label className="label">{t("Media")}</label> 
+                  <div className="field is-flex is-flex-wrap-wrap">
+                    {multimedia.map((multimedia) => {
+                      return (
+                          <div key={multimedia.id} className="box is-flex is-flex-direction-column is-align-items-center" style={{marginBottom: "1.5rem"}}>
                             <Thumbnail
                               id={multimedia.id}
                               type={multimedia.type}
                             />
+                            <a onClick={(ev) => handleButtonRemove(ev, multimedia.id)}>
+                              <span className="icon is-medium">
+                                <i className="fas fa-trash fa-lg"></i>
+                              </span>
+                            </a>
                           </div>
-                          <div className="is-flex-grow-0 is-flex-shrink-0">
-                            <a className="delete" onClick={(ev) => handleButtonRemove(ev, multimedia.id)}></a>
-                          </div>
-                        </div>
-                    );
-                  })}
-                </div>
+                      );
+                    })}
+                  </div>
+                </>
               }
+
+              {fileToUpload && loading &&
+                <FileUpload fileToUpload={fileToUpload} addMultimedia={addMultimedia} setLoading={setLoading} />
+              }
+
+              <div className="file is-primary">
+                <label className="file-label">
+                  <input
+                    onChange={e => { e.target.files && addFile(e.target.files); }}
+                    className="file-input"
+                    type="file"
+                    name="resume"
+                  />
+                  <span className="file-cta">
+                    <span className="file-icon">
+                      <i className="fas fa-upload"></i>
+                    </span>
+                    <span className="file-label" style={{marginLeft: "1rem"}}>
+                      {t("Upload new file")}
+                    </span>
+                  </span>
+                </label>
+              </div>
               
               <div className="field pt-4">
                 <div className="control">
                   <button
                     type="submit"
                     className="button is-link is-fullwidth"
+                    disabled={loading}
                   >
                     {t("Submit")}
                   </button>
