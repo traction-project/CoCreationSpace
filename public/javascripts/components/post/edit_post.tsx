@@ -83,6 +83,19 @@ const EditPost: React.FC<EditPostProps> = () => {
                 </div>
               </div>
 
+              {post.dataContainer?.multimedia &&
+               post.dataContainer.multimedia.map((multimedia, index) => {
+                 return (
+                   <div key={index} className="field">
+                     <label className="label">{t("Multimedia")}</label>
+                     <div className="control">
+                       <p>{multimedia.id}</p>
+                     </div>
+                   </div>
+                 );
+               })
+              }
+
               <div className="field pt-4">
                 <div className="control">
                   <button
