@@ -19,30 +19,19 @@ const File: React.FC<FileProps> = (props) => {
     });
   }, [id]);
 
-  const wrapperStyle: React.CSSProperties = {
-    width: "100%",
-    paddingBottom: "56.25%",
-    position: "relative"
-  };
-
-  const innerStyle: React.CSSProperties = {
+  const anchorStyle: React.CSSProperties = {
     display: "flex",
-    justifyContent: "center",
+    flexDirection: "column",
     alignItems: "center",
-    position: "absolute",
-    top: 0, left: 0, bottom: 0, right: 0
+    justifyContent: "center"
   };
 
   return (
-    <div style={wrapperStyle}>
-      <div style={innerStyle}>
-        <div>
-          <a href={downloadUrl} download={originalName}>
-            <img style={{ height: 150 }} src="/images/file-file-solid.png" />
-            <p style={{ textAlign: "center" }}>{originalName}</p>
-          </a>
-        </div>
-      </div>
+    <div style={{ width: "100%" }}>
+      <a style={anchorStyle} href={downloadUrl} download={originalName}>
+        <img style={{ height: 70 }} src="/images/file-file-solid.png" />
+        <p style={{ textAlign: "center", marginTop: 5 }}>{originalName}</p>
+      </a>
     </div>
   );
 };
