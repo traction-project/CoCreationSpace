@@ -79,10 +79,10 @@ const NotificationList: React.FC<NotificationListProps> = (props) => {
                   </figure>
                   <div className="media-content">
                     <div className="content">
-                      {(data.type == "interest-post") ? (
-                        <InterestNotification data={data} />
-                      ) : (
+                      {(data.type == "post-reply") ? (
                         <PostReplyNotification data={data} />
+                      ) : (
+                        <InterestNotification data={data} />
                       )}
                       <p className="mt-2">
                         <small>{creator.username}</small>&emsp;<small>{createdAt.toLocaleDateString()} {createdAt.toLocaleTimeString()}</small>

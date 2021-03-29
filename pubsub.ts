@@ -177,7 +177,9 @@ async function prepareInterestNotification(post: PostInstance): Promise<Notifica
 
 async function preparePostNotification(post: PostInstance): Promise<NotificationSender> {
   const { Notifications } = db.getModels();
+
   const parentPost = await post.getParentPost();
+  const author = await post.getUser();
 
   if (!parentPost) {
     return async () => false;
@@ -189,14 +191,14 @@ async function preparePostNotification(post: PostInstance): Promise<Notification
   const data = {
     type: "post-reply",
     post: { id: post.id, title: post.title },
-    creator: { id: parentPostAuthor.id, username: parentPostAuthor.username, image: `${CLOUDFRONT_URL}/${parentPostAuthor.image}` }
+    creator: { id: author.id, username: author.username, image: `${CLOUDFRONT_URL}/${author.image}` }
   };
   const notificationDataHash = crypto.createHash("sha256").update(JSON.stringify(data)).digest("hex");
 
   return async (recipient, sockets) => {
     if (recipient.id == parentPostAuthor.id) {
       // Don't send notification if client is creator of post
-      if (parentPostAuthor.id == recipient.id) {
+      if (author.id == recipient.id) {
         return false;
       }
 
