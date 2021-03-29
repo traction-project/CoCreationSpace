@@ -9,6 +9,8 @@ import { UserInstance } from "models/users";
 
 const [ CLOUDFRONT_URL ] = getFromEnvironment("CLOUDFRONT_URL");
 
+type NotificationSender = (recipient: UserInstance, sockets: Array<WebSocket>) => Promise<boolean>;
+
 interface InterestSubscription {
   socket: WebSocket;
   userId: string;
@@ -93,37 +95,34 @@ function groupConnectionsByUserId(clients: Array<InterestSubscription>): Map<str
 }
 
 /**
- * Broadcasts a notification message to all clients which are subscribed to the
- * topic that the given post belongs to. The message contains topic id and
- * title and the id and title of the post.
+ * Prepares notifications for interest topics for the given post. This function
+ * takes a newly created post and prepares a notification for it. It returns a
+ * function, which when called with a user instance and a list of websocket
+ * connections, decides whether that user should receive the created
+ * notification. This function returns true if the notification was created and
+ * false otherwise.
  *
- * @param post Post for whose topic a broadcast should be sent
+ * @param post Post for notifications should be prepared
+ * @returns Function which takes a recipient and creates a notification if that user should receive one
  */
-export async function broadcastNotification(post: PostInstance) {
+async function prepareInterestNotification(post: PostInstance): Promise<NotificationSender> {
   const { Notifications } = db.getModels();
 
   const author = await post.getUser();
   const thread = await post.getThread();
 
   if (!thread || !author) {
-    return;
+    return async () => false;
   }
 
   // Get associated topic
   const topic = await thread.getTopic();
 
   if (!topic) {
-    return;
+    return async () => false;
   }
 
-  // Get group associated to topic:w
-  const group = await topic.getUserGroup();
-
-  if (!group) {
-    return;
-  }
-
-  // Compile notification data and hash
+  // Compile notification data and hash for interests
   const data = {
     type: "interest-post",
     topic: { id: topic.id, title: topic.title },
@@ -132,13 +131,7 @@ export async function broadcastNotification(post: PostInstance) {
   };
   const notificationDataHash = crypto.createHash("sha256").update(JSON.stringify(data)).digest("hex");
 
-  // Get members of group that the post was posted in
-  const recipients = await group.getUsers();
-  // Group socket connections by user ID
-  const userSocketConnections = groupConnectionsByUserId(clients);
-
-  // Iterate over all members of the post's group
-  recipients.forEach(async (recipient) => {
+  return async (recipient, sockets) => {
     const interests = await getUserInterests(recipient);
 
     // Check whether the user is subscribed to the interest topic that the post
@@ -146,7 +139,7 @@ export async function broadcastNotification(post: PostInstance) {
     if (interests.find((t) => t == topic.id)) {
       // Don't send notification if client is creator of post
       if (author.id == recipient.id) {
-        return;
+        return false;
       }
 
       console.log("Creating notification with hash", notificationDataHash, "for", recipient.id);
@@ -158,8 +151,6 @@ export async function broadcastNotification(post: PostInstance) {
         hash: notificationDataHash
       } as any);
 
-      // Get socket connections for user, if any
-      const sockets = userSocketConnections.get(recipient.id) || [];
       console.log("Sending notification to", sockets.length, "connections...");
 
       // Send notification data over each socket connection
@@ -176,7 +167,40 @@ export async function broadcastNotification(post: PostInstance) {
           }
         }));
       });
+
+      return true;
     }
+
+    return false;
+  };
+}
+
+/**
+ * Broadcasts a notification message to all clients which are subscribed to the
+ * topic that the given post belongs to. The message contains topic id and
+ * title and the id and title of the post.
+ *
+ * @param post Post for whose topic a broadcast should be sent
+ */
+export async function broadcastNotification(post: PostInstance) {
+  // Get group associated to post
+  const group = await post.getUserGroup();
+
+  if (!group) {
+    return;
+  }
+
+  // Get members of group that the post was posted in
+  const recipients = await group.getUsers();
+  // Group socket connections by user ID
+  const userSocketConnections = groupConnectionsByUserId(clients);
+
+  const sendInterestNotification = await prepareInterestNotification(post);
+
+  // Iterate over all members of the post's group
+  recipients.forEach(async (recipient) => {
+    const sockets = userSocketConnections.get(recipient.id) || [];
+    await sendInterestNotification(recipient, sockets);
   });
 }
 
