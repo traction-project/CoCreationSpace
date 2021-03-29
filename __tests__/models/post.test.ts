@@ -134,4 +134,33 @@ describe("Posts model", () => {
     expect(await Posts.findByPk(comment1.id)).toBeNull();
     expect(await Posts.findByPk(comment1Child.id)).toBeNull();
   });
+
+  it("should retrieve the parent post", async () => {
+    const { Users, Posts } = db.getModels();
+
+    const post = await Posts.create({
+      user_id: (await Users.findOne({}))!.id,
+    });
+
+    const comment1 = await Posts.create({
+      user_id: (await Users.findOne({}))!.id,
+      parent_post_id: post.id
+    });
+
+    const parent = await comment1.getParentPost();
+
+    expect(parent).toBeDefined();
+    expect(parent!.id).toEqual(post.id);
+  });
+
+  it("should return null if there is no parent post", async () => {
+    const { Users, Posts } = db.getModels();
+
+    const comment1 = await Posts.create({
+      user_id: (await Users.findOne({}))!.id,
+    });
+
+    const parent = await comment1.getParentPost();
+    expect(parent).toBeNull();
+  });
 });

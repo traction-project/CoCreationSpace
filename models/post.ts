@@ -75,9 +75,6 @@ export interface PostInstance extends Sequelize.Model<PostAttributes, PostCreati
   hasPostReferenceds: Sequelize.BelongsToManyHasAssociationsMixin<PostInstance, PostInstance["id"]>;
   countPostReferenceds: Sequelize.BelongsToManyCountAssociationsMixin;
 
-  getParentPost: Sequelize.BelongsToGetAssociationMixin<PostInstance>;
-  setParentPost: Sequelize.BelongsToSetAssociationMixin<PostInstance, PostInstance["id"]>;
-
   getUser: Sequelize.BelongsToGetAssociationMixin<UserInstance>;
   setUser: Sequelize.BelongsToSetAssociationMixin<UserInstance, UserInstance["id"]>;
 
@@ -106,6 +103,7 @@ export interface PostInstance extends Sequelize.Model<PostAttributes, PostCreati
   countTags: Sequelize.BelongsToManyCountAssociationsMixin;
 
   destroyWithComments: () => Promise<void>;
+  getParentPost: () => Promise<PostInstance | null>;
 }
 
 /**
@@ -154,6 +152,14 @@ export function PostModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mode
     }));
 
     await this.destroy();
+  };
+
+  /**
+   * Returns the parent post of the current post, or null if it is a top-level
+   * post.
+   */
+  Post.prototype.getParentPost = async function () {
+    return Post.findByPk(this.parent_post_id);
   };
 
   return Post;
