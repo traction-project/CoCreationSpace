@@ -100,7 +100,7 @@ function groupConnectionsByUserId(clients: Array<InterestSubscription>): Map<str
  * @param post Post for whose topic a broadcast should be sent
  */
 export async function broadcastNotification(post: PostInstance) {
-  const { Notifications, Users } = db.getModels();
+  const { Notifications } = db.getModels();
 
   const author = await post.getUser();
   const thread = await post.getThread();
@@ -109,13 +109,21 @@ export async function broadcastNotification(post: PostInstance) {
     return;
   }
 
+  // Get associated topic
   const topic = await thread.getTopic();
-  const group = await topic.getUserGroup();
 
-  if (!topic || !group) {
+  if (!topic) {
     return;
   }
 
+  // Get group associated to topic:w
+  const group = await topic.getUserGroup();
+
+  if (!group) {
+    return;
+  }
+
+  // Compile notification data and hash
   const data = {
     topic: { id: topic.id, title: topic.title },
     post: { id: post.id, title: post.title },
@@ -123,19 +131,17 @@ export async function broadcastNotification(post: PostInstance) {
   };
   const notificationDataHash = crypto.createHash("sha256").update(JSON.stringify(data)).digest("hex");
 
-  groupConnectionsByUserId(clients).forEach(async (sockets, userId) => {
-    const recipient = await Users.findByPk(userId);
+  // Get members of group that the post was posted in
+  const recipients = await group.getUsers();
+  // Group socket connections by user ID
+  const userSocketConnections = groupConnectionsByUserId(clients);
 
-    if (!recipient) {
-      return;
-    }
-
-    // Check if recipient is member of topic's group
-    if (!await recipient.hasUserGroup(group)) {
-      return;
-    }
-
+  // Iterate over all members of the post's group
+  recipients.forEach(async (recipient) => {
     const interests = await getUserInterests(recipient);
+
+    // Check whether the user is subscribed to the interest topic that the post
+    // is associated to
     if (interests.find((t) => t == topic.id)) {
       // Don't send notification if client is creator of post
       if (author.id == recipient.id) {
@@ -144,14 +150,18 @@ export async function broadcastNotification(post: PostInstance) {
 
       console.log("Creating notification with hash", notificationDataHash, "for", recipient.id);
 
+      // Create notification in database
       const notification = await Notifications.create({
         data,
         user_id: recipient.id,
         hash: notificationDataHash
       } as any);
 
+      // Get socket connections for user, if any
+      const sockets = userSocketConnections.get(recipient.id) || [];
       console.log("Sending notification to", sockets.length, "connections...");
 
+      // Send notification data over each socket connection
       sockets.forEach((socket) => {
         console.log("Sending notification to connection for", recipient.id);
 
