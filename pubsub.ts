@@ -142,7 +142,7 @@ async function prepareInterestNotification(post: PostInstance): Promise<Notifica
         return false;
       }
 
-      console.log("Creating notification with hash", notificationDataHash, "for", recipient.id);
+      console.log("Creating topic notification with hash", notificationDataHash, "for", recipient.id);
 
       // Create notification in database
       const notification = await Notifications.create({
@@ -151,11 +151,69 @@ async function prepareInterestNotification(post: PostInstance): Promise<Notifica
         hash: notificationDataHash
       } as any);
 
-      console.log("Sending notification to", sockets.length, "connections...");
+      console.log("Sending topic notification to", sockets.length, "connections...");
 
       // Send notification data over each socket connection
       sockets.forEach((socket) => {
-        console.log("Sending notification to connection for", recipient.id);
+        console.log("Sending topic notification to connection for", recipient.id);
+
+        socket.send(JSON.stringify({
+          type: "message",
+          data: {
+            id: notification.id,
+            seen: notification.seen,
+            createdAt: notification.createdAt,
+            data
+          }
+        }));
+      });
+
+      return true;
+    }
+
+    return false;
+  };
+}
+
+async function preparePostNotification(post: PostInstance): Promise<NotificationSender> {
+  const { Notifications } = db.getModels();
+  const parentPost = await post.getParentPost();
+
+  if (!parentPost) {
+    return async () => false;
+  }
+
+  const parentPostAuthor = await parentPost.getUser();
+
+  // Compile notification data and hash for interests
+  const data = {
+    type: "post-reply",
+    post: { id: post.id, title: post.title },
+    creator: { id: parentPostAuthor.id, username: parentPostAuthor.username, image: `${CLOUDFRONT_URL}/${parentPostAuthor.image}` }
+  };
+  const notificationDataHash = crypto.createHash("sha256").update(JSON.stringify(data)).digest("hex");
+
+  return async (recipient, sockets) => {
+    if (recipient.id == parentPostAuthor.id) {
+      // Don't send notification if client is creator of post
+      if (parentPostAuthor.id == recipient.id) {
+        return false;
+      }
+
+      console.log("Creating post reply notification with hash", notificationDataHash, "for", recipient.id);
+
+      // Create notification in database
+      const notification = await Notifications.create({
+        data,
+        user_id: recipient.id,
+        hash: notificationDataHash
+      } as any);
+
+      console.log("Sending post reply notification to", sockets.length, "connections...");
+
+      // Send notification data over each socket connection
+      sockets.forEach((socket) => {
+        console.log("Sending post reply notification to connection for", recipient.id);
 
         socket.send(JSON.stringify({
           type: "message",
@@ -195,12 +253,17 @@ export async function broadcastNotification(post: PostInstance) {
   // Group socket connections by user ID
   const userSocketConnections = groupConnectionsByUserId(clients);
 
+  const sendPostNotification = await preparePostNotification(post);
   const sendInterestNotification = await prepareInterestNotification(post);
 
   // Iterate over all members of the post's group
   recipients.forEach(async (recipient) => {
     const sockets = userSocketConnections.get(recipient.id) || [];
-    await sendInterestNotification(recipient, sockets);
+
+    const notificationSent = await sendPostNotification(recipient, sockets);
+    if (!notificationSent) {
+      await sendInterestNotification(recipient, sockets);
+    }
   });
 }
 
