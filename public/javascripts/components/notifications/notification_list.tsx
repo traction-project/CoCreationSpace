@@ -65,7 +65,13 @@ const NotificationList: React.FC<NotificationListProps> = (props) => {
           <div className="column is-6-widescreen is-10-tablet">
             <h4 className="title is-4">{t("Notifications")}</h4>
 
-            {notifications.map(({ id, data: { topic, post, creator }, createdAt, seen }, i) => {
+            {notifications.map(({ id, data, createdAt, seen }, i) => {
+              if (data.type != "interest-post") {
+                return;
+              }
+
+              const { creator, topic, post } = data;
+
               return (
                 <article key={i} className={classNames("media", "is-clickable", "p-4", { "is-highlighted": !seen })} onClick={deleteNotificationAndGoToPost(id, post.id)}>
                   <figure className="media-left">
