@@ -163,4 +163,26 @@ describe("Posts model", () => {
     const parent = await comment1.getParentPost();
     expect(parent).toBeNull();
   });
+
+  it("should return the associated user group", async () => {
+    const { Users, Posts, Threads, Topics, UserGroup } = db.getModels();
+
+    const group = await UserGroup.create({ name: "some group" });
+
+    const topic = await Topics.create({ title: "some topic" });
+    await topic.setUserGroup(group);
+
+    const thread = await Threads.create({ th_title: "some thread" });
+    await thread.setTopic(topic);
+
+    const post = await Posts.create({
+      user_id: (await Users.findOne({}))!.id,
+    });
+    await post.setThread(thread);
+
+    const associatedGroup = await post.getUserGroup();
+
+    expect(associatedGroup).toBeDefined();
+    expect(associatedGroup!.name).toEqual("some group");
+  });
 });

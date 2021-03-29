@@ -6,6 +6,8 @@ import { UsersAttributes, UserInstance } from "./users";
 import { ThreadAttributes, ThreadInstance } from "./thread";
 import { TagAttributes, TagInstance } from "./tag";
 import { DataContainerAttributes, DataContainerInstance } from "./data_container";
+import { UserGroupInstance } from "./user_group";
+import { db } from "./index";
 
 export interface PostAttributes extends CommonAttributes{
   title?: string;
@@ -104,6 +106,7 @@ export interface PostInstance extends Sequelize.Model<PostAttributes, PostCreati
 
   destroyWithComments: () => Promise<void>;
   getParentPost: () => Promise<PostInstance | null>;
+  getUserGroup: () => Promise<UserGroupInstance | null>;
 }
 
 /**
@@ -160,6 +163,28 @@ export function PostModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mode
    */
   Post.prototype.getParentPost = async function () {
     return Post.findByPk(this.parent_post_id);
+  };
+
+  /**
+   * Returns the user group that a post was posted in or null if associations
+   * could not be queried.
+   */
+  Post.prototype.getUserGroup = async function () {
+    const { Topics, UserGroup } = db.getModels();
+
+    const thread = await (this as PostInstance).getThread({
+      include: [{
+        model: Topics,
+        as: "topic",
+        include: [{ model: UserGroup }]
+      }]
+    });
+
+    if (!thread.topic) {
+      return null;
+    }
+
+    return (thread.topic as any).userGroup;
   };
 
   return Post;
