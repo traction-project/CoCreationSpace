@@ -7,8 +7,17 @@ export interface Notification {
   createdAt: Date;
 }
 
-export interface NotificationData {
+export type NotificationData = InterestNotificationData | PostReplyNotificationData;
+
+interface InterestNotificationData {
+  type: "interest-post",
   topic: { id: string, title: string },
+  post: { id: string, title: string | null },
+  creator: { id: string, username: string, image: string }
+}
+
+interface PostReplyNotificationData {
+  type: "post-reply",
   post: { id: string, title: string | null },
   creator: { id: string, username: string, image: string }
 }
