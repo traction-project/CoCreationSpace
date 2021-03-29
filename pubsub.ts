@@ -125,6 +125,7 @@ export async function broadcastNotification(post: PostInstance) {
 
   // Compile notification data and hash
   const data = {
+    type: "interest-post",
     topic: { id: topic.id, title: topic.title },
     post: { id: post.id, title: post.title },
     creator: { id: author.id, username: author.username, image: `${CLOUDFRONT_URL}/${author.image}` }
