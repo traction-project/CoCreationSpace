@@ -1,10 +1,12 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { Trans, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 import classNames from "classnames";
 
 import { Notification } from "./use_notification";
+import InterestNotification from "./interest_notification";
+import PostReplyNotification from "./post_reply_notification";
 
 interface NotificationListProps {
 }
@@ -66,11 +68,7 @@ const NotificationList: React.FC<NotificationListProps> = (props) => {
             <h4 className="title is-4">{t("Notifications")}</h4>
 
             {notifications.map(({ id, data, createdAt, seen }, i) => {
-              if (data.type != "interest-post") {
-                return;
-              }
-
-              const { creator, topic, post } = data;
+              const { creator, post } = data;
 
               return (
                 <article key={i} className={classNames("media", "is-clickable", "p-4", { "is-highlighted": !seen })} onClick={deleteNotificationAndGoToPost(id, post.id)}>
@@ -81,30 +79,11 @@ const NotificationList: React.FC<NotificationListProps> = (props) => {
                   </figure>
                   <div className="media-content">
                     <div className="content">
-                      <p>
-                        <strong>
-                          {(post.title != null) ? (
-                            <Trans i18nKey="notification-title">
-                              New post in topic {{ topicTitle: topic.title }}
-                            </Trans>
-                          ) : (
-                            <Trans i18nKey="notification-comment">
-                              New comment in topic {{ topicTitle: topic.title }}
-                            </Trans>
-                          )}
-                        </strong>
-                        <br />
-                        <br />
-                        {(post.title != null) ? (
-                          <Trans i18nKey="notification-text">
-                            A new post titled <i>{{ postTitle: post.title}}</i> was submitted to the topic <i>{{ topicTitle: topic.title}}</i>
-                          </Trans>
-                        ) : (
-                          <Trans i18nKey="notification-text-comment">
-                            A new comment was submitted to the topic <i>{{ topicTitle: topic.title}}</i>
-                          </Trans>
-                        )}
-                      </p>
+                      {(data.type == "interest-post") ? (
+                        <InterestNotification data={data} />
+                      ) : (
+                        <PostReplyNotification data={data} />
+                      )}
                       <p className="mt-2">
                         <small>{creator.username}</small>&emsp;<small>{createdAt.toLocaleDateString()} {createdAt.toLocaleTimeString()}</small>
                       </p>
