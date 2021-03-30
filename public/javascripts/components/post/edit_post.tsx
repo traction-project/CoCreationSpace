@@ -29,6 +29,8 @@ const EditPost: React.FC<EditPostProps> = () => {
       return res.json();
     }).then((data) => {
       setPost(data);
+      setTags(data.tags);
+
       if (data?.dataContainer && data.dataContainer.multimedia) {
         const multimediaArray = data.dataContainer.multimedia.map(
           (m: MultimediaItem) => {
@@ -87,12 +89,14 @@ const EditPost: React.FC<EditPostProps> = () => {
 
   const handleFormSubmission = handleSubmit(async ({ title, description }) => {
     const multimediaIdArray = multimedia.map(m => m.id);
+
     const res = await fetch(`/posts/${id}/edit`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         title,
         description,
+        tags,
         multimedia: multimediaIdArray
       })
     });
