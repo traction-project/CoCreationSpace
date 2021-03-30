@@ -15,11 +15,12 @@ interface EditPostProps {
 const EditPost: React.FC<EditPostProps> = () => {
   const { id } = useParams<{ id: string }>();
   const history = useHistory();
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, getValues, setValue } = useForm();
   const { t } = useTranslation();
 
   const [ post, setPost ] = useState<PostType>();
   const [ multimedia, setMultimedia ] = useState<{id: string, type: string }[]>([]);
+  const [ tags, setTags ] = useState<Array<string>>([]);
   const [ loading, setLoading ] = useState<boolean>(false);
   const [ fileToUpload, setFileToUpload ] = useState<File>();
 
@@ -64,6 +65,24 @@ const EditPost: React.FC<EditPostProps> = () => {
     ev.preventDefault();
     const multimediaFiltered = multimedia.filter(multimedia => multimedia.id !== multimediaId);
     setMultimedia(multimediaFiltered);
+  };
+
+  const handleClickRemoveTag = (tagToRemove: string) => {
+    setTags(tags.filter(tag => tag !== tagToRemove));
+  };
+
+  const addTag = (value: string) => {
+    if (value.length == 0) {
+      return;
+    }
+
+    const tagsToAdd = value.split(",").map((t) => {
+      return t.trim();
+    }).filter((t) => {
+      return tags.indexOf(t) == -1;
+    });
+
+    setTags(tags.concat(tagsToAdd));
   };
 
   const handleFormSubmission = handleSubmit(async ({ title, description }) => {
@@ -113,6 +132,7 @@ const EditPost: React.FC<EditPostProps> = () => {
                   </div>
                 </div>
               )}
+
               <div className="field">
                 <label className="label">{t("Description")}</label>
                 <div className="control">
@@ -123,6 +143,52 @@ const EditPost: React.FC<EditPostProps> = () => {
                     defaultValue={post.dataContainer?.text_content}
                     ref={register}
                   />
+                </div>
+              </div>
+
+              <div className="field">
+                <label className="label">{t("Tags")}</label>
+
+                <div className="control">
+                  <div className="field has-addons">
+                    <div className="control">
+                      <input
+                        className="input"
+                        type="text"
+                        name="tagName"
+                        placeholder={`${t("Add tag")}...`}
+                        ref={register}
+                      />
+                    </div>
+                    <div className="control">
+                      <button
+                        type="button"
+                        className="button is-info"
+                        onClick={() => {
+                          addTag(getValues("tagName"));
+                          setValue("tagName", "");
+                        }}
+                      >
+                        {t("Add")}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="list-tags">
+                  {(tags.length > 0) ? (
+                    <ul>
+                      {tags.map((tag, index) => {
+                        return (
+                          <li key={index} className="tag is-medium is-primary">
+                            {tag} <a className="delete" onClick={handleClickRemoveTag.bind(null, tag)}></a>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  ) : (
+                    <p>{t("No tags added yet")}</p>
+                  )}
                 </div>
               </div>
 
