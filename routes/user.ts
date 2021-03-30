@@ -1,8 +1,9 @@
 import { Router } from "express";
 import Busboy from "busboy";
 import { v4 as uuid4 } from "uuid";
+import sharp from "sharp";
 
-import { getExtension, getFromEnvironment } from "../util";
+import { getExtension, getFromEnvironment, streamToBuffer } from "../util";
 import { authRequired } from "../util/middleware";
 import { uploadToS3 } from "../util/s3";
 import { UserInstance } from "models/users";
@@ -21,14 +22,23 @@ router.post("/image", authRequired, (req, res) => {
     const newName = uuid4() + getExtension(filename);
 
     try {
-      await uploadToS3(newName, file, BUCKET_NAME);
+      const bufferFile = await streamToBuffer(file);
+      const resizedImageBuffer = await sharp(bufferFile).resize(300).toBuffer();
+
+      await uploadToS3(newName, resizedImageBuffer, BUCKET_NAME);
       user.image = newName;
+
       await user.save();
+
       const { id, username } = user;
       const image = `${CLOUDFRONT_URL}/${newName}`;
-      return res.send({id, username, image});
+
+      return res.send({
+        id, username, image
+      });
     } catch (e) {
       console.error(e);
+
       res.status(500).send({
         status: "ERR",
         message: "Could not upload to S3"
