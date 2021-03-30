@@ -247,7 +247,7 @@ router.get("/:id", authRequired, async (req, res) => {
         include: ["dataContainer", "user"],
       }, "postReference", "postReferenced", "user", "userReferenced", "tags"
     ],
-    order: [["comments","created_at", "desc"]],
+    order: [["comments", "created_at", "asc"]],
   });
 
   if (post) {
