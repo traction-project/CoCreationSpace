@@ -173,27 +173,31 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
               {t("New Post")}
             </button>
 
-            <hr />
-            <h6 className="title is-6">{t("Filter by group")}</h6>
+            {(groups && groups.length > 1) && (
+              <>
+                <hr />
+                <h6 className="title is-6">{t("Filter by group")}</h6>
 
-            <div>
-              {groups?.map((group, index) => {
-                return (
-                  <span
-                    key={index}
-                    className={classNames("tag", { "is-primary": selectedFilter?.type == "group" && selectedFilter.id == group.id })}
-                    onClick={setSelectedFilter.bind(null, { type: "group", id: group.id })}
-                  >
-                    {group.name}
-                  </span>
-                );
-              })}
-            </div>
+                <div>
+                  {groups?.map((group, index) => {
+                    return (
+                      <span
+                        key={index}
+                        className={classNames("tag", { "is-primary": selectedFilter?.type == "group" && selectedFilter.id == group.id })}
+                        onClick={setSelectedFilter.bind(null, { type: "group", id: group.id })}
+                      >
+                        {group.name}
+                      </span>
+                    );
+                  })}
+                </div>
 
-            {(selectedFilter?.type == "group") && (
-              <a className="is-size-7" onClick={handleClickAllPosts}>
-                {t("Clear filter")}
-              </a>
+                {(selectedFilter?.type == "group") && (
+                  <a className="is-size-7" onClick={handleClickAllPosts}>
+                    {t("Clear filter")}
+                  </a>
+                )}
+              </>
             )}
 
             <hr />
