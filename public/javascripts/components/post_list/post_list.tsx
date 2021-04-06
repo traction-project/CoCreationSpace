@@ -25,6 +25,11 @@ interface InterestData {
   id: string;
 }
 
+interface GroupData {
+  name: string;
+  id: string;
+}
+
 const PostList: React.FC<PostListProps> = ({endpoint}) => {
   const history = useHistory();
   const { t } = useTranslation();
@@ -32,8 +37,9 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
   const [ posts, setPosts ] = useState<Array<PostType>>([]);
   const [ tags, setTags ] = useState<Array<TagData>>();
   const [ interests, setInterests ] = useState<Array<InterestData>>();
+  const [ groups, setGroups ] = useState<Array<GroupData>>();
 
-  const [ selectedFilter, setSelectedFilter ] = useState<{ type: "tag" | "interest", id: string }>();
+  const [ selectedFilter, setSelectedFilter ] = useState<{ type: "tag" | "interest" | "group", id: string }>();
   const [ selectedTab, setSelectedTab ] = useState<"text" | "media">("text");
 
   useEffect(() => {
@@ -43,6 +49,7 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
       setPosts(postsList);
       getTags(postsList);
       getInterests(postsList);
+      getGroups(postsList);
     })();
   }, [endpoint]);
 
@@ -84,6 +91,16 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
     });
 
     setTags(tagsList);
+  };
+
+  const getGroups = (posts: Array<PostType>) => {
+    const groups = posts.reduce<Array<GroupData>>((acc, post) => {
+      const { thread: { topic: { userGroup: { id, name } }}} = post;
+
+      return (acc.find((g) => g.id == id)) ? acc : acc.concat({ id, name });
+    }, []);
+
+    setGroups(groups);
   };
 
   const handleClickButtonNewPost = () => {
@@ -131,6 +148,8 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
                   return true;
                 } else if (selectedFilter.type == "interest") {
                   return post.thread.topic.id == selectedFilter.id;
+                } else if (selectedFilter.type == "group") {
+                  return post.thread.topic.userGroup.id == selectedFilter.id;
                 } else {
                   return post.tags?.find((t) => t.id == selectedFilter.id);
                 }
@@ -153,6 +172,29 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
             <button className="button is-info is-fullwidth" onClick={handleClickButtonNewPost}>
               {t("New Post")}
             </button>
+
+            <hr />
+            <h6 className="title is-6">{t("Filter by group")}</h6>
+
+            <div>
+              {groups?.map((group, index) => {
+                return (
+                  <span
+                    key={index}
+                    className={classNames("tag", { "is-primary": selectedFilter?.type == "group" && selectedFilter.id == group.id })}
+                    onClick={setSelectedFilter.bind(null, { type: "group", id: group.id })}
+                  >
+                    {group.name}
+                  </span>
+                );
+              })}
+            </div>
+
+            {(selectedFilter?.type == "group") && (
+              <a className="is-size-7" onClick={handleClickAllPosts}>
+                {t("Clear filter")}
+              </a>
+            )}
 
             <hr />
             <h6 className="title is-6">{t("Filter by interest")}</h6>
