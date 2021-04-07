@@ -37,10 +37,6 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
   const { t } = useTranslation();
 
   const [ posts, setPosts ] = useState<Array<PostType>>([]);
-  const [ tags, setTags ] = useState<Array<TagData>>();
-  const [ interests, setInterests ] = useState<Array<InterestData>>();
-  const [ groups, setGroups ] = useState<Array<GroupData>>();
-
   const [ selectedTab, setSelectedTab ] = useState<"text" | "media">("text");
 
   const filters = parseQueryString(location.search);
@@ -48,11 +44,7 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
   useEffect(() => {
     (async () => {
       const postsList = await getPosts();
-
       setPosts(postsList);
-      getTags(postsList);
-      getInterests(postsList);
-      getGroups(postsList);
     })();
   }, [endpoint]);
 
@@ -63,7 +55,7 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
     return res.json();
   };
 
-  const getInterests = (posts: Array<PostType>) => {
+  const getInterestsFromPosts = (posts: Array<PostType>) => {
     const interests = posts.reduce<Array<InterestData>>((acc, post) => {
       const { thread: { topic: { id, title } }} = post;
 
@@ -76,11 +68,12 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
       }]);
     }, []);
 
-    setInterests(interests);
+    return interests;
   };
 
-  const getTags = (posts: Array<PostType>) => {
+  const getTagsFromPosts = (posts: Array<PostType>) => {
     const tagsList: Array<TagData> = [];
+
     posts.forEach((post) => {
       if (post.tags && post.tags.length > 0) {
         post.tags.forEach((tag: TagData) => {
@@ -93,17 +86,17 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
       }
     });
 
-    setTags(tagsList);
+    return tagsList;
   };
 
-  const getGroups = (posts: Array<PostType>) => {
+  const getGroupsFromPosts = (posts: Array<PostType>) => {
     const groups = posts.reduce<Array<GroupData>>((acc, post) => {
       const { thread: { topic: { userGroup: { id, name } }}} = post;
 
       return (acc.find((g) => g.id == id)) ? acc : acc.concat({ id, name });
     }, []);
 
-    setGroups(groups);
+    return groups;
   };
 
   const handleClickButtonNewPost = () => {
@@ -124,6 +117,10 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
     const postsList: Array<PostType> = await getPosts(value);
     setPosts(postsList);
   };
+
+  const groups = getGroupsFromPosts(posts);
+  const interests = getInterestsFromPosts(posts);
+  const tags = getTagsFromPosts(posts);
 
   return (
     <section className="section">
@@ -222,7 +219,7 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
             <h6 className="title is-6">{t("Filter by interest")}</h6>
 
             <div>
-              {interests?.map((interest, index) => {
+              {interests.map((interest, index) => {
                 return (
                   <span
                     key={index}
@@ -248,7 +245,7 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
             <h6 className="title is-6">{t("Filter by tag")}</h6>
 
             <div>
-              {tags?.map((tag, index) => {
+              {tags.map((tag, index) => {
                 return (
                   <span
                     key={index}
