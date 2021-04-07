@@ -329,3 +329,23 @@ export function supportsDash(): boolean {
 
   return false;
 }
+
+/**
+ * Parses a query string into a hash map.
+ *
+ * @param queryString Query string to parse
+ * @returns A map of key-value pairs parsed from the query string
+ */
+export function parseQueryString(queryString: string): Map<string, string> {
+  const preparedQueryString = queryString.replace("?", "");
+
+  if (preparedQueryString.length == 0) {
+    return new Map();
+  }
+
+  return preparedQueryString.split("&").map((pair) => {
+    return pair.split("=");
+  }).reduce((map, [key, val]) => {
+    return map.set(decodeURIComponent(key), decodeURIComponent(val));
+  }, new Map<string, string>());
+}
