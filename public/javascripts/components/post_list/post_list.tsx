@@ -151,15 +151,23 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
 
             <div>
               {posts.filter((post) => {
-                if (!selectedFilter) {
-                  return true;
-                } else if (selectedFilter.type == "interest") {
-                  return post.thread.topic.id == selectedFilter.id;
-                } else if (selectedFilter.type == "group") {
-                  return post.thread.topic.userGroup.id == selectedFilter.id;
-                } else {
-                  return post.tags?.find((t) => t.id == selectedFilter.id);
-                }
+                return (filters.has("group")) ? (
+                  post.thread.topic.userGroup.id == filters.get("group")
+                ) : (
+                  true
+                );
+              }).filter((post) => {
+                return (filters.has("interest")) ? (
+                  post.thread.topic.id == filters.get("interest")
+                ) : (
+                  true
+                );
+              }).filter((post) => {
+                return (filters.has("tag")) ? (
+                  post.tags?.find((t) => t.id == filters.get("tag"))
+                ) : (
+                  true
+                );
               }).map((post, index) => {
                 return (
                   <React.Fragment key={index}>
