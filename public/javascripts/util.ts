@@ -349,3 +349,19 @@ export function parseQueryString(queryString: string): Map<string, string> {
     return map.set(decodeURIComponent(key), decodeURIComponent(val));
   }, new Map<string, string>());
 }
+
+/**
+ * Converts a map object to a regular JS object.
+ *
+ * @param map The map to convert
+ * @return And object that contains all keys and values in the original map
+ */
+export function fromEntries<T>(map: Map<string, T>): { [key: string]: T } {
+  const obj: { [key: string]: T } = {};
+
+  map.forEach((v, k) => {
+    obj[k] = v;
+  });
+
+  return obj;
+}
