@@ -1,9 +1,10 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import classNames from "classnames";
 
+import { fromEntries, parseQueryString } from "../../util";
 import { PostType } from "../post/post";
 import Filter from "./filter";
 import PostThumbnailEntry from "./post_thumbnail_entry";
@@ -32,6 +33,7 @@ interface GroupData {
 
 const PostList: React.FC<PostListProps> = ({endpoint}) => {
   const history = useHistory();
+  const location = useLocation();
   const { t } = useTranslation();
 
   const [ posts, setPosts ] = useState<Array<PostType>>([]);
@@ -39,8 +41,9 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
   const [ interests, setInterests ] = useState<Array<InterestData>>();
   const [ groups, setGroups ] = useState<Array<GroupData>>();
 
-  const [ selectedFilter, setSelectedFilter ] = useState<{ type: "tag" | "interest" | "group", id: string }>();
   const [ selectedTab, setSelectedTab ] = useState<"text" | "media">("text");
+
+  const filters = parseQueryString(location.search);
 
   useEffect(() => {
     (async () => {
@@ -107,12 +110,16 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
     history.push("/upload");
   };
 
-  const handleClickAllPosts = () => {
-    setSelectedFilter(undefined);
+  const updateFilter = (filters: { [key: string]: string }) => {
+    const queryString = Object.entries(filters).map(([k, v]) => {
+      return `${k}=${v}`;
+    }).join("&");
+
+    history.push({ search: `?${queryString}` });
   };
 
   const handleChange = async (value: string) => {
-    setSelectedFilter(undefined);
+    updateFilter({});
 
     const postsList: Array<PostType> = await getPosts(value);
     setPosts(postsList);
@@ -183,8 +190,8 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
                     return (
                       <span
                         key={index}
-                        className={classNames("tag", { "is-primary": selectedFilter?.type == "group" && selectedFilter.id == group.id })}
-                        onClick={setSelectedFilter.bind(null, { type: "group", id: group.id })}
+                        className={classNames("tag", { "is-primary": filters.has("group") && filters.get("group") == group.id })}
+                        onClick={updateFilter.bind(null, { ...fromEntries(filters), group: group.id })}
                       >
                         {group.name}
                       </span>
@@ -192,8 +199,11 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
                   })}
                 </div>
 
-                {(selectedFilter?.type == "group") && (
-                  <a className="is-size-7" onClick={handleClickAllPosts}>
+                {(filters.has("group")) && (
+                  <a className="is-size-7" onClick={() => {
+                    filters.delete("group");
+                    updateFilter(fromEntries(filters));
+                  }}>
                     {t("Clear filter")}
                   </a>
                 )}
@@ -208,8 +218,8 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
                 return (
                   <span
                     key={index}
-                    className={classNames("tag", { "is-primary": selectedFilter?.type == "interest" && selectedFilter.id == interest.id })}
-                    onClick={setSelectedFilter.bind(null, { type: "interest", id: interest.id })}
+                    className={classNames("tag", { "is-primary": filters.has("interest") && filters.get("interest") == interest.id })}
+                    onClick={updateFilter.bind(null, { ...fromEntries(filters), interest: interest.id })}
                   >
                     {interest.title}
                   </span>
@@ -217,8 +227,11 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
               })}
             </div>
 
-            {(selectedFilter?.type == "interest") && (
-              <a className="is-size-7" onClick={handleClickAllPosts}>
+            {(filters.has("interest")) && (
+              <a className="is-size-7" onClick={() => {
+                filters.delete("interest");
+                updateFilter(fromEntries(filters));
+              }}>
                 {t("Clear filter")}
               </a>
             )}
@@ -231,8 +244,8 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
                 return (
                   <span
                     key={index}
-                    className={classNames("tag", { "is-primary": selectedFilter?.type == "tag" && selectedFilter.id == tag.id })}
-                    onClick={setSelectedFilter.bind(null, { type: "tag", id: tag.id })}
+                    className={classNames("tag", { "is-primary": filters.has("tag") && filters.get("tag") == tag.id })}
+                    onClick={updateFilter.bind(null, { ...fromEntries(filters), tag: tag.id })}
                   >
                     {tag.tag_name}
                   </span>
@@ -240,8 +253,11 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
               })}
             </div>
 
-            {(selectedFilter?.type == "tag") && (
-              <a className="is-size-7" onClick={handleClickAllPosts}>
+            {(filters.has("tag")) && (
+              <a className="is-size-7" onClick={() => {
+                filters.delete("tag");
+                updateFilter(fromEntries(filters));
+              }}>
                 {t("Clear filter")}
               </a>
             )}
