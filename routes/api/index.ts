@@ -7,8 +7,9 @@ import { getExtension, getFromEnvironment } from "../../util";
 import { tokenRequired, permissionRequired } from "../../util/middleware";
 import { uploadToS3, deleteFromS3 } from "../../util/s3";
 import { UserInstance } from "../../models/users";
+import { encodeDash } from "../../util/transcode";
 
-const [ BUCKET_NAME ] = getFromEnvironment("BUCKET_NAME");
+const [ BUCKET_NAME, ETS_PIPELINE ] = getFromEnvironment("BUCKET_NAME", "ETS_PIPELINE");
 const UPLOAD_PREFIX = "upload/";
 
 const router = Router();
@@ -74,6 +75,44 @@ router.post("/upload/raw", tokenRequired, permissionRequired("upload_raw"), (req
   });
 
   req.pipe(busboy);
+});
+
+/**
+ * Starts a new DASH transcoding job for an existing raw input.
+ * This route needs to be called with the `Content-Type` header of the request
+ * being set to `application/json` and a JSON object containing the key `input`
+ * needs to be provided in the request body. The value associated to the `input`
+ * key should specify the path to an existing raw upload. If the request body
+ * does not define a key `input`, an error 400 is returned.
+ *
+ * The function then attempts to start a new transcoding job for the given
+ * input and if successful returns a JSON object containing the key `jobId`,
+ * with which the status of the transcoding job can be checked. If the
+ * transcoding job could not be started an error 500 is returned.
+ */
+router.post("/upload/encode", tokenRequired, permissionRequired("upload_raw"), async (req, res) => {
+  const { input } = req.body;
+
+  if (!input) {
+    return res.status(400).send({
+      status: "ERR",
+      message: "No input path specified"
+    });
+  }
+
+  try {
+    const jobId = await encodeDash(ETS_PIPELINE, input);
+
+    res.send({
+      status: "OK",
+      jobId
+    });
+  } catch {
+    res.status(500).send({
+      status: "ERR",
+      message: "Could not start transcoding job"
+    });
+  }
 });
 
 router.delete("/upload/raw", tokenRequired, permissionRequired( "upload_raw"), async (req, res) => {
