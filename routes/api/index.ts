@@ -107,10 +107,10 @@ router.post("/upload/encode", tokenRequired, permissionRequired("upload_raw"), a
       status: "OK",
       jobId
     });
-  } catch {
+  } catch (e) {
     res.status(500).send({
       status: "ERR",
-      message: "Could not start transcoding job"
+      message: e.message
     });
   }
 });
@@ -131,7 +131,7 @@ router.get("/upload/encode/status/:jobId", tokenRequired, permissionRequired("up
   } catch (e) {
     res.status(500).send({
       status: "ERR",
-      message: e
+      message: e.message
     });
   }
 });
