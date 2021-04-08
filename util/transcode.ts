@@ -287,3 +287,27 @@ export function encodeHLSAudio(pipeline: string, input: string): Promise<string>
     });
   });
 }
+
+/**
+ * Returns the status of the transcoding job with the given ID.
+ *
+ * @param jobId Transcoding job ID which should be checked
+ * @returns The job status, may be one of `Submitted`, `Progressing`, `Complete`, `Canceled`, or `Error`
+ */
+export function getJobStatus(jobId: string): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const transcoder = new aws.ElasticTranscoder();
+
+    transcoder.readJob({ Id: jobId }, (err, data) => {
+      if (err) {
+        reject(err);
+      } else {
+        if (data.Job?.Status) {
+          resolve(data.Job.Status);
+        } else {
+          reject(undefined);
+        }
+      }
+    });
+  });
+}
