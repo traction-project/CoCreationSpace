@@ -7,7 +7,7 @@ import { getExtension, getFromEnvironment } from "../../util";
 import { tokenRequired, permissionRequired } from "../../util/middleware";
 import { uploadToS3, deleteFromS3 } from "../../util/s3";
 import { UserInstance } from "../../models/users";
-import { encodeDash } from "../../util/transcode";
+import { encodeDash, getJobStatus } from "../../util/transcode";
 
 const [ BUCKET_NAME, ETS_PIPELINE ] = getFromEnvironment("BUCKET_NAME", "ETS_PIPELINE");
 const UPLOAD_PREFIX = "upload/";
@@ -111,6 +111,27 @@ router.post("/upload/encode", tokenRequired, permissionRequired("upload_raw"), a
     res.status(500).send({
       status: "ERR",
       message: "Could not start transcoding job"
+    });
+  }
+});
+
+/**
+ * Tries to retrieve to transcoding job status of the job with the given ID.
+ */
+router.get("/upload/encode/status/:jobId", tokenRequired, permissionRequired("upload_raw"), async (req, res) => {
+  const { jobId } = req.params;
+
+  try {
+    const status = await getJobStatus(jobId);
+
+    res.send({
+      status: "OK",
+      jobStatus: status
+    });
+  } catch (e) {
+    res.status(500).send({
+      status: "ERR",
+      message: e
     });
   }
 });
