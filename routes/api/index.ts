@@ -106,7 +106,7 @@ router.post("/upload/encode", tokenRequired, permissionRequired("upload_raw"), a
   }
 
   try {
-    const jobId = await encodeDash(ETS_PIPELINE, input, hasAudio || true);
+    const jobId = await encodeDash(ETS_PIPELINE, input, hasAudio);
 
     res.send({
       status: "OK",
