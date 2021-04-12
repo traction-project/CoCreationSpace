@@ -523,17 +523,17 @@ router.delete("/:id", authRequired, async (req, res) => {
   const post = await Posts.findByPk(id);
 
   if (post) {
-    if (post.user_id != user.id) {
-      return res.status(400).send({
-        status: "ERR",
-        message: "Not allowed to delete post"
+    if (post.user_id == user.id || user.isAdmin()) {
+      await post.destroyWithComments();
+
+      return res.send({
+        status: "OK"
       });
     }
 
-    await post.destroyWithComments();
-
-    res.send({
-      status: "OK"
+    return res.status(400).send({
+      status: "ERR",
+      message: "Not allowed to delete post"
     });
   } else {
     res.status(404).send({
