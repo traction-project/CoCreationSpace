@@ -23,6 +23,10 @@ export function processInputPath(input: string): [ prefix: string, basename: str
 
   const filenameComponents = inputFilename.split(".");
 
+  if (filenameComponents[0].length == 0) {
+    throw new Error("Input basename is empty");
+  }
+
   if (filenameComponents.length == 1) {
     return [prefixPath, filenameComponents[0], ""];
   } else {

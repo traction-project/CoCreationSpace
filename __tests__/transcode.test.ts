@@ -170,6 +170,15 @@ describe("Utility function processInputPath()", () => {
     expect(extension).toEqual("");
   });
 
+  it("should return an empty string for extension and prefix if the input has no extension or prefix", () => {
+    const input = "basename";
+    const [ prefix, basename, extension ] = transcode.processInputPath(input);
+
+    expect(prefix).toEqual("");
+    expect(basename).toEqual("basename");
+    expect(extension).toEqual("");
+  });
+
   it("should return the entire prefix if it contains multiple levels", () => {
     const input = "prefix/a/b/c/basename.extension";
     const [ prefix, basename, extension ] = transcode.processInputPath(input);
@@ -177,5 +186,29 @@ describe("Utility function processInputPath()", () => {
     expect(prefix).toEqual("prefix/a/b/c/");
     expect(basename).toEqual("basename");
     expect(extension).toEqual("extension");
+  });
+
+  it("should throw an exception if the basename is empty", () => {
+    const input = "prefix/a/b/c/.extension";
+
+    try {
+      transcode.processInputPath(input);
+      fail();
+    } catch (e) {
+      expect(e).toBeDefined();
+      expect(e.message).toEqual("Input basename is empty");
+    }
+  });
+
+  it("should throw an exception if the basename and prefix are empty", () => {
+    const input = ".extension";
+
+    try {
+      transcode.processInputPath(input);
+      fail();
+    } catch (e) {
+      expect(e).toBeDefined();
+      expect(e.message).toEqual("Input basename is empty");
+    }
   });
 });
