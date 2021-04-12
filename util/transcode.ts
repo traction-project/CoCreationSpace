@@ -328,12 +328,13 @@ export function encodeHLSAudio(pipeline: string, input: string): Promise<string>
 }
 
 /**
- * Returns the status of the transcoding job with the given ID.
+ * Returns the status of the transcoding job with the given ID. Also returns
+ * the path to the manifest if available.
  *
  * @param jobId Transcoding job ID which should be checked
- * @returns The job status, may be one of `Submitted`, `Progressing`, `Complete`, `Canceled`, or `Error`
+ * @returns The job status, may be one of `Submitted`, `Progressing`, `Complete`, `Canceled`, or `Error` and the path to the manifet if `Complete`
  */
-export function getJobStatus(jobId: string): Promise<string> {
+export function getJobStatus(jobId: string): Promise<[status: string, manifest?: string]> {
   return new Promise((resolve, reject) => {
     const transcoder = new aws.ElasticTranscoder();
 
@@ -342,7 +343,14 @@ export function getJobStatus(jobId: string): Promise<string> {
         reject(err);
       } else {
         if (data.Job?.Status) {
-          resolve(data.Job.Status);
+          if (data.Job.Status == "Complete" && data.Job.Playlists) {
+            resolve([
+              data.Job.Status,
+              `${data.Job.OutputKeyPrefix}${data.Job.Playlists[0].Name}.mpd`
+            ]);
+          } else {
+            resolve([ data.Job.Status ]);
+          }
         } else {
           reject(undefined);
         }
