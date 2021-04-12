@@ -16,6 +16,7 @@ import { UserGroupInstance } from "./user_group";
 import { MultimediaInteractionInstance } from "./multimedia_interaction";
 import { InternalNavigationStepInstance } from "./internal_navigation_step";
 import { SearchQueryInstance } from "./search_query";
+import { db } from "./index";
 
 const [ SESSION_SECRET ] = getFromEnvironment("SESSION_SECRET");
 
@@ -55,6 +56,7 @@ export interface UserInstance extends Sequelize.Model<UsersAttributes, UsersCrea
   validatePassword: (password: string) => boolean;
   generateToken: (validityInDays: number) => string;
   getAuth: () => UserToken;
+  isAdmin: () => Promise<boolean>;
 
   getLikesPosts: Sequelize.BelongsToManyGetAssociationsMixin<PostInstance>;
   setLikesPosts: Sequelize.BelongsToManySetAssociationsMixin<PostInstance, PostInstance["id"]>;
@@ -280,6 +282,20 @@ export function UsersModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mod
       username: this.username,
       token: this.generateToken()
     };
+  };
+
+  /**
+   * Checks if the current user has a permission of type 'admin'
+   */
+  Users.prototype.isAdmin = async function (): Promise<boolean> {
+    const { Permissions } = db.getModels();
+    const adminPermission = await Permissions.findOne({ where: { type: "admin" }});
+
+    if (adminPermission) {
+      return await this.hasPermission(adminPermission);
+    }
+
+    return false;
   };
 
   return Users;
