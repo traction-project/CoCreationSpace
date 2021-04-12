@@ -36,6 +36,7 @@ router.post("/receive", (req, res) => {
       console.log("transcribe message received");
       insertVideoTranscript(data.detail.TranscriptionJobName);
     } else if (data.pipelineId && data.state == "COMPLETED") {
+      console.log("transcoder message received:", data.state, );
       // process transcoder notification
       insertMetadata(data);
     }
@@ -102,7 +103,7 @@ export async function insertMetadata(data: any) {
   }
 
   job.status = "done";
-  job.save();
+  await job.save();
 
   const media = await job.getMultimedium();
 
@@ -121,7 +122,7 @@ export async function insertMetadata(data: any) {
       media.thumbnails = thumbnails;
     }
 
-    media.save();
+    await media.save();
   }
 }
 
