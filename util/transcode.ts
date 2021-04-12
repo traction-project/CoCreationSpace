@@ -1,6 +1,41 @@
 import aws from "aws-sdk";
 
 /**
+ * Separates an Amazon S3 key into a tuple with separate elements for prefix
+ * path, file basename and file extension.
+ *
+ * @param input Name of the input with prefix path and extension
+ * @returns A tuple with an element for prefix path, file basename and extension
+ */
+export function processInputPath(input: string): [ prefix: string, basename: string, extension: string ] {
+  const pathComponents = input.split("/");
+
+  // Get filename without path prefix
+  const inputFilename = pathComponents[pathComponents.length - 1];
+
+  // Reassemble path prefix
+  let prefixPath = pathComponents.slice(0, pathComponents.length - 1).join("/");
+
+  // Append slash at end of prefix if it is non-empty
+  if (prefixPath.length > 0) {
+    prefixPath += "/";
+  }
+
+  const filenameComponents = inputFilename.split(".");
+
+  if (filenameComponents.length == 1) {
+    return [prefixPath, filenameComponents[0], ""];
+  } else {
+    // Get filename without extension
+    const inputBasename = filenameComponents.slice(0, filenameComponents.length - 1).join(".");
+    // Get extension
+    const extension = filenameComponents[filenameComponents.length - 1];
+
+    return [prefixPath, inputBasename, extension];
+  }
+}
+
+/**
  * Starts a new DASH video transcoding job in the given transcoding pipeline
  * using the given path as input. If the given input has no audio track, the
  * third parameter should be set to false, otherwise the transcoding job will
