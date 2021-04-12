@@ -141,3 +141,41 @@ describe("Utility function encodeAudio()", () => {
     }
   });
 });
+
+describe("Utility function processInputPath()", () => {
+  it("should return an input key separated into prefix, basename and extension", () => {
+    const input = "prefix/basename.extension";
+    const [ prefix, basename, extension ] = transcode.processInputPath(input);
+
+    expect(prefix).toEqual("prefix/");
+    expect(basename).toEqual("basename");
+    expect(extension).toEqual("extension");
+  });
+
+  it("should return an empty string for prefix if the input has no prefix", () => {
+    const input = "basename.extension";
+    const [ prefix, basename, extension ] = transcode.processInputPath(input);
+
+    expect(prefix).toEqual("");
+    expect(basename).toEqual("basename");
+    expect(extension).toEqual("extension");
+  });
+
+  it("should return an empty string for extension if the input has no extension", () => {
+    const input = "prefix/basename";
+    const [ prefix, basename, extension ] = transcode.processInputPath(input);
+
+    expect(prefix).toEqual("prefix/");
+    expect(basename).toEqual("basename");
+    expect(extension).toEqual("");
+  });
+
+  it("should return the entire prefix if it contains multiple levels", () => {
+    const input = "prefix/a/b/c/basename.extension";
+    const [ prefix, basename, extension ] = transcode.processInputPath(input);
+
+    expect(prefix).toEqual("prefix/a/b/c/");
+    expect(basename).toEqual("basename");
+    expect(extension).toEqual("extension");
+  });
+});
