@@ -57,8 +57,8 @@ export function processInputPath(input: string): [ prefix: string, basename: str
  * @returns A promise which resolves to the job ID if successful, rejects with an error otherwise
  */
 export function encodeDash(pipeline: string, input: string, hasAudio = true): Promise<string | undefined> {
-  // Get filename without extension
-  const inputBasename = input.split(".")[0];
+  // Process input path
+  const [ prefixPath, inputBasename ] = processInputPath(input);
 
   // Transcoder configuration, outputs are placed under the path transcoded/,
   // with separate directories for each bitrate. Audio tracks and thumbnails
@@ -69,7 +69,7 @@ export function encodeDash(pipeline: string, input: string, hasAudio = true): Pr
     Input: {
       Key: input,
     },
-    OutputKeyPrefix: "transcoded/",
+    OutputKeyPrefix: `${prefixPath}transcoded/`,
     Outputs: [
       {
         Key: `dash-4m/${inputBasename}`,
@@ -142,8 +142,8 @@ export function encodeDash(pipeline: string, input: string, hasAudio = true): Pr
  * @returns A promise which resolves to the job ID if successful, rejects with an error otherwise
  */
 export function encodeHLS(pipeline: string, input: string, hasAudio = true): Promise<string | undefined> {
-  // Get filename without extension
-  const inputBasename = input.split(".")[0];
+  // Process input path
+  const [ prefixPath, inputBasename ] = processInputPath(input);
 
   // Transcoder configuration, outputs are placed under the path transcoded/,
   // with separate directories for each bitrate. Audio tracks and thumbnails
@@ -154,7 +154,7 @@ export function encodeHLS(pipeline: string, input: string, hasAudio = true): Pro
     Input: {
       Key: input,
     },
-    OutputKeyPrefix: "transcoded/",
+    OutputKeyPrefix: `${prefixPath}transcoded/`,
     Outputs: [
       {
         Key: `hls-2m/${inputBasename}`,
@@ -223,8 +223,8 @@ export function encodeHLS(pipeline: string, input: string, hasAudio = true): Pro
  * @returns A promise which resolves to the job ID if successful, rejects with an error otherwise
  */
 export function encodeAudio(pipeline: string, input: string): Promise<string> {
-  // Get filename without extension
-  const inputBasename = input.split(".")[0];
+  // Process input path
+  const [ prefixPath, inputBasename ] = processInputPath(input);
 
   // Transcoder configuration, outputs are placed under the path transcoded/,
   // whereas the manifest is placed directly into the transcoded/ folder
@@ -233,7 +233,7 @@ export function encodeAudio(pipeline: string, input: string): Promise<string> {
     Input: {
       Key: input,
     },
-    OutputKeyPrefix: "transcoded/",
+    OutputKeyPrefix: `${prefixPath}transcoded/`,
     Outputs: [
       {
         Key: `dash-audio/${inputBasename}`,
@@ -282,8 +282,8 @@ export function encodeAudio(pipeline: string, input: string): Promise<string> {
  * @returns A promise which resolves to the job ID if successful, rejects with an error otherwise
  */
 export function encodeHLSAudio(pipeline: string, input: string): Promise<string> {
-  // Get filename without extension
-  const inputBasename = input.split(".")[0];
+  // Process input path
+  const [ prefixPath, inputBasename ] = processInputPath(input);
 
   // Transcoder configuration, outputs are placed under the path transcoded/,
   // whereas the manifest is placed directly into the transcoded/ folder
@@ -292,7 +292,7 @@ export function encodeHLSAudio(pipeline: string, input: string): Promise<string>
     Input: {
       Key: input,
     },
-    OutputKeyPrefix: "transcoded/",
+    OutputKeyPrefix: `${prefixPath}transcoded/`,
     Outputs: [
       {
         Key: `hls-audio/${inputBasename}`,
