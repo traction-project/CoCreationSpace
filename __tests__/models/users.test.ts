@@ -353,4 +353,41 @@ describe("Users model", () => {
 
     expect(user.participantCode).toEqual("participant1");
   });
+
+  it("should return false if there is no admin permission", async () => {
+    const { Users } = db.getModels();
+
+    const user = await Users.create({
+      username: "admin",
+    });
+
+    expect(await user.isAdmin()).toBeFalsy();
+  });
+
+  it("should return false if the admin permission is not associated to the user", async () => {
+    const { Users, Permissions } = db.getModels();
+
+    await Permissions.create({ type: "admin" });
+
+    const user = await Users.create({
+      username: "admin",
+    });
+
+    expect(await user.isAdmin()).toBeFalsy();
+  });
+
+  it("should return true if the admin permission is associated to the user", async () => {
+    const { Users, Permissions } = db.getModels();
+
+    const permission = await Permissions.create({
+      type: "admin"
+    });
+
+    const user = await Users.create({
+      username: "admin",
+    });
+
+    await user.addPermission(permission);
+    expect(await user.isAdmin()).toBeTruthy();
+  });
 });
