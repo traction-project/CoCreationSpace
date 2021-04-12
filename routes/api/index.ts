@@ -85,13 +85,18 @@ router.post("/upload/raw", tokenRequired, permissionRequired("upload_raw"), (req
  * key should specify the path to an existing raw upload. If the request body
  * does not define a key `input`, an error 400 is returned.
  *
+ * If the given input is a video file which does not have an audio stream, an
+ * additional parameter named `hasAudio` set to `false` needs to be added to
+ * the request body, otherwise the encoding will fail. If this `hasAudio`
+ * parameter is missing, it is assumed to be `true`.
+ *
  * The function then attempts to start a new transcoding job for the given
  * input and if successful returns a JSON object containing the key `jobId`,
  * with which the status of the transcoding job can be checked. If the
  * transcoding job could not be started an error 500 is returned.
  */
 router.post("/upload/encode", tokenRequired, permissionRequired("upload_raw"), async (req, res) => {
-  const { input } = req.body;
+  const { input, hasAudio } = req.body;
 
   if (!input) {
     return res.status(400).send({
@@ -101,7 +106,7 @@ router.post("/upload/encode", tokenRequired, permissionRequired("upload_raw"), a
   }
 
   try {
-    const jobId = await encodeDash(ETS_PIPELINE, input);
+    const jobId = await encodeDash(ETS_PIPELINE, input, hasAudio || true);
 
     res.send({
       status: "OK",
