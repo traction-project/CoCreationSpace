@@ -160,7 +160,7 @@ export function encodeHLS(pipeline: string, input: string, hasAudio = true): Pro
         Key: `hls-2m/${inputBasename}`,
         PresetId: "1351620000001-200015",
         SegmentDuration: "10",
-        ThumbnailPattern: `thumbnails/${inputBasename}_{count}`
+        ThumbnailPattern: `thumbnails/${inputBasename}_hls_{count}`
       }, {
         Key: `hls-1m/${inputBasename}`,
         PresetId: "1351620000001-200035",
