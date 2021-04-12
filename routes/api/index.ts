@@ -122,17 +122,30 @@ router.post("/upload/encode", tokenRequired, permissionRequired("upload_raw"), a
 
 /**
  * Tries to retrieve to transcoding job status of the job with the given ID.
+ * Returns an object with the key `jobStatus`, whose value will be one of
+ * `Submitted`, `Progressing`, `Complete`, `Canceled`, or `Error`. If the value
+ * of `jobStatus` is equal to `Complete`, the object also contains the key
+ * `manifest`, which contains a link to the generated MPD playlist for the job.
  */
 router.get("/upload/encode/status/:jobId", tokenRequired, permissionRequired("upload_raw"), async (req, res) => {
   const { jobId } = req.params;
 
   try {
-    const status = await getJobStatus(jobId);
-
-    res.send({
+    const [ status, manifest ] = await getJobStatus(jobId);
+    const response = {
       status: "OK",
       jobStatus: status
-    });
+    };
+
+    if (status == "Complete") {
+      res.send({
+        ...response,
+        manifest
+      });
+    } else {
+      res.send(response);
+    }
+
   } catch (e) {
     res.status(500).send({
       status: "ERR",
