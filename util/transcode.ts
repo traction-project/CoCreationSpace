@@ -126,9 +126,7 @@ export function encodeDash(pipeline: string, input: string, hasAudio = true, out
         Format: "MPEG-DASH",
         Name: `${inputBasename}`,
         OutputKeys: [
-          `dash-4m/${inputBasename}`,
-          `dash-2m/${inputBasename}`,
-          `dash-1m/${inputBasename}`,
+          ...dashOutputs.map((o) => o.Key),
           `dash-audio/${inputBasename}`,
         ],
       }
