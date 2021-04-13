@@ -62,14 +62,46 @@ export function processInputPath(input: string): [ prefix: string, basename: str
  * set to false). Thumbnails will be generated as PNG files from the 4800k
  * video stream, with one thumbnail saved every 5 minutes.
  *
+ * The function also accepts an array of video resolutions that should be
+ * generated for the output. Possible values for items in the array are `720p`,
+ * `480p`, `360p`, `240p` and `180p`. All other values are ignored. Defaults to
+ * `["720p", "480p", "360p"]`.
+ *
  * @param pipeline ID of the transcoding pipeline to use
  * @param input Path to input file
  * @param hasAudio Whether the file has an audio track, defaults to true
+ * @param outputResolutions An array containing quality settings of video resolutions to be generated
  * @returns A promise which resolves to the job ID if successful, rejects with an error otherwise
  */
-export function encodeDash(pipeline: string, input: string, hasAudio = true): Promise<string | undefined> {
+export function encodeDash(pipeline: string, input: string, hasAudio = true, outputResolutions = ["720p", "480p", "360p"]): Promise<string | undefined> {
   // Process input path
   const [ prefixPath, inputBasename ] = processInputPath(input);
+
+  const dashOutputs = outputResolutions.reduce((outputs, resolution) => {
+    // Check if value is a valid resolution
+    if (resolutions[resolution]) {
+      const [ preset, bitrate ] = resolutions[resolution];
+
+      // Generate entry with right folder and preset name
+      return [
+        ...outputs,
+        {
+          Key: `dash-${bitrate}/${inputBasename}`,
+          PresetId: preset,
+          SegmentDuration: "10"
+        }
+      ];
+    }
+
+    return outputs;
+  }, []).map((output, i) => {
+    // Add key ThumbnailPattern to first element in array
+    if (i == 0) {
+      return { ...output, ThumbnailPattern: `thumbnails/${inputBasename}_{count}`};
+    }
+
+    return output;
+  });
 
   // Transcoder configuration, outputs are placed under the path transcoded/,
   // with separate directories for each bitrate. Audio tracks and thumbnails
@@ -82,20 +114,8 @@ export function encodeDash(pipeline: string, input: string, hasAudio = true): Pr
     },
     OutputKeyPrefix: `${prefixPath}transcoded/`,
     Outputs: [
+      ...dashOutputs,
       {
-        Key: `dash-4m/${inputBasename}`,
-        PresetId: "1351620000001-500020",
-        SegmentDuration: "10",
-        ThumbnailPattern: `thumbnails/${inputBasename}_{count}`
-      }, {
-        Key: `dash-2m/${inputBasename}`,
-        PresetId: "1351620000001-500030",
-        SegmentDuration: "10"
-      }, {
-        Key: `dash-1m/${inputBasename}`,
-        PresetId: "1351620000001-500040",
-        SegmentDuration: "10"
-      }, {
         Key: `dash-audio/${inputBasename}`,
         PresetId: "1351620000001-500060",
         SegmentDuration: "10"
