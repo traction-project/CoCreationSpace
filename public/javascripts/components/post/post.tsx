@@ -75,7 +75,7 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
 
   const { id } = useParams<{ id: string }>();
   const idPost = props.post ? props.post.id : id;
-  const { callbackClickTime } = props;
+  const { callbackClickTime, login: { user } } = props;
   const currentTime = useRef(0);
   const { isOpen, openPortal, closePortal, Portal } = usePortal();
 
@@ -206,7 +206,7 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
                       {(post.parent_post_id == null) && (
                         <>in <i>{post.thread.topic.userGroup.name}</i>&emsp;</>
                       )}
-                      {(props.login.user?.id == post.user.id) && (
+                      {(user && (user.id == post.user.id || user.admin)) && (
                         <>
                           <Link to={`/post/${post.id}/edit`}>{t("Edit")}</Link>
                           &emsp;
