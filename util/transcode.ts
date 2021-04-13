@@ -3,12 +3,12 @@ import aws from "aws-sdk";
 /**
  * List of available vidoe resolutions and their ETS preset names
  */
-const resolutions = {
-  "720p": "1351620000001-500020",
-  "480p": "1351620000001-500030",
-  "360p": "1351620000001-500040",
-  "240p": "1351620000001-500050",
-  "180p": "1618314131143-qp0sh8",
+const resolutions: { [key: string]: [presetName: string, bitrate: string] } = {
+  "720p": ["1351620000001-500020", "4m"],
+  "480p": ["1351620000001-500030", "2m"],
+  "360p": ["1351620000001-500040", "1m"],
+  "240p": ["1351620000001-500050", "600k"],
+  "180p": ["1618314131143-qp0sh8", "300k"]
 };
 
 /**
