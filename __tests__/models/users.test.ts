@@ -364,6 +364,17 @@ describe("Users model", () => {
     expect(await user.isAdmin()).toBeFalsy();
   });
 
+  it("should return true if there is no admin permission but user has the role 'admin'", async () => {
+    const { Users } = db.getModels();
+
+    const user = await Users.create({
+      username: "admin",
+      role: "admin"
+    });
+
+    expect(await user.isAdmin()).toBeTruthy();
+  });
+
   it("should return false if the admin permission is not associated to the user", async () => {
     const { Users, Permissions } = db.getModels();
 

@@ -288,6 +288,10 @@ export function UsersModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mod
    * Checks if the current user has a permission of type 'admin'
    */
   Users.prototype.isAdmin = async function (): Promise<boolean> {
+    if (this.role == "admin") {
+      return true;
+    }
+
     const { Permissions } = db.getModels();
     const adminPermission = await Permissions.findOne({ where: { type: "admin" }});
 
