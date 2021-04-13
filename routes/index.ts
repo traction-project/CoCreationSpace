@@ -41,7 +41,7 @@ router.get("/", (_, res) => {
   res.render("index", { title: "MediaVault", enableAnalytics: process.env.ENABLE_ANALYTICS == "true" });
 });
 
-router.post("/login", passport.authenticate("local"), (req, res) => {
+router.post("/login", passport.authenticate("local"), async (req, res) => {
   const user = req.user as UserInstance;
 
   res.send({
@@ -51,7 +51,8 @@ router.post("/login", passport.authenticate("local"), (req, res) => {
       username: user.username,
       image: `${CLOUDFRONT_URL}/${user.image}`,
       email: user.email,
-      preferredLanguage: user.preferredLanguage
+      preferredLanguage: user.preferredLanguage,
+      admin: await user.isAdmin()
     }
   });
 });
