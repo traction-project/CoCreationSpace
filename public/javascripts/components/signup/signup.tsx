@@ -41,8 +41,8 @@ const Signup: React.FC<SignupProps> = (props) => {
                     <h4 className="title is-4">{t("Create Account")}</h4>
 
                     <RegistrationForm
-                      onComplete={(username, password, image) => {
-                        props.loginActions.setLoggedInUser(username, password, image);
+                      onComplete={(username, password, image, admin, email) => {
+                        props.loginActions.setLoggedInUser(username, password, image, admin, email);
                         setStep(step + 1);
                       }}
                     />
@@ -56,7 +56,7 @@ const Signup: React.FC<SignupProps> = (props) => {
                       skippable={true}
                       onComplete={(image) => {
                         props.loginActions.setLoggedInUser(
-                          user.id, user.username, image
+                          user.id, user.username, image, user.admin, user.email
                         );
 
                         setStep(step + 1);

@@ -69,7 +69,7 @@ const Profile: React.FC<ProfileProps> = (props) => {
               currentImage={user.image!}
               onComplete={(newImage) => {
                 props.loginActions.setLoggedInUser(
-                  user.id, user.username, newImage
+                  user.id, user.username, newImage, user.admin, user.email
                 );
 
                 setDisplayNotification("success");

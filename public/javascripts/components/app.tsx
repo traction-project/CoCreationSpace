@@ -33,9 +33,9 @@ async function checkLogin() {
 
   if (loginStatus == true) {
     const res = await fetch("/users/profile");
-    const { id, username, image } = await res.json();
+    const { id, username, image, admin, email } = await res.json();
 
-    store.dispatch(loginActionCreators.setLoggedInUser(id, username, image));
+    store.dispatch(loginActionCreators.setLoggedInUser(id, username, image, admin, email));
   } else {
     store.dispatch(loginActionCreators.clearLoggedInUser());
   }
