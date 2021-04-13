@@ -393,6 +393,9 @@ router.post("/", authRequired, async (req, res) => {
   return res.send(postSaved);
 });
 
+/**
+ * Edit the post with the given ID
+ */
 router.post("/:id/edit", authRequired, async (req, res) => {
   const { id } = req.params;
   const { title, description, multimedia, tags } = req.body;
@@ -403,7 +406,7 @@ router.post("/:id/edit", authRequired, async (req, res) => {
   const dataContainer = await DataContainer.findOne({ where: { post_id: id } as any });
 
   if (post && dataContainer) {
-    if (post.user_id != user.id) {
+    if (post.user_id != user.id && !user.isAdmin()) {
       return res.status(401).send({
         status: "ERR",
         message: "Not authorized"
