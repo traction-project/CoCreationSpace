@@ -90,13 +90,19 @@ router.post("/upload/raw", tokenRequired, permissionRequired("upload_raw"), (req
  * the request body, otherwise the encoding will fail. If this `hasAudio`
  * parameter is missing, it is assumed to be `true`.
  *
+ * The function also optionally accepts an array of video resolutions that
+ * should be generated for the output in the request body under the key
+ * `resolutions`. Possible values for items in the array are `720p`, `480p`,
+ * `360p`, `240p` and `180p`. All other values are ignored. Defaults to
+ * `["720p", "480p", "360p"]`.
+ *
  * The function then attempts to start a new transcoding job for the given
  * input and if successful returns a JSON object containing the key `jobId`,
  * with which the status of the transcoding job can be checked. If the
  * transcoding job could not be started an error 500 is returned.
  */
 router.post("/upload/encode", tokenRequired, permissionRequired("upload_raw"), async (req, res) => {
-  const { input, hasAudio } = req.body;
+  const { input, hasAudio, resolutions } = req.body;
 
   if (!input) {
     return res.status(400).send({
@@ -106,7 +112,7 @@ router.post("/upload/encode", tokenRequired, permissionRequired("upload_raw"), a
   }
 
   try {
-    const jobId = await encodeDash(ETS_PIPELINE, input, hasAudio);
+    const jobId = await encodeDash(ETS_PIPELINE, input, hasAudio, resolutions);
 
     res.send({
       status: "OK",
