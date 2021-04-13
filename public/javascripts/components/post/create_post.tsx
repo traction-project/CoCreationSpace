@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import { useTranslation } from "react-i18next";
+import { useTranslation, Trans } from "react-i18next";
 import { useForm } from "react-hook-form";
 
 import { getFilesFromList, postFile, ResponseUploadType } from "../../util";
@@ -235,6 +235,21 @@ const CreatePost: React.FC<CreatePostProps> = ({ file }) => {
                   </span>
                 </label>
               </div>
+            </div>
+          </div>
+        )}
+
+        {(fileUploads.length > 0 && !fileUploads.some((upload) => upload.status == "progressing")) && (
+          <div className="columns is-centered">
+            <div className="column is-10">
+              <article className="message is-info">
+                <div className="message-body">
+                  <Trans i18nKey="processing-message">
+                    All files have finished uploading. You can add more files or simply hit <strong>Submit</strong> after you have completed the form below.
+                    Any videos that are still processing will be processed in the background.
+                  </Trans>
+                </div>
+              </article>
             </div>
           </div>
         )}
