@@ -295,13 +295,13 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
         </div>
 
         {(post?.dataContainer?.multimedia && post.dataContainer.multimedia.length > 1) && (
-          <div style={{ display: "flex", backgroundColor: "#F5F5F5", width: "100%", overflowX: "scroll" }}>
+          <div style={{ display: "flex", backgroundColor: "#F5F5F5", overflowX: "scroll" }}>
             {post.dataContainer.multimedia.map((multimedia, index) => {
               return (
                 <div
                   key={index}
                   className="is-clickable"
-                  style={{ width: "max-content", flexShrink: 0 }}
+                  style={{ flexShrink: 0 }}
                   onClick={setSelectedItem.bind(null, multimedia)}
                 >
                   <Thumbnail
