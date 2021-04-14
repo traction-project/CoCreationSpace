@@ -223,11 +223,11 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
                       </a>
                     )}
 
-                    {post.dataContainer?.text_content?.split("\n").map((line) => {
+                    {post.dataContainer?.text_content?.split("\n").map((line, i) => {
                       return (
-                        <>
+                        <React.Fragment key={i}>
                           {line}<br/>
-                        </>
+                        </React.Fragment>
                       );
                     })}
                   </p>
