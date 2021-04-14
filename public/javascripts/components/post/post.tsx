@@ -223,7 +223,13 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
                       </a>
                     )}
 
-                    {post.dataContainer?.text_content}
+                    {post.dataContainer?.text_content?.split("\n").map((line) => {
+                      return (
+                        <>
+                          {line}<br/>
+                        </>
+                      );
+                    })}
                   </p>
                 </div>
               </div>
