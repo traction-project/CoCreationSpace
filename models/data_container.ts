@@ -50,7 +50,7 @@ export function DataContainerModelFactory(sequelize: Sequelize.Sequelize): Seque
       autoIncrement: false
     },
     text_content: {
-      type: Sequelize.DataTypes.STRING
+      type: Sequelize.DataTypes.TEXT
     }
   };
 
