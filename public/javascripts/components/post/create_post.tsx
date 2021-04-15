@@ -4,7 +4,7 @@ import { useHistory } from "react-router-dom";
 import { useTranslation, Trans } from "react-i18next";
 import { useForm } from "react-hook-form";
 
-import { getFilesFromList, postFile, ResponseUploadType } from "../../util";
+import { getFilesFromList, parseTags, postFile, ResponseUploadType } from "../../util";
 import Dropzone from "../dropzone";
 import MediaPlayer from "../media_player";
 import ProgressBox from "../progress_box";
@@ -154,13 +154,7 @@ const CreatePost: React.FC<CreatePostProps> = ({ file }) => {
     }
 
     // Split tags using comma
-    const tagsToAdd = value.split(",").reduce<Array<string>>((acc, t) => {
-      // Split each tag using space
-      return acc.concat(t.split(" "));
-    }, []).map((t) => {
-      // Trim tags, lowercase them and remove hash character
-      return t.trim().toLowerCase().replace("#", "");
-    }).filter((t) => {
+    const tagsToAdd = parseTags(value).filter((t) => {
       // Only add tags which aren't in the list already
       return tags.indexOf(t) == -1;
     });

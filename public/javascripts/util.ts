@@ -365,3 +365,22 @@ export function fromEntries<T>(map: Map<string, T>): { [key: string]: T } {
 
   return obj;
 }
+
+/**
+ * Parses a string which may contain a single or multiple tags. The function
+ * splits the string using comma as well as space, trims the resulting strings,
+ * lowercases them and removes the hash character if present.
+ *
+ * @param tag Tag or list of tags as a single string
+ * @return A list of parsed single tags
+ */
+export function parseTags(tag: string): Array<string> {
+  // Split tags using comma
+  return tag.split(",").reduce<Array<string>>((acc, t) => {
+    // Split each tag using space
+    return acc.concat(t.split(" "));
+  }, []).map((t) => {
+    // Trim tags, lowercase them and remove hash character
+    return t.trim().toLowerCase().replace("#", "");
+  });
+}
