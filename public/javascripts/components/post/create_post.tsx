@@ -153,9 +153,15 @@ const CreatePost: React.FC<CreatePostProps> = ({ file }) => {
       return;
     }
 
-    const tagsToAdd = value.split(",").map((t) => {
-      return t.trim();
+    // Split tags using comma
+    const tagsToAdd = value.split(",").reduce<Array<string>>((acc, t) => {
+      // Split each tag using space
+      return acc.concat(t.split(" "));
+    }, []).map((t) => {
+      // Trim tags, lowercase them and remove hash character
+      return t.trim().toLowerCase().replace("#", "");
     }).filter((t) => {
+      // Only add tags which aren't in the list already
       return tags.indexOf(t) == -1;
     });
 
