@@ -6,6 +6,7 @@ import { useParams, useHistory } from "react-router-dom";
 
 import { MultimediaItem, PostType } from "./post";
 import { getPostId } from "../../services/post.service";
+import { parseTags } from "../../util";
 import Thumbnail from "../thumbnail";
 import FileUpload from "./new_comment_file_upload";
 
@@ -78,9 +79,7 @@ const EditPost: React.FC<EditPostProps> = () => {
       return;
     }
 
-    const tagsToAdd = value.split(",").map((t) => {
-      return t.trim();
-    }).filter((t) => {
+    const tagsToAdd = parseTags(value).filter((t) => {
       return tags.indexOf(t) == -1;
     });
 
