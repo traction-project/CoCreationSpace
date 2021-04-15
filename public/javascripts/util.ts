@@ -382,5 +382,7 @@ export function parseTags(tag: string): Array<string> {
   }, []).map((t) => {
     // Trim tags, lowercase them and remove hash character
     return t.trim().toLowerCase().replace("#", "");
+  }).filter((t) => {
+    return t.length > 0;
   });
 }
