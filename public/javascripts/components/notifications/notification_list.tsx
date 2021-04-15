@@ -45,10 +45,10 @@ const NotificationList: React.FC<NotificationListProps> = (props) => {
     };
   };
 
-  const deleteNotificationAndGoToPost = (notificationId: string, postId: string) => {
+  const markAsSeenAndGoToPost = (notificationId: string, postId: string) => {
     return async () => {
-      const res = await fetch(`/notifications/${notificationId}`, {
-        method: "DELETE"
+      const res = await fetch(`/notifications/${notificationId}/seen`, {
+        method: "POST"
       });
 
       if (res.ok) {
@@ -71,7 +71,7 @@ const NotificationList: React.FC<NotificationListProps> = (props) => {
               const { creator, post } = data;
 
               return (
-                <article key={i} className={classNames("media", "is-clickable", "p-4", { "is-highlighted": !seen })} onClick={deleteNotificationAndGoToPost(id, post.id)}>
+                <article key={i} className={classNames("media", "is-clickable", "p-4", { "is-highlighted": !seen })} onClick={markAsSeenAndGoToPost(id, post.id)}>
                   <figure className="media-left">
                     <p className="image is-64x64">
                       <img src={creator.image} />
