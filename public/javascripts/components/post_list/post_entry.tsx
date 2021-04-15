@@ -34,10 +34,6 @@ const PostEntry: React.FC<PostEntryProps> = (props) => {
           </small>
 
           <p className="mt-2">
-            {post.dataContainer?.text_content}
-          </p>
-
-          <p className="mt-2">
             <i className="far fa-comment" />&nbsp;
             {post.comments?.length || 0}&nbsp;
             {t("Comment", { count: post.comments?.length || 0 })}
