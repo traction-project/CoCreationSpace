@@ -63,7 +63,7 @@ export function NotificationsModelFactory(sequelize: Sequelize.Sequelize): Seque
   };
 
   // Create the model
-  const Notifications = sequelize.define<NotificationInstance, NotificationCreationAttributes>("notifications", attributes, { underscored: true, tableName: "notifications" });
+  const Notifications = sequelize.define<NotificationInstance, NotificationCreationAttributes>("notifications", attributes, { underscored: true, tableName: "notifications", paranoid: true });
 
   Notifications.beforeCreate(notification => { notification.id = uuidv4(); });
 
