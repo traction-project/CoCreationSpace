@@ -140,4 +140,27 @@ describe("Notifications model", () => {
     const savedUser = savedNotification!.user! as UsersAttributes;
     expect(savedUser.username).toEqual("admin");
   });
+
+  it("should soft-delete a notification", async () => {
+    const { Notifications } = db.getModels();
+
+    const notification = await Notifications.build({
+      data: { text: "Hello World" }
+    }).save();
+
+    expect(notification).toBeDefined();
+    expect(notification.seen).toBeFalsy();
+    expect(notification.isSoftDeleted()).toBeFalsy();
+    expect(await Notifications.count()).toEqual(1);
+
+    await notification.destroy();
+
+    expect(notification.isSoftDeleted()).toBeTruthy();
+    expect(await Notifications.count()).toEqual(0);
+
+    await notification.restore();
+
+    expect(notification.isSoftDeleted()).toBeFalsy();
+    expect(await Notifications.count()).toEqual(1);
+  });
 });
