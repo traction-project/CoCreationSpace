@@ -68,7 +68,9 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
       }]);
     }, []);
 
-    return interests;
+    return interests.sort(({ title: titleA }, { title: titleB }) => {
+      return (titleA < titleB) ? -1 : (titleA > titleB) ? 1 : 0;
+    });
   };
 
   const getTagsFromPosts = (posts: Array<PostType>) => {
@@ -86,7 +88,9 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
       }
     });
 
-    return tagsList;
+    return tagsList.sort(({ tag_name: tagA }, { tag_name: tagB }) => {
+      return (tagA < tagB) ? -1 : (tagA > tagB) ? 1 : 0;
+    });
   };
 
   const getGroupsFromPosts = (posts: Array<PostType>) => {
@@ -96,7 +100,9 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
       return (acc.find((g) => g.id == id)) ? acc : acc.concat({ id, name });
     }, []);
 
-    return groups;
+    return groups.sort(({ name: nameA }, { name: nameB }) => {
+      return (nameA < nameB) ? -1 : (nameA > nameB) ? 1 : 0;
+    });
   };
 
   const handleClickButtonNewPost = () => {
