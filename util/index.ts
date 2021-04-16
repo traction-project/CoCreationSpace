@@ -125,7 +125,7 @@ const castType = (value: string, type: string) => {
     return parseInt(value);
   case findTerm(type, "CHARACTER"):
     return `%${value}%`;
-  case findTerm(type, "TIMETAMP"):
+  case findTerm(type, "TIMESTAMP"):
     return "";
   default:
     return "";
@@ -146,6 +146,7 @@ export const buildCriteria = async ({ q }: { q?: string }, model: ModelCtor<Mode
 
     Object.keys(modelSchema).forEach((key) => {
       const castValue = castType(q, modelSchema[key].type);
+
       if (castValue) {
         const operator = { [Op.iLike]: castValue};
         where.where[key] = operator;

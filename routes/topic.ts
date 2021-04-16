@@ -49,7 +49,7 @@ router.get("/:id", async (req, res) => {
   const topic = await Topics.findByPk(id, {
     include: [{
       model: Threads,
-      as: "thread"
+      as: "threads"
     }]
   });
 
