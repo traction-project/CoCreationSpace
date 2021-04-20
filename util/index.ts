@@ -67,7 +67,7 @@ export function getExtension(filename: string): string {
     return "";
   }
 
-  return "." + parts.slice(1).join(".");
+  return "." + parts[parts.length - 1];
 }
 
 /**
