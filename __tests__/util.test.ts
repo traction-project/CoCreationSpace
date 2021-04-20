@@ -124,6 +124,11 @@ describe("Utility function getExtension()", () => {
   it("should return an empty string is the file has no extension", () => {
     expect(util.getExtension("some_strange_filename")).toEqual("");
   });
+
+  it("should be able to handle dots in a filename correctly", () => {
+    const input = "3b2187ba-d219-477e-9033-0a9b6a3b79fe.. household sounds.m4a";
+    expect(util.getExtension(input)).toEqual(".m4a");
+  });
 });
 
 describe("Utility function translateText()", () => {

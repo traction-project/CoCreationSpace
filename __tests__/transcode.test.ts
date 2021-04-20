@@ -211,4 +211,13 @@ describe("Utility function processInputPath()", () => {
       expect(e.message).toEqual("Input basename is empty");
     }
   });
+
+  it("should handle dots and spaces in a filename properly", () => {
+    const input = "3b2187ba-d219-477e-9033-0a9b6a3b79fe.. household sounds.m4a";
+    const [ prefix, basename, extension ] = transcode.processInputPath(input);
+
+    expect(prefix).toEqual("");
+    expect(basename).toEqual("3b2187ba-d219-477e-9033-0a9b6a3b79fe.. household sounds");
+    expect(extension).toEqual("m4a");
+  });
 });
