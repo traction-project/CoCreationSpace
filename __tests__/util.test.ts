@@ -117,8 +117,8 @@ describe("Utility function getExtension()", () => {
     expect(util.getExtension("video.mp4")).toEqual(".mp4");
   });
 
-  it("should return the all extensions if the filename has multiple extensions", () => {
-    expect(util.getExtension("archive.tar.gz")).toEqual(".tar.gz");
+  it("should return the only the last extension if the filename has multiple extensions", () => {
+    expect(util.getExtension("archive.tar.gz")).toEqual(".gz");
   });
 
   it("should return an empty string is the file has no extension", () => {
