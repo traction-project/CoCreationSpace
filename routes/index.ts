@@ -166,6 +166,7 @@ router.post("/resetpassword", async (req, res) => {
   }
 
   user.resettoken = null;
+  user.resetAt = new Date();
   user.setPassword(password);
   await user.save();
 
