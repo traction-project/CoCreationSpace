@@ -21,7 +21,11 @@ const RegistrationForm: React.FC<RegistrationFormProps> = (props) => {
       const res = await fetch("/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password, email, preferredLanguage, participantCode })
+        body: JSON.stringify({
+          username, password, preferredLanguage,
+          participantCode: participantCode || undefined,
+          email: email || undefined
+        })
       });
 
       if (res.ok) {
