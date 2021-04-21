@@ -37,6 +37,7 @@ export interface UsersAttributes extends CommonAttributes {
   postReferenced?: PostAttributes | PostAttributes["id"];
   emojiReactions?: EmojiReactionsInstance | EmojiReactionsInstance["id"];
   resettoken?: string | null;
+  resetAt?: Date;
   participantCode?: string;
 }
 
@@ -234,6 +235,9 @@ export function UsersModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mod
     },
     resettoken: {
       type: Sequelize.DataTypes.STRING
+    },
+    resetAt: {
+      type: Sequelize.DataTypes.DATE
     },
     participantCode: {
       type: Sequelize.DataTypes.STRING
