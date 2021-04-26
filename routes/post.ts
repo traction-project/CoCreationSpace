@@ -238,7 +238,7 @@ router.get("/:id", authRequired, async (req, res) => {
         include: [{
           model: Multimedia,
           as: "multimedia",
-          attributes: ["status", "id", "type", "title"],
+          attributes: ["status", "id", "type", "title", "file"],
           include: ["emojiReactions"]
         }]
       }, {
