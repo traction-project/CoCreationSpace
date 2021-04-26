@@ -26,6 +26,7 @@ export interface MultimediaItem {
   type: string;
   emojiReactions: Array<EmojiReaction>;
   title: string;
+  file: string;
   startTime?: number;
 }
 
@@ -261,6 +262,12 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
                 <Image id={selectedItem.id} />
               ) : (
                 <File id={selectedItem.id} />
+              )}
+
+              {(selectedItem.type != "file") && (
+                <p className="has-text-centered mt-2">
+                  {selectedItem.file}
+                </p>
               )}
             </div>
           </div>
