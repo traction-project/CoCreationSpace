@@ -56,4 +56,26 @@ describe("Subtitles tests", () => {
     expect(await subtitle.getMultimedia()).toBeDefined();
   });
 
+  it("should return false when calling isDefault if confidence is unset", async () => {
+    const { Subtitles } = db.getModels();
+
+    const subtitle = await Subtitles.create({
+      content: "subtitle",
+      language: "es"
+    });
+
+    expect(subtitle.isDefault()).toBeFalsy();
+  });
+
+  it("should return true when calling isDefault if confidence is set", async () => {
+    const { Subtitles } = db.getModels();
+
+    const subtitle = await Subtitles.create({
+      content: "subtitle",
+      language: "es",
+      confidence: 0.78
+    });
+
+    expect(subtitle.isDefault()).toBeTruthy();
+  });
 });
