@@ -19,6 +19,8 @@ type SubtitlesCreationAttributes = Optional<SubtitlesAttributes, "id" | "created
 export interface SubtitlesInstance extends Sequelize.Model<SubtitlesAttributes, SubtitlesCreationAttributes>, SubtitlesAttributes {
   getMultimedia: Sequelize.BelongsToGetAssociationMixin<MultimediaInstance>;
   setMultimedia: Sequelize.BelongsToSetAssociationMixin<MultimediaInstance, MultimediaInstance["id"]>;
+
+  isDefault: () => boolean;
 }
 
 /**
@@ -50,6 +52,10 @@ export function SubtitlesModelFactory(sequelize: Sequelize.Sequelize): Sequelize
 
   // Create the model
   const Subtitles = sequelize.define<SubtitlesInstance, SubtitlesCreationAttributes>("subtitles", attributes, { underscored: true, tableName: TABLE_NAME });
+
+  Subtitles.prototype.isDefault = function () {
+    return !!this.confidence;
+  };
 
   Subtitles.beforeCreate(subtitle => { subtitle.id = uuidv4(); });
 
