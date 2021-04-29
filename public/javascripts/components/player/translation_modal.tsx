@@ -22,8 +22,10 @@ const TranslationModal: React.FC<TranslationModalProps> = (props) => {
     fetch(`/media/${id}/subtitles`).then((res) => {
       return res.json();
     }).then((data) => {
-      console.log("Available subtitles:", data);
       setAvailableTranslations(data);
+
+      const defaultLanguage = data.find((entry: { default: boolean }) => entry.default);
+      defaultLanguage && setTargetLanguage(defaultLanguage.language);
     });
   }, [id]);
 
