@@ -95,7 +95,7 @@ export const convertHMS = (second: number) => {
 /**
  * Available languages for AWS Translate and their corresponding language codes
  */
-export const availableLanguages = {
+export const availableLanguages: { [key: string]: string } = {
   "af": "Afrikaans",
   "am": "አማርኛ",
   "ar": "العربية",
