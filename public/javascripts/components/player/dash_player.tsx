@@ -271,11 +271,13 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
 
         <TimeCode time={time} />
 
-        <TranslationButton
-          videoId={videoId}
-          onTranslationSuccess={handleTranslationSuccess}
-          onSubtitlesDisabled={handleDisableSubtitles}
-        />
+        {(subtitles.length > 0) && (
+          <TranslationButton
+            videoId={videoId}
+            onTranslationSuccess={handleTranslationSuccess}
+            onSubtitlesDisabled={handleDisableSubtitles}
+          />
+        )}
 
         {(type == "video") && (
           <ControlBarToggle
