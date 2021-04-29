@@ -396,6 +396,9 @@ router.get("/:id/status", async (req, res) => {
   }
 });
 
+/**
+ * Retrieve available subtitles for the media item identified by the given ID.
+ */
 router.get("/:id/subtitles", async (req, res) => {
   const { id } = req.params;
 
@@ -416,6 +419,9 @@ router.get("/:id/subtitles", async (req, res) => {
   }
 });
 
+/**
+ * Retrieve the subtitles identified by the given ID.
+ */
 router.get("/subtitles/:id", async (req, res) => {
   const { id } = req.params;
 
