@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import LanguageSelector from "../language_selector";
@@ -14,7 +14,18 @@ interface TranslationModalProps {
 const TranslationModal: React.FC<TranslationModalProps> = (props) => {
   const { id, onSuccess, onClose, onDisable } = props;
   const { t } = useTranslation();
+
   const [ targetLanguage, setTargetLanguage ] = useState<string>("en");
+  const [ availableTranslations, setAvailableTranslations ] = useState<Array<{ language: string, default: boolean }>>([]);
+
+  useEffect(() => {
+    fetch(`/media/${id}/subtitles`).then((res) => {
+      return res.json();
+    }).then((data) => {
+      console.log("Available subtitles:", data);
+      setAvailableTranslations(data);
+    });
+  }, [id]);
 
   const onDone = async () => {
     if (targetLanguage == "") {
@@ -49,6 +60,7 @@ const TranslationModal: React.FC<TranslationModalProps> = (props) => {
             <div className="control">
               <LanguageSelector
                 value={targetLanguage}
+                available={availableTranslations}
                 onChange={(e) => setTargetLanguage(e.target.value)}
               />
             </div>
