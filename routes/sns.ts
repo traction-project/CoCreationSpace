@@ -126,4 +126,38 @@ export async function insertMetadata(data: any) {
   }
 }
 
+/**
+ * Process an error message from ETS. This function processes and error
+ * notification from ETS, by updating the associated media entry, setting its
+ * status to 'error' and its type to 'file' to make it downloadable as an
+ * arbitrary file.
+ *
+ * @param data Transcoder data object
+ */
+async function processTranscoderError(data: any) {
+  const { jobId } = data;
+  const { AsyncJob } = db.getModels();
+
+  const job = await AsyncJob.findOne({ where : {
+    type: { [Op.like]: "transcode_%" },
+    jobId
+  }});
+
+  if (!job) {
+    return;
+  }
+
+  job.status = "error";
+  await job.save();
+
+  const media = await job.getMultimedium();
+
+  if (media) {
+    media.status = "error";
+    media.type = "file";
+
+    await media.save();
+  }
+}
+
 export default router;
