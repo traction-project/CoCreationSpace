@@ -35,17 +35,23 @@ router.post("/receive", (req, res) => {
     if (data.source == "aws.transcribe" && data.detail.TranscriptionJobStatus == "COMPLETED") {
       console.log("transcribe message received");
       insertVideoTranscript(data.detail.TranscriptionJobName);
-    } else if (data.pipelineId && data.state == "COMPLETED") {
-      console.log("transcoder message received:", data.state, );
-      // process transcoder notification
-      insertMetadata(data);
+    } else if (data.pipelineId) {
+      console.log("transcoder message received:", data.state);
+
+      if (data.state == "COMPLETED") {
+        // process transcoder success notification
+        insertMetadata(data);
+      } else if (data.state == "ERROR") {
+        // process transcoder error notification
+        processTranscoderError(data);
+      }
     }
   }
 
   res.send("");
 });
 
-export async function insertVideoTranscript(jobId: string) {
+async function insertVideoTranscript(jobId: string) {
   const { language, transcript, confidence } = await fetchTranscript(jobId);
   const { AsyncJob, Subtitles } = db.getModels();
 
@@ -78,7 +84,7 @@ export async function insertVideoTranscript(jobId: string) {
   }
 }
 
-export async function insertMetadata(data: any) {
+async function insertMetadata(data: any) {
   const { jobId, outputs } = data;
   const { AsyncJob } = db.getModels();
 
