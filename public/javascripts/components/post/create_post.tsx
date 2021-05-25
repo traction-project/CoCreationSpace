@@ -310,6 +310,14 @@ const CreatePost: React.FC<CreatePostProps> = ({ file }) => {
                         className="input"
                         type="text"
                         name="tagName"
+                        onKeyDown={(e) => {
+                          if (e.key == "Enter") {
+                            e.preventDefault();
+
+                            addTag(getValues("tagName"));
+                            setValue("tagName", "");
+                          }
+                        }}
                         placeholder={`${t("Add tag")}...`}
                         ref={register}
                       />
