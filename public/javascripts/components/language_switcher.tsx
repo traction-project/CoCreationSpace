@@ -8,7 +8,8 @@ const availableTranslations: { [key: string]: string } = {
   de: "Deutsch",
   es: "Español",
   ga: "Gaeilge",
-  pt: "Português"
+  pt: "Português",
+  ca: "Català"
 };
 
 function processDetectedLanguage() {
