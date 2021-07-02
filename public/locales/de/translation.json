@@ -85,5 +85,15 @@
     "request-reset-error": "<0>Fehler!</0> Konnte Anfrage zur Passwortrücksetzung nicht abschließen.",
     "Request password reset": "Passwortrücksetzung anfordern",
     "Request reset": "Passwortrücksetzung",
-    "Reset password": "Passwort zurücksetzen"
+    "Reset password": "Passwort zurücksetzen",
+    "Defaults": "Standard",
+    "Other": "Andere",
+    "notification-reply-title": "Antwort auf deinen Post",
+    "notification-reply-body": " hat auf deinen Post geantwortet",
+    "The selected media item has no transcript available and thus cannot be translated.": "Das ausgewählte Medienobjekt hat kein Transkript und kann deshalb nicht übersetzt werden.",
+    "Close": "Schließen",
+    "Filter by group": "Nach Gruppe filtern",
+    "processing-message": "Alle Dateien hochgeladen. Du kannst weitere hinzufügen oder auf <1>Abschicken</1> klicken nachdem du das Formular ausgefült hast. Videos die noch in Bearbeitung sind, werden im Hintergrund fertiggestellt.",
+    "Upload new file": "Neue Datei hochladen",
+    "Participant Code": "Teilnehmercode"
 }

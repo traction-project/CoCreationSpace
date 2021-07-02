@@ -86,5 +86,14 @@
     "Request password reset": "Request password reset",
     "Request reset": "Request reset",
     "Reset password": "Reset password",
-    "Upload new file": "Upload new file"
+    "Upload new file": "Upload new file",
+    "Defaults": "Defaults",
+    "Other": "Other",
+    "notification-reply-title": "Reply to your post",
+    "notification-reply-body": " replied to your post.",
+    "The selected media item has no transcript available and thus cannot be translated.": "The selected media item has no transcript available and thus cannot be translated.",
+    "Close": "Close",
+    "Filter by group": "Filter by group",
+    "processing-message": "All files have finished uploading. You can add more files or simply hit <1>Submit</1> after you have completed the form below. Any videos that are still processing will be processed in the background.",
+    "Participant Code": "Participant Code"
 }
