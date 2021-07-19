@@ -92,5 +92,15 @@
     "request-reset-error": "<0>Error!</0> Could not request password reset for the given e-mail address.",
     "Request password reset": "__STRING_NOT_TRANSLATED__",
     "Request reset": "__STRING_NOT_TRANSLATED__",
-    "Reset password": "__STRING_NOT_TRANSLATED__"
+    "Reset password": "__STRING_NOT_TRANSLATED__",
+    "Defaults": "__STRING_NOT_TRANSLATED__",
+    "Other": "__STRING_NOT_TRANSLATED__",
+    "notification-reply-title": "Reply to your post",
+    "notification-reply-body": " replied to your post.",
+    "The selected media item has no transcript available and thus cannot be translated.": "__STRING_NOT_TRANSLATED__",
+    "Close": "__STRING_NOT_TRANSLATED__",
+    "Filter by group": "__STRING_NOT_TRANSLATED__",
+    "processing-message": "All files have finished uploading. You can add more files or simply hit <1>Submit</1> after you have completed the form below. Any videos that are still processing will be processed in the background.",
+    "Upload new file": "__STRING_NOT_TRANSLATED__",
+    "Participant Code": "__STRING_NOT_TRANSLATED__"
 }
