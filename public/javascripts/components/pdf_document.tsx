@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Suspense, useState } from "react";
+import { Suspense, useState, useRef } from "react";
 
 const Document = React.lazy(() => import("./reexport/document"));
 const Page = React.lazy(() => import("./reexport/page"));
@@ -10,6 +10,7 @@ interface PdfDocumentProps {
 
 const PdfDocument: React.FC<PdfDocumentProps> = (props) => {
   const { url } = props;
+  const containerRef = useRef<HTMLDivElement>(null);
   const [ numPages, setNumPages ] = useState<number>();
   const [ pageNumber, setPageNumber ] = useState<number>();
 
@@ -35,12 +36,12 @@ const PdfDocument: React.FC<PdfDocumentProps> = (props) => {
   };
 
   return (
-    <div>
-      <Suspense fallback={<div>Loading...</div>}>
+    <div style={{ border: "1px solid #E2E2E2" }} ref={containerRef}>
+      <Suspense fallback={<p style={{ textAlign: "center" }}>Loading...</p>}>
         <Document file={url} onLoadSuccess={onDocumentLoaded}>
-          <Page pageNumber={pageNumber} />
+          <Page pageNumber={pageNumber} width={containerRef.current?.clientWidth} />
         </Document>
-        <p style={{ textAlign: "center" }}>
+        <p style={{ textAlign: "center", padding: "1rem", borderTop: "1px solid #E2E2E2" }}>
           <a onClick={onPrevPage}>Prev</a>&emsp;
           {pageNumber}/{numPages}&emsp;
           <a onClick={onNextPage}>Next</a>
