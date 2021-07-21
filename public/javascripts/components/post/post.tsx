@@ -85,7 +85,6 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
   const [likes, setLikes] = useState<number>(0);
   const [showNewComment, setShowNewComment] = useState<boolean>(false);
   const [comments, setComments] = useState<PostType[]>([]);
-  const [showComments, setShowComments] = useState(false);
   const [selectedItem, setSelectedItem ] = useState<MultimediaItem>();
 
   useEffect(() => {
@@ -101,7 +100,6 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
 
         if (!data.parent_post_id) {
           setShowNewComment(true);
-          setShowComments(true);
         }
 
         if (data.isLiked) {
@@ -132,10 +130,6 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
         setLikes(data.count);
       }
     }
-  };
-
-  const handleClickComments = () => {
-    setShowComments(!showComments);
   };
 
   const handleSubmitNewComment = async ({ comment, selectedGettimestamp, multimedia }: { comment: string, selectedGettimestamp: boolean, multimedia?: Array<string> }) => {
@@ -191,7 +185,7 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
       <div className="container">
         <div className="columns">
           <div className="column">
-            <article className="media">
+            <article className={classNames("media", { "is-comment": post.parent_post_id != undefined })}>
               <UserLogo user={post.user} />
 
               <div className="media-content">
@@ -331,15 +325,7 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
               </NewComment>
             )}
 
-            {(!!comments && comments.length > 0) && (
-              <a className="text-comments" onClick={handleClickComments}>
-                <i className="fas fa-sort-down"></i> {t("Show Comments")} ({comments?.length})
-              </a>
-            )}
-
-            {(showComments) && (
-              <CommentList posts={comments} callbackClickTime={handleClickTime} />
-            )}
+            <CommentList posts={comments} callbackClickTime={handleClickTime} />
           </div>
         </div>
       </div>
