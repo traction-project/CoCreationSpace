@@ -177,7 +177,6 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
                     ) : (
                       <PostThumbnailEntry key={index} post={post} />
                     )}
-                    <hr/>
                   </React.Fragment>
                 );
               })}

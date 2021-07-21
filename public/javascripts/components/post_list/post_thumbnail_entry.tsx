@@ -22,7 +22,7 @@ const PostThumbnailEntry: React.FC<PostThumbnailEntryProps> = (props) => {
   };
 
   return (
-    <article className="media is-clickable" onClick={navigateTo(`/post/${post.id}`)}>
+    <article className="media is-clickable post-entry" onClick={navigateTo(`/post/${post.id}`)}>
       <UserLogo user={post.user} hideName />
 
       <div className="media-content">

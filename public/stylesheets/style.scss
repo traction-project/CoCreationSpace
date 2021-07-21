@@ -826,6 +826,13 @@ a.header__item:hover {
   font-size: 1.1rem;
 }
 
+.post-entry {
+  padding: 1.5rem;
+  border-radius: 5px;
+  border: 1px solid #E2E2E2;
+  box-shadow: 2px 2px 5px #F2F2F2;
+}
+
 .loader, .loader:after {
   border-radius: 50%;
   width: 5em;
