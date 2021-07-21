@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 
-import PdfDocument from "./pdf_document";
+import PdfDocument from "./pdf/pdf_document";
 
 interface FileProps {
   id: string;
