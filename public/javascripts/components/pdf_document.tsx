@@ -42,9 +42,9 @@ const PdfDocument: React.FC<PdfDocumentProps> = (props) => {
           <Page pageNumber={pageNumber} width={containerRef.current?.clientWidth} />
         </Document>
         <p style={{ textAlign: "center", padding: "1rem", borderTop: "1px solid #E2E2E2" }}>
-          <a onClick={onPrevPage}>Prev</a>&emsp;
+          <a onClick={onPrevPage}><i className="fas fa-chevron-circle-left" /></a>&emsp;
           {pageNumber}/{numPages}&emsp;
-          <a onClick={onNextPage}>Next</a>
+          <a onClick={onNextPage}><i className="fas fa-chevron-circle-right" /></a>
         </p>
       </Suspense>
     </div>
