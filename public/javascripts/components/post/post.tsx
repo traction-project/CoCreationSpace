@@ -183,137 +183,139 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
   return (
     <section className={classNames("section", { "is-comment": post.parent_post_id != undefined })}>
       <div className="container">
-        <div className="columns">
-          <div className="column">
-            <article className={classNames("media", { "is-comment": post.parent_post_id != undefined })}>
-              <UserLogo user={post.user} />
+        <div className="post-entry">
+          <div className="columns">
+            <div className="column">
+              <article className={classNames("media")}>
+                <UserLogo user={post.user} />
 
-              <div className="media-content">
-                <div className="content">
-                  <p>
-                    {(post.title) && (
-                      <strong className="post-title">{post.title}</strong>
-                    )}
-
-                    <small className="list-item__date">
-                      {post.createdAt && new Date(post.createdAt).toLocaleDateString()}&emsp;
-                      {post.createdAt && new Date(post.createdAt).toLocaleTimeString()}&emsp;
-                      {(post.parent_post_id == null) && (
-                        <>in <i>{post.thread.topic.userGroup.name}</i>&emsp;</>
+                <div className="media-content">
+                  <div className="content">
+                    <p>
+                      {(post.title) && (
+                        <strong className="post-title">{post.title}</strong>
                       )}
-                      {(user && (user.id == post.user.id || user.admin)) && (
-                        <>
-                          <Link to={`/post/${post.id}/edit`}>{t("Edit")}</Link>
-                          &emsp;
-                          <a onClick={openPortal}>{t("Delete")}</a>
-                        </>
+
+                      <small className="list-item__date">
+                        {post.createdAt && new Date(post.createdAt).toLocaleDateString()}&emsp;
+                        {post.createdAt && new Date(post.createdAt).toLocaleTimeString()}&emsp;
+                        {(post.parent_post_id == null) && (
+                          <>in <i>{post.thread.topic.userGroup.name}</i>&emsp;</>
+                        )}
+                        {(user && (user.id == post.user.id || user.admin)) && (
+                          <>
+                            <Link to={`/post/${post.id}/edit`}>{t("Edit")}</Link>
+                            &emsp;
+                            <a onClick={openPortal}>{t("Delete")}</a>
+                          </>
+                        )}
+                      </small>
+                      <br />
+                      <br />
+
+                      {(post.second) && (
+                        <a style={{marginRight: "5px"}} onClick={() => callbackClickTime && callbackClickTime(post.second ? post.second : 0, post.multimedia_ref!)}>
+                          <strong>{convertHMS(post.second)}</strong>
+                        </a>
                       )}
-                    </small>
-                    <br />
-                    <br />
 
-                    {(post.second) && (
-                      <a style={{marginRight: "5px"}} onClick={() => callbackClickTime && callbackClickTime(post.second ? post.second : 0, post.multimedia_ref!)}>
-                        <strong>{convertHMS(post.second)}</strong>
-                      </a>
-                    )}
-
-                    {post.dataContainer?.text_content?.split("\n").map((line, i) => {
-                      return (
-                        <React.Fragment key={i}>
-                          {line}<br/>
-                        </React.Fragment>
-                      );
-                    })}
-                  </p>
+                      {post.dataContainer?.text_content?.split("\n").map((line, i) => {
+                        return (
+                          <React.Fragment key={i}>
+                            {line}<br/>
+                          </React.Fragment>
+                        );
+                      })}
+                    </p>
+                  </div>
                 </div>
-              </div>
-            </article>
-          </div>
-        </div>
-
-        {(selectedItem) && (
-          <div className="columns is-centered">
-            <div className="column is-8-desktop is-10-tablet">
-              {(selectedItem.type == "video") ? (
-                <MediaPlayerWithToolbar
-                  id={selectedItem.id}
-                  emojis={selectedItem.emojiReactions}
-                  comments={getCommentsForItem(comments, selectedItem)}
-                  onTimeUpdate={(time) => currentTime.current = time}
-                  startTime={selectedItem.startTime}
-                />
-              ) : (selectedItem.type == "audio") ? (
-                <MediaPlayerWithToolbar
-                  id={selectedItem.id}
-                  emojis={selectedItem.emojiReactions}
-                  comments={getCommentsForItem(comments, selectedItem)}
-                  onTimeUpdate={(time) => currentTime.current = time}
-                  startTime={selectedItem.startTime}
-                  type="audio"
-                />
-              ) : (selectedItem.type == "image") ? (
-                <Image id={selectedItem.id} />
-              ) : (
-                <File id={selectedItem.id} />
-              )}
-
-              {(selectedItem.type != "file") && (
-                <p className="has-text-centered mt-2">
-                  {selectedItem.file}
-                </p>
-              )}
+              </article>
             </div>
           </div>
-        )}
 
-        <div className="columns">
-          <div className="column">
-            <nav className="level is-mobile" style={{position: "relative"}}>
-              <div className="level-left">
-                <a className="level-item" onClick={handleClickReply}>
-                  <span className="icon is-small"><i className="fas fa-reply"></i></span>
-                </a>
+          {(selectedItem) && (
+            <div className="columns is-centered">
+              <div className="column is-8-desktop is-10-tablet">
+                {(selectedItem.type == "video") ? (
+                  <MediaPlayerWithToolbar
+                    id={selectedItem.id}
+                    emojis={selectedItem.emojiReactions}
+                    comments={getCommentsForItem(comments, selectedItem)}
+                    onTimeUpdate={(time) => currentTime.current = time}
+                    startTime={selectedItem.startTime}
+                  />
+                ) : (selectedItem.type == "audio") ? (
+                  <MediaPlayerWithToolbar
+                    id={selectedItem.id}
+                    emojis={selectedItem.emojiReactions}
+                    comments={getCommentsForItem(comments, selectedItem)}
+                    onTimeUpdate={(time) => currentTime.current = time}
+                    startTime={selectedItem.startTime}
+                    type="audio"
+                  />
+                ) : (selectedItem.type == "image") ? (
+                  <Image id={selectedItem.id} />
+                ) : (
+                  <File id={selectedItem.id} />
+                )}
 
-                <a className="level-item" onClick={handleClickLike}>
-                  <span key="unique" className="icon is-small">
-                    <i className={classNames("fa-heart", { "fas": isLike, "far": !isLike })} />
-                  </span>
-                </a>
-                <span className="level-item">
-                  {likes}
-                </span>
-                {(selectedItem) && (
-                  <a href={selectedItem.title} className="level-item" download>
-                    <span className="icon is-small">
-                      <i className="fas fa-download"/>
-                    </span>
-                  </a>
+                {(selectedItem.type != "file") && (
+                  <p className="has-text-centered mt-2">
+                    {selectedItem.file}
+                  </p>
                 )}
               </div>
-            </nav>
-          </div>
-        </div>
+            </div>
+          )}
 
-        {(post?.dataContainer?.multimedia && post.dataContainer.multimedia.length > 1) && (
-          <div style={{ display: "flex", backgroundColor: "#F5F5F5", overflowX: "scroll" }}>
-            {post.dataContainer.multimedia.map((multimedia, index) => {
-              return (
-                <div
-                  key={index}
-                  className="is-clickable"
-                  style={{ flexShrink: 0 }}
-                  onClick={setSelectedItem.bind(null, multimedia)}
-                >
-                  <Thumbnail
-                    id={multimedia.id}
-                    type={multimedia.type}
-                  />
+          <div className="columns">
+            <div className="column">
+              <nav className="level is-mobile" style={{position: "relative"}}>
+                <div className="level-left">
+                  <a className="level-item" onClick={handleClickReply}>
+                    <span className="icon is-small"><i className="fas fa-reply"></i></span>
+                  </a>
+
+                  <a className="level-item" onClick={handleClickLike}>
+                    <span key="unique" className="icon is-small">
+                      <i className={classNames("fa-heart", { "fas": isLike, "far": !isLike })} />
+                    </span>
+                  </a>
+                  <span className="level-item">
+                    {likes}
+                  </span>
+                  {(selectedItem) && (
+                    <a href={selectedItem.title} className="level-item" download>
+                      <span className="icon is-small">
+                        <i className="fas fa-download"/>
+                      </span>
+                    </a>
+                  )}
                 </div>
-              );
-            })}
+              </nav>
+            </div>
           </div>
-        )}
+
+          {(post?.dataContainer?.multimedia && post.dataContainer.multimedia.length > 1) && (
+            <div style={{ display: "flex", backgroundColor: "#F5F5F5", overflowX: "scroll" }}>
+              {post.dataContainer.multimedia.map((multimedia, index) => {
+                return (
+                  <div
+                    key={index}
+                    className="is-clickable"
+                    style={{ flexShrink: 0 }}
+                    onClick={setSelectedItem.bind(null, multimedia)}
+                  >
+                    <Thumbnail
+                      id={multimedia.id}
+                      type={multimedia.type}
+                    />
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
 
         <div className="columns">
           <div className="column">
