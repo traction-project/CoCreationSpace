@@ -45,7 +45,7 @@ const Header: React.FC<HeaderProps> = (props) => {
     <nav className="navbar is-fixed-top" role="navigation" aria-label="main navigation">
       <div className="navbar-brand">
         <a className="navbar-item" href="/">
-          <img src="/images/header-logo.png" alt="traction-logo" />
+          <img src="/images/header-logo_greyscale.png" alt="traction-logo" />
         </a>
 
         <a
