@@ -57,7 +57,7 @@ const Home: React.FC<HomeProps> = (props) => {
               ) : (
                 <div className="box">
                   <h4 className="title is-4 has-text-centered">
-                    {t("Welcome to the MediaVault!")}
+                    {t("Welcome to the CoCreation Space!")}
                   </h4>
 
                   <div className="columns is-centered is-mobile">
