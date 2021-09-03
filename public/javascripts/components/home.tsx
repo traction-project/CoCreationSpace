@@ -36,7 +36,7 @@ const Home: React.FC<HomeProps> = (props) => {
           <div className="columns is-centered is-mobile">
             <div className="column is-4-desktop is-6-tablet is-6-mobile">
               <figure className="image is-square no-border">
-                <img src="/images/traction-logo-white-big.png"  />
+                <img src="/images/ccs_logo_transparent.png"  />
               </figure>
             </div>
           </div>
