@@ -104,7 +104,7 @@ export async function translateText(input: string, targetLanguage: string, sourc
     });
   }));
 
-  return translatedChunks.join();
+  return translatedChunks.join(" ");
 }
 
 /**
@@ -116,16 +116,16 @@ export async function translateText(input: string, targetLanguage: string, sourc
  * @returns An array of chunks
  */
 export function splitIntoChunks(input: string, chunkLength = 4500): Array<string> {
-  const sentences = input.split(". ");
+  const sentences = input.split(".");
 
   const chunks: Array<string> = [""];
   let currentChunk = 0;
 
   for (let i=0; i<sentences.length; i++) {
     if ((chunks[currentChunk] + sentences[i]).length <= chunkLength) {
-      chunks[currentChunk] += sentences[i] + ". ";
+      chunks[currentChunk] += sentences[i] + ".";
     } else {
-      chunks[currentChunk + 1] = sentences[i] + ". ";
+      chunks[currentChunk + 1] = sentences[i] + ".";
       currentChunk += 1;
     }
   }
