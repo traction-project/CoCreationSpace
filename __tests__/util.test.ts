@@ -235,3 +235,37 @@ describe("Utility function streamToBuffer()", () => {
     }
   });
 });
+
+describe("Utility function splitIntoChunks()", () => {
+  it("should return the whole text if the text is shorter than the chunk length", () => {
+    const result = util.splitIntoChunks("Hello World");
+
+    expect(result.length).toEqual(1);
+    expect(result[0]).toEqual("Hello World");
+  });
+
+  it("should preserve the final fullstop", () => {
+    const result = util.splitIntoChunks("Hello World.");
+
+    expect(result.length).toEqual(1);
+    expect(result[0]).toEqual("Hello World.");
+  });
+
+  it("should return the whole text if the text is equal to the chunk length", () => {
+    const result = util.splitIntoChunks("Hello World", 11);
+
+    expect(result.length).toEqual(1);
+    expect(result[0]).toEqual("Hello World");
+  });
+
+  it("should split the text into multiple chunks separated by fullstops if it is longer than the chunks length", () => {
+    const result = util.splitIntoChunks("Hello World. What's going on?", 20);
+
+    expect(result.length).toEqual(2);
+
+    expect(result[0]).toEqual("Hello World.");
+    expect(result[1]).toEqual(" What's going on?");
+
+    expect(result.every((s) => s.length <= 20)).toBeTruthy();
+  });
+});
