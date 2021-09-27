@@ -347,7 +347,7 @@ export async function translateCues(cues: Array<Cue>, target: string): Promise<A
     throw new Error("Length of translated cues is different from input cues");
   }
 
-  // Return a new list of cues replacing the cue texts with corresponding tranlations
+  // Return a new list of cues replacing the cue texts with corresponding translations
   return cues.map((c, i) => {
     return {
       ...c,

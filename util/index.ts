@@ -81,24 +81,30 @@ export function getExtension(filename: string): string {
  * @param sourceLanguage Language of the input string, defaults to 'auto'
  * @returns A promise which resolves to the translated text or an error otherwise
  */
-export function translateText(input: string, targetLanguage: string, sourceLanguage = "auto"): Promise<string> {
-  const params: aws.Translate.TranslateTextRequest = {
-    SourceLanguageCode: sourceLanguage,
-    TargetLanguageCode: targetLanguage,
-    Text: input
-  };
+export async function translateText(input: string, targetLanguage: string, sourceLanguage = "auto"): Promise<string> {
+  const chunks = splitIntoChunks(input);
 
-  return new Promise((resolve, reject) => {
-    const translate = new aws.Translate();
+  const translatedChunks = await Promise.all<string>(chunks.map((chunk) => {
+    const params: aws.Translate.TranslateTextRequest = {
+      SourceLanguageCode: sourceLanguage,
+      TargetLanguageCode: targetLanguage,
+      Text: chunk
+    };
 
-    translate.translateText(params, (err, data) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(data.TranslatedText);
-      }
+    return new Promise((resolve, reject) => {
+      const translate = new aws.Translate();
+
+      translate.translateText(params, (err, data) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(data.TranslatedText);
+        }
+      });
     });
-  });
+  }));
+
+  return translatedChunks.join();
 }
 
 /**
