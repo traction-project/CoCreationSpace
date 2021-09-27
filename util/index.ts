@@ -121,6 +121,7 @@ export function splitIntoChunks(input: string, chunkLength = 4500): Array<string
   const chunks: Array<string> = [""];
   let currentChunk = 0;
 
+  // Iterate over sentences build array of chunks
   for (let i=0; i<sentences.length; i++) {
     if ((chunks[currentChunk] + sentences[i]).length <= chunkLength) {
       chunks[currentChunk] += sentences[i] + ".";
@@ -129,6 +130,10 @@ export function splitIntoChunks(input: string, chunkLength = 4500): Array<string
       currentChunk += 1;
     }
   }
+
+  // Slice off last fullstop
+  const lastChunk = chunks[chunks.length - 1];
+  chunks[chunks.length - 1] = lastChunk.slice(0, lastChunk.length - 1);
 
   return chunks;
 }
