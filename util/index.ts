@@ -102,6 +102,32 @@ export function translateText(input: string, targetLanguage: string, sourceLangu
 }
 
 /**
+ * Splits an input string into chunks of given maximum length taking sentence
+ * boundaries into account.
+ *
+ * @param input The input string
+ * @param term The maximum chunk length, defaults to 4500 characters
+ * @returns An array of chunks
+ */
+export function splitIntoChunks(input: string, chunkLength = 4500): Array<string> {
+  const sentences = input.split(". ");
+
+  const chunks: Array<string> = [""];
+  let currentChunk = 0;
+
+  for (let i=0; i<sentences.length; i++) {
+    if ((chunks[currentChunk] + sentences[i]).length <= chunkLength) {
+      chunks[currentChunk] += sentences[i] + ". ";
+    } else {
+      chunks[currentChunk + 1] = sentences[i] + ". ";
+      currentChunk += 1;
+    }
+  }
+
+  return chunks;
+}
+
+/**
  * Check if value include the term.
  * @param value string to check
  * @param term string to check if it is include in the other one
