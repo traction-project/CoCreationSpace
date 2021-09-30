@@ -269,3 +269,15 @@ describe("Utility function splitIntoChunks()", () => {
     expect(result.every((s) => s.length <= 20)).toBeTruthy();
   });
 });
+
+describe("Utility function isUser()", () => {
+  it("should return false if the object is empty", () => {
+    expect(util.isUser({})).toBeFalsy();
+  });
+
+  it("should return true if the object contains the property 'username'", () => {
+    expect(util.isUser({ username: "admin" })).toBeTruthy();
+    expect(util.isUser({ a: 1, b: true, username: "admin", otherKey: "something" })).toBeTruthy();
+    expect(util.isUser({ username: true })).toBeTruthy();
+  });
+});
