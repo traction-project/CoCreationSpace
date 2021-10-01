@@ -210,8 +210,8 @@ export const isUser = (object: any): object is UsersAttributes => {
  *
  * @param toCheck Object to check
  */
-export function getAllMethods(toCheck: any) {
-  let props: Array<any> = [];
+export function getAllMethods(toCheck: any): Array<string> {
+  let props: Array<string> = [];
   let obj = toCheck;
 
   do {

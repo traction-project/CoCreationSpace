@@ -329,3 +329,33 @@ describe("Utility function sendEmail()", () => {
     ).rejects.toEqual(error);
   });
 });
+
+
+describe("Utility function getAllMethods()", () => {
+  const prototypeMethods = [
+    "__defineGetter__",
+    "__defineSetter__",
+    "__lookupGetter__",
+    "__lookupSetter__",
+    "constructor",
+    "hasOwnProperty",
+    "isPrototypeOf",
+    "propertyIsEnumerable",
+    "toLocaleString",
+    "toString",
+    "valueOf"
+  ];
+
+  it("should only return prototype methods if an empty object is passed", () => {
+    expect(util.getAllMethods({})).toEqual(prototypeMethods);
+  });
+
+  it("should return prototype methods plus the passed function name if an object with a function is passed", () => {
+    const functions = util.getAllMethods({
+      hello: () => {}
+    });
+
+    expect(functions.length).toEqual(prototypeMethods.length + 1);
+    expect(functions.includes("hello")).toBeTruthy();
+  });
+});
