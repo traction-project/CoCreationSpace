@@ -1,5 +1,7 @@
 import sinon from "sinon";
 import aws from "aws-sdk";
+import nodemailer, { SentMessageInfo } from "nodemailer";
+import Mail from "nodemailer/lib/mailer";
 import { PassThrough } from "stream";
 
 process.env["SESSION_SECRET"] = "sessionsecret";
@@ -279,5 +281,51 @@ describe("Utility function isUser()", () => {
     expect(util.isUser({ username: "admin" })).toBeTruthy();
     expect(util.isUser({ a: 1, b: true, username: "admin", otherKey: "something" })).toBeTruthy();
     expect(util.isUser({ username: true })).toBeTruthy();
+  });
+});
+
+describe("Utility function sendEmail()", () => {
+  afterEach(() => {
+    sinon.restore();
+  });
+
+  it("should resolve the promise", () => {
+    sinon.stub(nodemailer, "createTransport").returns({
+      sendMail: (msg: Mail.Options, callback: (err: Error | null, info: SentMessageInfo) => void) => {
+        callback(null, "Message sent");
+      }
+    } as any);
+
+    const smtp: util.SMTPData = [
+      "smtp.example.com", 25,
+      "smtpuser", "smtppass"
+    ];
+
+    expect(util.sendEmail(
+      "a@example.com", "b@example.com",
+      "Hello World"!, "Hello World",
+      smtp)
+    ).resolves.toBeUndefined();
+  });
+
+  it("should reject with an error", () => {
+    const error = new Error("An error occurred");
+
+    sinon.stub(nodemailer, "createTransport").returns({
+      sendMail: (msg: Mail.Options, callback: (err: Error | null, info: SentMessageInfo) => void) => {
+        callback(error, null);
+      }
+    } as any);
+
+    const smtp: util.SMTPData = [
+      "smtp.example.com", 25,
+      "smtpuser", "smtppass"
+    ];
+
+    expect(util.sendEmail(
+      "a@example.com", "b@example.com",
+      "Hello World"!, "Hello World failure",
+      smtp)
+    ).rejects.toEqual(error);
   });
 });

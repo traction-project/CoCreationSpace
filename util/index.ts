@@ -244,7 +244,7 @@ export async function streamToBuffer(file: NodeJS.ReadableStream): Promise<Buffe
 /**
  * Labelled tuple representing credentials for a SMTP server.
  */
-type SMTPData = [
+export type SMTPData = [
   host: string,
   port: number,
   user: string,
