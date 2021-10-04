@@ -13,6 +13,7 @@ import RegistrationForm from "./registration_form";
 import ProfilePictureUploadForm from "./profile_picture_upload_form";
 import InterestSelectForm from "./interest_select_form";
 import JoinGroupForm from "./join_group_form";
+import ConsentForm from "./consent_form";
 
 interface SignupActionProps {
   loginActions: LoginActions;
@@ -28,7 +29,6 @@ const Signup: React.FC<SignupProps> = (props) => {
   const { login: { user } } = props;
   const { t } = useTranslation();
   const [ step, setStep ] = useState(1);
-  const [ consentNeeded, setConsentNeeded ] = useState(false);
 
   return (
     <section className="hero is-fullheight-with-navbar">
@@ -42,15 +42,23 @@ const Signup: React.FC<SignupProps> = (props) => {
                     <h4 className="title is-4">{t("Create Account")}</h4>
 
                     <RegistrationForm
-                      onComplete={(username, password, image, admin, consentNeeded, email) => {
+                      onComplete={(username, password, image, admin, email) => {
                         props.loginActions.setLoggedInUser(username, password, image, admin, email);
-
                         setStep(step + 1);
-                        setConsentNeeded(consentNeeded);
                       }}
                     />
                   </>
                 ) : (step == 2 && user) ? (
+                  <>
+                    <h4 className="title is-4">{t("Consent")}</h4>
+
+                    <ConsentForm
+                      onComplete={() => {
+                        setStep(step + 1);
+                      }}
+                    />
+                  </>
+                ) : (step == 3 && user) ? (
                   <>
                     <h4 className="title is-4">{t("Upload Profile Picture")}</h4>
 
@@ -66,7 +74,7 @@ const Signup: React.FC<SignupProps> = (props) => {
                       }}
                     />
                   </>
-                ) : (step == 3) ? (
+                ) : (step == 4) ? (
                   <>
                     <h4 className="title is-4">{t("Select a group to join")}</h4>
 
@@ -76,7 +84,7 @@ const Signup: React.FC<SignupProps> = (props) => {
                       }}
                     />
                   </>
-                ) : (step == 4) ? (
+                ) : (step == 5) ? (
                   <>
                     <h4 className="title is-4">{t("Select Interest Topics")}</h4>
 
