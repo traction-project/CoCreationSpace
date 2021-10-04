@@ -59,7 +59,7 @@ const ConsentForm: React.FC<ConsentFormProps> = (props) => {
 
       <hr/>
 
-      <img src={"/images/" + t("consent_english.png")} />
+      <img src={"/images/" + t("consent_form")} />
 
       <div className="field">
         <label htmlFor="" className="label">{t("I have read and understood the information given for this research, or have had the information read to me. I have had the opportunity to ask questions about the research. I consent to participate in the research sessions")}</label>
@@ -73,7 +73,7 @@ const ConsentForm: React.FC<ConsentFormProps> = (props) => {
 
       <hr/>
 
-      <img src={"/images/" + t("image_consent_english.png")} />
+      <img src={"/images/" + t("image_consent_form")} />
 
       <div className="field">
         <label htmlFor="" className="label">{t("I consent to photo, video, and sound recording")}</label>
