@@ -5,7 +5,8 @@ import { ModelCtor, Model, Op } from "sequelize";
 import { Application } from "express";
 import { createTransport } from "nodemailer";
 
-import { UsersAttributes } from "../models/users";
+import { db } from "../models";
+import { UserInstance, UsersAttributes } from "../models/users";
 
 /**
  * Returns a list containing all integers between the given start point and end
@@ -319,4 +320,23 @@ export async function loadTemplate(app: Application, templateName: string): Prom
       }
     });
   });
+}
+
+/**
+ * Finds a user instance either by username or email. If the username provides
+ * no match, the model is queried using the email field. It still no match is
+ * found, null is returned.
+ *
+ * @param name The username or email to search for
+ * @returns A user object matching either name or email, null otherwise
+ */
+export async function findUserByUsernameOrEmail(name: string): Promise<UserInstance | null> {
+  const { Users } = db.getModels();
+  const user = await Users.findOne({ where: { username: name } });
+
+  if (user) {
+    return user;
+  }
+
+  return await Users.findOne({ where: { email: name } });
 }
