@@ -1,7 +1,6 @@
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import { Strategy as JWTStrategy, ExtractJwt } from "passport-jwt";
-import { Op } from "sequelize";
 
 import { getFromEnvironment } from "../util";
 import { UserInstance } from "../models/users";
@@ -30,9 +29,7 @@ async function findUserByUsernameOrEmail(name: string): Promise<UserInstance | n
 
 export default async function setup() {
   passport.use(new LocalStrategy(async (username, password, done) => {
-    const { Users } = db.getModels();
-
-    Users.findOne( { where: { [Op.or]: { username, email: username } } }).then((user: UserInstance) => {
+    findUserByUsernameOrEmail(username).then((user: UserInstance) => {
       if (user && user.validatePassword(password)) {
         done(null, user);
       } else {

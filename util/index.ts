@@ -5,8 +5,7 @@ import { ModelCtor, Model, Op } from "sequelize";
 import { Application } from "express";
 import { createTransport } from "nodemailer";
 
-import { db } from "../models";
-import { UserInstance, UsersAttributes } from "../models/users";
+import { UsersAttributes } from "../models/users";
 
 /**
  * Returns a list containing all integers between the given start point and end
