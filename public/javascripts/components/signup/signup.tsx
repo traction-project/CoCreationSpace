@@ -28,6 +28,7 @@ const Signup: React.FC<SignupProps> = (props) => {
   const { login: { user } } = props;
   const { t } = useTranslation();
   const [ step, setStep ] = useState(1);
+  const [ consentNeeded, setConsentNeeded ] = useState(false);
 
   return (
     <section className="hero is-fullheight-with-navbar">
@@ -41,9 +42,11 @@ const Signup: React.FC<SignupProps> = (props) => {
                     <h4 className="title is-4">{t("Create Account")}</h4>
 
                     <RegistrationForm
-                      onComplete={(username, password, image, admin, email) => {
+                      onComplete={(username, password, image, admin, consentNeeded, email) => {
                         props.loginActions.setLoggedInUser(username, password, image, admin, email);
+
                         setStep(step + 1);
+                        setConsentNeeded(consentNeeded);
                       }}
                     />
                   </>
