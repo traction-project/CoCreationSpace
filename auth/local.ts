@@ -9,6 +9,25 @@ import { db } from "../models";
 
 const [ SESSION_SECRET ] = getFromEnvironment("SESSION_SECRET");
 
+/**
+ * Finds a user instance either by username or email. If the username provides
+ * no match, the model is queried using the email field. It still no match is
+ * found, null is returned.
+ *
+ * @param name The username or email to search for
+ * @returns A user object matching either name or email, null otherwise
+ */
+async function findUserByUsernameOrEmail(name: string): Promise<UserInstance | null> {
+  const { Users } = db.getModels();
+  const user = await Users.findOne({ where: { username: name } });
+
+  if (user) {
+    return user;
+  }
+
+  return await Users.findOne({ where: { email: name } });
+}
+
 export default async function setup() {
   passport.use(new LocalStrategy(async (username, password, done) => {
     const { Users } = db.getModels();
