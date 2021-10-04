@@ -1,6 +1,7 @@
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import { Strategy as JWTStrategy, ExtractJwt } from "passport-jwt";
+import { Op } from "sequelize";
 
 import { getFromEnvironment } from "../util";
 import { UserInstance } from "../models/users";
@@ -9,10 +10,10 @@ import { db } from "../models";
 const [ SESSION_SECRET ] = getFromEnvironment("SESSION_SECRET");
 
 export default async function setup() {
-  passport.use(new LocalStrategy((username, password, done) => {
+  passport.use(new LocalStrategy(async (username, password, done) => {
     const { Users } = db.getModels();
 
-    Users.findOne( { where: { username } }).then((user: UserInstance) => {
+    Users.findOne( { where: { [Op.or]: { username, email: username } } }).then((user: UserInstance) => {
       if (user && user.validatePassword(password)) {
         done(null, user);
       } else {

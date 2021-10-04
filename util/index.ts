@@ -205,8 +205,8 @@ export const isUser = (object: any): object is UsersAttributes => {
 };
 
 /**
- * Lists all methods that are callable on a given object.
- * Useful for debugging association methods.
+ * Lists all methods that are callable on a given object and all objects along
+ * it prototype chain. Useful for debugging association methods.
  *
  * @param toCheck Object to check
  */
