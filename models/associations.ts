@@ -38,6 +38,7 @@ class Associations {
     multimediaInteractionsAssociations(models);
     searchQueryAssociations(models);
     internalNavigationStepAssociations(models);
+    consentFormAssociations(models);
     asyncJobAssociations(models);
 
     this.associatons = {
@@ -235,6 +236,7 @@ function userAssociations(models: DbInterface): void {
   models.Users.hasMany(models.MultimediaInteraction);
   models.Users.hasMany(models.SearchQuery);
   models.Users.hasMany(models.InternalNavigationStep);
+  models.Users.hasMany(models.ConsentForm);
   models.Users.belongsToMany(models.UserGroup, { through: "user_group_users" });
 
   models.Users.belongsToMany(models.Permissions, {
@@ -309,11 +311,19 @@ function searchQueryAssociations(models: DbInterface) {
 }
 
 /**
- * Create associations for the search_queries table
+ * Create associations for the internal_navigation_steps table
  * @param models DBInterface
  */
 function internalNavigationStepAssociations(models: DbInterface) {
   models.InternalNavigationStep.belongsTo(models.Users);
+}
+
+/**
+ * Create associations for the consent_forms table
+ * @param models DBInterface
+ */
+function consentFormAssociations(models: DbInterface) {
+  models.ConsentForm.belongsTo(models.Users);
 }
 
 /**
