@@ -57,7 +57,7 @@ export function ConsentFormModelFactory(sequelize: Sequelize.Sequelize): Sequeli
   };
 
   // Create the model
-  const ConsentForm = sequelize.define<ConsentFormInstance, ConsentFormCreationAttributes>("internalNavigationStep", attributes, { underscored: true, tableName: TABLE_NAME });
+  const ConsentForm = sequelize.define<ConsentFormInstance, ConsentFormCreationAttributes>("consentForm", attributes, { underscored: true, tableName: TABLE_NAME });
   ConsentForm.beforeCreate(group => { group.id = uuidv4(); });
 
   return ConsentForm;
