@@ -3,6 +3,7 @@ import Busboy from "busboy";
 import { v4 as uuid4 } from "uuid";
 import sharp from "sharp";
 
+import { db } from "../models";
 import { getExtension, getFromEnvironment, streamToBuffer } from "../util";
 import { authRequired } from "../util/middleware";
 import { uploadToS3 } from "../util/s3";
@@ -124,6 +125,30 @@ router.put("/", authRequired, async (req, res) => {
     id, username, preferredLanguage,
     image: `${CLOUDFRONT_URL}/${image}`
   });
+});
+
+/**
+ * Submit consent/demographics form for given user
+ */
+router.post("/consent", authRequired, async (req, res) => {
+  const user = req.user as UserInstance;
+  const { ConsentForm } = db.getModels();
+
+  const data = req.body;
+
+  try {
+    const consentForm = await ConsentForm.create({ data });
+    await consentForm.setUser(user);
+
+    res.send({
+      status: "OK"
+    });
+  } catch {
+    res.status(400).send({
+      status: "ERR",
+      message: "Cannot save consent form"
+    });
+  }
 });
 
 /**
