@@ -15,6 +15,7 @@ import { NotificationAttributes, NotificationInstance } from "./notifications";
 import { UserGroupInstance } from "./user_group";
 import { MultimediaInteractionInstance } from "./multimedia_interaction";
 import { InternalNavigationStepInstance } from "./internal_navigation_step";
+import { ConsentFormInstance } from "./consent_form";
 import { SearchQueryInstance } from "./search_query";
 import { db } from "./index";
 
@@ -173,6 +174,16 @@ export interface UserInstance extends Sequelize.Model<UsersAttributes, UsersCrea
   hasInternalNavigationStep: Sequelize.HasManyHasAssociationMixin<InternalNavigationStepInstance, InternalNavigationStepInstance["id"]>;
   hasInternalNavigationSteps: Sequelize.HasManyHasAssociationsMixin<InternalNavigationStepInstance, InternalNavigationStepInstance["id"]>;
   countInternalNavigationSteps: Sequelize.HasManyCountAssociationsMixin;
+
+  getConsentForms: Sequelize.HasManyGetAssociationsMixin<ConsentFormInstance>;
+  setConsentForms: Sequelize.HasManySetAssociationsMixin<ConsentFormInstance, InternalNavigationStepInstance["id"]>;
+  addConsentForms: Sequelize.HasManyAddAssociationsMixin<ConsentFormInstance, InternalNavigationStepInstance["id"]>;
+  addConsentForm: Sequelize.HasManyAddAssociationMixin<ConsentFormInstance, InternalNavigationStepInstance["id"]>;
+  removeConsentForm: Sequelize.HasManyRemoveAssociationMixin<ConsentFormInstance, InternalNavigationStepInstance["id"]>;
+  removeConsentForms: Sequelize.HasManyRemoveAssociationsMixin<ConsentFormInstance, InternalNavigationStepInstance["id"]>;
+  hasConsentForm: Sequelize.HasManyHasAssociationMixin<ConsentFormInstance, InternalNavigationStepInstance["id"]>;
+  hasConsentForms: Sequelize.HasManyHasAssociationsMixin<ConsentFormInstance, InternalNavigationStepInstance["id"]>;
+  countConsentForms: Sequelize.HasManyCountAssociationsMixin;
 
   getSearchQueries: Sequelize.HasManyGetAssociationsMixin<SearchQueryInstance>;
   setSearchQueries: Sequelize.HasManySetAssociationsMixin<SearchQueryInstance, SearchQueryInstance["id"]>;
