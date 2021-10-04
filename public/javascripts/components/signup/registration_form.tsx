@@ -6,7 +6,7 @@ import { useTranslation, Trans } from "react-i18next";
 import LanguageSwitcher from "../language_switcher";
 
 interface RegistrationFormProps {
-  onComplete?: (id: string, username: string, image: string, admin: boolean, email?: string) => void;
+  onComplete?: (id: string, username: string, image: string, admin: boolean, consentNeeded: boolean, email?: string) => void;
 }
 
 const RegistrationForm: React.FC<RegistrationFormProps> = (props) => {
@@ -37,7 +37,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = (props) => {
 
         if (res.ok) {
           const { user } = await res.json();
-          onComplete?.(user.id, user.username, user.image, user.admin, user.email);
+          onComplete?.(user.id, user.username, user.image, user.admin, participantCode == "LICEU", user.email);
         } else {
           const data = await res.json();
           setError(data.message);
@@ -91,18 +91,13 @@ const RegistrationForm: React.FC<RegistrationFormProps> = (props) => {
       </div>
 
       <div className="field">
-        <label htmlFor="" className="label">{t("Participant Code")}</label>
-        <div className="control has-icons-left">
-          <input
-            type="text"
-            placeholder={t("Participant Code")}
-            name="participantCode"
-            className="input"
-            ref={register}
-          />
-          <span className="icon is-small is-left">
-            <i className="fa fa-user" />
-          </span>
+        <label htmlFor="" className="label">{t("Trial")}</label>
+        <div className="select">
+          <select name="participantCode" ref={register}>
+            <option>LICEU</option>
+            <option>INO</option>
+            <option>SAMP</option>
+          </select>
         </div>
       </div>
 
