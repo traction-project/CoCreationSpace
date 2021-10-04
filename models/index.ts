@@ -26,6 +26,7 @@ import { UserGroupModelFactory } from "./user_group";
 import { MultimediaInteractionModelFactory } from "./multimedia_interaction";
 import { SearchQueryModelFactory } from "./search_query";
 import { InternalNavigationStepModelFactory } from "./internal_navigation_step";
+import { ConsentFormModelFactory } from "./consent_form";
 import { AsyncJobModelFactory } from "./async_job";
 
 /**
@@ -69,6 +70,7 @@ class DataBase {
     const SearchQuery = SearchQueryModelFactory(sequelize);
     const InternalNavigationStep = InternalNavigationStepModelFactory(sequelize);
     const AsyncJob = AsyncJobModelFactory(sequelize);
+    const ConsentForm = ConsentFormModelFactory(sequelize);
 
     this.models = {
       AudioContent,
@@ -94,7 +96,8 @@ class DataBase {
       MultimediaInteraction,
       SearchQuery,
       InternalNavigationStep,
-      AsyncJob
+      AsyncJob,
+      ConsentForm
     };
   }
 
