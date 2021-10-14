@@ -39,6 +39,15 @@ const PostEntry: React.FC<PostEntryProps> = (props) => {
             {t("Comment", { count: post.comments?.length || 0 })}
           </p>
         </div>
+
+        <div>
+          {post.tags?.map((t, i) => {
+            return (
+              <span key={i} className="tag is-light">{t.tag_name}</span>
+            );
+          })}
+        </div>
+
         {(post.dataContainer && post.dataContainer.multimedia && post.dataContainer.multimedia.length > 0) && (
           <div className="list-item__files">
             {post.dataContainer.multimedia.map((m, index) => {
