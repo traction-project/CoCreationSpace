@@ -455,6 +455,15 @@ a.header__item:hover {
   transform: translateY(-.2rem);
 }
 
+.non-clickable {
+  cursor: default;
+  transition: none;
+}
+
+.non-clickable:hover {
+  transform: none;
+}
+
 .image {
   overflow: hidden;
   border-radius: 5rem;
