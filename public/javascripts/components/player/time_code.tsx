@@ -12,11 +12,13 @@ const TimeCode: React.FC<TimeCodeProps> = (props) => {
   return (
     <span className="timecode">
       {convertHMS(time)}
-      {duration && (
+      {(duration && !Number.isNaN(duration)) ? (
         <>
           &nbsp;/&nbsp;
           {convertHMS(duration)}
         </>
+      ) : (
+        null
       )}
     </span>
   );
