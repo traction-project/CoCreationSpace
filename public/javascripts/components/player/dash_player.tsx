@@ -270,7 +270,10 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
           timelineComments={timelineComments}
         />
 
-        <TimeCode time={time} />
+        <TimeCode
+          time={time}
+          duration={videoNode.current?.duration}
+        />
 
         {(subtitles.length > 0) && (
           <TranslationButton
