@@ -20,6 +20,13 @@ const PostEntry: React.FC<PostEntryProps> = (props) => {
     };
   };
 
+  const filterByTag = (tagId: string) => {
+    return (e: React.MouseEvent<HTMLSpanElement>) => {
+      e.stopPropagation();
+      history.push({ search: `?tag=${tagId}` });
+    };
+  };
+
   return (
     <article className="media is-clickable post-entry" onClick={navigateTo(`/post/${post.id}`)}>
       <UserLogo user={post.user} hideName />
@@ -43,7 +50,9 @@ const PostEntry: React.FC<PostEntryProps> = (props) => {
         <div>
           {post.tags?.map((t, i) => {
             return (
-              <span key={i} className="tag is-light">{t.tag_name}</span>
+              <span key={i} className="tag is-light" onClick={filterByTag(t.id)}>
+                {t.tag_name}
+              </span>
             );
           })}
         </div>
