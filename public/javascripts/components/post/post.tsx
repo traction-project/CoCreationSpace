@@ -210,8 +210,16 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
                           </>
                         )}
                       </small>
-                      <br />
-                      <br />
+
+                      <div className="mt-2">
+                        {post.tags?.map((t, i) => {
+                          return (
+                            <span key={i} className="tag is-light non-clickable">
+                              {t.tag_name}
+                            </span>
+                          );
+                        })}
+                      </div>
 
                       {(post.second) && (
                         <a style={{marginRight: "5px"}} onClick={() => callbackClickTime && callbackClickTime(post.second ? post.second : 0, post.multimedia_ref!)}>
