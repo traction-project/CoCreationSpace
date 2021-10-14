@@ -3,7 +3,7 @@ import { convertHMS } from "../../util";
 
 interface TimeCodeProps {
   time: number;
-  duration: number;
+  duration?: number;
 }
 
 const TimeCode: React.FC<TimeCodeProps> = (props) => {
@@ -12,8 +12,12 @@ const TimeCode: React.FC<TimeCodeProps> = (props) => {
   return (
     <span className="timecode">
       {convertHMS(time)}
-      &nbsp;/&nbsp;
-      {convertHMS(duration)}
+      {duration && (
+        <>
+          &nbsp;/&nbsp;
+          {convertHMS(duration)}
+        </>
+      )}
     </span>
   );
 };
