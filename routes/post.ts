@@ -27,64 +27,6 @@ async function logSearchQuery(query: string | undefined, resultcount: number, us
 }
 
 /**
- * Get all posts
- */
-router.get("/all", authRequired, async (req, res) => {
-  const user = req.user as UserInstance;
-  const { Posts, DataContainer, Users, Multimedia, Threads } = db.getModels();
-
-  let queryDataContainer = {
-    model: DataContainer,
-    as: "dataContainer",
-    include: [{
-      model: Multimedia,
-      as: "multimedia",
-      attributes: ["status", "id", "type"],
-      include: ["emojiReactions"]
-    }]
-  };
-
-  const criteria = await buildCriteria(req.query, DataContainer);
-  queryDataContainer = Object.assign(queryDataContainer, criteria);
-
-  const posts = await Posts.findAll({
-    where: {
-      parent_post_id: null
-    },
-    order: [["created_at", "desc"]],
-    include: [{
-      model: Users,
-      as: "user",
-      attributes: ["id", "username", "image"]
-    }, queryDataContainer, "comments", "tags", {
-      model: Threads,
-      as: "thread",
-      include: ["topic"]
-    }]
-  });
-
-  await logSearchQuery(req.query["q"] as string, posts.length, user);
-
-  posts.forEach(post => {
-    if (post.user && isUser(post.user)) {
-      post.user.image = `${CLOUDFRONT_URL}/${post.user.image}`;
-    }
-  });
-
-  const postsJSON = await Promise.all(posts.map(async (post) => {
-    const likes = await post.countLikesUsers();
-    const postJSON = post.toJSON();
-
-    return {
-      likes,
-      ...postJSON
-    };
-  }));
-
-  res.send(postsJSON);
-});
-
-/**
  * Get all post from user
  */
 router.get("/all/user", authRequired, async (req, res) => {
