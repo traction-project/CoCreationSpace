@@ -94,6 +94,9 @@ router.get("/all/group", authRequired, async (req, res) => {
   const user = req.user as UserInstance;
   const { Posts, Users, UserGroup, DataContainer, Multimedia, Threads, Topics } = db.getModels();
 
+  const page = (typeof req.query.page == "string") ? parseInt(req.query.page) : 1;
+  const perPage = (typeof req.query.perPage == "string") ? parseInt(req.query.perPage) : 25;
+
   let queryDataContainer = {
     model: DataContainer,
     as: "dataContainer",
@@ -135,7 +138,9 @@ router.get("/all/group", authRequired, async (req, res) => {
     }],
     order: [
       ["created_at", "DESC"]
-    ]
+    ],
+    limit: perPage,
+    offset: (page - 1) * perPage
   });
 
   await logSearchQuery(req.query["q"] as string, posts.count, user);
