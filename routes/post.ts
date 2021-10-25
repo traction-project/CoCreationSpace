@@ -92,10 +92,19 @@ router.get("/all/user", authRequired, async (req, res) => {
  */
 router.get("/all/group", authRequired, async (req, res) => {
   const user = req.user as UserInstance;
-  const { Posts, Users, UserGroup, DataContainer, Multimedia, Threads, Topics } = db.getModels();
+  const { Posts, Users, UserGroup, DataContainer, Multimedia, Tags, Threads, Topics } = db.getModels();
 
+  // Get desired page number and results per page from query string if present
+  // Use defaults otherwise
   const page = (typeof req.query.page == "string") ? parseInt(req.query.page) : 1;
   const perPage = (typeof req.query.perPage == "string") ? parseInt(req.query.perPage) : 25;
+
+  // Get tag, group and interest id to filter by
+  const groupId = req.query.group;
+  const tagId = req.query.tag;
+  const interestId = req.query.interest;
+
+  console.log("group:", groupId, "tag:", tagId, "interest:", interestId);
 
   let queryDataContainer = {
     model: DataContainer,
@@ -121,7 +130,11 @@ router.get("/all/group", authRequired, async (req, res) => {
       model: Users,
       as: "user",
       attributes: ["id", "username", "image"]
-    }, queryDataContainer, "comments", "tags", {
+    }, queryDataContainer, "comments", {
+      model: Tags,
+      as: "tags",
+      where: (tagId && tagId !== "") ? { id: tagId } : undefined
+    }, {
       model: Threads,
       as: "thread",
       required: true,
@@ -129,10 +142,11 @@ router.get("/all/group", authRequired, async (req, res) => {
         model: Topics,
         as: "topic",
         required: true,
+        where: (interestId && interestId !== "") ? { id: interestId } : undefined,
         include: [{
           model: UserGroup,
           as: "userGroup",
-          where: { id: groups }
+          where: (groupId && groupId !== "") ? { id: groupId } : { id: groups }
         }]
       }]
     }],
