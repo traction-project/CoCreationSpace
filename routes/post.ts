@@ -47,7 +47,7 @@ router.get("/all/user", authRequired, async (req, res) => {
   const criteria = await buildCriteria(req.query, DataContainer);
   queryDataContainer = Object.assign(queryDataContainer, criteria);
 
-  const posts = await Posts.findAll({
+  const posts = await Posts.findAndCountAll({
     where: {
       parent_post_id: null
     } as any,
@@ -76,9 +76,9 @@ router.get("/all/user", authRequired, async (req, res) => {
     ]
   });
 
-  await logSearchQuery(req.query["q"] as string, posts.length, user);
+  await logSearchQuery(req.query["q"] as string, posts.count, user);
 
-  posts.forEach(post => {
+  posts.rows.forEach(post => {
     if (post.user && isUser(post.user)) {
       post.user.image = `${CLOUDFRONT_URL}/${post.user.image}`;
     }
@@ -110,7 +110,7 @@ router.get("/all/group", authRequired, async (req, res) => {
 
   const groups = (await user.getUserGroups()).map((group) => group.id);
 
-  const posts = await Posts.findAll({
+  const posts = await Posts.findAndCountAll({
     where: {
       parent_post_id: null
     } as any,
@@ -138,9 +138,9 @@ router.get("/all/group", authRequired, async (req, res) => {
     ]
   });
 
-  await logSearchQuery(req.query["q"] as string, posts.length, user);
+  await logSearchQuery(req.query["q"] as string, posts.count, user);
 
-  posts.forEach(post => {
+  posts.rows.forEach(post => {
     if (post.user && isUser(post.user)) {
       post.user.image = `${CLOUDFRONT_URL}/${post.user.image}`;
     }
