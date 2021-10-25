@@ -44,11 +44,11 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
   useEffect(() => {
     (async () => {
       const postsList = await getPosts();
-      setPosts(postsList);
+      setPosts(postsList.rows);
     })();
   }, [endpoint]);
 
-  const getPosts = async (criteria?: string): Promise<Array<PostType>> => {
+  const getPosts = async (criteria?: string): Promise<{ count: number, rows: Array<PostType> }> => {
     const url = criteria ? `${endpoint}?q=${criteria}` : endpoint;
 
     const res = await fetch(url);
@@ -118,8 +118,8 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
   };
 
   const handleChange = async (value: string) => {
-    const postsList: Array<PostType> = await getPosts(value);
-    setPosts(postsList);
+    const postsList = await getPosts(value);
+    setPosts(postsList.rows);
   };
 
   const groups = getGroupsFromPosts(posts);
