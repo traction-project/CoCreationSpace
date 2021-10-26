@@ -48,8 +48,12 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
     })();
   }, [endpoint]);
 
-  const getPosts = async (criteria?: string): Promise<{ count: number, rows: Array<PostType> }> => {
-    const url = criteria ? `${endpoint}?q=${criteria}` : endpoint;
+  const getPosts = async (filters: Map<string, string>, criteria?: string): Promise<{ count: number, rows: Array<PostType> }> => {
+    const queryString = Array.from(filters).concat([["q", criteria || ""]]).map(([k, v]) => {
+      return `${k}=${encodeURIComponent(v)}`;
+    }).join("&");
+
+    const url = queryString.length > 0 ? `${endpoint}?${queryString}` : endpoint;
 
     const res = await fetch(url);
     return res.json();
