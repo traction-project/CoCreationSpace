@@ -43,10 +43,10 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
 
   useEffect(() => {
     (async () => {
-      const postsList = await getPosts();
+      const postsList = await getPosts(filters);
       setPosts(postsList.rows);
     })();
-  }, [endpoint]);
+  }, [endpoint, location.search]);
 
   const getPosts = async (filters: Map<string, string>, criteria?: string): Promise<{ count: number, rows: Array<PostType> }> => {
     const queryString = Array.from(filters).concat([["q", criteria || ""]]).map(([k, v]) => {
@@ -122,7 +122,7 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
   };
 
   const handleChange = async (value: string) => {
-    const postsList = await getPosts(value);
+    const postsList = await getPosts(filters, value);
     setPosts(postsList.rows);
   };
 
