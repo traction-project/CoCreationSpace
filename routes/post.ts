@@ -124,6 +124,7 @@ router.get("/all/group", authRequired, async (req, res) => {
     where: {
       parent_post_id: null
     } as any,
+    distinct: true,
     include: [{
       model: Users,
       as: "user",
