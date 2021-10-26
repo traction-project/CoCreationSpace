@@ -41,46 +41,80 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
   const [ totalPostCount, setTotalPostCount ] = useState(0);
   const [ selectedTab, setSelectedTab ] = useState<"text" | "media">("text");
 
+  // Parse query string into map
   const filters = parseQueryString(location.search);
 
+  // Fetch posts every time a filter in the query string or the endpoin changes
   useEffect(() => {
     (async () => {
+      // Fetch posts with filters applied
       const postsList = await getPosts(filters);
 
+      // Set posts and total post count
       setPosts(postsList.rows);
       setTotalPostCount(postsList.count);
     })();
   }, [endpoint, location.search]);
 
+  /**
+   * Fetches a list of posts given a list of filters. Posts can be filtered by
+   * group, tags or interests as well as search queries. Moreover, the current
+   * result page is also passed as a filter.
+   *
+   * @param filters Filters that should be applied to the posts to be fetched
+   * @returns An object containing the total post count and a list of posts
+   */
   const getPosts = async (filters: Map<string, string>): Promise<{ count: number, rows: Array<PostType> }> => {
+    // Compose query string from filters
     const queryString = Array.from(filters).map(([k, v]) => {
       return `${k}=${encodeURIComponent(v)}`;
     }).join("&");
 
     const url = queryString.length > 0 ? `${endpoint}?${queryString}` : endpoint;
 
+    // Make request and return parsed results
     const res = await fetch(url);
     return res.json();
   };
 
+  /**
+   * Takes a list of posts and extracts a list of unique, alphabetically sorted
+   * interest topics associated to the given posts. The returned list contains
+   * the names and IDs of the extracted interest topics.
+   *
+   * @param posts List of posts to get interests from
+   * @returns A sorted list of interest topics alongside their IDs
+   */
   const getInterestsFromPosts = (posts: Array<PostType>) => {
     const interests = posts.reduce<Array<InterestData>>((acc, post) => {
+      // Extract interest topic ID and name from post
       const { thread: { topic: { id, title } }} = post;
 
+      // Check if given ID is already present
       if (acc.find((i) => i.id == id)) {
         return acc;
       }
 
+      // Add interest topic to output list if not present
       return acc.concat([{
         id, title
       }]);
     }, []);
 
+    // Sort interest topics by name
     return interests.sort(({ title: titleA }, { title: titleB }) => {
       return (titleA < titleB) ? -1 : (titleA > titleB) ? 1 : 0;
     });
   };
 
+  /**
+   * Takes a list of posts and extracts a list of unique, alphabetically sorted
+   * tags associated to the given posts. The returned list contains the names
+   * and IDs of the extracted tags.
+   *
+   * @param posts List of posts to get tags from
+   * @returns A sorted list of tags alongside their IDs
+   */
   const getTagsFromPosts = (posts: Array<PostType>) => {
     const tagsList: Array<TagData> = [];
 
@@ -101,6 +135,14 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
     });
   };
 
+  /**
+   * Takes a list of posts and extracts a list of unique, alphabetically sorted
+   * groups associated to the given posts. The returned list contains the names
+   * and IDs of the extracted groups.
+   *
+   * @param posts List of posts to get groups from
+   * @returns A sorted list of groups alongside their IDs
+   */
   const getGroupsFromPosts = (posts: Array<PostType>) => {
     const groups = posts.reduce<Array<GroupData>>((acc, post) => {
       const { thread: { topic: { userGroup: { id, name } }}} = post;
@@ -113,22 +155,43 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
     });
   };
 
+  /**
+   * Handle clicking of 'New Post' button by redirecting to the upload page.
+   */
   const handleClickButtonNewPost = () => {
     history.push("/upload");
   };
 
+  /**
+   * Updates the list of filters applied to the current page by appending them
+   * to the query string. This function expects a map of updated filters to be
+   * passed as an argument.
+   *
+   * @param filters Map of updated filters
+   */
   const updateFilter = (filters: { [key: string]: string }) => {
+    // Composed query string
     const queryString = Object.entries(filters).map(([k, v]) => {
       return `${k}=${v}`;
     }).join("&");
 
+    // Append updated query string to URL
     history.push({ search: `?${queryString}` });
   };
 
+  /**
+   * Handles search queries. This function takes a search string and applies it
+   * to the current list of filters, or removes the query from the list of
+   * if the query is empty.
+   *
+   * @param q Search query
+   */
   const onSearch = (q: string) => {
+    // Update filters if query is non-empty
     if (q.length > 0) {
       updateFilter({ ...fromEntries(filters), q: encodeURIComponent(q) });
     } else {
+      // Remove query from filters and reset current page to one if query is empty
       filters.delete("q");
       filters.set("page", "1");
 
@@ -136,6 +199,7 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
     }
   };
 
+  // Get groups, interests and tags from the current list of posts
   const groups = getGroupsFromPosts(posts);
   const interests = getInterestsFromPosts(posts);
   const tags = getTagsFromPosts(posts);
