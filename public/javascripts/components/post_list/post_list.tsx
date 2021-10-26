@@ -130,6 +130,8 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
       updateFilter({ ...fromEntries(filters), q: encodeURIComponent(q) });
     } else {
       filters.delete("q");
+      filters.set("page", "1");
+
       updateFilter(fromEntries(filters));
     }
   };
@@ -211,6 +213,8 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
                 {(filters.has("group")) && (
                   <a className="is-size-7" onClick={() => {
                     filters.delete("group");
+                    filters.set("page", "1");
+
                     updateFilter(fromEntries(filters));
                   }}>
                     {t("Clear filter")}
@@ -239,6 +243,8 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
             {(filters.has("interest")) && (
               <a className="is-size-7" onClick={() => {
                 filters.delete("interest");
+                filters.set("page", "1");
+
                 updateFilter(fromEntries(filters));
               }}>
                 {t("Clear filter")}
@@ -265,6 +271,8 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
             {(filters.has("tag")) && (
               <a className="is-size-7" onClick={() => {
                 filters.delete("tag");
+                filters.set("page", "1");
+
                 updateFilter(fromEntries(filters));
               }}>
                 {t("Clear filter")}
