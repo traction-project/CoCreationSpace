@@ -123,7 +123,7 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
 
   const onSearch = (q: string) => {
     if (q.length > 0) {
-      updateFilter({ ...fromEntries(filters), q });
+      updateFilter({ ...fromEntries(filters), q: encodeURIComponent(q) });
     } else {
       filters.delete("q");
       updateFilter(fromEntries(filters));

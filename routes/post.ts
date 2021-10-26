@@ -104,8 +104,6 @@ router.get("/all/group", authRequired, async (req, res) => {
   const tagId = req.query.tag;
   const interestId = req.query.interest;
 
-  console.log("group:", groupId, "tag:", tagId, "interest:", interestId);
-
   let queryDataContainer = {
     model: DataContainer,
     as: "dataContainer",
