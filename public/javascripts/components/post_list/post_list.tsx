@@ -9,6 +9,7 @@ import { PostType } from "../post/post";
 import Filter from "./filter";
 import PostThumbnailEntry from "./post_thumbnail_entry";
 import PostEntry from "./post_entry";
+import PageCounter from "./page_counter";
 
 interface PostListProps {
   endpoint: string;
@@ -174,6 +175,13 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
                 );
               })}
             </div>
+
+            <PageCounter
+              page={parseInt(filters.get("page") || "1")}
+              perPage={15}
+              totalItems={totalPostCount}
+              onPageUpdated={(n) => updateFilter({ ...fromEntries(filters), page: n.toString() })}
+            />
           </div>
 
           <div className="column is-2 is-offset-1">

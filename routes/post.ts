@@ -97,7 +97,7 @@ router.get("/all/group", authRequired, async (req, res) => {
   // Get desired page number and results per page from query string if present
   // Use defaults otherwise
   const page = (typeof req.query.page == "string") ? parseInt(req.query.page) : 1;
-  const perPage = (typeof req.query.perPage == "string") ? parseInt(req.query.perPage) : 25;
+  const perPage = (typeof req.query.perPage == "string") ? parseInt(req.query.perPage) : 15;
 
   // Get tag, group and interest id to filter by
   const groupId = req.query.group;
