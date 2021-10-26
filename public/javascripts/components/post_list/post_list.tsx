@@ -48,8 +48,8 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
     })();
   }, [endpoint, location.search]);
 
-  const getPosts = async (filters: Map<string, string>, criteria?: string): Promise<{ count: number, rows: Array<PostType> }> => {
-    const queryString = Array.from(filters).concat([["q", criteria || ""]]).map(([k, v]) => {
+  const getPosts = async (filters: Map<string, string>): Promise<{ count: number, rows: Array<PostType> }> => {
+    const queryString = Array.from(filters).map(([k, v]) => {
       return `${k}=${encodeURIComponent(v)}`;
     }).join("&");
 
@@ -121,9 +121,13 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
     history.push({ search: `?${queryString}` });
   };
 
-  const handleChange = async (value: string) => {
-    const postsList = await getPosts(filters, value);
-    setPosts(postsList.rows);
+  const onSearch = (q: string) => {
+    if (q.length > 0) {
+      updateFilter({ ...fromEntries(filters), q });
+    } else {
+      filters.delete("q");
+      updateFilter(fromEntries(filters));
+    }
   };
 
   const groups = getGroupsFromPosts(posts);
@@ -135,7 +139,7 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
       <div className="container">
         <div className="columns is-centered">
           <div className="column is-6-desktop is-8-tablet">
-            <Filter searchValueChange={handleChange} placeholder={`${t("Search")}...`}/>
+            <Filter value={filters.get("q")} searchValueChange={onSearch} placeholder={`${t("Search")}...`}/>
           </div>
         </div>
 
