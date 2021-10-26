@@ -37,6 +37,7 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
   const { t } = useTranslation();
 
   const [ posts, setPosts ] = useState<Array<PostType>>([]);
+  const [ totalPostCount, setTotalPostCount ] = useState(0);
   const [ selectedTab, setSelectedTab ] = useState<"text" | "media">("text");
 
   const filters = parseQueryString(location.search);
@@ -44,7 +45,9 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
   useEffect(() => {
     (async () => {
       const postsList = await getPosts(filters);
+
       setPosts(postsList.rows);
+      setTotalPostCount(postsList.count);
     })();
   }, [endpoint, location.search]);
 
