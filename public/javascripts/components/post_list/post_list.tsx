@@ -155,25 +155,7 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
             </div>
 
             <div>
-              {posts.filter((post) => {
-                return (filters.has("group")) ? (
-                  post.thread.topic.userGroup.id == filters.get("group")
-                ) : (
-                  true
-                );
-              }).filter((post) => {
-                return (filters.has("interest")) ? (
-                  post.thread.topic.id == filters.get("interest")
-                ) : (
-                  true
-                );
-              }).filter((post) => {
-                return (filters.has("tag")) ? (
-                  post.tags?.find((t) => t.id == filters.get("tag"))
-                ) : (
-                  true
-                );
-              }).map((post, index) => {
+              {posts.map((post, index) => {
                 return (
                   <React.Fragment key={index}>
                     {(selectedTab == "text") ? (
