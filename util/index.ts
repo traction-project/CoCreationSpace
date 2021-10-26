@@ -162,6 +162,8 @@ const castType = (value: string, type: string) => {
     return parseInt(value);
   case findTerm(type, "CHARACTER"):
     return `%${value}%`;
+  case findTerm(type, "TEXT"):
+    return `%${value}%`;
   case findTerm(type, "TIMESTAMP"):
     return "";
   default:
