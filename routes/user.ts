@@ -211,7 +211,7 @@ router.get("/profile/:id", authRequired, async (req, res) => {
     });
   }
 
-  const { id, username, image, email } = user;
+  const { id, username, image } = user;
   // Retrieve posts for user
   const posts = await user.getPost({ attributes: ["id", "title"] });
   // Check if user is an admin
@@ -220,7 +220,6 @@ router.get("/profile/:id", authRequired, async (req, res) => {
   return res.send({
     id, username,
     image: `${CLOUDFRONT_URL}/${image}`,
-    email,
     admin,
     posts
   });
