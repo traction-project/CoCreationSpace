@@ -94,16 +94,17 @@ export interface UserInstance extends Sequelize.Model<UsersAttributes, UsersCrea
   getPreferences: Sequelize.BelongsToGetAssociationMixin<PreferencesInstance>;
   setPreferences: Sequelize.BelongsToSetAssociationMixin<PreferencesInstance, PreferencesInstance["id"]>;
 
+  // FIXME Association names don't pluralise properly
   getPost: Sequelize.HasManyGetAssociationsMixin<PostInstance>;
-  setPost: Sequelize.HasManySetAssociationsMixin<PostInstance, PostInstance["id"]>;
-  addPosts: Sequelize.HasManyAddAssociationsMixin<PostInstance, PostInstance["id"]>;
-  addPost: Sequelize.HasManyAddAssociationMixin<PostInstance, PostInstance["id"]>;
-  createPost: Sequelize.HasManyCreateAssociationMixin<PostInstance>;
-  removePost: Sequelize.HasManyRemoveAssociationMixin<PostInstance, PostInstance["id"]>;
-  removePosts: Sequelize.HasManyRemoveAssociationsMixin<PostInstance, PostInstance["id"]>;
+  countPosts: Sequelize.HasManyCountAssociationsMixin;
   hasPost: Sequelize.HasManyHasAssociationMixin<PostInstance, PostInstance["id"]>;
   hasPosts: Sequelize.HasManyHasAssociationsMixin<PostInstance, PostInstance["id"]>;
-  countPosts: Sequelize.HasManyCountAssociationsMixin;
+  setPosts: Sequelize.HasManySetAssociationsMixin<PostInstance, PostInstance["id"]>;
+  addPost: Sequelize.HasManyAddAssociationMixin<PostInstance, PostInstance["id"]>;
+  addPosts: Sequelize.HasManyAddAssociationsMixin<PostInstance, PostInstance["id"]>;
+  removePost: Sequelize.HasManyRemoveAssociationMixin<PostInstance, PostInstance["id"]>;
+  removePosts: Sequelize.HasManyRemoveAssociationsMixin<PostInstance, PostInstance["id"]>;
+  createPost: Sequelize.HasManyCreateAssociationMixin<PostInstance>;
 
   getPostReferenced: Sequelize.BelongsToManyGetAssociationsMixin<PostInstance>;
   setPostReferenced: Sequelize.BelongsToManySetAssociationsMixin<PostInstance, PostInstance["id"]>;

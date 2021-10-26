@@ -203,6 +203,7 @@ router.get("/profile/:id", authRequired, async (req, res) => {
   const { Users } = db.getModels();
   const user = await Users.findByPk(req.params.id);
 
+  // Return 404 if no user with given ID is found
   if (!user) {
     return res.status(404).send({
       status: "ERR",
@@ -211,13 +212,17 @@ router.get("/profile/:id", authRequired, async (req, res) => {
   }
 
   const { id, username, image, email } = user;
+  // Retrieve posts for user
+  const posts = await user.getPost({ attributes: ["id", "title"] });
+  // Check if user is an admin
   const admin = await user.isAdmin();
 
   return res.send({
     id, username,
     image: `${CLOUDFRONT_URL}/${image}`,
     email,
-    admin
+    admin,
+    posts
   });
 });
 
