@@ -3,13 +3,14 @@ import debounce from "lodash.debounce";
 import { useTranslation } from "react-i18next";
 
 interface FilterProps {
+  value?: string;
   delay?: number;
   placeholder?: string;
   searchValueChange: (text: string) => void;
   onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
-const Filter: React.FC<FilterProps> = ({ searchValueChange, delay=500, placeholder="Search...", onKeyDown }) => {
+const Filter: React.FC<FilterProps> = ({ value, searchValueChange, delay=500, placeholder="Search...", onKeyDown }) => {
   const { t } = useTranslation();
 
   const handleChange = debounce((value: string) => {
@@ -22,6 +23,7 @@ const Filter: React.FC<FilterProps> = ({ searchValueChange, delay=500, placehold
         <input
           className="input"
           type="text"
+          defaultValue={value}
           placeholder={placeholder}
           onChange={(e) => handleChange(e.currentTarget.value)}
           onKeyDown={onKeyDown}
