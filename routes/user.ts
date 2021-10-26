@@ -51,7 +51,7 @@ router.post("/image", authRequired, (req, res) => {
 });
 
 /**
- * Get user information
+ * Get user information for current user
  */
 router.get("/profile", authRequired, async (req, res) => {
   const user = req.user as UserInstance;
@@ -194,6 +194,31 @@ router.delete("/interests", authRequired, async (req, res) => {
   return res.send(
     await user.getInterestedTopics()
   );
+});
+
+/**
+ * Get user information for given user ID
+ */
+router.get("/profile/:id", authRequired, async (req, res) => {
+  const { Users } = db.getModels();
+  const user = await Users.findByPk(req.params.id);
+
+  if (!user) {
+    return res.status(404).send({
+      status: "ERR",
+      message: "No such user"
+    });
+  }
+
+  const { id, username, image, email } = user;
+  const admin = await user.isAdmin();
+
+  return res.send({
+    id, username,
+    image: `${CLOUDFRONT_URL}/${image}`,
+    email,
+    admin
+  });
 });
 
 export default router;
