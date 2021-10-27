@@ -47,7 +47,7 @@ const PublicProfile: React.FC<PublicProfileProps> = (props) => {
         <hr/>
 
         <div className="columns is-vcentered">
-          <div className="column is-one-quarter">
+          <div className="column is-2">
             <div className="box-flex">
               <figure style={{ width: "min-content" }}>
                 <span className="image is-128x128">
@@ -57,7 +57,7 @@ const PublicProfile: React.FC<PublicProfileProps> = (props) => {
             </div>
           </div>
 
-          <div className="column is-half is-offset-1">
+          <div className="column is-7 is-offset-1">
             <nav style={{ display: "flex", backgroundColor: "#FAFAFA", padding: "1rem", marginBottom: "1rem", borderRadius: 4 }}>
               <div style={{ flexGrow: 1 }}>
                 <div>
