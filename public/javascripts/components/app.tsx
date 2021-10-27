@@ -22,6 +22,7 @@ import EditPost from "./post/edit_post";
 import HistoryTracker from "./history_tracker";
 import RequestReset from "./request_reset";
 import ResetPassword from "./reset_password";
+import PublicProfile from "./public_profile";
 
 async function checkLogin() {
   const loginStatus = await verifyLoginStatus();
@@ -77,6 +78,9 @@ const App: React.FC<AppProps> = () => {
               </PrivateRoute>
               <Route path="/post/:id">
                 <Post />
+              </Route>
+              <Route path="/profile/:id">
+                <PublicProfile />
               </Route>
               <PrivateRoute path="/profile">
                 <Profile />
