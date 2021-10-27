@@ -1,5 +1,6 @@
 import * as React from "react";
 import { useTranslation } from "react-i18next";
+import { useHistory } from "react-router-dom";
 
 import { CommonType } from "../util";
 
@@ -15,9 +16,21 @@ interface UserLogoProps {
 
 const UserLogo: React.FC<UserLogoProps> = ({ user, hideName = false }) => {
   const { t } = useTranslation();
+  const history = useHistory();
+
+  const navigateTo = (destination: string) => {
+    return (e: React.MouseEvent) => {
+      e.stopPropagation();
+      history.push(destination);
+    };
+  };
 
   return (
-    <figure className="media-left" style={{width: "min-content", paddingRight: "1rem"}}>
+    <figure
+      className="media-left"
+      style={{width: "min-content", paddingRight: "1rem", cursor: "pointer" }}
+      onClick={navigateTo(`/profile/${user.id}`)}
+    >
       <span className="image is-64x64">
         {(user.image) ? (
           <img src={user.image} alt="Logo"/>
