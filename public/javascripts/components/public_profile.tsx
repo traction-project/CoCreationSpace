@@ -8,8 +8,9 @@ import { UserType } from "./user_logo";
 import { PostType } from "./post/post";
 
 interface PublicUserType extends UserType {
-  posts: Array<PostType>,
-  groups: Array<{ id: string, name: string }>
+  posts: Array<PostType>;
+  groups: Array<{ id: string, name: string }>;
+  interests: Array<{ id: string, title: string }>;
 }
 
 interface PublicProfileProps {
@@ -84,9 +85,22 @@ const PublicProfile: React.FC<PublicProfileProps> = (props) => {
               return (
                 <span
                   key={id}
-                  className={classNames("tag", "is-large", "is-primary")}
+                  className={classNames("tag", "is-large", "is-primary", "non-clickable")}
                 >
                   {name}
+                </span>
+              );
+            })}
+
+            <h5 className="title is-5">{t("Interests")}</h5>
+
+            {user.interests.map(({ id, title }) => {
+              return (
+                <span
+                  key={id}
+                  className={classNames("tag", "is-large", "is-primary", "non-clickable")}
+                >
+                  {title}
                 </span>
               );
             })}
