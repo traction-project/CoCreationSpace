@@ -2,6 +2,7 @@ import * as React from "react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useHistory } from "react-router-dom";
 import classNames from "classnames";
 
 import { UserType } from "./user_logo";
@@ -19,6 +20,7 @@ interface PublicProfileProps {
 const PublicProfile: React.FC<PublicProfileProps> = (props) => {
   const { id } = useParams<{ id: string }>();
   const { t } = useTranslation();
+  const history = useHistory();
 
   const [ user, setUser ] = useState<PublicUserType>();
 
@@ -33,6 +35,12 @@ const PublicProfile: React.FC<PublicProfileProps> = (props) => {
   if (!user) {
     return null;
   }
+
+  const navigateTo = (destination: string) => {
+    return () => {
+      history.push(destination);
+    };
+  };
 
   const numPosts = user.posts.filter((p) => p.parent_post_id == null).length;
   const numComments = user.posts.filter((p) => p.parent_post_id != null).length;
