@@ -213,7 +213,7 @@ router.get("/profile/:id", authRequired, async (req, res) => {
 
   const { id, username, image } = user;
   // Retrieve posts for user
-  const posts = await user.getPost({ attributes: ["id", "title"] });
+  const posts = await user.getPost({ attributes: ["id", "title"], order: [["created_at", "DESC"]] });
   // Check if user is an admin
   const admin = await user.isAdmin();
 
