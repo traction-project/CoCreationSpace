@@ -8,7 +8,7 @@ import { UserType } from "./user_logo";
 import { PostType } from "./post/post";
 
 interface PublicUserType extends UserType {
-  posts: PostType,
+  posts: Array<PostType>,
   groups: Array<{ id: string, name: string }>
 }
 
@@ -33,6 +33,10 @@ const PublicProfile: React.FC<PublicProfileProps> = (props) => {
     return null;
   }
 
+  const numPosts = user.posts.filter((p) => p.parent_post_id == null).length;
+  const numComments = user.posts.filter((p) => p.parent_post_id != null).length;
+  const numMedia = user.posts.reduce((sum, p) => sum + (p.dataContainer?.multimedia?.length || 0), 0);
+
   return (
     <section className="section">
       <div className="container">
@@ -53,6 +57,27 @@ const PublicProfile: React.FC<PublicProfileProps> = (props) => {
           </div>
 
           <div className="column is-half is-offset-1">
+            <nav style={{ display: "flex", backgroundColor: "#FAFAFA", padding: "1rem", marginBottom: "1rem", borderRadius: 4 }}>
+              <div style={{ flexGrow: 1 }}>
+                <div>
+                  <p className="heading">{t("Posts")}</p>
+                  <p className="subtitle">{numPosts}</p>
+                </div>
+              </div>
+              <div style={{ flexGrow: 1 }}>
+                <div>
+                  <p className="heading">{t("Comments")}</p>
+                  <p className="subtitle">{numComments}</p>
+                </div>
+              </div>
+              <div style={{ flexGrow: 1 }}>
+                <div>
+                  <p className="heading">{t("Media Items")}</p>
+                  <p className="subtitle">{numMedia}</p>
+                </div>
+              </div>
+            </nav>
+
             <h5 className="title is-5">{t("Groups")}</h5>
 
             {user.groups.map(({ id, name }) => {
