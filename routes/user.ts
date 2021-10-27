@@ -200,7 +200,7 @@ router.delete("/interests", authRequired, async (req, res) => {
  * Get user information for given user ID
  */
 router.get("/profile/:id", authRequired, async (req, res) => {
-  const { Users } = db.getModels();
+  const { Users, DataContainer, Multimedia } = db.getModels();
   const user = await Users.findByPk(req.params.id);
 
   // Return 404 if no user with given ID is found
@@ -214,8 +214,17 @@ router.get("/profile/:id", authRequired, async (req, res) => {
   const { id, username, image } = user;
 
   // Retrieve posts for user
-  const posts = await user.getPost({ attributes: ["id", "title"], order: [["created_at", "DESC"]] });
-  // Retrieve posts for user
+  const posts = await user.getPost({
+    attributes: ["id", "title"],
+    order: [["created_at", "DESC"]],
+    include: [
+      {
+        model: DataContainer, as: "dataContainer", include: [
+          { model: Multimedia, as: "multimedia", attributes: ["id"] }
+        ]}
+    ]
+  });
+  // Retrieve groups for user
   const groups = await user.getUserGroups({ attributes: ["id", "name"] });
   // Retrieve interests for user
   const interests = await user.getInterestedTopics({ attributes: ["id", "title"] });
