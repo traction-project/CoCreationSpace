@@ -212,10 +212,13 @@ router.get("/profile/:id", authRequired, async (req, res) => {
   }
 
   const { id, username, image } = user;
+
   // Retrieve posts for user
   const posts = await user.getPost({ attributes: ["id", "title"], order: [["created_at", "DESC"]] });
   // Retrieve posts for user
   const groups = await user.getUserGroups({ attributes: ["id", "name"] });
+  // Retrieve interests for user
+  const interests = await user.getInterestedTopics({ attributes: ["id", "title"] });
   // Check if user is an admin
   const admin = await user.isAdmin();
 
@@ -224,7 +227,8 @@ router.get("/profile/:id", authRequired, async (req, res) => {
     image: `${CLOUDFRONT_URL}/${image}`,
     admin,
     posts,
-    groups
+    groups,
+    interests
   });
 });
 
