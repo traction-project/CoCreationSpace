@@ -9,30 +9,30 @@ describe("Preferences tests", () => {
   beforeAll(async () => {
     await db.createDB(sequelize);
 
-    const { Preferences } = db.getModels();
-    await Preferences.create({ language: "en" });
+    const { Preference } = db.getModels();
+    await Preference.create({ language: "en" });
   });
 
   beforeEach(async () => {
-    const { Preferences, Users } = db.getModels();
+    const { Preference, Users } = db.getModels();
 
-    await Preferences.destroy({ truncate: true });
+    await Preference.destroy({ truncate: true });
     await Users.destroy({ truncate: true });
   });
 
   it("should create new preferences", async () => {
-    const { Preferences } = db.getModels();
+    const { Preference } = db.getModels();
 
-    const preferences = await Preferences.create({ language: "es" });
-    const preferencesSaved = await Preferences.findOne({ where: { language: "es" }});
+    const preferences = await Preference.create({ language: "es" });
+    const preferencesSaved = await Preference.findOne({ where: { language: "es" }});
 
     expect(preferencesSaved).toBeDefined();
     expect(preferences.id).toEqual(preferencesSaved!.id);
   });
 
   it("should assing preferences to user", async () => {
-    const { Preferences, Users } = db.getModels();
-    const preferences = await Preferences.findOne({ where: { language: "en" }});
+    const { Preference, Users } = db.getModels();
+    const preferences = await Preference.findOne({ where: { language: "en" }});
     const user = await Users.create({ username: "user" });
 
     expect(await user.getPreferences()).toBeNull();

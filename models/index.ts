@@ -11,7 +11,7 @@ import { TagReferencesModelFactory } from "./tag_references";
 import { PermissionModelFactory } from "./permission";
 import { PostModelFactory } from "./post";
 import { PostReferenceModelFactory } from "./post_reference";
-import { PreferencesModelFactory } from "./preferences";
+import { PreferenceModelFactory } from "./preference";
 import { UsersModelFactory } from "./users";
 import { UserReferencesModelFactory } from "./user_references";
 import { DataContainerModelFactory } from "./data_container";
@@ -61,7 +61,7 @@ class DataBase {
     const Permission = PermissionModelFactory(sequelize);
     const PostReference = PostReferenceModelFactory(sequelize);
     const Post = PostModelFactory(sequelize);
-    const Preferences = PreferencesModelFactory(sequelize);
+    const Preference = PreferenceModelFactory(sequelize);
     const SearchQuery = SearchQueryModelFactory(sequelize);
     const Subtitles = SubtitlesModelFactory(sequelize);
     const TagReferences = TagReferencesModelFactory(sequelize);
@@ -88,7 +88,7 @@ class DataBase {
       Permission,
       PostReference,
       Post,
-      Preferences,
+      Preference,
       SearchQuery,
       Subtitles,
       TagReferences,

@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from "uuid";
 import { CommonAttributes } from "util/typing/modelCommonAttributes";
 import { getFromEnvironment } from "../util";
 import { MultimediaInstance, MultimediaAttributes } from "./multimedia";
-import { PreferencesAttributes, PreferencesInstance } from "./preferences";
+import { PreferenceAttributes, PreferenceInstance } from "./preference";
 import { PermissionInstance, PermissionAttributes } from "./permission";
 import { PostInstance, PostAttributes } from "./post";
 import { EmojiReactionInstance } from "./emoji_reaction";
@@ -31,7 +31,7 @@ export interface UsersAttributes extends CommonAttributes {
   preferredLanguage?: string;
   likesPosts?: PostAttributes | PostAttributes["id"];
   multimedia?: MultimediaAttributes | MultimediaAttributes["id"];
-  preferences?: PreferencesAttributes | PreferencesAttributes["id"];
+  preferences?: PreferenceAttributes | PreferenceAttributes["id"];
   permission?: PermissionAttributes | PermissionAttributes["id"];
   post?: PostAttributes | PostAttributes["id"];
   notification?: NotificationAttributes | NotificationAttributes["id"];
@@ -91,8 +91,8 @@ export interface UserInstance extends Sequelize.Model<UsersAttributes, UsersCrea
   removePermissions: Sequelize.BelongsToManyRemoveAssociationsMixin<PermissionInstance, PermissionInstance["id"]>
   createPermission: Sequelize.BelongsToManyCreateAssociationMixin<PermissionInstance>
 
-  getPreferences: Sequelize.BelongsToGetAssociationMixin<PreferencesInstance>;
-  setPreferences: Sequelize.BelongsToSetAssociationMixin<PreferencesInstance, PreferencesInstance["id"]>;
+  getPreferences: Sequelize.BelongsToGetAssociationMixin<PreferenceInstance>;
+  setPreferences: Sequelize.BelongsToSetAssociationMixin<PreferenceInstance, PreferenceInstance["id"]>;
 
   // FIXME Association names don't pluralise properly
   getPost: Sequelize.HasManyGetAssociationsMixin<PostInstance>;
