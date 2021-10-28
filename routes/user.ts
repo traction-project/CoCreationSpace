@@ -200,7 +200,7 @@ router.delete("/interests", authRequired, async (req, res) => {
  * Get user information for given user ID
  */
 router.get("/profile/:id", authRequired, async (req, res) => {
-  const { Users, DataContainer, Multimedia, Threads, Topics, Posts } = db.getModels();
+  const { Users, DataContainer, Multimedia, Threads, Topics, Post } = db.getModels();
   const user = await Users.findByPk(req.params.id);
 
   // Return 404 if no user with given ID is found
@@ -230,7 +230,7 @@ router.get("/profile/:id", authRequired, async (req, res) => {
         }]
       },
       {
-        model: Posts, as: "comments", attributes: ["id"]
+        model: Post, as: "comments", attributes: ["id"]
       }
     ]
   });

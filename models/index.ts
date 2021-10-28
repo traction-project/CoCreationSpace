@@ -60,7 +60,7 @@ class DataBase {
     const Notification = NotificationModelFactory(sequelize);
     const Permission = PermissionModelFactory(sequelize);
     const PostReference = PostReferenceModelFactory(sequelize);
-    const Posts = PostModelFactory(sequelize);
+    const Post = PostModelFactory(sequelize);
     const Preferences = PreferencesModelFactory(sequelize);
     const SearchQuery = SearchQueryModelFactory(sequelize);
     const Subtitles = SubtitlesModelFactory(sequelize);
@@ -87,7 +87,7 @@ class DataBase {
       Notification,
       Permission,
       PostReference,
-      Posts,
+      Post,
       Preferences,
       SearchQuery,
       Subtitles,

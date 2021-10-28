@@ -23,11 +23,11 @@ router.get("/all", async (req, res) => {
  */
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
-  const { Tags, Posts, DataContainer } = db.getModels();
+  const { Tags, Post, DataContainer } = db.getModels();
 
   const tag = await Tags.findByPk(id, {
     include: [{
-      model: Posts,
+      model: Post,
       as: "post",
       where: { parent_post_id: { [Op.is] : null }},
       include: ["user", {

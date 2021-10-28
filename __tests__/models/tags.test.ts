@@ -11,10 +11,10 @@ describe("Preferences tests", () => {
   });
 
   beforeEach(async () => {
-    const { Tags, Posts } = db.getModels();
+    const { Tags, Post } = db.getModels();
 
     await Tags.destroy({ truncate: true });
-    await Posts.destroy({ truncate: true });
+    await Post.destroy({ truncate: true });
   });
 
   it("should create new tag", async () => {
@@ -28,9 +28,9 @@ describe("Preferences tests", () => {
   });
 
   it("should add tag to post", async () => {
-    const { Tags, Posts } = db.getModels();
+    const { Tags, Post } = db.getModels();
     const tag = await Tags.create({ tag_name: "tag" });
-    const post = await Posts.create();
+    const post = await Post.create();
 
     expect(await tag.hasPost(post)).toBeFalsy();
     await tag.addPost(post);
@@ -38,9 +38,9 @@ describe("Preferences tests", () => {
   });
 
   it("should remove tag from post", async () => {
-    const { Tags, Posts } = db.getModels();
+    const { Tags, Post } = db.getModels();
     const tag = await Tags.create({ tag_name: "tag" });
-    const post = await Posts.create();
+    const post = await Post.create();
 
     await tag.addPost(post);
     expect(await tag.hasPost(post)).toBeTruthy();
@@ -49,10 +49,10 @@ describe("Preferences tests", () => {
   });
 
   it("should one post has 2 tags", async () => {
-    const { Tags, Posts } = db.getModels();
+    const { Tags, Post } = db.getModels();
     const tag1 = await Tags.create({ tag_name: "tag1" });
     const tag2 = await Tags.create({ tag_name: "tag2" });
-    const post = await Posts.create();
+    const post = await Post.create();
 
     expect(await post.hasTags([tag1, tag2])).toBeFalsy();
     expect(await post.countTags()).toEqual(0);
@@ -62,16 +62,18 @@ describe("Preferences tests", () => {
   });
 
   it("should one tag has 2 posts", async () => {
-    const { Tags, Posts } = db.getModels();
+    const { Tags, Post } = db.getModels();
     const tag = await Tags.create({ tag_name: "tag" });
-    const post1 = await Posts.create();
-    const post2 = await Posts.create();
+    const post1 = await Post.create();
+    const post2 = await Post.create();
 
     expect(await tag.hasPost(post1)).toBeFalsy();
     expect(await tag.hasPost(post2)).toBeFalsy();
     expect(await tag.countPost()).toEqual(0);
+
     await post1.addTag(tag);
     await post2.addTag(tag);
+
     expect(await tag.hasPost(post1)).toBeTruthy();
     expect(await tag.hasPost(post2)).toBeTruthy();
     expect(await tag.countPost()).toEqual(2);

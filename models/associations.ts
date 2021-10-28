@@ -66,7 +66,7 @@ function audioContentAssociations(models: DbInterface): void {
  * @param models DbInterface
  */
 function dataContainerAssociations(models: DbInterface) {
-  models.DataContainer.belongsTo(models.Posts, { as: "post", foreignKey: "post_id" });
+  models.DataContainer.belongsTo(models.Post, { as: "post", foreignKey: "post_id" });
   const DatacontainerMultimedia = models.DataContainer.hasMany(models.Multimedia, { as: "multimedia", foreignKey: "data_container_id" });
 
   return {
@@ -112,10 +112,10 @@ function multimediaAssociations(models: DbInterface): void {
  * @param models DbInterface
  */
 function postsAssociations(models: DbInterface) {
-  const PostDataContainer = models.Posts.hasOne(models.DataContainer, { as: "dataContainer", foreignKey: "post_id" });
-  models.Posts.hasMany(models.Posts, { as: "comments", foreignKey: "parent_post_id" });
-  models.Posts.belongsTo(models.Users, { as: "user", foreignKey: "user_id" });
-  models.Posts.belongsTo(models.Threads, { as: "thread", foreignKey: "thread_id" });
+  const PostDataContainer = models.Post.hasOne(models.DataContainer, { as: "dataContainer", foreignKey: "post_id" });
+  models.Post.hasMany(models.Post, { as: "comments", foreignKey: "parent_post_id" });
+  models.Post.belongsTo(models.Users, { as: "user", foreignKey: "user_id" });
+  models.Post.belongsTo(models.Threads, { as: "thread", foreignKey: "thread_id" });
 
   const optionsPostsPosts = {
     through: {
@@ -124,17 +124,17 @@ function postsAssociations(models: DbInterface) {
     }
   };
 
-  models.Posts.belongsToMany(models.Posts, Object.assign(optionsPostsPosts, {
+  models.Post.belongsToMany(models.Post, Object.assign(optionsPostsPosts, {
     foreignKey: "post_references_id",
     as: "postReference"
   }));
 
-  models.Posts.belongsToMany(models.Posts, Object.assign(optionsPostsPosts, {
+  models.Post.belongsToMany(models.Post, Object.assign(optionsPostsPosts, {
     foreignKey: "post_referenced_id",
     as: "postReferenced"
   }));
 
-  models.Posts.belongsToMany(models.Users, {
+  models.Post.belongsToMany(models.Users, {
     through: {
       model: models.UserReferences,
       unique: false
@@ -143,7 +143,7 @@ function postsAssociations(models: DbInterface) {
     as: "userReferenced"
   });
 
-  models.Posts.belongsToMany(models.Tags,{
+  models.Post.belongsToMany(models.Tags,{
     through: {
       model: models.TagReferences,
       unique: false
@@ -152,7 +152,7 @@ function postsAssociations(models: DbInterface) {
     as: "tags"
   });
 
-  models.Posts.belongsToMany(models.Users, {
+  models.Post.belongsToMany(models.Users, {
     through: {
       model: models.Like,
       unique: false
@@ -188,7 +188,7 @@ function subtitleAssociations(models: DbInterface): void {
  * @param models DbInterface
  */
 function tagAssociations(models: DbInterface): void {
-  models.Tags.belongsToMany(models.Posts, {
+  models.Tags.belongsToMany(models.Post, {
     through: {
       model: models.TagReferences,
       unique: false
@@ -221,7 +221,7 @@ function topicAssociations(models: DbInterface): void {
  */
 function threadAssociations(models: DbInterface): void {
   models.Threads.belongsTo(models.Topics, { as: "topic", foreignKey: "topic_id" });
-  models.Threads.hasMany(models.Posts, { as: "post", foreignKey: "thread_id" });
+  models.Threads.hasMany(models.Post, { as: "post", foreignKey: "thread_id" });
 }
 
 /**
@@ -231,7 +231,7 @@ function threadAssociations(models: DbInterface): void {
 function userAssociations(models: DbInterface): void {
   models.Users.hasMany(models.Multimedia, { as: "multimedia", foreignKey: "user_id" });
   models.Users.belongsTo(models.Preferences, { as: "preferences", foreignKey: "preferences_id" });
-  models.Users.hasMany(models.Posts, { as: "post", foreignKey: "user_id" });
+  models.Users.hasMany(models.Post, { as: "post", foreignKey: "user_id" });
   models.Users.hasMany(models.Notification, { as: "notifications", foreignKey: "user_id" });
   models.Users.hasMany(models.MultimediaInteraction);
   models.Users.hasMany(models.SearchQuery);
@@ -243,7 +243,7 @@ function userAssociations(models: DbInterface): void {
     through: "user_permissions"
   });
 
-  models.Users.belongsToMany(models.Posts, {
+  models.Users.belongsToMany(models.Post, {
     through: {
       model: models.UserReferences,
       unique: false
@@ -252,7 +252,7 @@ function userAssociations(models: DbInterface): void {
     as: "postReferenced"
   });
 
-  models.Users.belongsToMany(models.Posts, {
+  models.Users.belongsToMany(models.Post, {
     through: {
       model: models.Like,
       unique: false

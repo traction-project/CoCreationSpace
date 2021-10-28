@@ -11,10 +11,10 @@ describe("EmojiReactions model", () => {
   });
 
   beforeEach(async () => {
-    const { EmojiReaction, Posts, Users } = db.getModels();
+    const { EmojiReaction, Post, Users } = db.getModels();
 
     await EmojiReaction.destroy({ truncate: true });
-    await Posts.destroy({ truncate: true });
+    await Post.destroy({ truncate: true });
     await Users.destroy({ truncate: true });
   });
 

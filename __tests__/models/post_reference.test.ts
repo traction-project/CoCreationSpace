@@ -11,16 +11,16 @@ describe("Post references post tests", () => {
   });
 
   beforeEach(async () => {
-    const { Posts, PostReference } = db.getModels();
+    const { Post, PostReference } = db.getModels();
 
-    await Posts.destroy({ truncate: true });
+    await Post.destroy({ truncate: true });
     await PostReference.destroy({ truncate: true });
   });
 
   it("should post1 references to post2", async () => {
-    const { Posts } = db.getModels();
-    const post1 = await Posts.create({ title: "New post" });
-    const post2 = await Posts.create({ title: "Sports" });
+    const { Post } = db.getModels();
+    const post1 = await Post.create({ title: "New post" });
+    const post2 = await Post.create({ title: "Sports" });
 
     await post1.addPostReference(post2);
 
@@ -29,10 +29,10 @@ describe("Post references post tests", () => {
   });
 
   it("should post1 has 2 references posts", async () => {
-    const { Posts } = db.getModels();
-    const post1 = await Posts.create({ title: "New post" });
-    const post2 = await Posts.create({ title: "Sports" });
-    const post3 = await Posts.create({ title: "Media" });
+    const { Post } = db.getModels();
+    const post1 = await Post.create({ title: "New post" });
+    const post2 = await Post.create({ title: "Sports" });
+    const post3 = await Post.create({ title: "Media" });
 
     expect(await post1.countPostReference()).toEqual(0);
     await post1.setPostReference([post2, post3]);
@@ -45,9 +45,9 @@ describe("Post references post tests", () => {
   });
 
   it("should post1 remove reference to post2", async () => {
-    const { Posts } = db.getModels();
-    const post1 = await Posts.create({ title: "New post" });
-    const post2 = await Posts.create({ title: "Sports" });
+    const { Post } = db.getModels();
+    const post1 = await Post.create({ title: "New post" });
+    const post2 = await Post.create({ title: "Sports" });
 
     await post1.addPostReference(post2);
     expect(await post1.hasPostReference(post2)).toBeTruthy();

@@ -11,11 +11,11 @@ describe("Preferences tests", () => {
   });
 
   beforeEach(async () => {
-    const { Threads, Topics, Posts } = db.getModels();
+    const { Threads, Topics, Post } = db.getModels();
 
     await Threads.destroy({ truncate: true });
     await Topics.destroy({ truncate: true });
-    await Posts.destroy({ truncate: true });
+    await Post.destroy({ truncate: true });
   });
 
   it("should create new thread", async () => {
@@ -53,25 +53,26 @@ describe("Preferences tests", () => {
   });
 
   it("should add post to thread", async () => {
-    const { Threads, Posts } = db.getModels();
+    const { Threads, Post } = db.getModels();
     const thread = await Threads.create({ th_title: "thread" });
-    const post1 = await Posts.create();
-    const post2 = await Posts.create();
+    const post1 = await Post.create();
+    const post2 = await Post.create();
 
     expect(await thread.hasPost(post1)).toBeFalsy();
     expect(await thread.countPost()).toEqual(0);
 
     await thread.addPost(post1);
     await thread.addPost(post2);
+
     expect(await thread.hasPost(post1)).toBeTruthy();
     expect(await thread.hasPost(post2)).toBeTruthy();
     expect(await thread.countPost()).toEqual(2);
   });
 
   it("should remove post from thread", async () => {
-    const { Threads, Posts } = db.getModels();
+    const { Threads, Post } = db.getModels();
     const thread = await Threads.create({ th_title: "thread" });
-    const post1 = await Posts.create();
+    const post1 = await Post.create();
 
     await thread.addPost(post1);
     expect(await thread.hasPost(post1)).toBeTruthy();

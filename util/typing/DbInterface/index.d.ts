@@ -44,7 +44,7 @@ export interface DbInterface {
     Notification: ModelCtor<NotificationInstance>;
     Permission: ModelCtor<PermissionInstance>;
     PostReference: ModelCtor<PostReferenceInstance>;
-    Posts: ModelCtor<PostInstance>;
+    Post: ModelCtor<PostInstance>;
     Preferences: ModelCtor<PreferencesInstance>;
     SearchQuery: ModelCtor<SearchQueryInstance>;
     Subtitles: ModelCtor<SubtitlesInstance>;

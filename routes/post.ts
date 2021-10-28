@@ -31,7 +31,7 @@ async function logSearchQuery(query: string | undefined, resultcount: number, us
  */
 router.get("/all/user", authRequired, async (req, res) => {
   const user = req.user as UserInstance;
-  const { Posts, Users, DataContainer, Multimedia, Threads, Topics, UserGroup } = db.getModels();
+  const { Post, Users, DataContainer, Multimedia, Threads, Topics, UserGroup } = db.getModels();
 
   let queryDataContainer = {
     model: DataContainer,
@@ -47,7 +47,7 @@ router.get("/all/user", authRequired, async (req, res) => {
   const criteria = await buildCriteria(req.query, DataContainer);
   queryDataContainer = Object.assign(queryDataContainer, criteria);
 
-  const posts = await Posts.findAndCountAll({
+  const posts = await Post.findAndCountAll({
     where: {
       parent_post_id: null
     } as any,
@@ -92,7 +92,7 @@ router.get("/all/user", authRequired, async (req, res) => {
  */
 router.get("/all/group", authRequired, async (req, res) => {
   const user = req.user as UserInstance;
-  const { Posts, Users, UserGroup, DataContainer, Multimedia, Tags, Threads, Topics } = db.getModels();
+  const { Post, Users, UserGroup, DataContainer, Multimedia, Tags, Threads, Topics } = db.getModels();
 
   // Get desired page number and results per page from query string if present
   // Use defaults otherwise
@@ -120,7 +120,7 @@ router.get("/all/group", authRequired, async (req, res) => {
 
   const groups = (await user.getUserGroups()).map((group) => group.id);
 
-  const posts = await Posts.findAndCountAll({
+  const posts = await Post.findAndCountAll({
     where: {
       parent_post_id: null
     } as any,
@@ -174,9 +174,9 @@ router.get("/:id", authRequired, async (req, res) => {
   const { id } = req.params;
   const user = req.user as UserInstance;
 
-  const { Posts, DataContainer, Multimedia, Topics, Threads, UserGroup } = db.getModels();
+  const { Post, DataContainer, Multimedia, Topics, Threads, UserGroup } = db.getModels();
 
-  const post = await Posts.findByPk(id, {
+  const post = await Post.findByPk(id, {
     include: [
       {
         model: Threads,
@@ -202,7 +202,7 @@ router.get("/:id", authRequired, async (req, res) => {
           include: ["emojiReactions"]
         }]
       }, {
-        model: Posts,
+        model: Post,
         as: "comments",
         include: ["dataContainer", "user"],
       }, "postReference", "postReferenced", "user", "userReferenced", "tags"
@@ -248,13 +248,13 @@ router.get("/:id/parent", authRequired, async (req, res) => {
   const { id } = req.params;
   const user = req.user as UserInstance;
 
-  const { Posts, DataContainer, Multimedia } = db.getModels();
+  const { Post, DataContainer, Multimedia } = db.getModels();
 
   let post: PostInstance | null;
   let parentPostId: string | undefined = id;
 
   do {
-    post = await Posts.findByPk(parentPostId, {
+    post = await Post.findByPk(parentPostId, {
       include: [
         {
           model: DataContainer,
@@ -266,7 +266,7 @@ router.get("/:id/parent", authRequired, async (req, res) => {
             include: ["emojiReactions"]
           }]
         }, {
-          model: Posts,
+          model: Post,
           as: "comments",
           include: ["dataContainer", "user"],
         }, "postReference", "postReferenced", "user", "userReferenced", "tags"
@@ -309,14 +309,14 @@ router.post("/", authRequired, async (req, res) => {
   const { text, title, multimedia, tags, topicId } = req.body;
 
   const user = req.user as UserInstance;
-  const { Posts, Tags, Threads, DataContainer } = db.getModels();
+  const { Post, Tags, Threads, DataContainer } = db.getModels();
 
   const thread = await Threads.create({
     th_title: title,
     topic_id: topicId
   });
 
-  const post = Posts.build({
+  const post = Post.build({
     title: title,
     user_id: user.id,
     thread_id: thread.id,
@@ -360,9 +360,9 @@ router.post("/:id/edit", authRequired, async (req, res) => {
   const { id } = req.params;
   const { title, description, multimedia, tags } = req.body;
 
-  const { Posts, DataContainer, Tags } = db.getModels();
+  const { Post, DataContainer, Tags } = db.getModels();
   const user = req.user as UserInstance;
-  const post = await Posts.findByPk(id);
+  const post = await Post.findByPk(id);
   const dataContainer = await DataContainer.findOne({ where: { post_id: id } as any });
 
   if (post && dataContainer) {
@@ -443,15 +443,15 @@ router.post("/:id", authRequired, async (req, res) => {
   }
 
   const user = req.user as UserInstance;
-  const { Posts, DataContainer } = db.getModels();
+  const { Post, DataContainer } = db.getModels();
 
-  const parentPost = await Posts.findByPk(id);
+  const parentPost = await Post.findByPk(id);
 
   if (!parentPost) {
     return res.status(400).send({ message: "Parent post not found" });
   }
 
-  const post = Posts.build({
+  const post = Post.build({
     parent_post_id: id,
     user_id: user.id,
     thread_id: parentPost.thread_id,
@@ -480,10 +480,10 @@ router.post("/:id", authRequired, async (req, res) => {
  */
 router.delete("/:id", authRequired, async (req, res) => {
   const { id } = req.params;
-  const { Posts } = db.getModels();
+  const { Post } = db.getModels();
 
   const user = req.user as UserInstance;
-  const post = await Posts.findByPk(id);
+  const post = await Post.findByPk(id);
 
   if (post) {
     if (post.user_id == user.id || user.isAdmin()) {
@@ -512,9 +512,9 @@ router.delete("/:id", authRequired, async (req, res) => {
 router.post("/:id/like", authRequired, async (req, res) => {
   const { id } = req.params;
   const user = req.user as UserInstance;
-  const { Posts } = db.getModels();
+  const { Post } = db.getModels();
 
-  const post = await Posts.findByPk(id);
+  const post = await Post.findByPk(id);
 
   if (post) {
     await post.addLikesUser(user);
@@ -531,9 +531,9 @@ router.post("/:id/like", authRequired, async (req, res) => {
 router.post("/:id/unlike", authRequired, async (req, res) => {
   const { id } = req.params;
   const user = req.user as UserInstance;
-  const { Posts } = db.getModels();
+  const { Post } = db.getModels();
 
-  const post = await Posts.findByPk(id);
+  const post = await Post.findByPk(id);
 
   if (post) {
     await post.removeLikesUser(user);

@@ -7,7 +7,7 @@ const sequelize = new Sequelize("sqlite::memory:", { logging: false });
 import { db } from "../../models";
 import association from "../../models/associations";
 
-describe("Posts model", () => {
+describe("Post model", () => {
   beforeAll(async () => {
     await db.createDB(sequelize);
 
@@ -18,14 +18,14 @@ describe("Posts model", () => {
   });
 
   beforeEach(async () => {
-    const { Posts } = db.getModels();
-    await Posts.destroy({ truncate: true });
+    const { Post } = db.getModels();
+    await Post.destroy({ truncate: true });
   });
 
   it("should create a post with associated data container", async () => {
-    const { Users, Posts, DataContainer } = db.getModels();
+    const { Users, Post, DataContainer } = db.getModels();
 
-    const post = Posts.build({
+    const post = Post.build({
       user_id: (await Users.findOne({}))!.id,
       dataContainer: DataContainer.build({
         text_content: "This is a comment"
@@ -45,15 +45,15 @@ describe("Posts model", () => {
   });
 
   it("should retrieve all comments for a post", async () => {
-    const { Users, Posts } = db.getModels();
+    const { Users, Post } = db.getModels();
 
-    const post = await Posts.create({
+    const post = await Post.create({
       user_id: (await Users.findOne({}))!.id,
     });
 
     expect(await post.countComments()).toEqual(0);
 
-    const comment1 = await Posts.create({
+    const comment1 = await Post.create({
       user_id: (await Users.findOne({}))!.id,
       parent_post_id: post.id
     });
@@ -61,7 +61,7 @@ describe("Posts model", () => {
     expect(await post.countComments()).toEqual(1);
     expect(await post.hasComment(comment1)).toBeTruthy();
 
-    const comment2 = await Posts.create({
+    const comment2 = await Post.create({
       user_id: (await Users.findOne({}))!.id,
       parent_post_id: post.id
     });
@@ -71,23 +71,23 @@ describe("Posts model", () => {
   });
 
   it("should delete all comments if a post is deleted", async () => {
-    const { Users, Posts } = db.getModels();
+    const { Users, Post } = db.getModels();
 
-    const post = await Posts.create({
+    const post = await Post.create({
       user_id: (await Users.findOne({}))!.id,
     });
 
-    const comment1 = await Posts.create({
+    const comment1 = await Post.create({
       user_id: (await Users.findOne({}))!.id,
       parent_post_id: post.id
     });
 
-    const comment1Child = await Posts.create({
+    const comment1Child = await Post.create({
       user_id: (await Users.findOne({}))!.id,
       parent_post_id: comment1.id
     });
 
-    const comment2 = await Posts.create({
+    const comment2 = await Post.create({
       user_id: (await Users.findOne({}))!.id,
       parent_post_id: post.id
     });
@@ -96,30 +96,30 @@ describe("Posts model", () => {
 
     await post.destroyWithComments();
 
-    expect(await Posts.findByPk(post.id)).toBeNull();
-    expect(await Posts.findByPk(comment1.id)).toBeNull();
-    expect(await Posts.findByPk(comment2.id)).toBeNull();
-    expect(await Posts.findByPk(comment1Child.id)).toBeNull();
+    expect(await Post.findByPk(post.id)).toBeNull();
+    expect(await Post.findByPk(comment1.id)).toBeNull();
+    expect(await Post.findByPk(comment2.id)).toBeNull();
+    expect(await Post.findByPk(comment1Child.id)).toBeNull();
   });
 
   it("should only delete comments which are children of the deleted post", async () => {
-    const { Users, Posts } = db.getModels();
+    const { Users, Post } = db.getModels();
 
-    const post = await Posts.create({
+    const post = await Post.create({
       user_id: (await Users.findOne({}))!.id,
     });
 
-    const comment1 = await Posts.create({
+    const comment1 = await Post.create({
       user_id: (await Users.findOne({}))!.id,
       parent_post_id: post.id
     });
 
-    const comment1Child = await Posts.create({
+    const comment1Child = await Post.create({
       user_id: (await Users.findOne({}))!.id,
       parent_post_id: comment1.id
     });
 
-    const comment2 = await Posts.create({
+    const comment2 = await Post.create({
       user_id: (await Users.findOne({}))!.id,
       parent_post_id: post.id
     });
@@ -128,21 +128,21 @@ describe("Posts model", () => {
 
     await comment1.destroyWithComments();
 
-    expect(await Posts.findByPk(post.id)).not.toBeNull();
-    expect(await Posts.findByPk(comment2.id)).not.toBeNull();
+    expect(await Post.findByPk(post.id)).not.toBeNull();
+    expect(await Post.findByPk(comment2.id)).not.toBeNull();
 
-    expect(await Posts.findByPk(comment1.id)).toBeNull();
-    expect(await Posts.findByPk(comment1Child.id)).toBeNull();
+    expect(await Post.findByPk(comment1.id)).toBeNull();
+    expect(await Post.findByPk(comment1Child.id)).toBeNull();
   });
 
   it("should retrieve the parent post", async () => {
-    const { Users, Posts } = db.getModels();
+    const { Users, Post } = db.getModels();
 
-    const post = await Posts.create({
+    const post = await Post.create({
       user_id: (await Users.findOne({}))!.id,
     });
 
-    const comment1 = await Posts.create({
+    const comment1 = await Post.create({
       user_id: (await Users.findOne({}))!.id,
       parent_post_id: post.id
     });
@@ -154,9 +154,9 @@ describe("Posts model", () => {
   });
 
   it("should return null if there is no parent post", async () => {
-    const { Users, Posts } = db.getModels();
+    const { Users, Post } = db.getModels();
 
-    const comment1 = await Posts.create({
+    const comment1 = await Post.create({
       user_id: (await Users.findOne({}))!.id,
     });
 
@@ -165,7 +165,7 @@ describe("Posts model", () => {
   });
 
   it("should return the associated user group", async () => {
-    const { Users, Posts, Threads, Topics, UserGroup } = db.getModels();
+    const { Users, Post, Threads, Topics, UserGroup } = db.getModels();
 
     const group = await UserGroup.create({ name: "some group" });
 
@@ -175,7 +175,7 @@ describe("Posts model", () => {
     const thread = await Threads.create({ th_title: "some thread" });
     await thread.setTopic(topic);
 
-    const post = await Posts.create({
+    const post = await Post.create({
       user_id: (await Users.findOne({}))!.id,
     });
     await post.setThread(thread);

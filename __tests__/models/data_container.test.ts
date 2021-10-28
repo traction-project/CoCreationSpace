@@ -11,10 +11,10 @@ describe("Data container model", () => {
   });
 
   beforeEach(async () => {
-    const { DataContainer, Posts, Multimedia } = db.getModels();
+    const { DataContainer, Post, Multimedia } = db.getModels();
 
     await DataContainer.destroy({ truncate: true });
-    await Posts.destroy({ truncate: true });
+    await Post.destroy({ truncate: true });
     await Multimedia.destroy({ truncate: true });
   });
 
@@ -48,9 +48,9 @@ describe("Data container model", () => {
   });
 
   it("should add Post that contains data container", async () => {
-    const { DataContainer, Posts } = db.getModels();
+    const { DataContainer, Post } = db.getModels();
     const dataContainer = await DataContainer.create({ text_content: "" });
-    const post = await Posts.create({ title: "post" });
+    const post = await Post.create({ title: "post" });
 
     await dataContainer.setPost(post);
     const postSaved = await dataContainer.getPost();
