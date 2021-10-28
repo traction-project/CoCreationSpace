@@ -47,17 +47,17 @@ describe("Multimedia model", () => {
   });
 
   it("should return all subtitles for a video", async () => {
-    const { Multimedia, Subtitles } = db.getModels();
+    const { Multimedia, Subtitle } = db.getModels();
 
     const mediaItem = await Multimedia.create({
       title: "test",
     });
 
-    const sub1 = await Subtitles.create({
+    const sub1 = await Subtitle.create({
       language: "de",
       content: "WEBVTT"
     });
-    const sub2 = await Subtitles.create({
+    const sub2 = await Subtitle.create({
       language: "nl",
       content: "WEBVTT"
     });
@@ -67,21 +67,21 @@ describe("Multimedia model", () => {
   });
 
   it("should return all subtitles for a video with the given language", async () => {
-    const { Multimedia, Subtitles } = db.getModels();
+    const { Multimedia, Subtitle } = db.getModels();
 
     const mediaItem = await Multimedia.create({
       title: "test",
     });
 
-    const sub1 = await Subtitles.create({
+    const sub1 = await Subtitle.create({
       language: "de",
       content: "WEBVTT"
     });
-    const sub2 = await Subtitles.create({
+    const sub2 = await Subtitle.create({
       language: "nl",
       content: "WEBVTT"
     });
-    const sub3 = await Subtitles.create({
+    const sub3 = await Subtitle.create({
       language: "nl",
       content: "WEBVTT"
     });

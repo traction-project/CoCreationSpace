@@ -62,7 +62,7 @@ export function SearchQueryModelFactory(sequelize: Sequelize.Sequelize): Sequeli
   };
 
   // Create the model
-  const SearchQuery = sequelize.define<SearchQueryInstance, SearchQueryCreationAttributes>("searchQuery", attributes, { underscored: true, tableName: TABLE_NAME });
+  const SearchQuery = sequelize.define<SearchQueryInstance, SearchQueryCreationAttributes>("SearchQuery", attributes, { underscored: true, tableName: TABLE_NAME });
   SearchQuery.beforeCreate(group => { group.id = uuidv4(); });
 
   return SearchQuery;

@@ -101,7 +101,7 @@ function multimediaAssociations(models: DbInterface): void {
   models.Multimedia.belongsTo(models.DataContainer, { as: "dataContainer", foreignKey: "data_container_id" });
   models.Multimedia.hasMany(models.AudioContent, { as: "audioContent", foreignKey: "multimedia_id" });
   models.Multimedia.hasMany(models.Metadata, { as: "metadata", foreignKey: "multimedia_id"});
-  models.Multimedia.hasMany(models.Subtitles, { as: "subtitles", foreignKey: "multimedia_id"});
+  models.Multimedia.hasMany(models.Subtitle, { as: "subtitles", foreignKey: "multimedia_id"});
   models.Multimedia.hasMany(models.MultimediaInteraction, { foreignKey: "multimedia_id" });
   models.Multimedia.hasMany(models.EmojiReaction, { as: "emojiReactions", foreignKey: "multimedia_id" });
   models.Multimedia.hasMany(models.AsyncJob, { foreignKey: "multimedia_id" });
@@ -180,7 +180,7 @@ function permissionAssociations(models: DbInterface): void {
  * @param models DbInterface
  */
 function subtitleAssociations(models: DbInterface): void {
-  models.Subtitles.belongsTo(models.Multimedia, { as: "multimedia", foreignKey: "multimedia_id" });
+  models.Subtitle.belongsTo(models.Multimedia, { as: "multimedia", foreignKey: "multimedia_id" });
 }
 
 /**

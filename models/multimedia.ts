@@ -7,7 +7,7 @@ import { TranscribeOutput } from "util/transcribe";
 import { DataContainerAttributes, DataContainerInstance } from "./data_container";
 import { AudioContentAttributes, AudioContentInstance } from "./audio_content";
 import { MetadataAttributes, MetadataInstance } from "./metadata";
-import { SubtitlesAttributes, SubtitlesInstance } from "./subtitles";
+import { SubtitleAttributes, SubtitleInstance } from "./subtitle";
 import { MultimediaInteractionInstance } from "./multimedia_interaction";
 import { EmojiReactionAttributes, EmojiReactionInstance } from "./emoji_reaction";
 import { AsyncJobInstance } from "./async_job";
@@ -32,7 +32,7 @@ export interface MultimediaAttributes extends CommonAttributes {
   dataContainer?: DataContainerAttributes | DataContainerAttributes["id"];
   audioContent?: AudioContentAttributes | AudioContentAttributes["id"];
   metadata?: MetadataAttributes | MetadataAttributes["id"];
-  subtitle?: SubtitlesAttributes | SubtitlesAttributes["id"];
+  subtitle?: SubtitleAttributes | SubtitleAttributes["id"];
   emojiReactions?: EmojiReactionAttributes | EmojiReactionAttributes["id"];
 }
 
@@ -70,16 +70,16 @@ export interface MultimediaInstance extends Sequelize.Model<MultimediaAttributes
   hasMetadatas: Sequelize.HasManyHasAssociationsMixin<MetadataInstance, MetadataInstance["id"]>;
   countMetadatas: Sequelize.HasManyCountAssociationsMixin;
 
-  getSubtitles: Sequelize.HasManyGetAssociationsMixin<SubtitlesInstance>;
+  getSubtitles: Sequelize.HasManyGetAssociationsMixin<SubtitleInstance>;
   countSubtitles: Sequelize.HasManyCountAssociationsMixin;
-  hasSubtitle: Sequelize.HasManyHasAssociationMixin<SubtitlesInstance, SubtitlesInstance["id"]>;
-  hasSubtitles: Sequelize.HasManyHasAssociationsMixin<SubtitlesInstance, SubtitlesInstance["id"]>;
-  setSubtitles: Sequelize.HasManySetAssociationsMixin<SubtitlesInstance, SubtitlesInstance["id"]>;
-  addSubtitle: Sequelize.HasManyAddAssociationMixin<SubtitlesInstance, SubtitlesInstance["id"]>;
-  addSubtitles: Sequelize.HasManyAddAssociationsMixin<SubtitlesInstance, SubtitlesInstance["id"]>;
-  removeSubtitle: Sequelize.HasManyRemoveAssociationMixin<SubtitlesInstance, SubtitlesInstance["id"]>;
-  removeSubtitles: Sequelize.HasManyRemoveAssociationsMixin<SubtitlesInstance, SubtitlesInstance["id"]>;
-  createSubtitle: Sequelize.HasManyCreateAssociationMixin<SubtitlesInstance>;
+  hasSubtitle: Sequelize.HasManyHasAssociationMixin<SubtitleInstance, SubtitleInstance["id"]>;
+  hasSubtitles: Sequelize.HasManyHasAssociationsMixin<SubtitleInstance, SubtitleInstance["id"]>;
+  setSubtitles: Sequelize.HasManySetAssociationsMixin<SubtitleInstance, SubtitleInstance["id"]>;
+  addSubtitle: Sequelize.HasManyAddAssociationMixin<SubtitleInstance, SubtitleInstance["id"]>;
+  addSubtitles: Sequelize.HasManyAddAssociationsMixin<SubtitleInstance, SubtitleInstance["id"]>;
+  removeSubtitle: Sequelize.HasManyRemoveAssociationMixin<SubtitleInstance, SubtitleInstance["id"]>;
+  removeSubtitles: Sequelize.HasManyRemoveAssociationsMixin<SubtitleInstance, SubtitleInstance["id"]>;
+  createSubtitle: Sequelize.HasManyCreateAssociationMixin<SubtitleInstance>;
 
   getMultimediaInteractions: Sequelize.HasManyGetAssociationsMixin<MultimediaInteractionInstance>;
   setMultimediaInteractions: Sequelize.HasManySetAssociationsMixin<MultimediaInteractionInstance, MultimediaInteractionInstance["id"]>;

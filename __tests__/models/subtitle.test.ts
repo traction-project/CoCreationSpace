@@ -11,17 +11,17 @@ describe("Subtitles tests", () => {
   });
 
   beforeEach(async () => {
-    const { Subtitles, Multimedia } = db.getModels();
+    const { Subtitle, Multimedia } = db.getModels();
 
-    await Subtitles.destroy({ truncate: true });
+    await Subtitle.destroy({ truncate: true });
     await Multimedia.destroy({ truncate: true });
   });
 
   it("should create new subtitle with mandatory attributes", async () => {
-    const { Subtitles } = db.getModels();
+    const { Subtitle } = db.getModels();
 
-    const subtitle = await Subtitles.create({ content: "subtitle" });
-    const subtitleSaved = await Subtitles.findOne({ where: { content: "subtitle" } });
+    const subtitle = await Subtitle.create({ content: "subtitle" });
+    const subtitleSaved = await Subtitle.findOne({ where: { content: "subtitle" } });
 
     expect(subtitle).toBeDefined();
     expect(subtitleSaved).toBeDefined();
@@ -29,15 +29,15 @@ describe("Subtitles tests", () => {
   });
 
   it("should create new subtitle with optional attributes", async () => {
-    const { Subtitles } = db.getModels();
+    const { Subtitle } = db.getModels();
 
-    const subtitle = await Subtitles.create(
+    const subtitle = await Subtitle.create(
       {
         content: "subtitle",
         language: "es"
       }
     );
-    const subtitleSaved = await Subtitles.findOne({ where: { content: "subtitle" } });
+    const subtitleSaved = await Subtitle.findOne({ where: { content: "subtitle" } });
 
     expect(subtitle).toBeDefined();
     expect(subtitleSaved).toBeDefined();
@@ -46,8 +46,8 @@ describe("Subtitles tests", () => {
   });
 
   it("should add subtitles to a multimedia", async () => {
-    const { Subtitles, Multimedia } = db.getModels();
-    const subtitle = await Subtitles.create({ content: "subtitle" });
+    const { Subtitle, Multimedia } = db.getModels();
+    const subtitle = await Subtitle.create({ content: "subtitle" });
     const multimedia = await Multimedia.create({ title: "multimedia" });
 
     expect(await subtitle.getMultimedia()).toBeNull();
@@ -57,9 +57,9 @@ describe("Subtitles tests", () => {
   });
 
   it("should return false when calling isDefault if confidence is unset", async () => {
-    const { Subtitles } = db.getModels();
+    const { Subtitle } = db.getModels();
 
-    const subtitle = await Subtitles.create({
+    const subtitle = await Subtitle.create({
       content: "subtitle",
       language: "es"
     });
@@ -68,9 +68,9 @@ describe("Subtitles tests", () => {
   });
 
   it("should return true when calling isDefault if confidence is set", async () => {
-    const { Subtitles } = db.getModels();
+    const { Subtitle } = db.getModels();
 
-    const subtitle = await Subtitles.create({
+    const subtitle = await Subtitle.create({
       content: "subtitle",
       language: "es",
       confidence: 0.78

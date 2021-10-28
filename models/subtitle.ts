@@ -4,19 +4,19 @@ import { v4 as uuidv4} from "uuid";
 import { CommonAttributes } from "util/typing/modelCommonAttributes";
 import { MultimediaAttributes, MultimediaInstance } from "./multimedia";
 
-export interface SubtitlesAttributes extends CommonAttributes{
+export interface SubtitleAttributes extends CommonAttributes{
     language?: string;
     content: string;
     confidence?: number;
     multimedia?: MultimediaAttributes | MultimediaAttributes["id"];
 }
 
-type SubtitlesCreationAttributes = Optional<SubtitlesAttributes, "id" | "createdAt" | "updatedAt">;
+type SubtitleCreationAttributes = Optional<SubtitleAttributes, "id" | "createdAt" | "updatedAt">;
 
 /**
  * Subtitles instance object interface
  */
-export interface SubtitlesInstance extends Sequelize.Model<SubtitlesAttributes, SubtitlesCreationAttributes>, SubtitlesAttributes {
+export interface SubtitleInstance extends Sequelize.Model<SubtitleAttributes, SubtitleCreationAttributes>, SubtitleAttributes {
   getMultimedia: Sequelize.BelongsToGetAssociationMixin<MultimediaInstance>;
   setMultimedia: Sequelize.BelongsToSetAssociationMixin<MultimediaInstance, MultimediaInstance["id"]>;
 
@@ -27,7 +27,7 @@ export interface SubtitlesInstance extends Sequelize.Model<SubtitlesAttributes, 
  *  Build Subtitles Model object
  * @param sequelize Sequelize: Conection object with de database
  */
-export function SubtitlesModelFactory(sequelize: Sequelize.Sequelize): Sequelize.ModelCtor<SubtitlesInstance> {
+export function SubtitleModelFactory(sequelize: Sequelize.Sequelize): Sequelize.ModelCtor<SubtitleInstance> {
   //  DB table name
   const TABLE_NAME = "subtitles";
   // Model attributtes
@@ -51,13 +51,13 @@ export function SubtitlesModelFactory(sequelize: Sequelize.Sequelize): Sequelize
   };
 
   // Create the model
-  const Subtitles = sequelize.define<SubtitlesInstance, SubtitlesCreationAttributes>("subtitles", attributes, { underscored: true, tableName: TABLE_NAME });
+  const Subtitle = sequelize.define<SubtitleInstance, SubtitleCreationAttributes>("Subtitle", attributes, { underscored: true, tableName: TABLE_NAME });
 
-  Subtitles.prototype.isDefault = function () {
+  Subtitle.prototype.isDefault = function () {
     return !!this.confidence;
   };
 
-  Subtitles.beforeCreate(subtitle => { subtitle.id = uuidv4(); });
+  Subtitle.beforeCreate(subtitle => { subtitle.id = uuidv4(); });
 
-  return Subtitles;
+  return Subtitle;
 }

@@ -17,7 +17,7 @@ import { UserReferencesModelFactory } from "./user_references";
 import { DataContainerModelFactory } from "./data_container";
 import { AudioContentModelFactory } from "./audio_content";
 import { MetadataModelFactory } from "./metadata";
-import { SubtitlesModelFactory } from "./subtitles";
+import { SubtitleModelFactory } from "./subtitle";
 import { LikeModelFactory } from "./like";
 import { EmojiReactionModelFactory } from "./emoji_reaction";
 import { InterestModelFactory } from "./interest";
@@ -63,7 +63,7 @@ class DataBase {
     const Post = PostModelFactory(sequelize);
     const Preference = PreferenceModelFactory(sequelize);
     const SearchQuery = SearchQueryModelFactory(sequelize);
-    const Subtitles = SubtitlesModelFactory(sequelize);
+    const Subtitle = SubtitleModelFactory(sequelize);
     const TagReferences = TagReferencesModelFactory(sequelize);
     const Tags = TagModelFactory(sequelize);
     const Threads = ThreadModelFactory(sequelize);
@@ -90,7 +90,7 @@ class DataBase {
       Post,
       Preference,
       SearchQuery,
-      Subtitles,
+      Subtitle,
       TagReferences,
       Tags,
       Threads,

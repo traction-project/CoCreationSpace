@@ -53,7 +53,7 @@ router.post("/receive", (req, res) => {
 
 async function insertVideoTranscript(jobId: string) {
   const { language, transcript, confidence } = await fetchTranscript(jobId);
-  const { AsyncJob, Subtitles } = db.getModels();
+  const { AsyncJob, Subtitle } = db.getModels();
 
   const job = await AsyncJob.findOne({ where : {
     type: "transcribe",
@@ -73,7 +73,7 @@ async function insertVideoTranscript(jobId: string) {
     media.transcript = transcript;
     media.save();
 
-    const subtitles = Subtitles.build();
+    const subtitles = Subtitle.build();
 
     subtitles.language = language;
     subtitles.confidence = confidence;

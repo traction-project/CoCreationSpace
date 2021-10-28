@@ -13,7 +13,7 @@ const router = Router();
  */
 router.post("/:id/:target", authRequired, async (req, res) => {
   const { id, target } = req.params;
-  const { Multimedia, Subtitles } = db.getModels();
+  const { Multimedia, Subtitle } = db.getModels();
 
   const video = await Multimedia.findByPk(id);
 
@@ -35,7 +35,7 @@ router.post("/:id/:target", authRequired, async (req, res) => {
       const cues = generateCues(video.transcript);
       const translatedCues = await translateCues(cues, target);
 
-      const subtitles = Subtitles.build();
+      const subtitles = Subtitle.build();
 
       subtitles.language = target;
       subtitles.content = generateVTT(translatedCues);
@@ -66,8 +66,8 @@ router.post("/:id/:target/manual", async (req, res) => {
   const { id, target } = req.params;
   const cues = req.body;
 
-  const { Subtitles } = db.getModels();
-  const subtitles = Subtitles.build();
+  const { Subtitle } = db.getModels();
+  const subtitles = Subtitle.build();
 
   subtitles.language = target;
   subtitles.content = generateVTT(cues);

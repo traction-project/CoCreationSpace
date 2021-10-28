@@ -426,8 +426,8 @@ router.get("/:id/subtitles", async (req, res) => {
 router.get("/subtitles/:id", async (req, res) => {
   const { id } = req.params;
 
-  const { Subtitles } = db.getModels();
-  const subtitle = await Subtitles.findByPk(id);
+  const { Subtitle } = db.getModels();
+  const subtitle = await Subtitle.findByPk(id);
 
   if (subtitle) {
     res.send(subtitle.content);
