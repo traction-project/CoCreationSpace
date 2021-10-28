@@ -57,13 +57,13 @@ describe("SearchQuery model", () => {
   });
 
   it("should associate a new instance to a user", async () => {
-    const { SearchQuery, Users } = db.getModels();
+    const { SearchQuery, User } = db.getModels();
 
     const query = await SearchQuery.create({
       query: "test"
     });
 
-    const user = await Users.create({
+    const user = await User.create({
       username: "admin"
     });
 

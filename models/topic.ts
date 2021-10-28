@@ -3,7 +3,7 @@ import { v4 as uuidv4} from "uuid";
 
 import { CommonAttributes } from "util/typing/modelCommonAttributes";
 import { ThreadAttributes, ThreadInstance } from "./thread";
-import { UserInstance } from "./users";
+import { UserInstance } from "./user";
 import { UserGroupInstance } from "./user_group";
 
 export interface TopicAttributes extends CommonAttributes{

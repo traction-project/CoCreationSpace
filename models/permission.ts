@@ -2,11 +2,11 @@ import Sequelize, { Optional } from "sequelize";
 import { v4 as uuidv4 } from "uuid";
 
 import { CommonAttributes } from "util/typing/modelCommonAttributes";
-import { UsersAttributes, UserInstance } from "./users";
+import { UserAttributes, UserInstance } from "./user";
 
 export interface PermissionAttributes extends CommonAttributes{
     type: string;
-    user?: UsersAttributes | UsersAttributes["id"];
+    user?: UserAttributes | UserAttributes["id"];
 }
 
 type PermissionCreationAttributes = Optional<PermissionAttributes, "id" | "createdAt" | "updatedAt">;

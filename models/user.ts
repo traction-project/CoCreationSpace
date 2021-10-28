@@ -21,7 +21,7 @@ import { db } from "./index";
 
 const [ SESSION_SECRET ] = getFromEnvironment("SESSION_SECRET");
 
-export interface UsersAttributes extends CommonAttributes {
+export interface UserAttributes extends CommonAttributes {
   username: string;
   email?: string;
   password?: string;
@@ -42,7 +42,7 @@ export interface UsersAttributes extends CommonAttributes {
   participantCode?: string;
 }
 
-type UsersCreationAttributes = Optional<UsersAttributes, "id" | "createdAt" | "updatedAt">;
+type UserCreationAttributes = Optional<UserAttributes, "id" | "createdAt" | "updatedAt">;
 
 interface UserToken {
   _id: string;
@@ -53,7 +53,7 @@ interface UserToken {
 /**
  * Users instance object interface
  */
-export interface UserInstance extends Sequelize.Model<UsersAttributes, UsersCreationAttributes>, UsersAttributes {
+export interface UserInstance extends Sequelize.Model<UserAttributes, UserCreationAttributes>, UserAttributes {
   setPassword: (password: string) => void;
   validatePassword: (password: string) => boolean;
   generateToken: (validityInDays: number) => string;
@@ -198,10 +198,10 @@ export interface UserInstance extends Sequelize.Model<UsersAttributes, UsersCrea
 }
 
 /**
- *  Build Users Model object
+ *  Build User Model object
  * @param sequelize Sequelize: Conection object with de database
  */
-export function UsersModelFactory(sequelize: Sequelize.Sequelize): Sequelize.ModelCtor<UserInstance> {
+export function UserModelFactory(sequelize: Sequelize.Sequelize): Sequelize.ModelCtor<UserInstance> {
 
   const keyPasswordLeng = 512;
   // Model attributtes
@@ -257,11 +257,11 @@ export function UsersModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mod
   };
 
   // Create the model
-  const Users = sequelize.define<UserInstance, UsersCreationAttributes>("users", attributes, { underscored: true, tableName: "users" });
+  const User = sequelize.define<UserInstance, UserCreationAttributes>("User", attributes, { underscored: true, tableName: "users" });
 
-  Users.beforeCreate(user => { user.id = uuidv4(); });
+  User.beforeCreate(user => { user.id = uuidv4(); });
 
-  Users.prototype.setPassword = function (password: string): void {
+  User.prototype.setPassword = function (password: string): void {
     this.salt = crypto.randomBytes(16).toString("hex");
     this.password = crypto.pbkdf2Sync(
       password, this.salt,
@@ -270,7 +270,7 @@ export function UsersModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mod
     ).toString("hex");
   };
 
-  Users.prototype.validatePassword = function (password: string): boolean {
+  User.prototype.validatePassword = function (password: string): boolean {
     const hashedPassword = crypto.pbkdf2Sync(
       password, this.salt,
       10000, keyPasswordLeng,
@@ -280,7 +280,7 @@ export function UsersModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mod
     return this.password == hashedPassword;
   };
 
-  Users.prototype.generateToken = function (validityInDays = 60): string {
+  User.prototype.generateToken = function (validityInDays = 60): string {
     // Generate timestamp n days from now
     const now = new Date();
     const expirationDate = new Date().setDate(now.getDate() + validityInDays);
@@ -292,7 +292,7 @@ export function UsersModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mod
     }, SESSION_SECRET);
   };
 
-  Users.prototype.getAuth = function (): UserToken {
+  User.prototype.getAuth = function (): UserToken {
     return {
       _id: `${this.id}`,
       username: this.username,
@@ -303,7 +303,7 @@ export function UsersModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mod
   /**
    * Checks if the current user has a permission of type 'admin'
    */
-  Users.prototype.isAdmin = async function (): Promise<boolean> {
+  User.prototype.isAdmin = async function (): Promise<boolean> {
     if (this.role == "admin") {
       return true;
     }
@@ -318,5 +318,5 @@ export function UsersModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mod
     return false;
   };
 
-  return Users;
+  return User;
 }

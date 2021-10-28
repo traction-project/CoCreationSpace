@@ -80,7 +80,7 @@ function dataContainerAssociations(models: DbInterface) {
  */
 function emojiReactionAssociations(models: DbInterface) {
   models.EmojiReaction.belongsTo(models.Multimedia, { as: "multimedia", foreignKey: "multimedia_id" });
-  models.EmojiReaction.belongsTo(models.Users, { as: "user", foreignKey: "user_id" });
+  models.EmojiReaction.belongsTo(models.User, { as: "user", foreignKey: "user_id" });
 }
 
 /**
@@ -97,7 +97,7 @@ function metadataAssociations(models: DbInterface): void {
  * @param models DbInterface
  */
 function multimediaAssociations(models: DbInterface): void {
-  models.Multimedia.belongsTo(models.Users, { as: "user", foreignKey: "user_id" });
+  models.Multimedia.belongsTo(models.User, { as: "user", foreignKey: "user_id" });
   models.Multimedia.belongsTo(models.DataContainer, { as: "dataContainer", foreignKey: "data_container_id" });
   models.Multimedia.hasMany(models.AudioContent, { as: "audioContent", foreignKey: "multimedia_id" });
   models.Multimedia.hasMany(models.Metadata, { as: "metadata", foreignKey: "multimedia_id"});
@@ -114,7 +114,7 @@ function multimediaAssociations(models: DbInterface): void {
 function postsAssociations(models: DbInterface) {
   const PostDataContainer = models.Post.hasOne(models.DataContainer, { as: "dataContainer", foreignKey: "post_id" });
   models.Post.hasMany(models.Post, { as: "comments", foreignKey: "parent_post_id" });
-  models.Post.belongsTo(models.Users, { as: "user", foreignKey: "user_id" });
+  models.Post.belongsTo(models.User, { as: "user", foreignKey: "user_id" });
   models.Post.belongsTo(models.Thread, { as: "thread", foreignKey: "thread_id" });
 
   const optionsPostsPosts = {
@@ -134,7 +134,7 @@ function postsAssociations(models: DbInterface) {
     as: "postReferenced"
   }));
 
-  models.Post.belongsToMany(models.Users, {
+  models.Post.belongsToMany(models.User, {
     through: {
       model: models.UserReference,
       unique: false
@@ -152,7 +152,7 @@ function postsAssociations(models: DbInterface) {
     as: "tags"
   });
 
-  models.Post.belongsToMany(models.Users, {
+  models.Post.belongsToMany(models.User, {
     through: {
       model: models.Like,
       unique: false
@@ -170,7 +170,7 @@ function postsAssociations(models: DbInterface) {
  * @param models DbInterface
  */
 function permissionAssociations(models: DbInterface): void {
-  models.Permission.belongsToMany(models.Users, {
+  models.Permission.belongsToMany(models.User, {
     through: "user_permissions"
   });
 }
@@ -205,7 +205,7 @@ function tagAssociations(models: DbInterface): void {
 function topicAssociations(models: DbInterface): void {
   models.Topic.belongsTo(models.UserGroup);
   models.Topic.hasMany(models.Thread, { as: "threads", foreignKey: "topic_id" });
-  models.Topic.belongsToMany(models.Users, {
+  models.Topic.belongsToMany(models.User, {
     through: {
       model: models.Interest,
       unique: false
@@ -229,21 +229,21 @@ function threadAssociations(models: DbInterface): void {
  * @param models DbInterface
  */
 function userAssociations(models: DbInterface): void {
-  models.Users.hasMany(models.Multimedia, { as: "multimedia", foreignKey: "user_id" });
-  models.Users.belongsTo(models.Preference, { as: "preferences", foreignKey: "preferences_id" });
-  models.Users.hasMany(models.Post, { as: "post", foreignKey: "user_id" });
-  models.Users.hasMany(models.Notification, { as: "notifications", foreignKey: "user_id" });
-  models.Users.hasMany(models.MultimediaInteraction);
-  models.Users.hasMany(models.SearchQuery);
-  models.Users.hasMany(models.InternalNavigationStep);
-  models.Users.hasMany(models.ConsentForm);
-  models.Users.belongsToMany(models.UserGroup, { through: "user_group_users" });
+  models.User.hasMany(models.Multimedia, { as: "multimedia", foreignKey: "user_id" });
+  models.User.belongsTo(models.Preference, { as: "preferences", foreignKey: "preferences_id" });
+  models.User.hasMany(models.Post, { as: "post", foreignKey: "user_id" });
+  models.User.hasMany(models.Notification, { as: "notifications", foreignKey: "user_id" });
+  models.User.hasMany(models.MultimediaInteraction);
+  models.User.hasMany(models.SearchQuery);
+  models.User.hasMany(models.InternalNavigationStep);
+  models.User.hasMany(models.ConsentForm);
+  models.User.belongsToMany(models.UserGroup, { through: "user_group_users" });
 
-  models.Users.belongsToMany(models.Permission, {
+  models.User.belongsToMany(models.Permission, {
     through: "user_permissions"
   });
 
-  models.Users.belongsToMany(models.Post, {
+  models.User.belongsToMany(models.Post, {
     through: {
       model: models.UserReference,
       unique: false
@@ -252,7 +252,7 @@ function userAssociations(models: DbInterface): void {
     as: "postReferenced"
   });
 
-  models.Users.belongsToMany(models.Post, {
+  models.User.belongsToMany(models.Post, {
     through: {
       model: models.Like,
       unique: false
@@ -261,12 +261,12 @@ function userAssociations(models: DbInterface): void {
     as: "likesPosts"
   });
 
-  models.Users.hasMany(models.EmojiReaction, {
+  models.User.hasMany(models.EmojiReaction, {
     foreignKey: "user_id",
     as: "emojiReactions"
   });
 
-  models.Users.belongsToMany(models.Topic, {
+  models.User.belongsToMany(models.Topic, {
     through: {
       model: models.Interest,
       unique: false
@@ -281,7 +281,7 @@ function userAssociations(models: DbInterface): void {
  * @param models DBInterface
  */
 function userGroupAssociations(models: DbInterface) {
-  models.UserGroup.belongsToMany(models.Users, { through: "user_group_users" });
+  models.UserGroup.belongsToMany(models.User, { through: "user_group_users" });
   models.UserGroup.hasMany(models.Topic);
 }
 
@@ -290,7 +290,7 @@ function userGroupAssociations(models: DbInterface) {
  * @param models DBInterface
  */
 function multimediaInteractionsAssociations(models: DbInterface) {
-  models.MultimediaInteraction.belongsTo(models.Users);
+  models.MultimediaInteraction.belongsTo(models.User);
   models.MultimediaInteraction.belongsTo(models.Multimedia, { foreignKey: "multimedia_id" });
 }
 
@@ -299,7 +299,7 @@ function multimediaInteractionsAssociations(models: DbInterface) {
  * @param models DBInterface
  */
 function notificationAssociations(models: DbInterface) {
-  models.Notification.belongsTo(models.Users, { as: "user", foreignKey: "user_id" });
+  models.Notification.belongsTo(models.User, { as: "user", foreignKey: "user_id" });
 }
 
 /**
@@ -307,7 +307,7 @@ function notificationAssociations(models: DbInterface) {
  * @param models DBInterface
  */
 function searchQueryAssociations(models: DbInterface) {
-  models.SearchQuery.belongsTo(models.Users);
+  models.SearchQuery.belongsTo(models.User);
 }
 
 /**
@@ -315,7 +315,7 @@ function searchQueryAssociations(models: DbInterface) {
  * @param models DBInterface
  */
 function internalNavigationStepAssociations(models: DbInterface) {
-  models.InternalNavigationStep.belongsTo(models.Users);
+  models.InternalNavigationStep.belongsTo(models.User);
 }
 
 /**
@@ -323,7 +323,7 @@ function internalNavigationStepAssociations(models: DbInterface) {
  * @param models DBInterface
  */
 function consentFormAssociations(models: DbInterface) {
-  models.ConsentForm.belongsTo(models.Users);
+  models.ConsentForm.belongsTo(models.User);
 }
 
 /**

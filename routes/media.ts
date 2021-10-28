@@ -10,7 +10,7 @@ import { encodeDash, encodeAudio, encodeHLS, encodeHLSAudio } from "../util/tran
 import { uploadToS3 } from "../util/s3";
 import { transcribeMediaFile } from "../util/transcribe";
 import { MultimediaInstance } from "../models/multimedia";
-import { UserInstance } from "../models/users";
+import { UserInstance } from "../models/user";
 import { AsyncJobInstance } from "models/async_job";
 
 const [ BUCKET_NAME, ETS_PIPELINE, CLOUDFRONT_URL ] = getFromEnvironment("BUCKET_NAME", "ETS_PIPELINE", "CLOUDFRONT_URL");

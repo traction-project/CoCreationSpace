@@ -12,7 +12,7 @@ import { PermissionModelFactory } from "./permission";
 import { PostModelFactory } from "./post";
 import { PostReferenceModelFactory } from "./post_reference";
 import { PreferenceModelFactory } from "./preference";
-import { UsersModelFactory } from "./users";
+import { UserModelFactory } from "./user";
 import { UserReferenceModelFactory } from "./user_reference";
 import { DataContainerModelFactory } from "./data_container";
 import { AudioContentModelFactory } from "./audio_content";
@@ -70,7 +70,7 @@ class DataBase {
     const Topic = TopicModelFactory(sequelize);
     const UserGroup = UserGroupModelFactory(sequelize);
     const UserReference = UserReferenceModelFactory(sequelize);
-    const Users = UsersModelFactory(sequelize);
+    const User = UserModelFactory(sequelize);
 
     this.models = {
       AsyncJob,
@@ -97,7 +97,7 @@ class DataBase {
       Topic,
       UserGroup,
       UserReference,
-      Users,
+      User,
     };
   }
 

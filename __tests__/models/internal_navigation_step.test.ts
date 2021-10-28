@@ -57,13 +57,13 @@ describe("InternalNavigationStep model", () => {
   });
 
   it("should associate a new instance to a user", async () => {
-    const { InternalNavigationStep, Users } = db.getModels();
+    const { InternalNavigationStep, User } = db.getModels();
 
     const query = await InternalNavigationStep.create({
       data: {}
     });
 
-    const user = await Users.create({
+    const user = await User.create({
       username: "admin"
     });
 

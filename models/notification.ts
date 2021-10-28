@@ -2,12 +2,12 @@ import Sequelize, { Optional } from "sequelize";
 import { v4 as uuidv4 } from "uuid";
 
 import { CommonAttributes } from "util/typing/modelCommonAttributes";
-import { UserInstance, UsersAttributes } from "./users";
+import { UserInstance, UserAttributes } from "./user";
 
 export interface NotificationAttributes extends CommonAttributes {
   data: any;
   seen?: boolean;
-  user?: UsersAttributes | UsersAttributes["id"];
+  user?: UserAttributes | UserAttributes["id"];
   hash?: string;
 }
 

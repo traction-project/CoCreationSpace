@@ -33,13 +33,13 @@ describe("MultimediaInteraction model", () => {
   });
 
   it("should create a new empty instance and associate it to a user", async () => {
-    const { MultimediaInteraction, Users } = db.getModels();
+    const { MultimediaInteraction, User } = db.getModels();
 
     const interaction = await MultimediaInteraction.create({
       interaction: { type: "play", timestamp: 0 }
     });
 
-    const user = await Users.create({
+    const user = await User.create({
       username: "admin"
     });
 

@@ -3,7 +3,7 @@ import { Strategy as LocalStrategy } from "passport-local";
 import { Strategy as JWTStrategy, ExtractJwt } from "passport-jwt";
 
 import { getFromEnvironment } from "../util";
-import { UserInstance } from "../models/users";
+import { UserInstance } from "../models/user";
 import { db } from "../models";
 
 const [ SESSION_SECRET ] = getFromEnvironment("SESSION_SECRET");
@@ -17,14 +17,14 @@ const [ SESSION_SECRET ] = getFromEnvironment("SESSION_SECRET");
  * @returns A user object matching either name or email, null otherwise
  */
 async function findUserByUsernameOrEmail(name: string): Promise<UserInstance | null> {
-  const { Users } = db.getModels();
-  const user = await Users.findOne({ where: { username: name } });
+  const { User } = db.getModels();
+  const user = await User.findOne({ where: { username: name } });
 
   if (user) {
     return user;
   }
 
-  return await Users.findOne({ where: { email: name } });
+  return await User.findOne({ where: { email: name } });
 }
 
 export default async function setup() {
@@ -46,9 +46,9 @@ export default async function setup() {
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
     secretOrKey: SESSION_SECRET
   }, (token, done) => {
-    const { Users } = db.getModels();
+    const { User } = db.getModels();
 
-    Users.findByPk(token.id).then((user) => {
+    User.findByPk(token.id).then((user) => {
       if (user) {
         done(null, user);
       } else {
@@ -63,9 +63,9 @@ export default async function setup() {
   });
 
   passport.deserializeUser((id: string, done) => {
-    const { Users } = db.getModels();
+    const { User } = db.getModels();
 
-    Users.findOne({where : { id }}).then((user: UserInstance) => {
+    User.findOne({where : { id }}).then((user: UserInstance) => {
       done(null, user);
     }).catch(done);
   });

@@ -2,10 +2,10 @@ import Sequelize, { Optional } from "sequelize";
 import { v4 as uuidv4 } from "uuid";
 
 import { CommonAttributes } from "util/typing/modelCommonAttributes";
-import { UserInstance, UsersAttributes } from "./users";
+import { UserInstance, UserAttributes } from "./user";
 
 export interface ConsentFormAttributes extends CommonAttributes {
-  user: UsersAttributes | UsersAttributes["id"];
+  user: UserAttributes | UserAttributes["id"];
   data?: any;
 }
 

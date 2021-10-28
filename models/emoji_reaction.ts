@@ -2,7 +2,7 @@ import Sequelize, { Optional } from "sequelize";
 import { v4 as uuidv4} from "uuid";
 
 import { CommonAttributes } from "util/typing/modelCommonAttributes";
-import { UserInstance, UsersAttributes } from "./users";
+import { UserInstance, UserAttributes } from "./user";
 import { PostAttributes, PostInstance } from "./post";
 
 export interface EmojiReactionAttributes extends CommonAttributes{
@@ -10,7 +10,7 @@ export interface EmojiReactionAttributes extends CommonAttributes{
     second?: number;
     multimedia_id: string;
     user_id: string;
-    user?: UsersAttributes | UsersAttributes["id"];
+    user?: UserAttributes | UserAttributes["id"];
     post?: PostAttributes | PostAttributes["id"];
 }
 

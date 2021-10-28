@@ -5,7 +5,7 @@ import { ModelCtor, Model, Op } from "sequelize";
 import { Application } from "express";
 import { createTransport } from "nodemailer";
 
-import { UsersAttributes } from "../models/users";
+import { UserAttributes } from "../models/user";
 
 /**
  * Returns a list containing all integers between the given start point and end
@@ -202,7 +202,7 @@ export const buildCriteria = async ({ q }: { q?: string }, model: ModelCtor<Mode
  * Check if the object is an instance of UserAttributes
  * @param object
  */
-export const isUser = (object: any): object is UsersAttributes => {
+export const isUser = (object: any): object is UserAttributes => {
   return "username" in object;
 };
 

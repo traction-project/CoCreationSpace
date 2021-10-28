@@ -17,7 +17,7 @@ import UserRouter from "./user";
 import NotificationRouter from "./notification";
 import GroupRouter from "./group";
 
-import { UserInstance } from "../models/users";
+import { UserInstance } from "../models/user";
 import { db } from "../models";
 import { getFromEnvironment, loadTemplate, sendEmail } from "../util";
 
@@ -58,13 +58,13 @@ router.post("/login", passport.authenticate("local"), async (req, res) => {
 });
 
 router.post("/register", async (req, res) => {
-  const { Users } = db.getModels();
+  const { User } = db.getModels();
   const { username, password, email, preferredLanguage, participantCode } = req.body;
 
-  const userExists = await Users.findOne({ where: { username } });
+  const userExists = await User.findOne({ where: { username } });
 
   if (!userExists) {
-    const newUser = Users.build({ username, email, preferredLanguage, participantCode });
+    const newUser = User.build({ username, email, preferredLanguage, participantCode });
     newUser.setPassword(password);
 
     try {
@@ -101,7 +101,7 @@ router.post("/logout", (req, res) => {
  * sending an e-mail with a password reset link.
  */
 router.post("/requestreset", async (req, res) => {
-  const { Users } = db.getModels();
+  const { User } = db.getModels();
   const { email } = req.body;
 
   if (!email) {
@@ -111,7 +111,7 @@ router.post("/requestreset", async (req, res) => {
     });
   }
 
-  const user = await Users.findOne({ where: { email }});
+  const user = await User.findOne({ where: { email }});
 
   if (!user) {
     return res.status(404).send({
@@ -146,7 +146,7 @@ router.post("/requestreset", async (req, res) => {
  * the provided value.
  */
 router.post("/resetpassword", async (req, res) => {
-  const { Users } = db.getModels();
+  const { User } = db.getModels();
   const { resettoken, password } = req.body;
 
   if (!resettoken || !password) {
@@ -156,7 +156,7 @@ router.post("/resetpassword", async (req, res) => {
     });
   }
 
-  const user = await Users.findOne({ where: { resettoken }});
+  const user = await User.findOne({ where: { resettoken }});
 
   if (!user) {
     return res.status(404).send({
@@ -191,7 +191,7 @@ router.get("/revision", (_, res) => {
 });
 
 router.post("/internalnavigation", async (req, res) => {
-  const { InternalNavigationStep, Users } = db.getModels();
+  const { InternalNavigationStep, User } = db.getModels();
 
   const navigationData: { userId: string, data: any } = req.body;
   const navigationStep = await InternalNavigationStep.create({
@@ -200,7 +200,7 @@ router.post("/internalnavigation", async (req, res) => {
   });
 
   if (navigationData.userId) {
-    const user = await Users.findByPk(navigationData.userId);
+    const user = await User.findByPk(navigationData.userId);
     user && navigationStep.setUser(user);
   }
 

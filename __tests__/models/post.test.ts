@@ -11,8 +11,8 @@ describe("Post model", () => {
   beforeAll(async () => {
     await db.createDB(sequelize);
 
-    const { Users } = db.getModels();
-    await Users.create({
+    const { User } = db.getModels();
+    await User.create({
       username: "admin"
     });
   });
@@ -23,10 +23,10 @@ describe("Post model", () => {
   });
 
   it("should create a post with associated data container", async () => {
-    const { Users, Post, DataContainer } = db.getModels();
+    const { User, Post, DataContainer } = db.getModels();
 
     const post = Post.build({
-      user_id: (await Users.findOne({}))!.id,
+      user_id: (await User.findOne({}))!.id,
       dataContainer: DataContainer.build({
         text_content: "This is a comment"
       }),
@@ -45,16 +45,16 @@ describe("Post model", () => {
   });
 
   it("should retrieve all comments for a post", async () => {
-    const { Users, Post } = db.getModels();
+    const { User, Post } = db.getModels();
 
     const post = await Post.create({
-      user_id: (await Users.findOne({}))!.id,
+      user_id: (await User.findOne({}))!.id,
     });
 
     expect(await post.countComments()).toEqual(0);
 
     const comment1 = await Post.create({
-      user_id: (await Users.findOne({}))!.id,
+      user_id: (await User.findOne({}))!.id,
       parent_post_id: post.id
     });
 
@@ -62,7 +62,7 @@ describe("Post model", () => {
     expect(await post.hasComment(comment1)).toBeTruthy();
 
     const comment2 = await Post.create({
-      user_id: (await Users.findOne({}))!.id,
+      user_id: (await User.findOne({}))!.id,
       parent_post_id: post.id
     });
 
@@ -71,24 +71,24 @@ describe("Post model", () => {
   });
 
   it("should delete all comments if a post is deleted", async () => {
-    const { Users, Post } = db.getModels();
+    const { User, Post } = db.getModels();
 
     const post = await Post.create({
-      user_id: (await Users.findOne({}))!.id,
+      user_id: (await User.findOne({}))!.id,
     });
 
     const comment1 = await Post.create({
-      user_id: (await Users.findOne({}))!.id,
+      user_id: (await User.findOne({}))!.id,
       parent_post_id: post.id
     });
 
     const comment1Child = await Post.create({
-      user_id: (await Users.findOne({}))!.id,
+      user_id: (await User.findOne({}))!.id,
       parent_post_id: comment1.id
     });
 
     const comment2 = await Post.create({
-      user_id: (await Users.findOne({}))!.id,
+      user_id: (await User.findOne({}))!.id,
       parent_post_id: post.id
     });
 
@@ -103,24 +103,24 @@ describe("Post model", () => {
   });
 
   it("should only delete comments which are children of the deleted post", async () => {
-    const { Users, Post } = db.getModels();
+    const { User, Post } = db.getModels();
 
     const post = await Post.create({
-      user_id: (await Users.findOne({}))!.id,
+      user_id: (await User.findOne({}))!.id,
     });
 
     const comment1 = await Post.create({
-      user_id: (await Users.findOne({}))!.id,
+      user_id: (await User.findOne({}))!.id,
       parent_post_id: post.id
     });
 
     const comment1Child = await Post.create({
-      user_id: (await Users.findOne({}))!.id,
+      user_id: (await User.findOne({}))!.id,
       parent_post_id: comment1.id
     });
 
     const comment2 = await Post.create({
-      user_id: (await Users.findOne({}))!.id,
+      user_id: (await User.findOne({}))!.id,
       parent_post_id: post.id
     });
 
@@ -136,14 +136,14 @@ describe("Post model", () => {
   });
 
   it("should retrieve the parent post", async () => {
-    const { Users, Post } = db.getModels();
+    const { User, Post } = db.getModels();
 
     const post = await Post.create({
-      user_id: (await Users.findOne({}))!.id,
+      user_id: (await User.findOne({}))!.id,
     });
 
     const comment1 = await Post.create({
-      user_id: (await Users.findOne({}))!.id,
+      user_id: (await User.findOne({}))!.id,
       parent_post_id: post.id
     });
 
@@ -154,10 +154,10 @@ describe("Post model", () => {
   });
 
   it("should return null if there is no parent post", async () => {
-    const { Users, Post } = db.getModels();
+    const { User, Post } = db.getModels();
 
     const comment1 = await Post.create({
-      user_id: (await Users.findOne({}))!.id,
+      user_id: (await User.findOne({}))!.id,
     });
 
     const parent = await comment1.getParentPost();
@@ -165,7 +165,7 @@ describe("Post model", () => {
   });
 
   it("should return the associated user group", async () => {
-    const { Users, Post, Thread, Topic, UserGroup } = db.getModels();
+    const { User, Post, Thread, Topic, UserGroup } = db.getModels();
 
     const group = await UserGroup.create({ name: "some group" });
 
@@ -176,7 +176,7 @@ describe("Post model", () => {
     await thread.setTopic(topic);
 
     const post = await Post.create({
-      user_id: (await Users.findOne({}))!.id,
+      user_id: (await User.findOne({}))!.id,
     });
     await post.setThread(thread);
 

@@ -3,7 +3,7 @@ import { Router } from "express";
 import { db } from "../models";
 import { buildCriteria, isUser, getFromEnvironment } from "../util";
 import { authRequired } from "../util/middleware";
-import { UserInstance } from "models/users";
+import { UserInstance } from "models/user";
 import association from "../models/associations";
 import { TagInstance } from "models/tag";
 import { PostInstance } from "models/post";
@@ -31,7 +31,7 @@ async function logSearchQuery(query: string | undefined, resultcount: number, us
  */
 router.get("/all/user", authRequired, async (req, res) => {
   const user = req.user as UserInstance;
-  const { Post, Users, DataContainer, Multimedia, Thread, Topic, UserGroup } = db.getModels();
+  const { Post, User, DataContainer, Multimedia, Thread, Topic, UserGroup } = db.getModels();
 
   let queryDataContainer = {
     model: DataContainer,
@@ -52,7 +52,7 @@ router.get("/all/user", authRequired, async (req, res) => {
       parent_post_id: null
     } as any,
     include: [{
-      model: Users,
+      model: User,
       as: "user",
       attributes: ["id", "username", "image"],
       where: { id: user.id }
@@ -92,7 +92,7 @@ router.get("/all/user", authRequired, async (req, res) => {
  */
 router.get("/all/group", authRequired, async (req, res) => {
   const user = req.user as UserInstance;
-  const { Post, Users, UserGroup, DataContainer, Multimedia, Tag, Thread, Topic } = db.getModels();
+  const { Post, User, UserGroup, DataContainer, Multimedia, Tag, Thread, Topic } = db.getModels();
 
   // Get desired page number and results per page from query string if present
   // Use defaults otherwise
@@ -126,7 +126,7 @@ router.get("/all/group", authRequired, async (req, res) => {
     } as any,
     distinct: true,
     include: [{
-      model: Users,
+      model: User,
       as: "user",
       attributes: ["id", "username", "image"]
     }, queryDataContainer, "comments", {

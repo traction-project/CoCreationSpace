@@ -5,25 +5,25 @@ process.env["SESSION_SECRET"] = "sessionsecret";
 const sequelize = new Sequelize("sqlite::memory:", { logging: false });
 
 import { db } from "../../models";
-import { UserInstance } from "models/users";
+import { UserInstance } from "models/user";
 
-describe("Users model", () => {
+describe("User model", () => {
   beforeAll(async () => {
     await db.createDB(sequelize);
   });
 
   beforeEach(async () => {
-    const { Users, UserGroup, Permission } = db.getModels();
+    const { User, UserGroup, Permission } = db.getModels();
 
-    await Users.destroy({ truncate: true });
+    await User.destroy({ truncate: true });
     await Permission.destroy({ truncate: true });
     await UserGroup.destroy({ truncate: true });
   });
 
   it("should create a new user with just a username", async () => {
-    const { Users } = db.getModels();
+    const { User } = db.getModels();
 
-    const user = await Users.build({
+    const user = await User.build({
       username: "test"
     }).save();
 
@@ -37,10 +37,10 @@ describe("Users model", () => {
   });
 
   it("should not create a record with empty username", async () => {
-    const { Users } = db.getModels();
+    const { User } = db.getModels();
 
     try {
-      await Users.build({ username: "" }).save();
+      await User.build({ username: "" }).save();
       fail();
     } catch (e) {
       expect(e).toBeDefined();
@@ -48,9 +48,9 @@ describe("Users model", () => {
   });
 
   it("should hash the password when calling setPassword", async () => {
-    const { Users } = db.getModels();
+    const { User } = db.getModels();
 
-    const user = Users.build({ username: "admin" });
+    const user = User.build({ username: "admin" });
     user.setPassword("secret");
     await user.save();
 
@@ -62,9 +62,9 @@ describe("Users model", () => {
   });
 
   it("should validate the password when calling validatePassword()", async () => {
-    const { Users } = db.getModels();
+    const { User } = db.getModels();
 
-    const user = Users.build({ username: "admin" });
+    const user = User.build({ username: "admin" });
     user.setPassword("secret");
     await user.save();
 
@@ -73,9 +73,9 @@ describe("Users model", () => {
   });
 
   it("should return true when user has a certain permission", async () => {
-    const { Users, Permission } = db.getModels();
+    const { User, Permission } = db.getModels();
 
-    const user = await Users.create({ username: "admin" });
+    const user = await User.create({ username: "admin" });
     const permission = await Permission.create({ type: "upload_raw" });
 
     await user.addPermission(permission);
@@ -83,9 +83,9 @@ describe("Users model", () => {
   });
 
   it("should count a user's permissions", async () => {
-    const { Users, Permission } = db.getModels();
+    const { User, Permission } = db.getModels();
 
-    const user = await Users.create({ username: "admin" });
+    const user = await User.create({ username: "admin" });
     expect(await user.countPermissions()).toEqual(0);
 
     const permission = await Permission.create({ type: "some_permission" });
@@ -95,9 +95,9 @@ describe("Users model", () => {
   });
 
   it("should return true when user has a certain series of permissions", async () => {
-    const { Users, Permission } = db.getModels();
+    const { User, Permission } = db.getModels();
 
-    const user = await Users.create({ username: "admin" });
+    const user = await User.create({ username: "admin" });
 
     const permission1 = await Permission.create({ type: "upload_raw" });
     const permission2 = await Permission.create({ type: "other_permission" });
@@ -117,9 +117,9 @@ describe("Users model", () => {
   });
 
   it("should return false when user is missing a permission in a series", async () => {
-    const { Users, Permission } = db.getModels();
+    const { User, Permission } = db.getModels();
 
-    const user = await Users.create({ username: "admin" });
+    const user = await User.create({ username: "admin" });
 
     const permission1 = await Permission.create({ type: "upload_raw" });
     const permission2 = await Permission.create({ type: "other_permission" });
@@ -134,9 +134,9 @@ describe("Users model", () => {
   });
 
   it("should not fail when trying to remove an interest that the user does not have", async () => {
-    const { Users, Topic } = db.getModels();
+    const { User, Topic } = db.getModels();
 
-    const user = await Users.create({ username: "admin" });
+    const user = await User.create({ username: "admin" });
 
     const topic1 = await Topic.create({ title: "topic1" });
     const topic2 = await Topic.create({ title: "topic2" });
@@ -153,9 +153,9 @@ describe("Users model", () => {
   });
 
   it("should take authorization object with token from user registered", async () => {
-    const { Users } = db.getModels();
+    const { User } = db.getModels();
 
-    const user = await Users.create(
+    const user = await User.create(
       {
         username: "admin",
         password: "password"
@@ -171,9 +171,9 @@ describe("Users model", () => {
   });
 
   it("should generate a valid token from user registered", async () => {
-    const { Users } = db.getModels();
+    const { User } = db.getModels();
 
-    const user = await Users.create(
+    const user = await User.create(
       {
         username: "admin",
         password: "password"
@@ -186,9 +186,9 @@ describe("Users model", () => {
   });
 
   it("should associate a user with a single group", async () => {
-    const { Users, UserGroup } = db.getModels();
+    const { User, UserGroup } = db.getModels();
 
-    const user = await Users.create(
+    const user = await User.create(
       {
         username: "admin",
         password: "password"
@@ -203,9 +203,9 @@ describe("Users model", () => {
   });
 
   it("should associate a user with multiple single groups", async () => {
-    const { Users, UserGroup } = db.getModels();
+    const { User, UserGroup } = db.getModels();
 
-    const user = await Users.create(
+    const user = await User.create(
       {
         username: "admin",
         password: "password"
@@ -221,9 +221,9 @@ describe("Users model", () => {
   });
 
   it("should remove a user from a group", async () => {
-    const { Users, UserGroup } = db.getModels();
+    const { User, UserGroup } = db.getModels();
 
-    const user = await Users.create(
+    const user = await User.create(
       {
         username: "admin",
         password: "password"
@@ -239,9 +239,9 @@ describe("Users model", () => {
   });
 
   it("should return whether a user is part of a group", async () => {
-    const { Users, UserGroup } = db.getModels();
+    const { User, UserGroup } = db.getModels();
 
-    const user = await Users.create(
+    const user = await User.create(
       {
         username: "admin",
         password: "password"
@@ -255,9 +255,9 @@ describe("Users model", () => {
   });
 
   it("should list a user's multimedia interactions", async () => {
-    const { Users, MultimediaInteraction } = db.getModels();
+    const { User, MultimediaInteraction } = db.getModels();
 
-    const user = await Users.create({
+    const user = await User.create({
       username: "admin",
       password: "password",
     });
@@ -275,9 +275,9 @@ describe("Users model", () => {
   });
 
   it("should list a user's search queries", async () => {
-    const { Users, SearchQuery } = db.getModels();
+    const { User, SearchQuery } = db.getModels();
 
-    const user = await Users.create({
+    const user = await User.create({
       username: "admin",
       password: "password",
     });
@@ -299,9 +299,9 @@ describe("Users model", () => {
   });
 
   it("should initialise a new object with empty email address", async () => {
-    const { Users } = db.getModels();
+    const { User } = db.getModels();
 
-    const user = await Users.create({
+    const user = await User.create({
       username: "admin",
     });
 
@@ -309,9 +309,9 @@ describe("Users model", () => {
   });
 
   it("should initialise a new object with given email address", async () => {
-    const { Users } = db.getModels();
+    const { User } = db.getModels();
 
-    const user = await Users.create({
+    const user = await User.create({
       username: "admin",
       email: "admin@test.com"
     });
@@ -320,9 +320,9 @@ describe("Users model", () => {
   });
 
   it("should make sure that email addresses are unique", async () => {
-    const { Users } = db.getModels();
+    const { User } = db.getModels();
 
-    const user1 = await Users.create({
+    const user1 = await User.create({
       username: "admin",
       email: "admin@test.com"
     });
@@ -330,7 +330,7 @@ describe("Users model", () => {
     expect(user1.email).toEqual("admin@test.com");
 
     try {
-      await Users.create({
+      await User.create({
         username: "admin2",
         email: "admin@test.com"
       });
@@ -344,9 +344,9 @@ describe("Users model", () => {
   });
 
   it("should initialise a new object with a participant code", async () => {
-    const { Users } = db.getModels();
+    const { User } = db.getModels();
 
-    const user = await Users.create({
+    const user = await User.create({
       username: "admin",
       participantCode: "participant1"
     });
@@ -355,9 +355,9 @@ describe("Users model", () => {
   });
 
   it("should return false if there is no admin permission", async () => {
-    const { Users } = db.getModels();
+    const { User } = db.getModels();
 
-    const user = await Users.create({
+    const user = await User.create({
       username: "admin",
     });
 
@@ -365,9 +365,9 @@ describe("Users model", () => {
   });
 
   it("should return true if there is no admin permission but user has the role 'admin'", async () => {
-    const { Users } = db.getModels();
+    const { User } = db.getModels();
 
-    const user = await Users.create({
+    const user = await User.create({
       username: "admin",
       role: "admin"
     });
@@ -376,11 +376,11 @@ describe("Users model", () => {
   });
 
   it("should return false if the admin permission is not associated to the user", async () => {
-    const { Users, Permission } = db.getModels();
+    const { User, Permission } = db.getModels();
 
     await Permission.create({ type: "admin" });
 
-    const user = await Users.create({
+    const user = await User.create({
       username: "admin",
     });
 
@@ -388,13 +388,13 @@ describe("Users model", () => {
   });
 
   it("should return true if the admin permission is associated to the user", async () => {
-    const { Users, Permission } = db.getModels();
+    const { User, Permission } = db.getModels();
 
     const permission = await Permission.create({
       type: "admin"
     });
 
-    const user = await Users.create({
+    const user = await User.create({
       username: "admin",
     });
 

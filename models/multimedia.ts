@@ -2,7 +2,7 @@ import Sequelize, { Optional, Op } from "sequelize";
 import { v4 as uuidv4} from "uuid";
 
 import { CommonAttributes } from "util/typing/modelCommonAttributes";
-import { UsersAttributes, UserInstance } from "./users";
+import { UserAttributes, UserInstance } from "./user";
 import { TranscribeOutput } from "util/transcribe";
 import { DataContainerAttributes, DataContainerInstance } from "./data_container";
 import { AudioContentAttributes, AudioContentInstance } from "./audio_content";
@@ -28,7 +28,7 @@ export interface MultimediaAttributes extends CommonAttributes {
   resolutions?: Array<number>;
   viewCount?: number;
   type?: string;
-  user?: UsersAttributes | UsersAttributes["id"];
+  user?: UserAttributes | UserAttributes["id"];
   dataContainer?: DataContainerAttributes | DataContainerAttributes["id"];
   audioContent?: AudioContentAttributes | AudioContentAttributes["id"];
   metadata?: MetadataAttributes | MetadataAttributes["id"];

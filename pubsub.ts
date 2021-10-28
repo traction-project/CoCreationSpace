@@ -5,7 +5,7 @@ import crypto from "crypto";
 
 import { getFromEnvironment } from "./util";
 import { db } from "./models";
-import { UserInstance } from "models/users";
+import { UserInstance } from "models/user";
 
 const [ CLOUDFRONT_URL ] = getFromEnvironment("CLOUDFRONT_URL");
 
@@ -42,9 +42,9 @@ async function getUserInterests(user: UserInstance): Promise<Array<string>> {
  * @param userId ID of user to send refreshed notifications to
  */
 export async function sendRefreshToClient(userId: string) {
-  const { Users } = db.getModels();
+  const { User } = db.getModels();
 
-  const user = await Users.findByPk(userId);
+  const user = await User.findByPk(userId);
 
   if (user) {
     const userNotifications = await user.getNotifications({

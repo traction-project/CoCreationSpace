@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction, RequestHandler } from "express";
 import passport from "passport";
 
-import { UserInstance } from "../models/users";
+import { UserInstance } from "../models/user";
 import { db } from "../models/index";
 
 /**

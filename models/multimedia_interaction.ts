@@ -2,12 +2,12 @@ import Sequelize, { Optional } from "sequelize";
 import { v4 as uuidv4 } from "uuid";
 
 import { CommonAttributes } from "util/typing/modelCommonAttributes";
-import { UserInstance, UsersAttributes } from "./users";
+import { UserInstance, UserAttributes } from "./user";
 import { MultimediaInstance, MultimediaAttributes } from "./multimedia";
 
 export interface MultimediaInteractionAttributes extends CommonAttributes {
   multimedia: MultimediaAttributes | MultimediaAttributes["id"];
-  user: UsersAttributes | UsersAttributes["id"];
+  user: UserAttributes | UserAttributes["id"];
   interaction: { type: string, timestamp: number };
 }
 

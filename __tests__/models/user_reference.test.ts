@@ -11,16 +11,16 @@ describe("User references user tests", () => {
   });
 
   beforeEach(async () => {
-    const { UserReference, Users, Post } = db.getModels();
+    const { UserReference, User, Post } = db.getModels();
 
     await UserReference.destroy({ truncate: true });
-    await Users.destroy({ truncate: true });
+    await User.destroy({ truncate: true });
     await Post.destroy({ truncate: true });
   });
 
   it("should be user1 referenced by post1", async () => {
-    const { Post, Users } = db.getModels();
-    const user1 = await Users.create({ username: "user1" });
+    const { Post, User } = db.getModels();
+    const user1 = await User.create({ username: "user1" });
     const post1 = await Post.create({ title: "New post" });
 
     expect(await post1.hasUserReferenced([user1])).toBeFalsy();
@@ -32,8 +32,8 @@ describe("User references user tests", () => {
   });
 
   it("should be user1 referenced by post1 and post2", async () => {
-    const { Post, Users } = db.getModels();
-    const user1 = await Users.create({ username: "user1" });
+    const { Post, User } = db.getModels();
+    const user1 = await User.create({ username: "user1" });
     const post1 = await Post.create({ title: "New post" });
     const post2 = await Post.create({ title: "Media post" });
 
@@ -49,8 +49,8 @@ describe("User references user tests", () => {
   });
 
   it("should post1 remove reference to user1", async () => {
-    const { Post, Users } = db.getModels();
-    const user1 = await Users.create({ username: "user1" });
+    const { Post, User } = db.getModels();
+    const user1 = await User.create({ username: "user1" });
     const post1 = await Post.create({ title: "New post" });
 
     await post1.addUserReferenced(user1);

@@ -11,10 +11,10 @@ describe("UserGroup model", () => {
   });
 
   beforeEach(async () => {
-    const { Users, UserGroup, Topic } = db.getModels();
+    const { User, UserGroup, Topic } = db.getModels();
 
     await UserGroup.destroy({ truncate: true });
-    await Users.destroy({ truncate: true });
+    await User.destroy({ truncate: true });
     await Topic.destroy({ truncate: true });
   });
 
@@ -71,14 +71,14 @@ describe("UserGroup model", () => {
   });
 
   it("should add users to a group", async () => {
-    const { Users, UserGroup } = db.getModels();
+    const { User, UserGroup } = db.getModels();
 
     const group = await UserGroup.build({
       name: "test"
     }).save();
 
-    const user1 = await Users.create({ username: "user1" });
-    const user2 = await Users.create({ username: "user2" });
+    const user1 = await User.create({ username: "user1" });
+    const user2 = await User.create({ username: "user2" });
 
     expect(await group.countUsers()).toEqual(0);
 
@@ -90,13 +90,13 @@ describe("UserGroup model", () => {
   });
 
   it("should not add users to a group multiple times", async () => {
-    const { Users, UserGroup } = db.getModels();
+    const { User, UserGroup } = db.getModels();
 
     const group = await UserGroup.build({
       name: "test"
     }).save();
 
-    const user1 = await Users.create({ username: "user1" });
+    const user1 = await User.create({ username: "user1" });
     expect(await group.countUsers()).toEqual(0);
 
     await group.addUser(user1);
@@ -107,14 +107,14 @@ describe("UserGroup model", () => {
   });
 
   it("should remove users from a group", async () => {
-    const { Users, UserGroup } = db.getModels();
+    const { User, UserGroup } = db.getModels();
 
     const group = await UserGroup.build({
       name: "test"
     }).save();
 
-    const user1 = await Users.create({ username: "user1" });
-    const user2 = await Users.create({ username: "user2" });
+    const user1 = await User.create({ username: "user1" });
+    const user2 = await User.create({ username: "user2" });
 
     await group.addUsers([user1, user2]);
     expect(await group.countUsers()).toEqual(2);

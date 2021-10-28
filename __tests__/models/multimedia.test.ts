@@ -220,7 +220,7 @@ describe("Multimedia model", () => {
   });
 
   it("should list emoji-reactions associated to the multimedia item", async () => {
-    const { Multimedia, EmojiReaction, Users } = db.getModels();
+    const { Multimedia, EmojiReaction, User } = db.getModels();
 
     const video = await Multimedia.create({
       title: "video",
@@ -228,7 +228,7 @@ describe("Multimedia model", () => {
 
     expect(await video.countEmojiReactions()).toEqual(0);
 
-    const user = await Users.create({ username: "admin" });
+    const user = await User.create({ username: "admin" });
     const reaction = await EmojiReaction.create({
       emoji: "😋",
       user_id: user.id,

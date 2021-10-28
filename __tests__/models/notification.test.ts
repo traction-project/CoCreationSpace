@@ -1,4 +1,4 @@
-import { UsersAttributes } from "models/users";
+import { UserAttributes } from "models/user";
 import { Sequelize } from "sequelize";
 
 process.env["SESSION_SECRET"] = "sessionsecret";
@@ -10,8 +10,8 @@ describe("Notifications model", () => {
   beforeAll(async () => {
     await db.createDB(sequelize);
 
-    const { Users } = db.getModels();
-    await Users.create({
+    const { User } = db.getModels();
+    await User.create({
       username: "admin"
     });
   });
@@ -45,9 +45,9 @@ describe("Notifications model", () => {
   });
 
   it("should create a notification an associate it to a user", async () => {
-    const { Notification, Users } = db.getModels();
+    const { Notification, User } = db.getModels();
 
-    const user = await Users.findOne({ where: { username: "admin" }});
+    const user = await User.findOne({ where: { username: "admin" }});
     const notification = await Notification.build({
       data: { text: "Hello World" }
     }).save();
@@ -61,9 +61,9 @@ describe("Notifications model", () => {
   });
 
   it("should create a notification and retrieve the user through the getUser method", async () => {
-    const { Notification, Users } = db.getModels();
+    const { Notification, User } = db.getModels();
 
-    const user = await Users.findOne({ where: { username: "admin" }});
+    const user = await User.findOne({ where: { username: "admin" }});
     const notification = await Notification.build({
       data: { text: "Hello World" }
     }).save();
@@ -76,9 +76,9 @@ describe("Notifications model", () => {
   });
 
   it("should create a notification and set the user through user id", async () => {
-    const { Notification, Users } = db.getModels();
+    const { Notification, User } = db.getModels();
 
-    const user = (await Users.findOne({ where: { username: "admin" }}))!;
+    const user = (await User.findOne({ where: { username: "admin" }}))!;
     const notification = await Notification.build({
       data: { text: "Hello World" }
     }).save();
@@ -92,8 +92,8 @@ describe("Notifications model", () => {
   });
 
   it("should allow to query all notifications from an user instance", async () => {
-    const { Notification, Users } = db.getModels();
-    const user = (await Users.findOne({ where: { username: "admin" }}))!;
+    const { Notification, User } = db.getModels();
+    const user = (await User.findOne({ where: { username: "admin" }}))!;
 
     let notification = await Notification.build({
       data: { text: "Hello World" }
@@ -115,9 +115,9 @@ describe("Notifications model", () => {
   });
 
   it("should allow user IDs in where statements", async () => {
-    const { Notification, Users } = db.getModels();
+    const { Notification, User } = db.getModels();
 
-    const user = (await Users.findOne({ where: { username: "admin" }}))!;
+    const user = (await User.findOne({ where: { username: "admin" }}))!;
     const notification = await Notification.build({
       data: { text: "Hello World" }
     }).save();
@@ -129,7 +129,7 @@ describe("Notifications model", () => {
         data: { text: "Hello World" }
       },
       include: {
-        model: Users,
+        model: User,
         as: "user",
         where: { id: user.id }
       }
@@ -137,7 +137,7 @@ describe("Notifications model", () => {
 
     expect(savedNotification).not.toBeNull();
 
-    const savedUser = savedNotification!.user! as UsersAttributes;
+    const savedUser = savedNotification!.user! as UserAttributes;
     expect(savedUser.username).toEqual("admin");
   });
 

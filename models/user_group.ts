@@ -2,7 +2,7 @@ import Sequelize, { Optional } from "sequelize";
 import { v4 as uuidv4 } from "uuid";
 
 import { CommonAttributes } from "util/typing/modelCommonAttributes";
-import { UserInstance } from "./users";
+import { UserInstance } from "./user";
 import { TopicInstance } from "./topic";
 
 export interface UserGroupAttributes extends CommonAttributes {

@@ -14,10 +14,10 @@ describe("Preferences tests", () => {
   });
 
   beforeEach(async () => {
-    const { Preference, Users } = db.getModels();
+    const { Preference, User } = db.getModels();
 
     await Preference.destroy({ truncate: true });
-    await Users.destroy({ truncate: true });
+    await User.destroy({ truncate: true });
   });
 
   it("should create new preferences", async () => {
@@ -31,9 +31,9 @@ describe("Preferences tests", () => {
   });
 
   it("should assing preferences to user", async () => {
-    const { Preference, Users } = db.getModels();
+    const { Preference, User } = db.getModels();
     const preferences = await Preference.findOne({ where: { language: "en" }});
-    const user = await Users.create({ username: "user" });
+    const user = await User.create({ username: "user" });
 
     expect(await user.getPreferences()).toBeNull();
     await user.setPreferences(preferences!);

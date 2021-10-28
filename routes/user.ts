@@ -7,7 +7,7 @@ import { db } from "../models";
 import { getExtension, getFromEnvironment, streamToBuffer } from "../util";
 import { authRequired } from "../util/middleware";
 import { uploadToS3 } from "../util/s3";
-import { UserInstance } from "models/users";
+import { UserInstance } from "models/user";
 
 const [ BUCKET_NAME, CLOUDFRONT_URL ] = getFromEnvironment("BUCKET_NAME", "CLOUDFRONT_URL");
 const router = Router();
@@ -200,8 +200,8 @@ router.delete("/interests", authRequired, async (req, res) => {
  * Get user information for given user ID
  */
 router.get("/profile/:id", authRequired, async (req, res) => {
-  const { Users, DataContainer, Multimedia, Thread, Topic, Post } = db.getModels();
-  const user = await Users.findByPk(req.params.id);
+  const { User, DataContainer, Multimedia, Thread, Topic, Post } = db.getModels();
+  const user = await User.findByPk(req.params.id);
 
   // Return 404 if no user with given ID is found
   if (!user) {

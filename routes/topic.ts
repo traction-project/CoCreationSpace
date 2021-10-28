@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { UserInstance } from "../models/users";
+import { UserInstance } from "../models/user";
 import { authRequired } from "../util/middleware";
 import { db } from "../models";
 

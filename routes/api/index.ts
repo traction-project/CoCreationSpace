@@ -6,7 +6,7 @@ import { v4 as uuid4 } from "uuid";
 import { getExtension, getFromEnvironment } from "../../util";
 import { tokenRequired, permissionRequired } from "../../util/middleware";
 import { uploadToS3, deleteFromS3 } from "../../util/s3";
-import { UserInstance } from "../../models/users";
+import { UserInstance } from "../../models/user";
 import { encodeDash, getJobStatus } from "../../util/transcode";
 
 const [ BUCKET_NAME, ETS_PIPELINE ] = getFromEnvironment("BUCKET_NAME", "ETS_PIPELINE");

@@ -2,7 +2,7 @@ import Sequelize, { Optional } from "sequelize";
 import { v4 as uuidv4 } from "uuid";
 
 import { CommonAttributes } from "util/typing/modelCommonAttributes";
-import { UsersAttributes, UserInstance } from "./users";
+import { UserAttributes, UserInstance } from "./user";
 import { ThreadAttributes, ThreadInstance } from "./thread";
 import { TagAttributes, TagInstance } from "./tag";
 import { DataContainerAttributes, DataContainerInstance } from "./data_container";
@@ -19,12 +19,12 @@ export interface PostAttributes extends CommonAttributes{
   karma_points?: number;
   dataContainer?: DataContainerAttributes | DataContainerAttributes["id"];
   comments?: PostAttributes | PostAttributes["id"];
-  likesUsers?: UsersAttributes | UsersAttributes["id"];
+  likesUsers?: UserAttributes | UserAttributes["id"];
   parentPost?: PostAttributes | PostAttributes["id"];
   postReference?: PostAttributes | PostAttributes["id"];
   postReferenced?: PostAttributes | PostAttributes["id"];
-  user?: UsersAttributes | UsersAttributes["id"];
-  userReferenced?: UsersAttributes | UsersAttributes["id"];
+  user?: UserAttributes | UserAttributes["id"];
+  userReferenced?: UserAttributes | UserAttributes["id"];
   thread?: ThreadAttributes | ThreadAttributes["id"];
   tags?: TagAttributes | TagAttributes["id"];
 }
