@@ -23,7 +23,7 @@ class Associations {
   createAssociations(models: DbInterface) {
     audioContentAssociations(models);
     const datacontainerAssociations = dataContainerAssociations(models);
-    emojiReactionsAssociations(models);
+    emojiReactionAssociations(models);
     metadataAssociations(models);
     multimediaAssociations(models);
     permissionsAssociations(models);
@@ -78,9 +78,9 @@ function dataContainerAssociations(models: DbInterface) {
  *  Create all EmojiReactions table relationship with rest of tables
  * @param models DbInterface
  */
-function emojiReactionsAssociations(models: DbInterface) {
-  models.EmojiReactions.belongsTo(models.Multimedia, { as: "multimedia", foreignKey: "multimedia_id" });
-  models.EmojiReactions.belongsTo(models.Users, { as: "user", foreignKey: "user_id" });
+function emojiReactionAssociations(models: DbInterface) {
+  models.EmojiReaction.belongsTo(models.Multimedia, { as: "multimedia", foreignKey: "multimedia_id" });
+  models.EmojiReaction.belongsTo(models.Users, { as: "user", foreignKey: "user_id" });
 }
 
 /**
@@ -103,7 +103,7 @@ function multimediaAssociations(models: DbInterface): void {
   models.Multimedia.hasMany(models.Metadata, { as: "metadata", foreignKey: "multimedia_id"});
   models.Multimedia.hasMany(models.Subtitles, { as: "subtitles", foreignKey: "multimedia_id"});
   models.Multimedia.hasMany(models.MultimediaInteraction, { foreignKey: "multimedia_id" });
-  models.Multimedia.hasMany(models.EmojiReactions, { as: "emojiReactions", foreignKey: "multimedia_id" });
+  models.Multimedia.hasMany(models.EmojiReaction, { as: "emojiReactions", foreignKey: "multimedia_id" });
   models.Multimedia.hasMany(models.AsyncJob, { foreignKey: "multimedia_id" });
 }
 
@@ -261,7 +261,7 @@ function userAssociations(models: DbInterface): void {
     as: "likesPosts"
   });
 
-  models.Users.hasMany(models.EmojiReactions, {
+  models.Users.hasMany(models.EmojiReaction, {
     foreignKey: "user_id",
     as: "emojiReactions"
   });

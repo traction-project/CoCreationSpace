@@ -11,20 +11,20 @@ describe("EmojiReactions model", () => {
   });
 
   beforeEach(async () => {
-    const { EmojiReactions, Posts, Users } = db.getModels();
+    const { EmojiReaction, Posts, Users } = db.getModels();
 
-    await EmojiReactions.destroy({ truncate: true });
+    await EmojiReaction.destroy({ truncate: true });
     await Posts.destroy({ truncate: true });
     await Users.destroy({ truncate: true });
   });
 
   it("should initialise a new object", async () => {
-    const { EmojiReactions, Users, Multimedia } = db.getModels();
+    const { EmojiReaction, Users, Multimedia } = db.getModels();
 
     const user = await Users.create({ username: "admin" });
     const video = await Multimedia.create({ title: "video 1" });
 
-    const reaction = await EmojiReactions.build({
+    const reaction = await EmojiReaction.build({
       emoji: "😋",
       user_id: user.id,
       multimedia_id: video.id
@@ -35,12 +35,12 @@ describe("EmojiReactions model", () => {
   });
 
   it("should have a numeric field 'second'", async () => {
-    const { EmojiReactions, Users, Multimedia } = db.getModels();
+    const { EmojiReaction, Users, Multimedia } = db.getModels();
 
     const user = await Users.create({ username: "admin" });
     const video = await Multimedia.create({ title: "video 2" });
 
-    const reaction = await EmojiReactions.build({
+    const reaction = await EmojiReaction.build({
       emoji: "😋",
       user_id: user.id,
       multimedia_id: video.id,
@@ -52,12 +52,12 @@ describe("EmojiReactions model", () => {
   });
 
   it("should have a numeric field 'second' even after JSON conversion", async () => {
-    const { EmojiReactions, Users, Multimedia } = db.getModels();
+    const { EmojiReaction, Users, Multimedia } = db.getModels();
 
     const user = await Users.create({ username: "admin" });
     const video = await Multimedia.create({ title: "video 3" });
 
-    const reaction = await EmojiReactions.build({
+    const reaction = await EmojiReaction.build({
       emoji: "😋",
       user_id: user.id,
       multimedia_id: video.id,
@@ -72,12 +72,12 @@ describe("EmojiReactions model", () => {
   });
 
   it("should retrieve the associated user from a EmojiReactions instance", async () => {
-    const { EmojiReactions, Users, Multimedia } = db.getModels();
+    const { EmojiReaction, Users, Multimedia } = db.getModels();
 
     const user = await Users.create({ username: "admin" });
     const video = await Multimedia.create({ title: "video 3" });
 
-    const reaction = await EmojiReactions.build({
+    const reaction = await EmojiReaction.build({
       emoji: "😋",
       user_id: user.id,
       multimedia_id: video.id,
@@ -91,12 +91,12 @@ describe("EmojiReactions model", () => {
   });
 
   it("should retrieve the associated media item from a EmojiReactions instance", async () => {
-    const { EmojiReactions, Users, Multimedia } = db.getModels();
+    const { EmojiReaction, Users, Multimedia } = db.getModels();
 
     const user = await Users.create({ username: "admin" });
     const video = await Multimedia.create({ title: "video 3" });
 
-    const reaction = await EmojiReactions.build({
+    const reaction = await EmojiReaction.build({
       emoji: "😋",
       user_id: user.id,
       multimedia_id: video.id,

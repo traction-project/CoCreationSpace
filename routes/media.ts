@@ -286,7 +286,7 @@ router.get("/:id/thumbnail", async (req, res) => {
  * Add an emoji reaction to the given media item from the current user
  */
 router.post("/:id/reaction", authRequired, async (req, res) => {
-  const { Multimedia, EmojiReactions } = db.getModels();
+  const { Multimedia, EmojiReaction } = db.getModels();
 
   const { id } = req.params;
   const user = req.user as UserInstance;
@@ -296,7 +296,7 @@ router.post("/:id/reaction", authRequired, async (req, res) => {
   if (mediaItem && user && user.id) {
     const { emoji, second } = req.body;
 
-    const reaction = await EmojiReactions.create({
+    const reaction = await EmojiReaction.create({
       emoji,
       second,
       multimedia_id: id,

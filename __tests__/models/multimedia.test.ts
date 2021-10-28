@@ -11,10 +11,10 @@ describe("Multimedia model", () => {
   });
 
   beforeEach(async () => {
-    const { AsyncJob, Multimedia, EmojiReactions } = db.getModels();
+    const { AsyncJob, Multimedia, EmojiReaction } = db.getModels();
 
     await Multimedia.destroy({ truncate: true });
-    await EmojiReactions.destroy({ truncate: true });
+    await EmojiReaction.destroy({ truncate: true });
     await AsyncJob.destroy({ truncate: true });
   });
 
@@ -220,7 +220,7 @@ describe("Multimedia model", () => {
   });
 
   it("should list emoji-reactions associated to the multimedia item", async () => {
-    const { Multimedia, EmojiReactions, Users } = db.getModels();
+    const { Multimedia, EmojiReaction, Users } = db.getModels();
 
     const video = await Multimedia.create({
       title: "video",
@@ -229,7 +229,7 @@ describe("Multimedia model", () => {
     expect(await video.countEmojiReactions()).toEqual(0);
 
     const user = await Users.create({ username: "admin" });
-    const reaction = await EmojiReactions.create({
+    const reaction = await EmojiReaction.create({
       emoji: "😋",
       user_id: user.id,
       multimedia_id: video.id,

@@ -5,7 +5,7 @@ import { CommonAttributes } from "util/typing/modelCommonAttributes";
 import { UserInstance, UsersAttributes } from "./users";
 import { PostAttributes, PostInstance } from "./post";
 
-export interface EmojiReactionsAttributes extends CommonAttributes{
+export interface EmojiReactionAttributes extends CommonAttributes{
     emoji: string;
     second?: number;
     multimedia_id: string;
@@ -14,12 +14,12 @@ export interface EmojiReactionsAttributes extends CommonAttributes{
     post?: PostAttributes | PostAttributes["id"];
 }
 
-type EmojiReactionsCreationAttributes = Optional<EmojiReactionsAttributes, "id" | "createdAt" | "updatedAt">;
+type EmojiReactionCreationAttributes = Optional<EmojiReactionAttributes, "id" | "createdAt" | "updatedAt">;
 
 /**
  * EmojiReactions instance object interface
  */
-export interface EmojiReactionsInstance extends Sequelize.Model<EmojiReactionsAttributes, EmojiReactionsCreationAttributes>, EmojiReactionsAttributes {
+export interface EmojiReactionInstance extends Sequelize.Model<EmojiReactionAttributes, EmojiReactionCreationAttributes>, EmojiReactionAttributes {
   getUser: Sequelize.BelongsToGetAssociationMixin<UserInstance>;
   setUser: Sequelize.BelongsToSetAssociationMixin<UserInstance, UserInstance["id"]>;
 
@@ -31,7 +31,7 @@ export interface EmojiReactionsInstance extends Sequelize.Model<EmojiReactionsAt
  * Build EmojiReactionss Model object
  * @param sequelize Sequelize: Conection object with de database
  */
-export function EmojiReactionsModelFactory(sequelize: Sequelize.Sequelize): Sequelize.ModelCtor<EmojiReactionsInstance> {
+export function EmojiReactionModelFactory(sequelize: Sequelize.Sequelize): Sequelize.ModelCtor<EmojiReactionInstance> {
   // DB table name
   const TABLE_NAME = "emoji_reactions";
   // Model attributtes
@@ -61,9 +61,9 @@ export function EmojiReactionsModelFactory(sequelize: Sequelize.Sequelize): Sequ
   };
 
   // Create the model
-  const EmojiReactions = sequelize.define<EmojiReactionsInstance, EmojiReactionsCreationAttributes>("emoji_reactions", attributes, { underscored: true, tableName: TABLE_NAME });
+  const EmojiReaction = sequelize.define<EmojiReactionInstance, EmojiReactionCreationAttributes>("EmojiReaction", attributes, { underscored: true, tableName: TABLE_NAME });
 
-  EmojiReactions.beforeCreate(emoji => { emoji.id = uuidv4(); });
+  EmojiReaction.beforeCreate(emoji => { emoji.id = uuidv4(); });
 
-  return EmojiReactions;
+  return EmojiReaction;
 }

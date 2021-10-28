@@ -16,7 +16,7 @@ import { UserInstance } from "models/users";
 import { UserReferencesInstance } from "models/user_references";
 import { PostReferencesInstance } from "models/post_references";
 import { LikesInstance } from "models/likes";
-import { EmojiReactionsInstance } from "models/emoji_reactions";
+import { EmojiReactionInstance } from "models/emoji_reaction";
 import { InterestInstance } from "models/interest";
 import { NotificationInstance } from "models/notifications";
 import { UserGroupInstance } from "models/user_group";
@@ -34,7 +34,7 @@ export interface DbInterface {
     AudioContent: ModelCtor<AudioContentInstance>;
     ConsentForm: ModelCtor<ConsentFormInstance>;
     DataContainer: ModelCtor<DataContainerInstance>;
-    EmojiReactions: ModelCtor<EmojiReactionsInstance>;
+    EmojiReaction: ModelCtor<EmojiReactionInstance>;
     Interests: ModelCtor<InterestInstance>;
     InternalNavigationStep: ModelCtor<InternalNavigationStepInstance>;
     Likes: ModelCtor<LikesInstance>;

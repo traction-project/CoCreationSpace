@@ -19,7 +19,7 @@ import { AudioContentModelFactory } from "./audio_content";
 import { MetadataModelFactory } from "./metadata";
 import { SubtitlesModelFactory } from "./subtitles";
 import { LikesModelFactory } from "./likes";
-import { EmojiReactionsModelFactory } from "./emoji_reactions";
+import { EmojiReactionModelFactory } from "./emoji_reaction";
 import { InterestModelFactory } from "./interest";
 import { NotificationsModelFactory } from "./notifications";
 import { UserGroupModelFactory } from "./user_group";
@@ -48,7 +48,7 @@ class DataBase {
   createModels(sequelize: Sequelize): void {
     const AudioContent = AudioContentModelFactory(sequelize);
     const DataContainer = DataContainerModelFactory(sequelize);
-    const EmojiReactions = EmojiReactionsModelFactory(sequelize);
+    const EmojiReaction = EmojiReactionModelFactory(sequelize);
     const Interests = InterestModelFactory(sequelize);
     const Likes = LikesModelFactory(sequelize);
     const Metadata = MetadataModelFactory(sequelize);
@@ -75,7 +75,7 @@ class DataBase {
     this.models = {
       AudioContent,
       DataContainer,
-      EmojiReactions,
+      EmojiReaction,
       Interests,
       Likes,
       Metadata,

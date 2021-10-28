@@ -9,7 +9,7 @@ import { AudioContentAttributes, AudioContentInstance } from "./audio_content";
 import { MetadataAttributes, MetadataInstance } from "./metadata";
 import { SubtitlesAttributes, SubtitlesInstance } from "./subtitles";
 import { MultimediaInteractionInstance } from "./multimedia_interaction";
-import { EmojiReactionsAttributes, EmojiReactionsInstance } from "./emoji_reactions";
+import { EmojiReactionAttributes, EmojiReactionInstance } from "./emoji_reaction";
 import { AsyncJobInstance } from "./async_job";
 
 export interface MultimediaAttributes extends CommonAttributes {
@@ -33,7 +33,7 @@ export interface MultimediaAttributes extends CommonAttributes {
   audioContent?: AudioContentAttributes | AudioContentAttributes["id"];
   metadata?: MetadataAttributes | MetadataAttributes["id"];
   subtitle?: SubtitlesAttributes | SubtitlesAttributes["id"];
-  emojiReactions?: EmojiReactionsAttributes | EmojiReactionsAttributes["id"];
+  emojiReactions?: EmojiReactionAttributes | EmojiReactionAttributes["id"];
 }
 
 type MultimediaCreationAttributes = Optional<MultimediaAttributes, "id" | "createdAt" | "updatedAt">;
@@ -91,14 +91,14 @@ export interface MultimediaInstance extends Sequelize.Model<MultimediaAttributes
   hasMultimediaInteractions: Sequelize.HasManyHasAssociationsMixin<MultimediaInteractionInstance, MultimediaInteractionInstance["id"]>;
   countMultimediaInteractions: Sequelize.HasManyCountAssociationsMixin;
 
-  getEmojiReactions: Sequelize.HasManyGetAssociationsMixin<EmojiReactionsInstance>;
-  setEmojiReactions: Sequelize.HasManySetAssociationsMixin<EmojiReactionsInstance, EmojiReactionsInstance["id"]>;
-  addEmojiReactions: Sequelize.HasManyAddAssociationsMixin<EmojiReactionsInstance, EmojiReactionsInstance["id"]>;
-  addEmojiReaction: Sequelize.HasManyAddAssociationMixin<EmojiReactionsInstance, EmojiReactionsInstance["id"]>;
-  removeEmojiReaction: Sequelize.HasManyRemoveAssociationMixin<EmojiReactionsInstance, EmojiReactionsInstance["id"]>;
-  removeEmojiReactions: Sequelize.HasManyRemoveAssociationsMixin<EmojiReactionsInstance, EmojiReactionsInstance["id"]>;
-  hasEmojiReaction: Sequelize.HasManyHasAssociationMixin<EmojiReactionsInstance, EmojiReactionsInstance["id"]>;
-  hasEmojiReactions: Sequelize.HasManyHasAssociationsMixin<EmojiReactionsInstance, EmojiReactionsInstance["id"]>;
+  getEmojiReactions: Sequelize.HasManyGetAssociationsMixin<EmojiReactionInstance>;
+  setEmojiReactions: Sequelize.HasManySetAssociationsMixin<EmojiReactionInstance, EmojiReactionInstance["id"]>;
+  addEmojiReactions: Sequelize.HasManyAddAssociationsMixin<EmojiReactionInstance, EmojiReactionInstance["id"]>;
+  addEmojiReaction: Sequelize.HasManyAddAssociationMixin<EmojiReactionInstance, EmojiReactionInstance["id"]>;
+  removeEmojiReaction: Sequelize.HasManyRemoveAssociationMixin<EmojiReactionInstance, EmojiReactionInstance["id"]>;
+  removeEmojiReactions: Sequelize.HasManyRemoveAssociationsMixin<EmojiReactionInstance, EmojiReactionInstance["id"]>;
+  hasEmojiReaction: Sequelize.HasManyHasAssociationMixin<EmojiReactionInstance, EmojiReactionInstance["id"]>;
+  hasEmojiReactions: Sequelize.HasManyHasAssociationsMixin<EmojiReactionInstance, EmojiReactionInstance["id"]>;
   countEmojiReactions: Sequelize.HasManyCountAssociationsMixin;
 
   getAsyncJobs: Sequelize.HasManyGetAssociationsMixin<AsyncJobInstance>;
