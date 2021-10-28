@@ -145,7 +145,7 @@ function postsAssociations(models: DbInterface) {
 
   models.Post.belongsToMany(models.Tags,{
     through: {
-      model: models.TagReferences,
+      model: models.TagReference,
       unique: false
     },
     foreignKey: "post_id",
@@ -190,7 +190,7 @@ function subtitleAssociations(models: DbInterface): void {
 function tagAssociations(models: DbInterface): void {
   models.Tags.belongsToMany(models.Post, {
     through: {
-      model: models.TagReferences,
+      model: models.TagReference,
       unique: false
     },
     foreignKey: "tag_id",

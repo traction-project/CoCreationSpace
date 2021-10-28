@@ -7,7 +7,7 @@ import { MultimediaModelFactory } from "./multimedia";
 import { TopicModelFactory } from "./topic";
 import { ThreadModelFactory } from "./thread";
 import { TagModelFactory } from "./tag";
-import { TagReferencesModelFactory } from "./tag_references";
+import { TagReferenceModelFactory } from "./tag_reference";
 import { PermissionModelFactory } from "./permission";
 import { PostModelFactory } from "./post";
 import { PostReferenceModelFactory } from "./post_reference";
@@ -64,7 +64,7 @@ class DataBase {
     const Preference = PreferenceModelFactory(sequelize);
     const SearchQuery = SearchQueryModelFactory(sequelize);
     const Subtitle = SubtitleModelFactory(sequelize);
-    const TagReferences = TagReferencesModelFactory(sequelize);
+    const TagReference = TagReferenceModelFactory(sequelize);
     const Tags = TagModelFactory(sequelize);
     const Threads = ThreadModelFactory(sequelize);
     const Topics = TopicModelFactory(sequelize);
@@ -91,7 +91,7 @@ class DataBase {
       Preference,
       SearchQuery,
       Subtitle,
-      TagReferences,
+      TagReference,
       Tags,
       Threads,
       Topics,

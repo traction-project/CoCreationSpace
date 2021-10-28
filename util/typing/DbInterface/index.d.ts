@@ -9,7 +9,7 @@ import { PostInstance } from "models/post";
 import { PreferenceInstance } from "models/preference";
 import { SubtitleInstance } from "models/subtitle";
 import { TagInstance } from "models/tag";
-import { TagReferencesInstance } from "models/tag_references";
+import { TagReferenceInstance } from "models/tag_reference";
 import { ThreadInstance } from "models/thread";
 import { TopicInstance } from "models/topic";
 import { UserInstance } from "models/users";
@@ -48,7 +48,7 @@ export interface DbInterface {
     Preference: ModelCtor<PreferenceInstance>;
     SearchQuery: ModelCtor<SearchQueryInstance>;
     Subtitle: ModelCtor<SubtitleInstance>;
-    TagReferences: ModelCtor<TagReferencesInstance>;
+    TagReference: ModelCtor<TagReferenceInstance>;
     Tags: ModelCtor<TagInstance>;
     Threads: ModelCtor<ThreadInstance>;
     Topics: ModelCtor<TopicInstance>;
