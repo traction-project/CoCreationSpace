@@ -11,12 +11,12 @@ export interface AsyncJobAttributes extends CommonAttributes{
     multimedia?: MultimediaAttributes | MultimediaAttributes["id"];
 }
 
-type AsyncJobsCreationAttributes = Optional<AsyncJobAttributes, "id" | "createdAt" | "updatedAt" | "status">;
+type AsyncJobCreationAttributes = Optional<AsyncJobAttributes, "id" | "createdAt" | "updatedAt" | "status">;
 
 /**
  * AsyncJobs instance object interface
  */
-export interface AsyncJobInstance extends Sequelize.Model<AsyncJobAttributes, AsyncJobsCreationAttributes>, AsyncJobAttributes {
+export interface AsyncJobInstance extends Sequelize.Model<AsyncJobAttributes, AsyncJobCreationAttributes>, AsyncJobAttributes {
   getMultimedium: Sequelize.BelongsToGetAssociationMixin<MultimediaInstance>;
   setMultimedium: Sequelize.BelongsToSetAssociationMixin<MultimediaInstance, MultimediaInstance["id"]>;
   createMultimedium: Sequelize.BelongsToCreateAssociationMixin<MultimediaInstance>;
@@ -64,7 +64,7 @@ export function AsyncJobModelFactory(sequelize: Sequelize.Sequelize): Sequelize.
   };
 
   // Create the model
-  const AsyncJob = sequelize.define<AsyncJobInstance, AsyncJobsCreationAttributes>("asyncJob", attributes, { underscored: true, tableName: TABLE_NAME });
+  const AsyncJob = sequelize.define<AsyncJobInstance, AsyncJobCreationAttributes>("AsyncJob", attributes, { underscored: true, tableName: TABLE_NAME });
 
   AsyncJob.beforeCreate((asyncJob) => { asyncJob.id = uuidv4(); });
 
