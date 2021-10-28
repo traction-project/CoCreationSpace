@@ -67,7 +67,7 @@ class DataBase {
     const TagReference = TagReferenceModelFactory(sequelize);
     const Tag = TagModelFactory(sequelize);
     const Thread = ThreadModelFactory(sequelize);
-    const Topics = TopicModelFactory(sequelize);
+    const Topic = TopicModelFactory(sequelize);
     const UserGroup = UserGroupModelFactory(sequelize);
     const UserReferences = UserReferencesModelFactory(sequelize);
     const Users = UsersModelFactory(sequelize);
@@ -94,7 +94,7 @@ class DataBase {
       TagReference,
       Tag,
       Thread,
-      Topics,
+      Topic,
       UserGroup,
       UserReferences,
       Users,

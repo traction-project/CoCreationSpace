@@ -203,9 +203,9 @@ function tagAssociations(models: DbInterface): void {
  * @param models DbInterface
  */
 function topicAssociations(models: DbInterface): void {
-  models.Topics.belongsTo(models.UserGroup);
-  models.Topics.hasMany(models.Thread, { as: "threads", foreignKey: "topic_id" });
-  models.Topics.belongsToMany(models.Users, {
+  models.Topic.belongsTo(models.UserGroup);
+  models.Topic.hasMany(models.Thread, { as: "threads", foreignKey: "topic_id" });
+  models.Topic.belongsToMany(models.Users, {
     through: {
       model: models.Interest,
       unique: false
@@ -220,7 +220,7 @@ function topicAssociations(models: DbInterface): void {
  * @param models DbInterface
  */
 function threadAssociations(models: DbInterface): void {
-  models.Thread.belongsTo(models.Topics, { as: "topic", foreignKey: "topic_id" });
+  models.Thread.belongsTo(models.Topic, { as: "topic", foreignKey: "topic_id" });
   models.Thread.hasMany(models.Post, { as: "post", foreignKey: "thread_id" });
 }
 
@@ -266,7 +266,7 @@ function userAssociations(models: DbInterface): void {
     as: "emojiReactions"
   });
 
-  models.Users.belongsToMany(models.Topics, {
+  models.Users.belongsToMany(models.Topic, {
     through: {
       model: models.Interest,
       unique: false
@@ -282,7 +282,7 @@ function userAssociations(models: DbInterface): void {
  */
 function userGroupAssociations(models: DbInterface) {
   models.UserGroup.belongsToMany(models.Users, { through: "user_group_users" });
-  models.UserGroup.hasMany(models.Topics);
+  models.UserGroup.hasMany(models.Topic);
 }
 
 /**

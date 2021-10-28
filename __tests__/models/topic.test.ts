@@ -5,23 +5,23 @@ const sequelize = new Sequelize("sqlite::memory:", { logging: false });
 
 import { db } from "../../models";
 
-describe("Topics model", () => {
+describe("Topic model", () => {
   beforeAll(async () => {
     await db.createDB(sequelize);
   });
 
   beforeEach(async () => {
-    const { Topics, Thread, UserGroup } = db.getModels();
+    const { Topic, Thread, UserGroup } = db.getModels();
 
-    await Topics.destroy({ truncate: true });
+    await Topic.destroy({ truncate: true });
     await Thread.destroy({ truncate: true });
     await UserGroup.destroy({ truncate: true });
   });
 
   it("should create a new topic with just a title", async () => {
-    const { Topics } = db.getModels();
+    const { Topic } = db.getModels();
 
-    const topic = await Topics.build({
+    const topic = await Topic.build({
       title: "test"
     }).save();
 
@@ -35,16 +35,16 @@ describe("Topics model", () => {
   });
 
   it("should allow multiple topics with the same title", async () => {
-    const { Topics } = db.getModels();
+    const { Topic } = db.getModels();
 
-    const topic1 = await Topics.create({
+    const topic1 = await Topic.create({
       title: "test"
     });
 
     expect(topic1).toBeDefined();
     expect(topic1.title).toEqual("test");
 
-    const topic2 = await Topics.create({
+    const topic2 = await Topic.create({
       title: "test"
     });
 
@@ -53,9 +53,9 @@ describe("Topics model", () => {
   });
 
   it("should not have any threads initially", async () => {
-    const { Topics } = db.getModels();
+    const { Topic } = db.getModels();
 
-    const topic = await Topics.create({
+    const topic = await Topic.create({
       title: "test"
     });
 
@@ -64,9 +64,9 @@ describe("Topics model", () => {
   });
 
   it("should associate a thread with a topic", async () => {
-    const { Topics, Thread } = db.getModels();
+    const { Topic, Thread } = db.getModels();
 
-    const topic = await Topics.create({
+    const topic = await Topic.create({
       title: "test"
     });
 
@@ -84,13 +84,13 @@ describe("Topics model", () => {
   });
 
   it("should be able to associate a topic to a group", async () => {
-    const { UserGroup, Topics } = db.getModels();
+    const { UserGroup, Topic } = db.getModels();
 
     const group = await UserGroup.create({
       name: "test"
     });
 
-    const topic = await Topics.create({
+    const topic = await Topic.create({
       title: "a topic"
     });
 

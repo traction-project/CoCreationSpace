@@ -11,10 +11,10 @@ describe("Preferences tests", () => {
   });
 
   beforeEach(async () => {
-    const { Thread, Topics, Post } = db.getModels();
+    const { Thread, Topic, Post } = db.getModels();
 
     await Thread.destroy({ truncate: true });
-    await Topics.destroy({ truncate: true });
+    await Topic.destroy({ truncate: true });
     await Post.destroy({ truncate: true });
   });
 
@@ -29,9 +29,9 @@ describe("Preferences tests", () => {
   });
 
   it("should add thread to a topic", async () => {
-    const { Thread, Topics } = db.getModels();
+    const { Thread, Topic } = db.getModels();
     const thread = await Thread.create({ th_title: "thread" });
-    const topic = await Topics.create({ title: "topic" });
+    const topic = await Topic.create({ title: "topic" });
 
     expect(await thread.getTopic()).toBeNull();
     await thread.setTopic(topic);
@@ -40,9 +40,9 @@ describe("Preferences tests", () => {
   });
 
   it("should remove thread from topic", async () => {
-    const { Thread, Topics } = db.getModels();
+    const { Thread, Topic } = db.getModels();
     const thread = await Thread.create({ th_title: "thread" });
-    const topic = await Topics.create({ title: "topic" });
+    const topic = await Topic.create({ title: "topic" });
 
     await thread.setTopic(topic);
     expect(await thread.getTopic()).toBeDefined();

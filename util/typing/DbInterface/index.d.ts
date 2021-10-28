@@ -51,7 +51,7 @@ export interface DbInterface {
     TagReference: ModelCtor<TagReferenceInstance>;
     Tag: ModelCtor<TagInstance>;
     Thread: ModelCtor<ThreadInstance>;
-    Topics: ModelCtor<TopicInstance>;
+    Topic: ModelCtor<TopicInstance>;
     UserGroup: ModelCtor<UserGroupInstance>;
     UserReferences: ModelCtor<UserReferencesInstance>;
     Users: ModelCtor<UserInstance>;

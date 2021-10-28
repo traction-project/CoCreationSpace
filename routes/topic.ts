@@ -10,9 +10,9 @@ const router = Router();
  * Get all topics
  */
 router.get("/all", async (req, res) => {
-  const { Topics } = db.getModels();
+  const { Topic } = db.getModels();
 
-  const topics = await Topics.findAll();
+  const topics = await Topic.findAll();
   return res.send(topics);
 });
 
@@ -21,11 +21,11 @@ router.get("/all", async (req, res) => {
  */
 router.get("/group", authRequired, async (req, res) => {
   const user = req.user as UserInstance;
-  const { Topics, UserGroup } = db.getModels();
+  const { Topic, UserGroup } = db.getModels();
 
   const groups = (await user.getUserGroups()).map((group) => group.id);
 
-  const topics = await Topics.findAll({
+  const topics = await Topic.findAll({
     include: [{
       model: UserGroup,
       as: "userGroup",
@@ -44,9 +44,9 @@ router.get("/group", authRequired, async (req, res) => {
  */
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
-  const { Thread, Topics } = db.getModels();
+  const { Thread, Topic } = db.getModels();
 
-  const topic = await Topics.findByPk(id, {
+  const topic = await Topic.findByPk(id, {
     include: [{
       model: Thread,
       as: "threads"
@@ -63,9 +63,9 @@ router.get("/:id", async (req, res) => {
 router.post("/:id/interest", authRequired, async (req, res) => {
   const { id } = req.params;
   const user = req.user as UserInstance;
-  const { Topics } = db.getModels();
+  const { Topic } = db.getModels();
 
-  const topic = await Topics.findByPk(id);
+  const topic = await Topic.findByPk(id);
 
   if (topic) {
     await topic.addHasInterest(user);

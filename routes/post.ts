@@ -31,7 +31,7 @@ async function logSearchQuery(query: string | undefined, resultcount: number, us
  */
 router.get("/all/user", authRequired, async (req, res) => {
   const user = req.user as UserInstance;
-  const { Post, Users, DataContainer, Multimedia, Thread, Topics, UserGroup } = db.getModels();
+  const { Post, Users, DataContainer, Multimedia, Thread, Topic, UserGroup } = db.getModels();
 
   let queryDataContainer = {
     model: DataContainer,
@@ -61,7 +61,7 @@ router.get("/all/user", authRequired, async (req, res) => {
       as: "thread",
       required: true,
       include: [{
-        model: Topics,
+        model: Topic,
         as: "topic",
         required: true,
         include: [{
@@ -92,7 +92,7 @@ router.get("/all/user", authRequired, async (req, res) => {
  */
 router.get("/all/group", authRequired, async (req, res) => {
   const user = req.user as UserInstance;
-  const { Post, Users, UserGroup, DataContainer, Multimedia, Tag, Thread, Topics } = db.getModels();
+  const { Post, Users, UserGroup, DataContainer, Multimedia, Tag, Thread, Topic } = db.getModels();
 
   // Get desired page number and results per page from query string if present
   // Use defaults otherwise
@@ -138,7 +138,7 @@ router.get("/all/group", authRequired, async (req, res) => {
       as: "thread",
       required: true,
       include: [{
-        model: Topics,
+        model: Topic,
         as: "topic",
         required: true,
         where: (interestId && interestId !== "") ? { id: interestId } : undefined,
@@ -174,7 +174,7 @@ router.get("/:id", authRequired, async (req, res) => {
   const { id } = req.params;
   const user = req.user as UserInstance;
 
-  const { Post, DataContainer, Multimedia, Topics, Thread, UserGroup } = db.getModels();
+  const { Post, DataContainer, Multimedia, Topic, Thread, UserGroup } = db.getModels();
 
   const post = await Post.findByPk(id, {
     include: [
@@ -183,7 +183,7 @@ router.get("/:id", authRequired, async (req, res) => {
         as: "thread",
         required: true,
         include: [{
-          model: Topics,
+          model: Topic,
           as: "topic",
           required: true,
           include: [{

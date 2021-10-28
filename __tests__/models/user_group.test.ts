@@ -11,11 +11,11 @@ describe("UserGroup model", () => {
   });
 
   beforeEach(async () => {
-    const { Users, UserGroup, Topics } = db.getModels();
+    const { Users, UserGroup, Topic } = db.getModels();
 
     await UserGroup.destroy({ truncate: true });
     await Users.destroy({ truncate: true });
-    await Topics.destroy({ truncate: true });
+    await Topic.destroy({ truncate: true });
   });
 
   it("should create a new group with just a name", async () => {
@@ -136,13 +136,13 @@ describe("UserGroup model", () => {
   });
 
   it("should be able to associate a topic to a group", async () => {
-    const { UserGroup, Topics } = db.getModels();
+    const { UserGroup, Topic } = db.getModels();
 
     const group = await UserGroup.create({
       name: "test"
     });
 
-    const topic = await Topics.create({
+    const topic = await Topic.create({
       title: "a topic"
     });
 

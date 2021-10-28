@@ -134,13 +134,13 @@ describe("Users model", () => {
   });
 
   it("should not fail when trying to remove an interest that the user does not have", async () => {
-    const { Users, Topics } = db.getModels();
+    const { Users, Topic } = db.getModels();
 
     const user = await Users.create({ username: "admin" });
 
-    const topic1 = await Topics.create({ title: "topic1" });
-    const topic2 = await Topics.create({ title: "topic2" });
-    const topic3 = await Topics.create({ title: "topic3" });
+    const topic1 = await Topic.create({ title: "topic1" });
+    const topic2 = await Topic.create({ title: "topic2" });
+    const topic3 = await Topic.create({ title: "topic3" });
 
     await user.addInterestedTopics([topic1, topic2]);
     expect(await user.countInterestedTopics()).toEqual(2);

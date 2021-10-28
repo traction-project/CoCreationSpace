@@ -11,17 +11,17 @@ describe("User interest topic", () => {
   });
 
   beforeEach(async () => {
-    const { Interest, Users, Topics } = db.getModels();
+    const { Interest, Users, Topic } = db.getModels();
 
     await Interest.destroy({ truncate: true });
     await Users.destroy({ truncate: true });
-    await Topics.destroy({ truncate: true });
+    await Topic.destroy({ truncate: true });
   });
 
   it("should user has a new topic interest", async () => {
-    const { Users, Topics } = db.getModels();
+    const { Users, Topic } = db.getModels();
     const user = await Users.create({ username: "test" });
-    const topic = await Topics.create({ title: "sports" });
+    const topic = await Topic.create({ title: "sports" });
 
     await user.addInterestedTopic(topic);
 
@@ -29,9 +29,9 @@ describe("User interest topic", () => {
   });
 
   it("should user can remove topic interest", async () => {
-    const { Users, Topics } = db.getModels();
+    const { Users, Topic } = db.getModels();
     const user = await Users.create({ username: "test" });
-    const topic = await Topics.create({ title: "sports" });
+    const topic = await Topic.create({ title: "sports" });
 
     await user.addInterestedTopic(topic);
     expect(await user.hasInterestedTopic(topic)).toBeTruthy();
@@ -41,10 +41,10 @@ describe("User interest topic", () => {
   });
 
   it("should can count user' interests topics", async () => {
-    const { Users, Topics } = db.getModels();
+    const { Users, Topic } = db.getModels();
     const user = await Users.create({ username: "test" });
-    const topic1 = await Topics.create({ title: "sports" });
-    const topic2 = await Topics.create({ title: "media" });
+    const topic1 = await Topic.create({ title: "sports" });
+    const topic2 = await Topic.create({ title: "media" });
 
     expect(await user.countInterestedTopics()).toEqual(0);
     await user.addInterestedTopics([topic1, topic2]);
@@ -52,10 +52,10 @@ describe("User interest topic", () => {
   });
 
   it("should can count users interested in a specific topic", async () => {
-    const { Users, Topics } = db.getModels();
+    const { Users, Topic } = db.getModels();
     const user1 = await Users.create({ username: "test" });
     const user2 = await Users.create({ username: "test2" });
-    const topic = await Topics.create({ title: "sports" });
+    const topic = await Topic.create({ title: "sports" });
 
     expect(await topic.countHasInterest()).toEqual(0);
     await topic.addHasInterest(user1);

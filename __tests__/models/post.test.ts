@@ -165,11 +165,11 @@ describe("Post model", () => {
   });
 
   it("should return the associated user group", async () => {
-    const { Users, Post, Thread, Topics, UserGroup } = db.getModels();
+    const { Users, Post, Thread, Topic, UserGroup } = db.getModels();
 
     const group = await UserGroup.create({ name: "some group" });
 
-    const topic = await Topics.create({ title: "some topic" });
+    const topic = await Topic.create({ title: "some topic" });
     await topic.setUserGroup(group);
 
     const thread = await Thread.create({ th_title: "some thread" });

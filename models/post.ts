@@ -170,11 +170,11 @@ export function PostModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mode
    * could not be queried.
    */
   Post.prototype.getUserGroup = async function () {
-    const { Topics, UserGroup } = db.getModels();
+    const { Topic, UserGroup } = db.getModels();
 
     const thread = await (this as PostInstance).getThread({
       include: [{
-        model: Topics,
+        model: Topic,
         as: "topic",
         include: [{ model: UserGroup }]
       }]
