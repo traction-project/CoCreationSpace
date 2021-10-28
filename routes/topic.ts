@@ -44,11 +44,11 @@ router.get("/group", authRequired, async (req, res) => {
  */
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
-  const { Threads, Topics } = db.getModels();
+  const { Thread, Topics } = db.getModels();
 
   const topic = await Topics.findByPk(id, {
     include: [{
-      model: Threads,
+      model: Thread,
       as: "threads"
     }]
   });

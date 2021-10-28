@@ -9,9 +9,9 @@ const router = Router();
  * Get all Threads
  */
 router.get("/all", async (req, res) => {
-  const { Threads, Post } = db.getModels();
+  const { Thread, Post } = db.getModels();
 
-  const threads = await Threads.findAll({
+  const threads = await Thread.findAll({
     include: [{
       model: Post,
       as: "post",
@@ -24,9 +24,9 @@ router.get("/all", async (req, res) => {
 
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
-  const { Threads, Post } = db.getModels();
+  const { Thread, Post } = db.getModels();
 
-  const thread = await Threads.findByPk(id, {
+  const thread = await Thread.findByPk(id, {
     include: [{
       model: Post,
       as: "post",

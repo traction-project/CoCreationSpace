@@ -65,8 +65,8 @@ class DataBase {
     const SearchQuery = SearchQueryModelFactory(sequelize);
     const Subtitle = SubtitleModelFactory(sequelize);
     const TagReference = TagReferenceModelFactory(sequelize);
-    const Tags = TagModelFactory(sequelize);
-    const Threads = ThreadModelFactory(sequelize);
+    const Tag = TagModelFactory(sequelize);
+    const Thread = ThreadModelFactory(sequelize);
     const Topics = TopicModelFactory(sequelize);
     const UserGroup = UserGroupModelFactory(sequelize);
     const UserReferences = UserReferencesModelFactory(sequelize);
@@ -92,8 +92,8 @@ class DataBase {
       SearchQuery,
       Subtitle,
       TagReference,
-      Tags,
-      Threads,
+      Tag,
+      Thread,
       Topics,
       UserGroup,
       UserReferences,

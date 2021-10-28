@@ -11,10 +11,10 @@ describe("Topics model", () => {
   });
 
   beforeEach(async () => {
-    const { Topics, Threads, UserGroup } = db.getModels();
+    const { Topics, Thread, UserGroup } = db.getModels();
 
     await Topics.destroy({ truncate: true });
-    await Threads.destroy({ truncate: true });
+    await Thread.destroy({ truncate: true });
     await UserGroup.destroy({ truncate: true });
   });
 
@@ -64,13 +64,13 @@ describe("Topics model", () => {
   });
 
   it("should associate a thread with a topic", async () => {
-    const { Topics, Threads } = db.getModels();
+    const { Topics, Thread } = db.getModels();
 
     const topic = await Topics.create({
       title: "test"
     });
 
-    const thread = await Threads.create({
+    const thread = await Thread.create({
       th_title: "a thread"
     });
 

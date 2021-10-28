@@ -56,7 +56,7 @@ export function ThreadModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mo
   };
 
   // Create the model
-  const Thread = sequelize.define<ThreadInstance, ThreadCreationAttributes>("thread", attributes, { underscored: true, tableName: TABLE_NAME });
+  const Thread = sequelize.define<ThreadInstance, ThreadCreationAttributes>("Thread", attributes, { underscored: true, tableName: TABLE_NAME });
 
   Thread.beforeCreate(thread => { thread.id = uuidv4(); });
 

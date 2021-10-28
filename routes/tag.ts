@@ -10,10 +10,10 @@ const router = Router();
  * Get all tags
  */
 router.get("/all", async (req, res) => {
-  const { Tags } = db.getModels();
-  const criteria = await buildCriteria(req.query, Tags);
+  const { Tag } = db.getModels();
+  const criteria = await buildCriteria(req.query, Tag);
 
-  const tags = await Tags.findAll(criteria);
+  const tags = await Tag.findAll(criteria);
 
   res.send(tags);
 });
@@ -23,9 +23,9 @@ router.get("/all", async (req, res) => {
  */
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
-  const { Tags, Post, DataContainer } = db.getModels();
+  const { Tag, Post, DataContainer } = db.getModels();
 
-  const tag = await Tags.findByPk(id, {
+  const tag = await Tag.findByPk(id, {
     include: [{
       model: Post,
       as: "post",

@@ -115,7 +115,7 @@ function postsAssociations(models: DbInterface) {
   const PostDataContainer = models.Post.hasOne(models.DataContainer, { as: "dataContainer", foreignKey: "post_id" });
   models.Post.hasMany(models.Post, { as: "comments", foreignKey: "parent_post_id" });
   models.Post.belongsTo(models.Users, { as: "user", foreignKey: "user_id" });
-  models.Post.belongsTo(models.Threads, { as: "thread", foreignKey: "thread_id" });
+  models.Post.belongsTo(models.Thread, { as: "thread", foreignKey: "thread_id" });
 
   const optionsPostsPosts = {
     through: {
@@ -143,7 +143,7 @@ function postsAssociations(models: DbInterface) {
     as: "userReferenced"
   });
 
-  models.Post.belongsToMany(models.Tags,{
+  models.Post.belongsToMany(models.Tag,{
     through: {
       model: models.TagReference,
       unique: false
@@ -188,7 +188,7 @@ function subtitleAssociations(models: DbInterface): void {
  * @param models DbInterface
  */
 function tagAssociations(models: DbInterface): void {
-  models.Tags.belongsToMany(models.Post, {
+  models.Tag.belongsToMany(models.Post, {
     through: {
       model: models.TagReference,
       unique: false
@@ -204,7 +204,7 @@ function tagAssociations(models: DbInterface): void {
  */
 function topicAssociations(models: DbInterface): void {
   models.Topics.belongsTo(models.UserGroup);
-  models.Topics.hasMany(models.Threads, { as: "threads", foreignKey: "topic_id" });
+  models.Topics.hasMany(models.Thread, { as: "threads", foreignKey: "topic_id" });
   models.Topics.belongsToMany(models.Users, {
     through: {
       model: models.Interest,
@@ -220,8 +220,8 @@ function topicAssociations(models: DbInterface): void {
  * @param models DbInterface
  */
 function threadAssociations(models: DbInterface): void {
-  models.Threads.belongsTo(models.Topics, { as: "topic", foreignKey: "topic_id" });
-  models.Threads.hasMany(models.Post, { as: "post", foreignKey: "thread_id" });
+  models.Thread.belongsTo(models.Topics, { as: "topic", foreignKey: "topic_id" });
+  models.Thread.hasMany(models.Post, { as: "post", foreignKey: "thread_id" });
 }
 
 /**

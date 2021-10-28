@@ -49,8 +49,8 @@ export interface DbInterface {
     SearchQuery: ModelCtor<SearchQueryInstance>;
     Subtitle: ModelCtor<SubtitleInstance>;
     TagReference: ModelCtor<TagReferenceInstance>;
-    Tags: ModelCtor<TagInstance>;
-    Threads: ModelCtor<ThreadInstance>;
+    Tag: ModelCtor<TagInstance>;
+    Thread: ModelCtor<ThreadInstance>;
     Topics: ModelCtor<TopicInstance>;
     UserGroup: ModelCtor<UserGroupInstance>;
     UserReferences: ModelCtor<UserReferencesInstance>;

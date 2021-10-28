@@ -31,7 +31,7 @@ async function logSearchQuery(query: string | undefined, resultcount: number, us
  */
 router.get("/all/user", authRequired, async (req, res) => {
   const user = req.user as UserInstance;
-  const { Post, Users, DataContainer, Multimedia, Threads, Topics, UserGroup } = db.getModels();
+  const { Post, Users, DataContainer, Multimedia, Thread, Topics, UserGroup } = db.getModels();
 
   let queryDataContainer = {
     model: DataContainer,
@@ -57,7 +57,7 @@ router.get("/all/user", authRequired, async (req, res) => {
       attributes: ["id", "username", "image"],
       where: { id: user.id }
     }, queryDataContainer, "comments", "tags", {
-      model: Threads,
+      model: Thread,
       as: "thread",
       required: true,
       include: [{
@@ -92,7 +92,7 @@ router.get("/all/user", authRequired, async (req, res) => {
  */
 router.get("/all/group", authRequired, async (req, res) => {
   const user = req.user as UserInstance;
-  const { Post, Users, UserGroup, DataContainer, Multimedia, Tags, Threads, Topics } = db.getModels();
+  const { Post, Users, UserGroup, DataContainer, Multimedia, Tag, Thread, Topics } = db.getModels();
 
   // Get desired page number and results per page from query string if present
   // Use defaults otherwise
@@ -130,11 +130,11 @@ router.get("/all/group", authRequired, async (req, res) => {
       as: "user",
       attributes: ["id", "username", "image"]
     }, queryDataContainer, "comments", {
-      model: Tags,
+      model: Tag,
       as: "tags",
       where: (tagId && tagId !== "") ? { id: tagId } : undefined
     }, {
-      model: Threads,
+      model: Thread,
       as: "thread",
       required: true,
       include: [{
@@ -174,12 +174,12 @@ router.get("/:id", authRequired, async (req, res) => {
   const { id } = req.params;
   const user = req.user as UserInstance;
 
-  const { Post, DataContainer, Multimedia, Topics, Threads, UserGroup } = db.getModels();
+  const { Post, DataContainer, Multimedia, Topics, Thread, UserGroup } = db.getModels();
 
   const post = await Post.findByPk(id, {
     include: [
       {
-        model: Threads,
+        model: Thread,
         as: "thread",
         required: true,
         include: [{
@@ -309,9 +309,9 @@ router.post("/", authRequired, async (req, res) => {
   const { text, title, multimedia, tags, topicId } = req.body;
 
   const user = req.user as UserInstance;
-  const { Post, Tags, Threads, DataContainer } = db.getModels();
+  const { Post, Tag, Thread, DataContainer } = db.getModels();
 
-  const thread = await Threads.create({
+  const thread = await Thread.create({
     th_title: title,
     topic_id: topicId
   });
@@ -339,12 +339,12 @@ router.post("/", authRequired, async (req, res) => {
       const { id, tag_name } = tag;
       const query = id ? { id } : { tag_name: tag_name.toLowerCase() };
 
-      const tagSaved = await Tags.findAll({where: query});
+      const tagSaved = await Tag.findAll({where: query});
 
       if (tagSaved && tagSaved.length > 0) {
         await postSaved.addTag(tagSaved[0]);
       } else {
-        const newTag = await Tags.create(tag);
+        const newTag = await Tag.create(tag);
         await postSaved.addTag(newTag);
       }
     });
@@ -360,7 +360,7 @@ router.post("/:id/edit", authRequired, async (req, res) => {
   const { id } = req.params;
   const { title, description, multimedia, tags } = req.body;
 
-  const { Post, DataContainer, Tags } = db.getModels();
+  const { Post, DataContainer, Tag } = db.getModels();
   const user = req.user as UserInstance;
   const post = await Post.findByPk(id);
   const dataContainer = await DataContainer.findOne({ where: { post_id: id } as any });
@@ -402,14 +402,14 @@ router.post("/:id/edit", authRequired, async (req, res) => {
 
       tagsToAdd.forEach(async (tagToAdd: string) => {
         // Try to find pre-existing tag with same name
-        const preexistingTag = await Tags.findOne({ where: { tag_name: tagToAdd } });
+        const preexistingTag = await Tag.findOne({ where: { tag_name: tagToAdd } });
 
         if (preexistingTag) {
           // Associate pre-existing tag with post if possible
           await post.addTag(preexistingTag);
         } else {
           // Otherwise create new tag and associate it with post
-          const newTag = await Tags.create({ tag_name: tagToAdd });
+          const newTag = await Tag.create({ tag_name: tagToAdd });
           await post.addTag(newTag);
         }
       });

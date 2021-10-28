@@ -11,26 +11,26 @@ describe("Preferences tests", () => {
   });
 
   beforeEach(async () => {
-    const { Threads, Topics, Post } = db.getModels();
+    const { Thread, Topics, Post } = db.getModels();
 
-    await Threads.destroy({ truncate: true });
+    await Thread.destroy({ truncate: true });
     await Topics.destroy({ truncate: true });
     await Post.destroy({ truncate: true });
   });
 
   it("should create new thread", async () => {
-    const { Threads } = db.getModels();
+    const { Thread } = db.getModels();
 
-    const thread = await Threads.create({ th_title: "thread" });
-    const threadSaved = await Threads.findOne({ where: { th_title: "thread" }});
+    const thread = await Thread.create({ th_title: "thread" });
+    const threadSaved = await Thread.findOne({ where: { th_title: "thread" }});
 
     expect(threadSaved).toBeDefined();
     expect(thread.id).toEqual(threadSaved!.id);
   });
 
   it("should add thread to a topic", async () => {
-    const { Threads, Topics } = db.getModels();
-    const thread = await Threads.create({ th_title: "thread" });
+    const { Thread, Topics } = db.getModels();
+    const thread = await Thread.create({ th_title: "thread" });
     const topic = await Topics.create({ title: "topic" });
 
     expect(await thread.getTopic()).toBeNull();
@@ -40,8 +40,8 @@ describe("Preferences tests", () => {
   });
 
   it("should remove thread from topic", async () => {
-    const { Threads, Topics } = db.getModels();
-    const thread = await Threads.create({ th_title: "thread" });
+    const { Thread, Topics } = db.getModels();
+    const thread = await Thread.create({ th_title: "thread" });
     const topic = await Topics.create({ title: "topic" });
 
     await thread.setTopic(topic);
@@ -53,8 +53,8 @@ describe("Preferences tests", () => {
   });
 
   it("should add post to thread", async () => {
-    const { Threads, Post } = db.getModels();
-    const thread = await Threads.create({ th_title: "thread" });
+    const { Thread, Post } = db.getModels();
+    const thread = await Thread.create({ th_title: "thread" });
     const post1 = await Post.create();
     const post2 = await Post.create();
 
@@ -70,8 +70,8 @@ describe("Preferences tests", () => {
   });
 
   it("should remove post from thread", async () => {
-    const { Threads, Post } = db.getModels();
-    const thread = await Threads.create({ th_title: "thread" });
+    const { Thread, Post } = db.getModels();
+    const thread = await Thread.create({ th_title: "thread" });
     const post1 = await Post.create();
 
     await thread.addPost(post1);
