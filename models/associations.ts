@@ -154,7 +154,7 @@ function postsAssociations(models: DbInterface) {
 
   models.Posts.belongsToMany(models.Users, {
     through: {
-      model: models.Likes,
+      model: models.Like,
       unique: false
     },
     foreignKey: "post_id",
@@ -254,7 +254,7 @@ function userAssociations(models: DbInterface): void {
 
   models.Users.belongsToMany(models.Posts, {
     through: {
-      model: models.Likes,
+      model: models.Like,
       unique: false
     },
     foreignKey: "user_id",

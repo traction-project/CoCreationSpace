@@ -11,9 +11,9 @@ describe("User likes post tests", () => {
   });
 
   beforeEach(async () => {
-    const { Likes, Users, Posts } = db.getModels();
+    const { Like, Users, Posts } = db.getModels();
 
-    await Likes.destroy({ truncate: true });
+    await Like.destroy({ truncate: true });
     await Users.destroy({ truncate: true });
     await Posts.destroy({ truncate: true });
   });

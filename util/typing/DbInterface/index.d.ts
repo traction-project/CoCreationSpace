@@ -15,7 +15,7 @@ import { TopicInstance } from "models/topic";
 import { UserInstance } from "models/users";
 import { UserReferencesInstance } from "models/user_references";
 import { PostReferencesInstance } from "models/post_references";
-import { LikesInstance } from "models/likes";
+import { LikeInstance } from "models/like";
 import { EmojiReactionInstance } from "models/emoji_reaction";
 import { InterestInstance } from "models/interest";
 import { NotificationInstance } from "models/notifications";
@@ -37,7 +37,7 @@ export interface DbInterface {
     EmojiReaction: ModelCtor<EmojiReactionInstance>;
     Interest: ModelCtor<InterestInstance>;
     InternalNavigationStep: ModelCtor<InternalNavigationStepInstance>;
-    Likes: ModelCtor<LikesInstance>;
+    Like: ModelCtor<LikeInstance>;
     Metadata: ModelCtor<MetadataInstance>;
     Multimedia: ModelCtor<MultimediaInstance>;
     MultimediaInteraction: ModelCtor<MultimediaInteractionInstance>;

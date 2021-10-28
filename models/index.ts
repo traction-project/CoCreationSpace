@@ -18,7 +18,7 @@ import { DataContainerModelFactory } from "./data_container";
 import { AudioContentModelFactory } from "./audio_content";
 import { MetadataModelFactory } from "./metadata";
 import { SubtitlesModelFactory } from "./subtitles";
-import { LikesModelFactory } from "./likes";
+import { LikeModelFactory } from "./like";
 import { EmojiReactionModelFactory } from "./emoji_reaction";
 import { InterestModelFactory } from "./interest";
 import { NotificationsModelFactory } from "./notifications";
@@ -53,7 +53,7 @@ class DataBase {
     const EmojiReaction = EmojiReactionModelFactory(sequelize);
     const Interest = InterestModelFactory(sequelize);
     const InternalNavigationStep = InternalNavigationStepModelFactory(sequelize);
-    const Likes = LikesModelFactory(sequelize);
+    const Like = LikeModelFactory(sequelize);
     const Metadata = MetadataModelFactory(sequelize);
     const Multimedia = MultimediaModelFactory(sequelize);
     const MultimediaInteraction = MultimediaInteractionModelFactory(sequelize);
@@ -80,7 +80,7 @@ class DataBase {
       EmojiReaction,
       Interest,
       InternalNavigationStep,
-      Likes,
+      Like,
       Metadata,
       Multimedia,
       MultimediaInteraction,
