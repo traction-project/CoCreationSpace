@@ -11,10 +11,10 @@ describe("Subtitles tests", () => {
   });
 
   beforeEach(async () => {
-    const { Subtitle, Multimedia } = db.getModels();
+    const { Subtitle, MediaItem } = db.getModels();
 
     await Subtitle.destroy({ truncate: true });
-    await Multimedia.destroy({ truncate: true });
+    await MediaItem.destroy({ truncate: true });
   });
 
   it("should create new subtitle with mandatory attributes", async () => {
@@ -46,14 +46,14 @@ describe("Subtitles tests", () => {
   });
 
   it("should add subtitles to a multimedia", async () => {
-    const { Subtitle, Multimedia } = db.getModels();
+    const { Subtitle, MediaItem } = db.getModels();
     const subtitle = await Subtitle.create({ content: "subtitle" });
-    const multimedia = await Multimedia.create({ title: "multimedia" });
+    const multimedia = await MediaItem.create({ title: "multimedia" });
 
-    expect(await subtitle.getMultimedia()).toBeNull();
-    await subtitle.setMultimedia(multimedia);
+    expect(await subtitle.getMediaItem()).toBeNull();
+    await subtitle.setMediaItem(multimedia);
 
-    expect(await subtitle.getMultimedia()).toBeDefined();
+    expect(await subtitle.getMediaItem()).toBeDefined();
   });
 
   it("should return false when calling isDefault if confidence is unset", async () => {

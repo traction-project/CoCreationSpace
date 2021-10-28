@@ -2,13 +2,13 @@ import Sequelize, { Optional } from "sequelize";
 import { v4 as uuidv4} from "uuid";
 
 import { CommonAttributes } from "util/typing/modelCommonAttributes";
-import { MultimediaInstance, MultimediaAttributes } from "./multimedia";
+import { MediaItemInstance, MediaItemAttributes } from "./media_item";
 
 export interface AsyncJobAttributes extends CommonAttributes{
     type: string;
     status: string;
     jobId: string;
-    multimedia?: MultimediaAttributes | MultimediaAttributes["id"];
+    multimedia?: MediaItemAttributes | MediaItemAttributes["id"];
 }
 
 type AsyncJobCreationAttributes = Optional<AsyncJobAttributes, "id" | "createdAt" | "updatedAt" | "status">;
@@ -17,9 +17,9 @@ type AsyncJobCreationAttributes = Optional<AsyncJobAttributes, "id" | "createdAt
  * AsyncJobs instance object interface
  */
 export interface AsyncJobInstance extends Sequelize.Model<AsyncJobAttributes, AsyncJobCreationAttributes>, AsyncJobAttributes {
-  getMultimedium: Sequelize.BelongsToGetAssociationMixin<MultimediaInstance>;
-  setMultimedium: Sequelize.BelongsToSetAssociationMixin<MultimediaInstance, MultimediaInstance["id"]>;
-  createMultimedium: Sequelize.BelongsToCreateAssociationMixin<MultimediaInstance>;
+  getMediaItem: Sequelize.BelongsToGetAssociationMixin<MediaItemInstance>;
+  setMediaItem: Sequelize.BelongsToSetAssociationMixin<MediaItemInstance, MediaItemInstance["id"]>;
+  createMediaItem: Sequelize.BelongsToCreateAssociationMixin<MediaItemInstance>;
 }
 
 /**

@@ -67,7 +67,7 @@ async function insertVideoTranscript(jobId: string) {
   job.status = "done";
   job.save();
 
-  const media = await job.getMultimedium();
+  const media = await job.getMediaItem();
 
   if (media) {
     media.transcript = transcript;
@@ -80,7 +80,7 @@ async function insertVideoTranscript(jobId: string) {
     subtitles.content = transcribeOutputToVTT(transcript);
 
     await subtitles.save();
-    subtitles.setMultimedia(media);
+    subtitles.setMediaItem(media);
   }
 }
 
@@ -111,7 +111,7 @@ async function insertMetadata(data: any) {
   job.status = "done";
   await job.save();
 
-  const media = await job.getMultimedium();
+  const media = await job.getMediaItem();
 
   if (media) {
     if (await media.isDoneTranscoding()) {
@@ -156,7 +156,7 @@ async function processTranscoderError(data: any) {
   job.status = "error";
   await job.save();
 
-  const media = await job.getMultimedium();
+  const media = await job.getMediaItem();
 
   if (media) {
     media.status = "error";

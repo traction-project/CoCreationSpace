@@ -11,10 +11,10 @@ describe("AsyncJob model", () => {
   });
 
   beforeEach(async () => {
-    const { AsyncJob, Multimedia } = db.getModels();
+    const { AsyncJob, MediaItem } = db.getModels();
 
     await AsyncJob.destroy({ truncate: true });
-    await Multimedia.destroy({ truncate: true });
+    await MediaItem.destroy({ truncate: true });
   });
 
   it("should create a new empty instance", async () => {
@@ -32,24 +32,24 @@ describe("AsyncJob model", () => {
     expect(job.status).toBeDefined();
     expect(job.status).toEqual("processing");
 
-    expect(await job.getMultimedium()).toBeNull();
+    expect(await job.getMediaItem()).toBeNull();
   });
 
   it("should create a new empty instance and associate it to a media item", async () => {
-    const { AsyncJob, Multimedia } = db.getModels();
+    const { AsyncJob, MediaItem } = db.getModels();
 
     const job = await AsyncJob.create({
       type: "transcode_dash",
       jobId: "some_job_id"
     });
 
-    const video = await Multimedia.create({
+    const video = await MediaItem.create({
       title: "video"
     });
 
-    expect(await job.getMultimedium()).toBeNull();
+    expect(await job.getMediaItem()).toBeNull();
 
-    await job.setMultimedium(video);
-    expect(await job.getMultimedium()).not.toBeNull();
+    await job.setMediaItem(video);
+    expect(await job.getMediaItem()).not.toBeNull();
   });
 });

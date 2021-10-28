@@ -8,9 +8,9 @@ const router = Router();
 
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
-  const { Multimedia } = db.getModels();
+  const { MediaItem } = db.getModels();
 
-  const image = await Multimedia.findOne({
+  const image = await MediaItem.findOne({
     where: { id, type: "image" }
   });
 

@@ -11,10 +11,10 @@ describe("Metadata model", () => {
   });
 
   beforeEach(async () => {
-    const { Metadata, Multimedia, AudioContent } = db.getModels();
+    const { Metadata, MediaItem, AudioContent } = db.getModels();
 
     await Metadata.destroy({ truncate: true });
-    await Multimedia.destroy({ truncate: true });
+    await MediaItem.destroy({ truncate: true });
     await AudioContent.destroy({ truncate: true });
   });
 
@@ -66,12 +66,12 @@ describe("Metadata model", () => {
   });
 
   it("should add metadata to multimedia", async () => {
-    const { Metadata, Multimedia } = db.getModels();
+    const { Metadata, MediaItem } = db.getModels();
     const metadata = await Metadata.create({ value: "metadata" });
-    const multimedia = await Multimedia.create({ title: "multimedia" });
+    const multimedia = await MediaItem.create({ title: "multimedia" });
 
-    await metadata.setMultimedia(multimedia);
-    const multimediaSaved = await metadata.getMultimedia();
+    await metadata.setMediaItem(multimedia);
+    const multimediaSaved = await metadata.getMediaItem();
 
     expect(multimediaSaved.id).toEqual(multimedia.id);
   });

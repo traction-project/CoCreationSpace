@@ -5,23 +5,23 @@ const sequelize = new Sequelize("sqlite::memory:", { logging: false });
 
 import { db } from "../../models";
 
-describe("Multimedia model", () => {
+describe("MediaItem model", () => {
   beforeAll(async () => {
     await db.createDB(sequelize);
   });
 
   beforeEach(async () => {
-    const { AsyncJob, Multimedia, EmojiReaction } = db.getModels();
+    const { AsyncJob, MediaItem, EmojiReaction } = db.getModels();
 
-    await Multimedia.destroy({ truncate: true });
+    await MediaItem.destroy({ truncate: true });
     await EmojiReaction.destroy({ truncate: true });
     await AsyncJob.destroy({ truncate: true });
   });
 
   it("should create a multimedia entry with a array for the field 'resolutions'", async () => {
-    const { Multimedia } = db.getModels();
+    const { MediaItem } = db.getModels();
 
-    const mediaItem = await Multimedia.build({
+    const mediaItem = await MediaItem.build({
       title: "test",
       resolutions: [240, 360, 720]
     }).save();
@@ -32,9 +32,9 @@ describe("Multimedia model", () => {
   });
 
   it("should create a multimedia entry with a array for the field 'thumbnails'", async () => {
-    const { Multimedia } = db.getModels();
+    const { MediaItem } = db.getModels();
 
-    const mediaItem = await Multimedia.build({
+    const mediaItem = await MediaItem.build({
       title: "test",
       thumbnails: ["thumbnail1", "thumbnail2", "thumbnail3"]
     }).save();
@@ -47,9 +47,9 @@ describe("Multimedia model", () => {
   });
 
   it("should return all subtitles for a video", async () => {
-    const { Multimedia, Subtitle } = db.getModels();
+    const { MediaItem, Subtitle } = db.getModels();
 
-    const mediaItem = await Multimedia.create({
+    const mediaItem = await MediaItem.create({
       title: "test",
     });
 
@@ -67,9 +67,9 @@ describe("Multimedia model", () => {
   });
 
   it("should return all subtitles for a video with the given language", async () => {
-    const { Multimedia, Subtitle } = db.getModels();
+    const { MediaItem, Subtitle } = db.getModels();
 
-    const mediaItem = await Multimedia.create({
+    const mediaItem = await MediaItem.create({
       title: "test",
     });
 
@@ -93,9 +93,9 @@ describe("Multimedia model", () => {
   });
 
   it("should initialise view count to zero", async () => {
-    const { Multimedia } = db.getModels();
+    const { MediaItem } = db.getModels();
 
-    const mediaItem = await Multimedia.create({
+    const mediaItem = await MediaItem.create({
       title: "test",
     });
 
@@ -104,9 +104,9 @@ describe("Multimedia model", () => {
   });
 
   it("should increment the view count by one after calling incrementViewCount()", async () => {
-    const { Multimedia } = db.getModels();
+    const { MediaItem } = db.getModels();
 
-    const mediaItem = await Multimedia.create({
+    const mediaItem = await MediaItem.create({
       title: "test",
     });
 
@@ -119,9 +119,9 @@ describe("Multimedia model", () => {
   });
 
   it("should list interactions with multimedia items by users", async () => {
-    const { Multimedia, MultimediaInteraction } = db.getModels();
+    const { MediaItem, MultimediaInteraction } = db.getModels();
 
-    const video = await Multimedia.create({
+    const video = await MediaItem.create({
       title: "video",
     });
 
@@ -131,16 +131,16 @@ describe("Multimedia model", () => {
       interaction: { type: "play", timestamp: 1 }
     });
 
-    await interaction.setMultimedium(video);
+    await interaction.setMediaItem(video);
 
     expect(await video.countMultimediaInteractions()).toEqual(1);
     expect(await video.hasMultimediaInteraction(interaction)).toBeTruthy();
   });
 
   it("should list async-jobs associated to the multimedia item", async () => {
-    const { Multimedia, AsyncJob } = db.getModels();
+    const { MediaItem, AsyncJob } = db.getModels();
 
-    const video = await Multimedia.create({
+    const video = await MediaItem.create({
       title: "video",
     });
 
@@ -157,9 +157,9 @@ describe("Multimedia model", () => {
   });
 
   it("should return whether an associated job is still processing", async () => {
-    const { Multimedia, AsyncJob } = db.getModels();
+    const { MediaItem, AsyncJob } = db.getModels();
 
-    const video = await Multimedia.create({
+    const video = await MediaItem.create({
       title: "video",
     });
 
@@ -178,9 +178,9 @@ describe("Multimedia model", () => {
   });
 
   it("should return true when all associated job is still processing", async () => {
-    const { Multimedia, AsyncJob } = db.getModels();
+    const { MediaItem, AsyncJob } = db.getModels();
 
-    const video = await Multimedia.create({
+    const video = await MediaItem.create({
       title: "video",
     });
 
@@ -220,9 +220,9 @@ describe("Multimedia model", () => {
   });
 
   it("should list emoji-reactions associated to the multimedia item", async () => {
-    const { Multimedia, EmojiReaction, User } = db.getModels();
+    const { MediaItem, EmojiReaction, User } = db.getModels();
 
-    const video = await Multimedia.create({
+    const video = await MediaItem.create({
       title: "video",
     });
 
@@ -232,7 +232,7 @@ describe("Multimedia model", () => {
     const reaction = await EmojiReaction.create({
       emoji: "😋",
       user_id: user.id,
-      multimedia_id: video.id,
+      media_item_id: video.id,
       second: 12.345
     });
 

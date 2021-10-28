@@ -2,14 +2,14 @@ import Sequelize, { Optional } from "sequelize";
 import { v4 as uuidv4} from "uuid";
 
 import { CommonAttributes } from "util/typing/modelCommonAttributes";
-import { MultimediaAttributes, MultimediaInstance } from "./multimedia";
+import { MediaItemAttributes, MediaItemInstance } from "./media_item";
 import { MetadataAttributes, MetadataInstance } from "./metadata";
 
 export interface AudioContentAttributes extends CommonAttributes{
     file: string;
     language?: string;
     audio_type?: string;
-    multimedia?: MultimediaAttributes | MultimediaAttributes["id"];
+    multimedia?: MediaItemAttributes | MediaItemAttributes["id"];
     metadatas?: MetadataAttributes | MetadataAttributes["id"];
 }
 
@@ -19,8 +19,8 @@ type AudioContentCreationAttributes = Optional<AudioContentAttributes, "id" | "c
  * AudioContent instance object interface
  */
 export interface AudioContentInstance extends Sequelize.Model<AudioContentAttributes, AudioContentCreationAttributes>, AudioContentAttributes {
-  getMultimedia: Sequelize.BelongsToGetAssociationMixin<MultimediaInstance>;
-  setMultimedia: Sequelize.BelongsToSetAssociationMixin<MultimediaInstance, MultimediaInstance["id"]>;
+  getMediaItem: Sequelize.BelongsToGetAssociationMixin<MediaItemInstance>;
+  setMediaItem: Sequelize.BelongsToSetAssociationMixin<MediaItemInstance, MediaItemInstance["id"]>;
 
   getMetadatas: Sequelize.HasManyGetAssociationsMixin<MetadataInstance>;
   setMetadatas: Sequelize.HasManySetAssociationsMixin<MetadataInstance, MetadataInstance["id"]>;

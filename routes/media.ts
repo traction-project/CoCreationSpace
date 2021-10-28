@@ -9,7 +9,7 @@ import { authRequired } from "../util/middleware";
 import { encodeDash, encodeAudio, encodeHLS, encodeHLSAudio } from "../util/transcode";
 import { uploadToS3 } from "../util/s3";
 import { transcribeMediaFile } from "../util/transcribe";
-import { MultimediaInstance } from "../models/multimedia";
+import { MediaItemInstance } from "../models/media_item";
 import { UserInstance } from "../models/user";
 import { AsyncJobInstance } from "models/async_job";
 
@@ -17,7 +17,7 @@ const [ BUCKET_NAME, ETS_PIPELINE, CLOUDFRONT_URL ] = getFromEnvironment("BUCKET
 const router = Router();
 
 const processUploadedVideo = async (file: NodeJS.ReadableStream, filename: string, userId: string) => {
-  const { Multimedia, AsyncJob } = db.getModels();
+  const { MediaItem, AsyncJob } = db.getModels();
 
   const newName = uuid4() + getExtension(filename);
   await uploadToS3(newName, file, BUCKET_NAME);
@@ -26,7 +26,7 @@ const processUploadedVideo = async (file: NodeJS.ReadableStream, filename: strin
   const dashJobId = await encodeDash(ETS_PIPELINE, newName);
   const hlsJobId = await encodeHLS(ETS_PIPELINE, newName);
 
-  const video: MultimediaInstance = Multimedia.build();
+  const video: MediaItemInstance = MediaItem.build();
 
   video.title = newName;
   video.file = filename;
@@ -55,7 +55,7 @@ const processUploadedVideo = async (file: NodeJS.ReadableStream, filename: strin
 };
 
 const processUploadedAudio = async (file: NodeJS.ReadableStream, filename: string, userId: string) => {
-  const { AsyncJob, Multimedia } = db.getModels();
+  const { AsyncJob, MediaItem } = db.getModels();
 
   const newName = uuid4() + getExtension(filename);
   await uploadToS3(newName, file, BUCKET_NAME);
@@ -64,7 +64,7 @@ const processUploadedAudio = async (file: NodeJS.ReadableStream, filename: strin
   const dashJobId = await encodeAudio(ETS_PIPELINE, newName);
   const hlsJobId = await encodeHLSAudio(ETS_PIPELINE, newName);
 
-  const audio: MultimediaInstance = Multimedia.build();
+  const audio: MediaItemInstance = MediaItem.build();
 
   audio.title = newName;
   audio.file = filename;
@@ -93,7 +93,7 @@ const processUploadedAudio = async (file: NodeJS.ReadableStream, filename: strin
 };
 
 const processUploadedImage = async (file: NodeJS.ReadableStream, filename: string, userId: string) => {
-  const { Multimedia } = db.getModels();
+  const { MediaItem } = db.getModels();
 
   // Get file stream buffer
   const bufferFile = await streamToBuffer(file);
@@ -110,7 +110,7 @@ const processUploadedImage = async (file: NodeJS.ReadableStream, filename: strin
   const thumbnailName = uuid4() + getExtension(filename);
   await uploadToS3(thumbnailName, resizerImageBuffer, BUCKET_NAME);
 
-  const image: MultimediaInstance = Multimedia.build();
+  const image: MediaItemInstance = MediaItem.build();
 
   image.title = newName;
   image.file = filename;
@@ -130,12 +130,12 @@ const processUploadedImage = async (file: NodeJS.ReadableStream, filename: strin
 };
 
 const processUploadedFile = async (stream: NodeJS.ReadableStream, filename: string, userId: string) => {
-  const { Multimedia } = db.getModels();
+  const { MediaItem } = db.getModels();
 
   const newName = uuid4() + getExtension(filename);
   await uploadToS3(newName, stream, BUCKET_NAME);
 
-  const file: MultimediaInstance = Multimedia.build();
+  const file: MediaItemInstance = MediaItem.build();
 
   file.title = newName;
   file.file = filename;
@@ -210,8 +210,8 @@ router.post("/upload", authRequired, (req, res) => {
 });
 
 router.get("/all", async (req, res) => {
-  const { Multimedia } = db.getModels();
-  const videos = await Multimedia.findAll({ order: [["created_at", "desc"]] });
+  const { MediaItem } = db.getModels();
+  const videos = await MediaItem.findAll({ order: [["created_at", "desc"]] });
 
   res.send(videos.map((video) => {
     const mainThumbnail = video.thumbnails?.[0];
@@ -231,8 +231,8 @@ router.get("/all", async (req, res) => {
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
 
-  const { Multimedia } = db.getModels();
-  const video = await Multimedia.findByPk(id);
+  const { MediaItem } = db.getModels();
+  const video = await MediaItem.findByPk(id);
 
   if (video) {
     return res.send({
@@ -251,8 +251,8 @@ router.get("/:id", async (req, res) => {
 router.get("/:id/name", async (req, res) => {
   const { id } = req.params;
 
-  const { Multimedia } = db.getModels();
-  const mediaItem = await Multimedia.findByPk(id);
+  const { MediaItem } = db.getModels();
+  const mediaItem = await MediaItem.findByPk(id);
 
   if (mediaItem) {
     return res.send({
@@ -267,8 +267,8 @@ router.get("/:id/name", async (req, res) => {
 router.get("/:id/thumbnail", async (req, res) => {
   const { id } = req.params;
 
-  const { Multimedia } = db.getModels();
-  const video = await Multimedia.findByPk(id);
+  const { MediaItem } = db.getModels();
+  const video = await MediaItem.findByPk(id);
 
   if (video && video.thumbnails) {
     return res.send({
@@ -286,12 +286,12 @@ router.get("/:id/thumbnail", async (req, res) => {
  * Add an emoji reaction to the given media item from the current user
  */
 router.post("/:id/reaction", authRequired, async (req, res) => {
-  const { Multimedia, EmojiReaction } = db.getModels();
+  const { MediaItem, EmojiReaction } = db.getModels();
 
   const { id } = req.params;
   const user = req.user as UserInstance;
 
-  const mediaItem = await Multimedia.findByPk(id);
+  const mediaItem = await MediaItem.findByPk(id);
 
   if (mediaItem && user && user.id) {
     const { emoji, second } = req.body;
@@ -299,7 +299,7 @@ router.post("/:id/reaction", authRequired, async (req, res) => {
     const reaction = await EmojiReaction.create({
       emoji,
       second,
-      multimedia_id: id,
+      media_item_id: id,
       user_id: user.id
     });
 
@@ -316,9 +316,9 @@ router.post("/:id/reaction", authRequired, async (req, res) => {
  */
 router.post("/:id/view", async (req, res) => {
   const { id } = req.params;
-  const { Multimedia } = db.getModels();
+  const { MediaItem } = db.getModels();
 
-  const mediaItem = await Multimedia.findByPk(id);
+  const mediaItem = await MediaItem.findByPk(id);
 
   if (mediaItem) {
     await mediaItem.incrementViewCount();
@@ -339,9 +339,9 @@ router.post("/:id/view", async (req, res) => {
  */
 router.get("/:id/views", async (req, res) => {
   const { id } = req.params;
-  const { Multimedia } = db.getModels();
+  const { MediaItem } = db.getModels();
 
-  const mediaItem = await Multimedia.findByPk(id);
+  const mediaItem = await MediaItem.findByPk(id);
 
   if (mediaItem) {
     res.send({
@@ -358,16 +358,16 @@ router.get("/:id/views", async (req, res) => {
 router.post("/:id/interaction", authRequired, async (req, res) => {
   const { id } = req.params;
   const user = req.user as UserInstance;
-  const { Multimedia, MultimediaInteraction } = db.getModels();
+  const { MediaItem, MultimediaInteraction } = db.getModels();
 
-  const mediaItem = await Multimedia.findByPk(id);
+  const mediaItem = await MediaItem.findByPk(id);
 
   if (mediaItem) {
     const interaction = await MultimediaInteraction.create({
       interaction: req.body
     });
 
-    await interaction.setMultimedium(mediaItem);
+    await interaction.setMediaItem(mediaItem);
     await interaction.setUser(user);
 
     res.send({
@@ -383,9 +383,9 @@ router.post("/:id/interaction", authRequired, async (req, res) => {
 
 router.get("/:id/status", async (req, res) => {
   const { id } = req.params;
-  const { Multimedia } = db.getModels();
+  const { MediaItem } = db.getModels();
 
-  const video = await Multimedia.findByPk(id);
+  const video = await MediaItem.findByPk(id);
 
   if (video) {
     return res.send({
@@ -402,8 +402,8 @@ router.get("/:id/status", async (req, res) => {
 router.get("/:id/subtitles", async (req, res) => {
   const { id } = req.params;
 
-  const { Multimedia } = db.getModels();
-  const video = await Multimedia.findByPk(id);
+  const { MediaItem } = db.getModels();
+  const video = await MediaItem.findByPk(id);
 
   if (video) {
     const subtitles = await video.getSubtitles();

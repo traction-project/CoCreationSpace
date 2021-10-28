@@ -11,11 +11,11 @@ describe("Data container model", () => {
   });
 
   beforeEach(async () => {
-    const { DataContainer, Post, Multimedia } = db.getModels();
+    const { DataContainer, Post, MediaItem } = db.getModels();
 
     await DataContainer.destroy({ truncate: true });
     await Post.destroy({ truncate: true });
-    await Multimedia.destroy({ truncate: true });
+    await MediaItem.destroy({ truncate: true });
   });
 
   it("should create new data contaienr with text_content", async () => {
@@ -59,73 +59,76 @@ describe("Data container model", () => {
   });
 
   it("should return true when audio content has a certain multimedia", async () => {
-    const { DataContainer, Multimedia } = db.getModels();
+    const { DataContainer, MediaItem } = db.getModels();
 
     const dataContainer = await DataContainer.create();
-    const multimedia = await Multimedia.create({ title: "multimedia" });
-    expect(await dataContainer.hasMultimedia(multimedia)).toBeFalsy();
+    const multimedia = await MediaItem.create({ title: "multimedia" });
+    expect(await dataContainer.hasMediaItem(multimedia)).toBeFalsy();
 
-    await dataContainer.addMultimedia(multimedia);
-    expect(await dataContainer.hasMultimedia(multimedia)).toBeTruthy();
+    await dataContainer.addMediaItem(multimedia);
+    expect(await dataContainer.hasMediaItem(multimedia)).toBeTruthy();
   });
 
   it("should count a data container multimedia", async () => {
-    const { DataContainer, Multimedia } = db.getModels();
+    const { DataContainer, MediaItem } = db.getModels();
 
     const dataContainer = await DataContainer.create();
-    expect(await dataContainer.countMultimedia()).toEqual(0);
+    expect(await dataContainer.countMediaItems()).toEqual(0);
 
-    const multimedia = await Multimedia.create({ title: "multimedia" });
-    await dataContainer.addMultimedia(multimedia);
+    const multimedia = await MediaItem.create({ title: "multimedia" });
+    await dataContainer.addMediaItem(multimedia);
 
-    expect(await dataContainer.countMultimedia()).toEqual(1);
+    expect(await dataContainer.countMediaItems()).toEqual(1);
   });
 
   it("should remove a certain multimedia", async () => {
-    const { DataContainer, Multimedia } = db.getModels();
+    const { DataContainer, MediaItem } = db.getModels();
     const dataContainer = await DataContainer.create();
-    const multimedia = await Multimedia.create({ title: "multimedia" });
+    const multimedia = await MediaItem.create({ title: "multimedia" });
 
-    await dataContainer.addMultimedia(multimedia);
-    expect(await dataContainer.hasMultimedia(multimedia)).toBeTruthy();
+    await dataContainer.addMediaItem(multimedia);
+    expect(await dataContainer.hasMediaItem(multimedia)).toBeTruthy();
 
-    await dataContainer.removeMultimedia(multimedia);
-    expect(await dataContainer.hasMultimedia(multimedia)).toBeFalsy();
+    await dataContainer.removeMediaItem(multimedia);
+    expect(await dataContainer.hasMediaItem(multimedia)).toBeFalsy();
   });
 
   it("should return true when data container has a certain series of multimedias", async () => {
-    const { DataContainer, Multimedia } = db.getModels();
+    const { DataContainer, MediaItem } = db.getModels();
     const dataContainer = await DataContainer.create();
-    const multimedia1 = await Multimedia.create({ title: "multimedia1" });
-    const multimedia2 = await Multimedia.create({ title: "multimedia2" });
-    const multimedia3 = await Multimedia.create({ title: "multimedia3" });
+    const multimedia1 = await MediaItem.create({ title: "multimedia1" });
+    const multimedia2 = await MediaItem.create({ title: "multimedia2" });
+    const multimedia3 = await MediaItem.create({ title: "multimedia3" });
 
-    await dataContainer.setMultimedia([multimedia1, multimedia2, multimedia3]);
+    await dataContainer.setMediaItems([multimedia1, multimedia2, multimedia3]);
 
-    expect(await dataContainer.countMultimedia()).toEqual(3);
+    expect(await dataContainer.countMediaItems()).toEqual(3);
 
-    const [multimedia1Saved, multimedia2Saved, multimedia3Saved] = await dataContainer.getMultimedia();
+    const [multimedia1Saved, multimedia2Saved, multimedia3Saved] = await dataContainer.getMediaItems();
+
     expect(multimedia1.id).toEqual(multimedia1Saved.id);
     expect(multimedia2.id).toEqual(multimedia2Saved.id);
     expect(multimedia3.id).toEqual(multimedia3Saved.id);
   });
 
   it("should not fail when trying to remove an multimedia that the data container does not have", async () => {
-    const { DataContainer, Multimedia } = db.getModels();
+    const { DataContainer, MediaItem } = db.getModels();
     const dataContainer = await DataContainer.create();
-    const multimedia1 = await Multimedia.create({ title: "multimedia1" });
-    const multimedia2 = await Multimedia.create({ title: "multimedia2" });
-    const multimedia3 = await Multimedia.create({ title: "multimedia3" });
 
-    await dataContainer.addMultimedia(multimedia1);
-    await dataContainer.addMultimedia(multimedia2);
-    expect(await dataContainer.countMultimedia()).toEqual(2);
+    const multimedia1 = await MediaItem.create({ title: "multimedia1" });
+    const multimedia2 = await MediaItem.create({ title: "multimedia2" });
+    const multimedia3 = await MediaItem.create({ title: "multimedia3" });
 
-    await dataContainer.removeMultimedia(multimedia3);
-    expect(await dataContainer.countMultimedia()).toEqual(2);
+    await dataContainer.addMediaItem(multimedia1);
+    await dataContainer.addMediaItem(multimedia2);
 
-    await dataContainer.removeMultimedia(multimedia2);
-    expect(await dataContainer.countMultimedia()).toEqual(1);
+    expect(await dataContainer.countMediaItems()).toEqual(2);
+
+    await dataContainer.removeMediaItem(multimedia3);
+    expect(await dataContainer.countMediaItems()).toEqual(2);
+
+    await dataContainer.removeMediaItem(multimedia2);
+    expect(await dataContainer.countMediaItems()).toEqual(1);
   });
 
 });

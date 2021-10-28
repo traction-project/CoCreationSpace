@@ -13,9 +13,9 @@ const router = Router();
  */
 router.post("/:id/:target", authRequired, async (req, res) => {
   const { id, target } = req.params;
-  const { Multimedia, Subtitle } = db.getModels();
+  const { MediaItem, Subtitle } = db.getModels();
 
-  const video = await Multimedia.findByPk(id);
+  const video = await MediaItem.findByPk(id);
 
   if (video && video.transcript) {
     const [ existingSubtitle ] = await video.getSubtitles({
@@ -41,7 +41,7 @@ router.post("/:id/:target", authRequired, async (req, res) => {
       subtitles.content = generateVTT(translatedCues);
 
       await subtitles.save();
-      subtitles.setMultimedia(video);
+      subtitles.setMediaItem(video);
 
       res.send({
         status: "OK",
@@ -73,7 +73,7 @@ router.post("/:id/:target/manual", async (req, res) => {
   subtitles.content = generateVTT(cues);
 
   await subtitles.save();
-  subtitles.setMultimedia(id);
+  subtitles.setMediaItem(id);
 
   res.send("OK");
 });
@@ -84,9 +84,9 @@ router.post("/:id/:target/manual", async (req, res) => {
  */
 router.get("/:id/transcript", authRequired, async (req, res) => {
   const { id } = req.params;
-  const { Multimedia } = db.getModels();
+  const { MediaItem } = db.getModels();
 
-  const video = await Multimedia.findByPk(id);
+  const video = await MediaItem.findByPk(id);
 
   if (video && video.transcript) {
     res.json(generateCues(video.transcript));

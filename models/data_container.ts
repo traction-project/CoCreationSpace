@@ -3,12 +3,12 @@ import { v4 as uuidv4} from "uuid";
 
 import { CommonAttributes } from "util/typing/modelCommonAttributes";
 import { PostAttributes, PostInstance } from "./post";
-import { MultimediaAttributes, MultimediaInstance } from "./multimedia";
+import { MediaItemAttributes, MediaItemInstance } from "./media_item";
 
 export interface DataContainerAttributes extends CommonAttributes{
     text_content?: string;
     post?: PostAttributes | PostAttributes["id"];
-    multimedia?: MultimediaAttributes[] | MultimediaAttributes["id"][];
+    mediaItem?: MediaItemAttributes[] | MediaItemAttributes["id"][];
 }
 
 type DataContainerCreationAttributes = Optional<DataContainerAttributes, "id" | "createdAt" | "updatedAt">;
@@ -21,16 +21,16 @@ export interface DataContainerInstance extends Sequelize.Model<DataContainerAttr
   setPost: Sequelize.BelongsToSetAssociationMixin<PostInstance, PostInstance["id"]>;
   createPost: Sequelize.BelongsToCreateAssociationMixin<PostAttributes>;
 
-  getMultimedia: Sequelize.HasManyGetAssociationsMixin<MultimediaInstance>;
-  setMultimedia: Sequelize.HasManySetAssociationsMixin<MultimediaInstance, MultimediaInstance["id"]>;
-  addMultimedias: Sequelize.HasManyAddAssociationsMixin<MultimediaInstance, MultimediaInstance["id"]>;
-  addMultimedia: Sequelize.HasManyAddAssociationMixin<MultimediaInstance, MultimediaInstance["id"]>;
-  createMultimedia: Sequelize.HasManyCreateAssociationMixin<MultimediaInstance>;
-  removeMultimedia: Sequelize.HasManyRemoveAssociationMixin<MultimediaInstance, MultimediaInstance["id"]>;
-  removeMultimedias: Sequelize.HasManyRemoveAssociationsMixin<MultimediaInstance, MultimediaInstance["id"]>;
-  hasMultimedia: Sequelize.HasManyHasAssociationMixin<MultimediaInstance, MultimediaInstance["id"]>;
-  hasMultimedias: Sequelize.HasManyHasAssociationsMixin<MultimediaInstance, MultimediaInstance["id"]>;
-  countMultimedia: Sequelize.HasManyCountAssociationsMixin;
+  getMediaItems: Sequelize.HasManyGetAssociationsMixin<MediaItemInstance>;
+  countMediaItems: Sequelize.HasManyCountAssociationsMixin;
+  hasMediaItem: Sequelize.HasManyHasAssociationMixin<MediaItemInstance, MediaItemInstance["id"]>;
+  hasMediaItems: Sequelize.HasManyHasAssociationsMixin<MediaItemInstance, MediaItemInstance["id"]>;
+  setMediaItems: Sequelize.HasManySetAssociationsMixin<MediaItemInstance, MediaItemInstance["id"]>;
+  addMediaItem: Sequelize.HasManyAddAssociationMixin<MediaItemInstance, MediaItemInstance["id"]>;
+  addMediaItems: Sequelize.HasManyAddAssociationsMixin<MediaItemInstance, MediaItemInstance["id"]>;
+  removeMediaItem: Sequelize.HasManyRemoveAssociationMixin<MediaItemInstance, MediaItemInstance["id"]>;
+  removeMediaItems: Sequelize.HasManyRemoveAssociationsMixin<MediaItemInstance, MediaItemInstance["id"]>;
+  createMediaItem: Sequelize.HasManyCreateAssociationMixin<MediaItemInstance>;
 }
 
 /**

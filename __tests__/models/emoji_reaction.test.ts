@@ -19,15 +19,15 @@ describe("EmojiReactions model", () => {
   });
 
   it("should initialise a new object", async () => {
-    const { EmojiReaction, User, Multimedia } = db.getModels();
+    const { EmojiReaction, User, MediaItem } = db.getModels();
 
     const user = await User.create({ username: "admin" });
-    const video = await Multimedia.create({ title: "video 1" });
+    const video = await MediaItem.create({ title: "video 1" });
 
     const reaction = await EmojiReaction.build({
       emoji: "😋",
       user_id: user.id,
-      multimedia_id: video.id
+      media_item_id: video.id
     }).save();
 
     expect(reaction.id).toBeDefined();
@@ -35,15 +35,15 @@ describe("EmojiReactions model", () => {
   });
 
   it("should have a numeric field 'second'", async () => {
-    const { EmojiReaction, User, Multimedia } = db.getModels();
+    const { EmojiReaction, User, MediaItem } = db.getModels();
 
     const user = await User.create({ username: "admin" });
-    const video = await Multimedia.create({ title: "video 2" });
+    const video = await MediaItem.create({ title: "video 2" });
 
     const reaction = await EmojiReaction.build({
       emoji: "😋",
       user_id: user.id,
-      multimedia_id: video.id,
+      media_item_id: video.id,
       second: 12.345
     }).save();
 
@@ -52,15 +52,15 @@ describe("EmojiReactions model", () => {
   });
 
   it("should have a numeric field 'second' even after JSON conversion", async () => {
-    const { EmojiReaction, User, Multimedia } = db.getModels();
+    const { EmojiReaction, User, MediaItem } = db.getModels();
 
     const user = await User.create({ username: "admin" });
-    const video = await Multimedia.create({ title: "video 3" });
+    const video = await MediaItem.create({ title: "video 3" });
 
     const reaction = await EmojiReaction.build({
       emoji: "😋",
       user_id: user.id,
-      multimedia_id: video.id,
+      media_item_id: video.id,
       second: 12.345
     }).save();
 
@@ -72,15 +72,15 @@ describe("EmojiReactions model", () => {
   });
 
   it("should retrieve the associated user from a EmojiReactions instance", async () => {
-    const { EmojiReaction, User, Multimedia } = db.getModels();
+    const { EmojiReaction, User, MediaItem } = db.getModels();
 
     const user = await User.create({ username: "admin" });
-    const video = await Multimedia.create({ title: "video 3" });
+    const video = await MediaItem.create({ title: "video 3" });
 
     const reaction = await EmojiReaction.build({
       emoji: "😋",
       user_id: user.id,
-      multimedia_id: video.id,
+      media_item_id: video.id,
       second: 12.345
     }).save();
 
@@ -91,19 +91,19 @@ describe("EmojiReactions model", () => {
   });
 
   it("should retrieve the associated media item from a EmojiReactions instance", async () => {
-    const { EmojiReaction, User, Multimedia } = db.getModels();
+    const { EmojiReaction, User, MediaItem } = db.getModels();
 
     const user = await User.create({ username: "admin" });
-    const video = await Multimedia.create({ title: "video 3" });
+    const video = await MediaItem.create({ title: "video 3" });
 
     const reaction = await EmojiReaction.build({
       emoji: "😋",
       user_id: user.id,
-      multimedia_id: video.id,
+      media_item_id: video.id,
       second: 12.345
     }).save();
 
-    const associatedVideo = await reaction.getMultimedia();
+    const associatedVideo = await reaction.getMediaItem();
 
     expect(associatedVideo).toBeDefined();
     expect(associatedVideo.id).toEqual(video.id);

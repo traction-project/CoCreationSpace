@@ -12,7 +12,7 @@ import { MultimediaInteractionInstance } from "./multimedia_interaction";
 import { EmojiReactionAttributes, EmojiReactionInstance } from "./emoji_reaction";
 import { AsyncJobInstance } from "./async_job";
 
-export interface MultimediaAttributes extends CommonAttributes {
+export interface MediaItemAttributes extends CommonAttributes {
   title: string;
   file?: string;
   status?: string;
@@ -36,12 +36,12 @@ export interface MultimediaAttributes extends CommonAttributes {
   emojiReactions?: EmojiReactionAttributes | EmojiReactionAttributes["id"];
 }
 
-type MultimediaCreationAttributes = Optional<MultimediaAttributes, "id" | "createdAt" | "updatedAt">;
+type MediaItemCreationAttributes = Optional<MediaItemAttributes, "id" | "createdAt" | "updatedAt">;
 
 /**
  * Multimedia instance object interface
  */
-export interface MultimediaInstance extends Sequelize.Model<MultimediaAttributes, MultimediaCreationAttributes>, MultimediaAttributes {
+export interface MediaItemInstance extends Sequelize.Model<MediaItemAttributes, MediaItemCreationAttributes>, MediaItemAttributes {
   getUser: Sequelize.BelongsToGetAssociationMixin<UserInstance>; // Return the User that created the multimedia
   setUser: Sequelize.BelongsToSetAssociationMixin<UserInstance, UserInstance["id"]>; // Set the user that created the multimedia
 
@@ -119,9 +119,9 @@ export interface MultimediaInstance extends Sequelize.Model<MultimediaAttributes
  *  Build Multimedia Model object
  * @param sequelize Sequelize: Conection object with de database
  */
-export function MultimediaModelFactory(sequelize: Sequelize.Sequelize): Sequelize.ModelCtor<MultimediaInstance> {
+export function MediaItemModelFactory(sequelize: Sequelize.Sequelize): Sequelize.ModelCtor<MediaItemInstance> {
   //  DB table name
-  const TABLE_NAME = "multimedia";
+  const TABLE_NAME = "media_items";
 
   // Model attributtes
   const attributes = {
@@ -184,16 +184,16 @@ export function MultimediaModelFactory(sequelize: Sequelize.Sequelize): Sequeliz
   };
 
   // Create the model
-  const Multimedia = sequelize.define<MultimediaInstance, MultimediaCreationAttributes>("multimedia", attributes, { underscored: true, tableName: TABLE_NAME });
+  const MediaItem = sequelize.define<MediaItemInstance, MediaItemCreationAttributes>("MediaItem", attributes, { underscored: true, tableName: TABLE_NAME });
 
-  Multimedia.beforeCreate(multimedia => { multimedia.id = uuidv4(); });
+  MediaItem.beforeCreate(multimedia => { multimedia.id = uuidv4(); });
 
-  Multimedia.prototype.incrementViewCount = async function () {
+  MediaItem.prototype.incrementViewCount = async function () {
     await this.increment("viewCount");
     await this.reload();
   };
 
-  Multimedia.prototype.isDoneTranscoding = async function () {
+  MediaItem.prototype.isDoneTranscoding = async function () {
     const processingJobCount = await this.countAsyncJobs({
       where: {
         type: { [Op.like]: "transcode_%" },
@@ -204,5 +204,5 @@ export function MultimediaModelFactory(sequelize: Sequelize.Sequelize): Sequeliz
     return processingJobCount == 0;
   };
 
-  return Multimedia;
+  return MediaItem;
 }

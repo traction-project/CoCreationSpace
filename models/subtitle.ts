@@ -2,13 +2,13 @@ import Sequelize, { Optional } from "sequelize";
 import { v4 as uuidv4} from "uuid";
 
 import { CommonAttributes } from "util/typing/modelCommonAttributes";
-import { MultimediaAttributes, MultimediaInstance } from "./multimedia";
+import { MediaItemAttributes, MediaItemInstance } from "./media_item";
 
 export interface SubtitleAttributes extends CommonAttributes{
     language?: string;
     content: string;
     confidence?: number;
-    multimedia?: MultimediaAttributes | MultimediaAttributes["id"];
+    mediaItem?: MediaItemAttributes | MediaItemAttributes["id"];
 }
 
 type SubtitleCreationAttributes = Optional<SubtitleAttributes, "id" | "createdAt" | "updatedAt">;
@@ -17,8 +17,8 @@ type SubtitleCreationAttributes = Optional<SubtitleAttributes, "id" | "createdAt
  * Subtitles instance object interface
  */
 export interface SubtitleInstance extends Sequelize.Model<SubtitleAttributes, SubtitleCreationAttributes>, SubtitleAttributes {
-  getMultimedia: Sequelize.BelongsToGetAssociationMixin<MultimediaInstance>;
-  setMultimedia: Sequelize.BelongsToSetAssociationMixin<MultimediaInstance, MultimediaInstance["id"]>;
+  getMediaItem: Sequelize.BelongsToGetAssociationMixin<MediaItemInstance>;
+  setMediaItem: Sequelize.BelongsToSetAssociationMixin<MediaItemInstance, MediaItemInstance["id"]>;
 
   isDefault: () => boolean;
 }

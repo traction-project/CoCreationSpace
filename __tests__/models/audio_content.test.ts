@@ -11,10 +11,10 @@ describe("Audio Content model", () => {
   });
 
   beforeEach(async () => {
-    const { AudioContent, Multimedia, Metadata } = db.getModels();
+    const { AudioContent, MediaItem, Metadata } = db.getModels();
 
     await AudioContent.destroy({ truncate: true });
-    await Multimedia.destroy({ truncate: true });
+    await MediaItem.destroy({ truncate: true });
     await Metadata.destroy({ truncate: true });
   });
 
@@ -39,12 +39,12 @@ describe("Audio Content model", () => {
   });
 
   it("should add Multimedia to audio content", async () => {
-    const { AudioContent, Multimedia } = db.getModels();
+    const { AudioContent, MediaItem } = db.getModels();
     const audioContent = await AudioContent.create({ file: "audio.mp3" });
-    const multimedia = await Multimedia.create({ title: "multimedia" });
+    const multimedia = await MediaItem.create({ title: "multimedia" });
 
-    await audioContent.setMultimedia(multimedia);
-    const multimediaSaved = await audioContent.getMultimedia();
+    await audioContent.setMediaItem(multimedia);
+    const multimediaSaved = await audioContent.getMediaItem();
 
     expect(multimediaSaved.title).toEqual(multimedia.title);
   });

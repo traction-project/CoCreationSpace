@@ -2,7 +2,7 @@ import Sequelize, { Optional } from "sequelize";
 import { v4 as uuidv4 } from "uuid";
 
 import { CommonAttributes } from "util/typing/modelCommonAttributes";
-import { MultimediaAttributes, MultimediaInstance } from "./multimedia";
+import { MediaItemAttributes, MediaItemInstance } from "./media_item";
 import { AudioContentAttributes, AudioContentInstance } from "./audio_content";
 
 export interface MetadataAttributes extends CommonAttributes {
@@ -10,7 +10,7 @@ export interface MetadataAttributes extends CommonAttributes {
     value: string;
     roi?: string;
     time_interval?: string;
-    multimedia?: MultimediaAttributes | MultimediaAttributes["id"];
+    multimedia?: MediaItemAttributes | MediaItemAttributes["id"];
     audioContent?: AudioContentAttributes | AudioContentAttributes["id"];
 }
 
@@ -20,8 +20,8 @@ type MetadataCreationAttributes = Optional<MetadataAttributes, "id" | "createdAt
  * Metadata instance object interface
  */
 export interface MetadataInstance extends Sequelize.Model<MetadataAttributes, MetadataCreationAttributes>, MetadataAttributes {
-  getMultimedia: Sequelize.BelongsToGetAssociationMixin<MultimediaInstance>;
-  setMultimedia: Sequelize.BelongsToSetAssociationMixin<MultimediaInstance, MultimediaInstance["id"]>;
+  getMediaItem: Sequelize.BelongsToGetAssociationMixin<MediaItemInstance>;
+  setMediaItem: Sequelize.BelongsToSetAssociationMixin<MediaItemInstance, MediaItemInstance["id"]>;
 
   getAudioContent: Sequelize.BelongsToGetAssociationMixin<AudioContentInstance>;
   setAudioContent: Sequelize.BelongsToSetAssociationMixin<AudioContentInstance, AudioContentInstance["id"]>;
@@ -56,7 +56,7 @@ export function MetadataModelFactory(sequelize: Sequelize.Sequelize): Sequelize.
     time_interval: {
       type: Sequelize.DataTypes.STRING
     },
-    multimedia_id: {
+    media_item_id: {
       type: Sequelize.DataTypes.UUID
     },
     audio_content_id: {

@@ -3,7 +3,7 @@ import { Sequelize } from "sequelize";
 import { DbInterface } from "util/typing/DbInterface";
 import association from "./associations";
 
-import { MultimediaModelFactory } from "./multimedia";
+import { MediaItemModelFactory } from "./media_item";
 import { TopicModelFactory } from "./topic";
 import { ThreadModelFactory } from "./thread";
 import { TagModelFactory } from "./tag";
@@ -55,7 +55,7 @@ class DataBase {
     const InternalNavigationStep = InternalNavigationStepModelFactory(sequelize);
     const Like = LikeModelFactory(sequelize);
     const Metadata = MetadataModelFactory(sequelize);
-    const Multimedia = MultimediaModelFactory(sequelize);
+    const MediaItem = MediaItemModelFactory(sequelize);
     const MultimediaInteraction = MultimediaInteractionModelFactory(sequelize);
     const Notification = NotificationModelFactory(sequelize);
     const Permission = PermissionModelFactory(sequelize);
@@ -82,7 +82,7 @@ class DataBase {
       InternalNavigationStep,
       Like,
       Metadata,
-      Multimedia,
+      MediaItem,
       MultimediaInteraction,
       Notification,
       Permission,

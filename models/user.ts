@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 
 import { CommonAttributes } from "util/typing/modelCommonAttributes";
 import { getFromEnvironment } from "../util";
-import { MultimediaInstance, MultimediaAttributes } from "./multimedia";
+import { MediaItemInstance, MediaItemAttributes } from "./media_item";
 import { PreferenceAttributes, PreferenceInstance } from "./preference";
 import { PermissionInstance, PermissionAttributes } from "./permission";
 import { PostInstance, PostAttributes } from "./post";
@@ -30,7 +30,7 @@ export interface UserAttributes extends CommonAttributes {
   role?: string;
   preferredLanguage?: string;
   likesPosts?: PostAttributes | PostAttributes["id"];
-  multimedia?: MultimediaAttributes | MultimediaAttributes["id"];
+  mediaItem?: MediaItemAttributes | MediaItemAttributes["id"];
   preferences?: PreferenceAttributes | PreferenceAttributes["id"];
   permission?: PermissionAttributes | PermissionAttributes["id"];
   post?: PostAttributes | PostAttributes["id"];
@@ -70,15 +70,16 @@ export interface UserInstance extends Sequelize.Model<UserAttributes, UserCreati
   hasLikesPosts: Sequelize.BelongsToManyHasAssociationsMixin<PostInstance, PostInstance["id"]>;
   countLikesPosts: Sequelize.BelongsToManyCountAssociationsMixin;
 
-  getMultimedia: Sequelize.HasManyGetAssociationsMixin<MultimediaInstance>;
-  setMultimedia: Sequelize.HasManySetAssociationsMixin<MultimediaInstance, MultimediaInstance["id"]>;
-  addMultimedias: Sequelize.HasManyAddAssociationsMixin<MultimediaInstance, MultimediaInstance["id"]>;
-  addMultimedia: Sequelize.HasManyAddAssociationMixin<MultimediaInstance, MultimediaInstance["id"]>;
-  removeMultimedia: Sequelize.HasManyRemoveAssociationMixin<MultimediaInstance, MultimediaInstance["id"]>;
-  removeMultimedias: Sequelize.HasManyRemoveAssociationsMixin<MultimediaInstance, MultimediaInstance["id"]>;
-  hasMultimedia: Sequelize.HasManyHasAssociationMixin<MultimediaInstance, MultimediaInstance["id"]>;
-  hasMultimedias: Sequelize.HasManyHasAssociationsMixin<MultimediaInstance, MultimediaInstance["id"]>;
-  countMultimedias: Sequelize.HasManyCountAssociationsMixin;
+  getMediaItems: Sequelize.HasManyGetAssociationsMixin<MediaItemInstance>;
+  countMediaItems: Sequelize.HasManyCountAssociationsMixin;
+  hasMediaItem: Sequelize.HasManyHasAssociationMixin<MediaItemInstance, MediaItemInstance["id"]>;
+  hasMediaItems: Sequelize.HasManyHasAssociationsMixin<MediaItemInstance, MediaItemInstance["id"]>;
+  setMediaItems: Sequelize.HasManySetAssociationsMixin<MediaItemInstance, MediaItemInstance["id"]>;
+  addMediaItem: Sequelize.HasManyAddAssociationMixin<MediaItemInstance, MediaItemInstance["id"]>;
+  addMediaItems: Sequelize.HasManyAddAssociationsMixin<MediaItemInstance, MediaItemInstance["id"]>;
+  removeMediaItem: Sequelize.HasManyRemoveAssociationMixin<MediaItemInstance, MediaItemInstance["id"]>;
+  removeMediaItems: Sequelize.HasManyRemoveAssociationsMixin<MediaItemInstance, MediaItemInstance["id"]>;
+  createMediaItem: Sequelize.HasManyCreateAssociationMixin<MediaItemInstance>;
 
   getPermissions: Sequelize.BelongsToManyGetAssociationsMixin<PermissionInstance>;
   countPermissions: Sequelize.BelongsToManyCountAssociationsMixin;

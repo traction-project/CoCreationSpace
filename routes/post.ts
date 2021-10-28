@@ -7,7 +7,7 @@ import { UserInstance } from "models/user";
 import association from "../models/associations";
 import { TagInstance } from "models/tag";
 import { PostInstance } from "models/post";
-import { MultimediaAttributes } from "models/multimedia";
+import { MediaItemAttributes } from "models/media_item";
 
 const [ CLOUDFRONT_URL ] = getFromEnvironment("CLOUDFRONT_URL");
 const router = Router();
@@ -31,13 +31,13 @@ async function logSearchQuery(query: string | undefined, resultcount: number, us
  */
 router.get("/all/user", authRequired, async (req, res) => {
   const user = req.user as UserInstance;
-  const { Post, User, DataContainer, Multimedia, Thread, Topic, UserGroup } = db.getModels();
+  const { Post, User, DataContainer, MediaItem, Thread, Topic, UserGroup } = db.getModels();
 
   let queryDataContainer = {
     model: DataContainer,
     as: "dataContainer",
     include: [{
-      model: Multimedia,
+      model: MediaItem,
       as: "multimedia",
       attributes: ["status", "id", "type"],
       include: ["emojiReactions"]
@@ -92,7 +92,7 @@ router.get("/all/user", authRequired, async (req, res) => {
  */
 router.get("/all/group", authRequired, async (req, res) => {
   const user = req.user as UserInstance;
-  const { Post, User, UserGroup, DataContainer, Multimedia, Tag, Thread, Topic } = db.getModels();
+  const { Post, User, UserGroup, DataContainer, MediaItem, Tag, Thread, Topic } = db.getModels();
 
   // Get desired page number and results per page from query string if present
   // Use defaults otherwise
@@ -108,7 +108,7 @@ router.get("/all/group", authRequired, async (req, res) => {
     model: DataContainer,
     as: "dataContainer",
     include: [{
-      model: Multimedia,
+      model: MediaItem,
       as: "multimedia",
       attributes: ["status", "id", "type"],
       include: ["emojiReactions"]
@@ -174,7 +174,7 @@ router.get("/:id", authRequired, async (req, res) => {
   const { id } = req.params;
   const user = req.user as UserInstance;
 
-  const { Post, DataContainer, Multimedia, Topic, Thread, UserGroup } = db.getModels();
+  const { Post, DataContainer, MediaItem, Topic, Thread, UserGroup } = db.getModels();
 
   const post = await Post.findByPk(id, {
     include: [
@@ -196,7 +196,7 @@ router.get("/:id", authRequired, async (req, res) => {
         model: DataContainer,
         as: "dataContainer",
         include: [{
-          model: Multimedia,
+          model: MediaItem,
           as: "multimedia",
           attributes: ["status", "id", "type", "title", "file"],
           include: ["emojiReactions"]
@@ -219,11 +219,11 @@ router.get("/:id", authRequired, async (req, res) => {
     }
 
     if (post.dataContainer && post.dataContainer instanceof Object) {
-      const { multimedia } = post.dataContainer;
+      const { mediaItem } = post.dataContainer;
 
-      if (multimedia && multimedia.length > 0) {
-        post.dataContainer.multimedia = (multimedia as Array<MultimediaAttributes>).map(
-          (multimedia: MultimediaAttributes) => multimedia.title = `${CLOUDFRONT_URL}/${multimedia.title}`
+      if (mediaItem && mediaItem.length > 0) {
+        post.dataContainer.mediaItem = (mediaItem as Array<MediaItemAttributes>).map(
+          (multimedia: MediaItemAttributes) => multimedia.title = `${CLOUDFRONT_URL}/${multimedia.title}`
         );
       }
     }
@@ -248,7 +248,7 @@ router.get("/:id/parent", authRequired, async (req, res) => {
   const { id } = req.params;
   const user = req.user as UserInstance;
 
-  const { Post, DataContainer, Multimedia } = db.getModels();
+  const { Post, DataContainer, MediaItem } = db.getModels();
 
   let post: PostInstance | null;
   let parentPostId: string | undefined = id;
@@ -260,7 +260,7 @@ router.get("/:id/parent", authRequired, async (req, res) => {
           model: DataContainer,
           as: "dataContainer",
           include: [{
-            model: Multimedia,
+            model: MediaItem,
             as: "multimedia",
             attributes: ["status", "id", "type"],
             include: ["emojiReactions"]
@@ -331,7 +331,7 @@ router.post("/", authRequired, async (req, res) => {
 
   if (multimedia && multimedia.length > 0) {
     const dataContainer = await postSaved.getDataContainer();
-    await dataContainer.setMultimedia(multimedia);
+    await dataContainer.setMediaItems(multimedia);
   }
 
   if (tags && tags.length > 0) {
@@ -416,7 +416,7 @@ router.post("/:id/edit", authRequired, async (req, res) => {
     }
 
     if (multimedia) {
-      await dataContainer.setMultimedia(multimedia);
+      await dataContainer.setMediaItems(multimedia);
       await dataContainer.save();
     }
 
@@ -467,7 +467,7 @@ router.post("/:id", authRequired, async (req, res) => {
   const postSaved = await post.save();
   if (multimedia && multimedia.length > 0) {
     const dataContainer = await postSaved.getDataContainer();
-    await dataContainer.setMultimedia(multimedia);
+    await dataContainer.setMediaItems(multimedia);
   }
 
   const result = Object.assign(postSaved.toJSON(), {user: user.toJSON()});

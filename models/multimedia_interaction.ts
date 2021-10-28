@@ -3,17 +3,17 @@ import { v4 as uuidv4 } from "uuid";
 
 import { CommonAttributes } from "util/typing/modelCommonAttributes";
 import { UserInstance, UserAttributes } from "./user";
-import { MultimediaInstance, MultimediaAttributes } from "./multimedia";
+import { MediaItemInstance, MediaItemAttributes } from "./media_item";
 
 export interface MultimediaInteractionAttributes extends CommonAttributes {
-  multimedia: MultimediaAttributes | MultimediaAttributes["id"];
+  mediaItem: MediaItemAttributes | MediaItemAttributes["id"];
   user: UserAttributes | UserAttributes["id"];
   interaction: { type: string, timestamp: number };
 }
 
 type MultimediaInteractionCreationAttributes = Optional<
   MultimediaInteractionAttributes,
-  "id" | "createdAt" | "updatedAt" | "multimedia" | "user"
+  "id" | "createdAt" | "updatedAt" | "mediaItem" | "user"
 >
 
 /**
@@ -24,9 +24,9 @@ export interface MultimediaInteractionInstance extends Sequelize.Model<Multimedi
   setUser: Sequelize.BelongsToSetAssociationMixin<UserInstance, UserInstance["id"]>;
   createUser: Sequelize.BelongsToCreateAssociationMixin<UserInstance>;
 
-  getMultimedium: Sequelize.BelongsToGetAssociationMixin<MultimediaInstance>;
-  setMultimedium: Sequelize.BelongsToSetAssociationMixin<MultimediaInstance, MultimediaInstance["id"]>;
-  createMultimedium: Sequelize.BelongsToCreateAssociationMixin<MultimediaInstance>;
+  getMediaItem: Sequelize.BelongsToGetAssociationMixin<MediaItemInstance>;
+  setMediaItem: Sequelize.BelongsToSetAssociationMixin<MediaItemInstance, MediaItemInstance["id"]>;
+  createMediaItem: Sequelize.BelongsToCreateAssociationMixin<MediaItemInstance>;
 }
 
 /**

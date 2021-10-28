@@ -29,7 +29,7 @@ describe("MultimediaInteraction model", () => {
     expect(interaction.createdAt).toEqual(interaction.updatedAt);
 
     expect(await interaction.getUser()).toBeNull();
-    expect(await interaction.getMultimedium()).toBeNull();
+    expect(await interaction.getMediaItem()).toBeNull();
   });
 
   it("should create a new empty instance and associate it to a user", async () => {
@@ -50,19 +50,19 @@ describe("MultimediaInteraction model", () => {
   });
 
   it("should create a new empty instance and associate it to a multimedia item", async () => {
-    const { MultimediaInteraction, Multimedia } = db.getModels();
+    const { MultimediaInteraction, MediaItem } = db.getModels();
 
     const interaction = await MultimediaInteraction.create({
       interaction: { type: "play", timestamp: 0 }
     });
 
-    const video = await Multimedia.create({
+    const video = await MediaItem.create({
       title: "video"
     });
 
     expect(await interaction.getUser()).toBeNull();
 
-    await interaction.setMultimedium(video);
-    expect(await interaction.getMultimedium()).not.toBeNull();
+    await interaction.setMediaItem(video);
+    expect(await interaction.setMediaItem()).not.toBeNull();
   });
 });
