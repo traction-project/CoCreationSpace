@@ -66,8 +66,8 @@ function audioContentAssociations(models: DbInterface): void {
  * @param models DbInterface
  */
 function dataContainerAssociations(models: DbInterface) {
-  models.DataContainer.belongsTo(models.Post, { as: "post", foreignKey: "post_id" });
-  const DatacontainerMultimedia = models.DataContainer.hasMany(models.MediaItem, { as: "mediaItems", foreignKey: "data_container_id" });
+  models.DataContainer.belongsTo(models.Post);
+  const DatacontainerMultimedia = models.DataContainer.hasMany(models.MediaItem);
 
   return {
     DatacontainerMultimedia
@@ -98,7 +98,7 @@ function metadataAssociations(models: DbInterface): void {
  */
 function multimediaAssociations(models: DbInterface): void {
   models.MediaItem.belongsTo(models.User, { as: "user", foreignKey: "user_id" });
-  models.MediaItem.belongsTo(models.DataContainer, { as: "dataContainer", foreignKey: "data_container_id" });
+  models.MediaItem.belongsTo(models.DataContainer);
   models.MediaItem.hasMany(models.AudioContent, { as: "audioContent", foreignKey: "media_item_id" });
   models.MediaItem.hasMany(models.Metadata, { as: "metadata", foreignKey: "media_item_id"});
   models.MediaItem.hasMany(models.Subtitle, { as: "subtitles", foreignKey: "media_item_id"});
