@@ -214,7 +214,7 @@ router.get("/profile/:id", authRequired, async (req, res) => {
   const { id, username, image } = user;
 
   // Retrieve posts for user
-  const posts = await user.getPost({
+  const posts = await user.getPosts({
     order: [["created_at", "DESC"]],
     include: [
       {

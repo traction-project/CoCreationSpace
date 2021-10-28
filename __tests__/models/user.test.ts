@@ -1,6 +1,8 @@
 import { Sequelize } from "sequelize";
 import jwt from "jsonwebtoken";
 
+import { getAllMethods } from "../../util";
+
 process.env["SESSION_SECRET"] = "sessionsecret";
 const sequelize = new Sequelize("sqlite::memory:", { logging: false });
 
@@ -400,5 +402,29 @@ describe("User model", () => {
 
     await user.addPermission(permission);
     expect(await user.isAdmin()).toBeTruthy();
+  });
+
+  it("should have automatically generated association methods for the Post model", async () => {
+    const { User } = db.getModels();
+    const user = await User.create({ username: "test" });
+
+    const expectedMethods = [
+      "getPosts",
+      "countPosts",
+      "hasPost",
+      "hasPosts",
+      "setPosts",
+      "addPost",
+      "addPosts",
+      "removePost",
+      "removePosts",
+      "createPost",
+    ];
+
+    const availableMethods = getAllMethods(user);
+
+    for (const method of expectedMethods) {
+      expect(availableMethods).toContain(method);
+    }
   });
 });

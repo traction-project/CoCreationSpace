@@ -231,7 +231,7 @@ function threadAssociations(models: DbInterface): void {
 function userAssociations(models: DbInterface): void {
   models.User.hasMany(models.MediaItem, { as: "mediaItems", foreignKey: "user_id" });
   models.User.belongsTo(models.Preference, { as: "preferences", foreignKey: "preferences_id" });
-  models.User.hasMany(models.Post, { as: "post", foreignKey: "user_id" });
+  models.User.hasMany(models.Post);
   models.User.hasMany(models.Notification, { as: "notifications", foreignKey: "user_id" });
   models.User.hasMany(models.MultimediaInteraction);
   models.User.hasMany(models.SearchQuery);

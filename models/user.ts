@@ -95,17 +95,16 @@ export interface UserInstance extends Sequelize.Model<UserAttributes, UserCreati
   getPreferences: Sequelize.BelongsToGetAssociationMixin<PreferenceInstance>;
   setPreferences: Sequelize.BelongsToSetAssociationMixin<PreferenceInstance, PreferenceInstance["id"]>;
 
-  // FIXME Association names don't pluralise properly
-  getPost: Sequelize.HasManyGetAssociationsMixin<PostInstance>;
+  getPosts: Sequelize.HasManyGetAssociationsMixin<MediaItemInstance>;
   countPosts: Sequelize.HasManyCountAssociationsMixin;
-  hasPost: Sequelize.HasManyHasAssociationMixin<PostInstance, PostInstance["id"]>;
-  hasPosts: Sequelize.HasManyHasAssociationsMixin<PostInstance, PostInstance["id"]>;
-  setPosts: Sequelize.HasManySetAssociationsMixin<PostInstance, PostInstance["id"]>;
-  addPost: Sequelize.HasManyAddAssociationMixin<PostInstance, PostInstance["id"]>;
-  addPosts: Sequelize.HasManyAddAssociationsMixin<PostInstance, PostInstance["id"]>;
-  removePost: Sequelize.HasManyRemoveAssociationMixin<PostInstance, PostInstance["id"]>;
-  removePosts: Sequelize.HasManyRemoveAssociationsMixin<PostInstance, PostInstance["id"]>;
-  createPost: Sequelize.HasManyCreateAssociationMixin<PostInstance>;
+  hasPost: Sequelize.HasManyHasAssociationMixin<MediaItemInstance, MediaItemInstance["id"]>;
+  hasPosts: Sequelize.HasManyHasAssociationsMixin<MediaItemInstance, MediaItemInstance["id"]>;
+  setPosts: Sequelize.HasManySetAssociationsMixin<MediaItemInstance, MediaItemInstance["id"]>;
+  addPost: Sequelize.HasManyAddAssociationMixin<MediaItemInstance, MediaItemInstance["id"]>;
+  addPosts: Sequelize.HasManyAddAssociationsMixin<MediaItemInstance, MediaItemInstance["id"]>;
+  removePost: Sequelize.HasManyRemoveAssociationMixin<MediaItemInstance, MediaItemInstance["id"]>;
+  removePosts: Sequelize.HasManyRemoveAssociationsMixin<MediaItemInstance, MediaItemInstance["id"]>;
+  createPost: Sequelize.HasManyCreateAssociationMixin<MediaItemInstance>;
 
   getPostReferenced: Sequelize.BelongsToManyGetAssociationsMixin<PostInstance>;
   setPostReferenced: Sequelize.BelongsToManySetAssociationsMixin<PostInstance, PostInstance["id"]>;
