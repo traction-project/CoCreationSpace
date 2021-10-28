@@ -30,29 +30,29 @@ import { AsyncJobInstance } from "models/async_job";
  *  Interface for the objects that containes all models from database
  */
 export interface DbInterface {
+    AsyncJob: ModelCtor<AsyncJobInstance>;
     AudioContent: ModelCtor<AudioContentInstance>;
+    ConsentForm: ModelCtor<ConsentFormInstance>;
     DataContainer: ModelCtor<DataContainerInstance>;
     EmojiReactions: ModelCtor<EmojiReactionsInstance>;
     Interests: ModelCtor<InterestInstance>;
+    InternalNavigationStep: ModelCtor<InternalNavigationStepInstance>;
     Likes: ModelCtor<LikesInstance>;
     Metadata: ModelCtor<MetadataInstance>;
     Multimedia: ModelCtor<MultimediaInstance>;
+    MultimediaInteraction: ModelCtor<MultimediaInteractionInstance>;
     Notifications: ModelCtor<NotificationInstance>;
     Permissions: ModelCtor<PermissionsInstance>;
-    Posts: ModelCtor<PostInstance>;
     PostReferences: ModelCtor<PostReferencesInstance>;
+    Posts: ModelCtor<PostInstance>;
     Preferences: ModelCtor<PreferencesInstance>;
+    SearchQuery: ModelCtor<SearchQueryInstance>;
     Subtitles: ModelCtor<SubtitlesInstance>;
-    Tags: ModelCtor<TagInstance>;
     TagReferences: ModelCtor<TagReferencesInstance>;
+    Tags: ModelCtor<TagInstance>;
     Threads: ModelCtor<ThreadInstance>;
     Topics: ModelCtor<TopicInstance>;
-    Users: ModelCtor<UserInstance>;
-    UserReferences: ModelCtor<UserReferencesInstance>;
     UserGroup: ModelCtor<UserGroupInstance>;
-    MultimediaInteraction: ModelCtor<MultimediaInteractionInstance>;
-    SearchQuery: ModelCtor<SearchQueryInstance>;
-    InternalNavigationStep: ModelCtor<InternalNavigationStepInstance>;
-    ConsentForm: ModelCtor<ConsentFormInstance>;
-    AsyncJob: ModelCtor<AsyncJobInstance>;
+    UserReferences: ModelCtor<UserReferencesInstance>;
+    Users: ModelCtor<UserInstance>;
 }
