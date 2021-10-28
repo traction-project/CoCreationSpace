@@ -10,7 +10,7 @@ import { TagModelFactory } from "./tag";
 import { TagReferencesModelFactory } from "./tag_references";
 import { PermissionModelFactory } from "./permission";
 import { PostModelFactory } from "./post";
-import { PostReferencesModelFactory } from "./post_references";
+import { PostReferenceModelFactory } from "./post_reference";
 import { PreferencesModelFactory } from "./preferences";
 import { UsersModelFactory } from "./users";
 import { UserReferencesModelFactory } from "./user_references";
@@ -59,7 +59,7 @@ class DataBase {
     const MultimediaInteraction = MultimediaInteractionModelFactory(sequelize);
     const Notification = NotificationModelFactory(sequelize);
     const Permission = PermissionModelFactory(sequelize);
-    const PostReferences = PostReferencesModelFactory(sequelize);
+    const PostReference = PostReferenceModelFactory(sequelize);
     const Posts = PostModelFactory(sequelize);
     const Preferences = PreferencesModelFactory(sequelize);
     const SearchQuery = SearchQueryModelFactory(sequelize);
@@ -86,7 +86,7 @@ class DataBase {
       MultimediaInteraction,
       Notification,
       Permission,
-      PostReferences,
+      PostReference,
       Posts,
       Preferences,
       SearchQuery,

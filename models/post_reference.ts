@@ -2,23 +2,23 @@ import Sequelize, { Optional } from "sequelize";
 
 import { CommonAttributes } from "util/typing/modelCommonAttributes";
 
-export interface PostReferencesAttributes extends Omit<CommonAttributes, "id"> {
+export interface PostReferenceAttributes extends Omit<CommonAttributes, "id"> {
     post_references_id: number;
     post_referenced_id: number;
 }
 
-type PostReferencesCreationAttributes = Optional<PostReferencesAttributes, "createdAt" | "updatedAt">
+type PostReferenceCreationAttributes = Optional<PostReferenceAttributes, "createdAt" | "updatedAt">
 
 /**
  * PostReferences instance object interface
  */
-export interface PostReferencesInstance extends Sequelize.Model<PostReferencesAttributes, PostReferencesCreationAttributes>, PostReferencesAttributes {}
+export interface PostReferenceInstance extends Sequelize.Model<PostReferenceAttributes, PostReferenceCreationAttributes>, PostReferenceAttributes {}
 
 /**
  *  Build PostReferencess Model object
  * @param sequelize Sequelize: Conection object with de database
  */
-export function PostReferencesModelFactory(sequelize: Sequelize.Sequelize): Sequelize.ModelCtor<PostReferencesInstance> {
+export function PostReferenceModelFactory(sequelize: Sequelize.Sequelize): Sequelize.ModelCtor<PostReferenceInstance> {
   //  DB table name
   const TABLE_NAME = "post_references";
   // Model attributtes
@@ -34,7 +34,7 @@ export function PostReferencesModelFactory(sequelize: Sequelize.Sequelize): Sequ
   };
 
   // Create the model
-  const PostReferences = sequelize.define<PostReferencesInstance, PostReferencesCreationAttributes>("postReferences", attributes, { underscored: true, tableName: TABLE_NAME });
+  const PostReference = sequelize.define<PostReferenceInstance, PostReferenceCreationAttributes>("PostReference", attributes, { underscored: true, tableName: TABLE_NAME });
 
-  return PostReferences;
+  return PostReference;
 }

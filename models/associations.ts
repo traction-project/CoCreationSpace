@@ -119,7 +119,7 @@ function postsAssociations(models: DbInterface) {
 
   const optionsPostsPosts = {
     through: {
-      model: models.PostReferences,
+      model: models.PostReference,
       unique: false
     }
   };

@@ -11,10 +11,10 @@ describe("Post references post tests", () => {
   });
 
   beforeEach(async () => {
-    const { Posts, PostReferences } = db.getModels();
+    const { Posts, PostReference } = db.getModels();
 
     await Posts.destroy({ truncate: true });
-    await PostReferences.destroy({ truncate: true });
+    await PostReference.destroy({ truncate: true });
   });
 
   it("should post1 references to post2", async () => {

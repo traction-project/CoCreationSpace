@@ -14,7 +14,7 @@ import { ThreadInstance } from "models/thread";
 import { TopicInstance } from "models/topic";
 import { UserInstance } from "models/users";
 import { UserReferencesInstance } from "models/user_references";
-import { PostReferencesInstance } from "models/post_references";
+import { PostReferenceInstance } from "models/post_reference";
 import { LikeInstance } from "models/like";
 import { EmojiReactionInstance } from "models/emoji_reaction";
 import { InterestInstance } from "models/interest";
@@ -43,7 +43,7 @@ export interface DbInterface {
     MultimediaInteraction: ModelCtor<MultimediaInteractionInstance>;
     Notification: ModelCtor<NotificationInstance>;
     Permission: ModelCtor<PermissionInstance>;
-    PostReferences: ModelCtor<PostReferencesInstance>;
+    PostReference: ModelCtor<PostReferenceInstance>;
     Posts: ModelCtor<PostInstance>;
     Preferences: ModelCtor<PreferencesInstance>;
     SearchQuery: ModelCtor<SearchQueryInstance>;
