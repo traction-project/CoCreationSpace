@@ -35,7 +35,7 @@ export interface DbInterface {
     ConsentForm: ModelCtor<ConsentFormInstance>;
     DataContainer: ModelCtor<DataContainerInstance>;
     EmojiReaction: ModelCtor<EmojiReactionInstance>;
-    Interests: ModelCtor<InterestInstance>;
+    Interest: ModelCtor<InterestInstance>;
     InternalNavigationStep: ModelCtor<InternalNavigationStepInstance>;
     Likes: ModelCtor<LikesInstance>;
     Metadata: ModelCtor<MetadataInstance>;

@@ -34,7 +34,7 @@ export function InterestModelFactory(sequelize: Sequelize.Sequelize): Sequelize.
   };
 
   // Create the model
-  const Interests = sequelize.define<InterestInstance, InterestCreationAttributes>("interests", attributes, { underscored: true, tableName: TABLE_NAME });
+  const Interest = sequelize.define<InterestInstance, InterestCreationAttributes>("Interest", attributes, { underscored: true, tableName: TABLE_NAME });
 
-  return Interests;
+  return Interest;
 }

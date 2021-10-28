@@ -207,7 +207,7 @@ function topicAssociations(models: DbInterface): void {
   models.Topics.hasMany(models.Threads, { as: "threads", foreignKey: "topic_id" });
   models.Topics.belongsToMany(models.Users, {
     through: {
-      model: models.Interests,
+      model: models.Interest,
       unique: false
     },
     foreignKey: "topic_id",
@@ -268,7 +268,7 @@ function userAssociations(models: DbInterface): void {
 
   models.Users.belongsToMany(models.Topics, {
     through: {
-      model: models.Interests,
+      model: models.Interest,
       unique: false
     },
     foreignKey: "user_id",

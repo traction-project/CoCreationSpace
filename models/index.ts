@@ -46,58 +46,58 @@ class DataBase {
    * @param sequelize Sequelize: Conection object with de database
    */
   createModels(sequelize: Sequelize): void {
+    const AsyncJob = AsyncJobModelFactory(sequelize);
     const AudioContent = AudioContentModelFactory(sequelize);
+    const ConsentForm = ConsentFormModelFactory(sequelize);
     const DataContainer = DataContainerModelFactory(sequelize);
     const EmojiReaction = EmojiReactionModelFactory(sequelize);
-    const Interests = InterestModelFactory(sequelize);
+    const Interest = InterestModelFactory(sequelize);
+    const InternalNavigationStep = InternalNavigationStepModelFactory(sequelize);
     const Likes = LikesModelFactory(sequelize);
     const Metadata = MetadataModelFactory(sequelize);
     const Multimedia = MultimediaModelFactory(sequelize);
+    const MultimediaInteraction = MultimediaInteractionModelFactory(sequelize);
     const Notifications = NotificationsModelFactory(sequelize);
     const Permissions = PermissionsModelFactory(sequelize);
-    const Posts = PostModelFactory(sequelize);
     const PostReferences = PostReferencesModelFactory(sequelize);
+    const Posts = PostModelFactory(sequelize);
     const Preferences = PreferencesModelFactory(sequelize);
+    const SearchQuery = SearchQueryModelFactory(sequelize);
     const Subtitles = SubtitlesModelFactory(sequelize);
-    const Tags = TagModelFactory(sequelize);
     const TagReferences = TagReferencesModelFactory(sequelize);
+    const Tags = TagModelFactory(sequelize);
     const Threads = ThreadModelFactory(sequelize);
     const Topics = TopicModelFactory(sequelize);
-    const Users = UsersModelFactory(sequelize);
-    const UserReferences = UserReferencesModelFactory(sequelize);
     const UserGroup = UserGroupModelFactory(sequelize);
-    const MultimediaInteraction = MultimediaInteractionModelFactory(sequelize);
-    const SearchQuery = SearchQueryModelFactory(sequelize);
-    const InternalNavigationStep = InternalNavigationStepModelFactory(sequelize);
-    const AsyncJob = AsyncJobModelFactory(sequelize);
-    const ConsentForm = ConsentFormModelFactory(sequelize);
+    const UserReferences = UserReferencesModelFactory(sequelize);
+    const Users = UsersModelFactory(sequelize);
 
     this.models = {
+      AsyncJob,
       AudioContent,
+      ConsentForm,
       DataContainer,
       EmojiReaction,
-      Interests,
+      Interest,
+      InternalNavigationStep,
       Likes,
       Metadata,
       Multimedia,
+      MultimediaInteraction,
       Notifications,
       Permissions,
-      Posts,
       PostReferences,
+      Posts,
       Preferences,
+      SearchQuery,
       Subtitles,
-      Tags,
       TagReferences,
+      Tags,
       Threads,
       Topics,
-      Users,
-      UserReferences,
       UserGroup,
-      MultimediaInteraction,
-      SearchQuery,
-      InternalNavigationStep,
-      AsyncJob,
-      ConsentForm
+      UserReferences,
+      Users,
     };
   }
 

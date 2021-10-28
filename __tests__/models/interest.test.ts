@@ -11,9 +11,9 @@ describe("User interest topic", () => {
   });
 
   beforeEach(async () => {
-    const { Interests, Users, Topics } = db.getModels();
+    const { Interest, Users, Topics } = db.getModels();
 
-    await Interests.destroy({ truncate: true });
+    await Interest.destroy({ truncate: true });
     await Users.destroy({ truncate: true });
     await Topics.destroy({ truncate: true });
   });
