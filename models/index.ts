@@ -8,7 +8,7 @@ import { TopicModelFactory } from "./topic";
 import { ThreadModelFactory } from "./thread";
 import { TagModelFactory } from "./tag";
 import { TagReferencesModelFactory } from "./tag_references";
-import { PermissionsModelFactory } from "./permissions";
+import { PermissionModelFactory } from "./permission";
 import { PostModelFactory } from "./post";
 import { PostReferencesModelFactory } from "./post_references";
 import { PreferencesModelFactory } from "./preferences";
@@ -58,7 +58,7 @@ class DataBase {
     const Multimedia = MultimediaModelFactory(sequelize);
     const MultimediaInteraction = MultimediaInteractionModelFactory(sequelize);
     const Notification = NotificationModelFactory(sequelize);
-    const Permissions = PermissionsModelFactory(sequelize);
+    const Permission = PermissionModelFactory(sequelize);
     const PostReferences = PostReferencesModelFactory(sequelize);
     const Posts = PostModelFactory(sequelize);
     const Preferences = PreferencesModelFactory(sequelize);
@@ -85,7 +85,7 @@ class DataBase {
       Multimedia,
       MultimediaInteraction,
       Notification,
-      Permissions,
+      Permission,
       PostReferences,
       Posts,
       Preferences,

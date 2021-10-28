@@ -45,7 +45,7 @@ export function authRequired(req: Request, res: Response, next: NextFunction) {
  */
 export function permissionRequired(...permissionNames: Array<string>) {
   return (req: Request, res: Response, next: NextFunction) => {
-    const { Permissions } = db.getModels();
+    const { Permission } = db.getModels();
     const user = req.user as UserInstance;
 
     if (!user) {
@@ -54,7 +54,7 @@ export function permissionRequired(...permissionNames: Array<string>) {
         message: "Authorisation required"
       });
     } else {
-      Permissions.findAll({
+      Permission.findAll({
         where: { type: permissionNames }
       }).then(async (permissions) => {
         const foundAllPermissions = permissions.length == permissionNames.length;

@@ -7,7 +7,7 @@ import { CommonAttributes } from "util/typing/modelCommonAttributes";
 import { getFromEnvironment } from "../util";
 import { MultimediaInstance, MultimediaAttributes } from "./multimedia";
 import { PreferencesAttributes, PreferencesInstance } from "./preferences";
-import { PermissionsInstance, PermissionsAttributes } from "./permissions";
+import { PermissionInstance, PermissionAttributes } from "./permission";
 import { PostInstance, PostAttributes } from "./post";
 import { EmojiReactionInstance } from "./emoji_reaction";
 import { TopicInstance } from "./topic";
@@ -32,7 +32,7 @@ export interface UsersAttributes extends CommonAttributes {
   likesPosts?: PostAttributes | PostAttributes["id"];
   multimedia?: MultimediaAttributes | MultimediaAttributes["id"];
   preferences?: PreferencesAttributes | PreferencesAttributes["id"];
-  permission?: PermissionsAttributes | PermissionsAttributes["id"];
+  permission?: PermissionAttributes | PermissionAttributes["id"];
   post?: PostAttributes | PostAttributes["id"];
   notification?: NotificationAttributes | NotificationAttributes["id"];
   postReferenced?: PostAttributes | PostAttributes["id"];
@@ -80,16 +80,16 @@ export interface UserInstance extends Sequelize.Model<UsersAttributes, UsersCrea
   hasMultimedias: Sequelize.HasManyHasAssociationsMixin<MultimediaInstance, MultimediaInstance["id"]>;
   countMultimedias: Sequelize.HasManyCountAssociationsMixin;
 
-  getPermissions: Sequelize.BelongsToManyGetAssociationsMixin<PermissionsInstance>;
+  getPermissions: Sequelize.BelongsToManyGetAssociationsMixin<PermissionInstance>;
   countPermissions: Sequelize.BelongsToManyCountAssociationsMixin;
-  hasPermission: Sequelize.BelongsToManyHasAssociationMixin<PermissionsInstance, PermissionsInstance["id"]>;
-  hasPermissions: Sequelize.BelongsToManyHasAssociationsMixin<PermissionsInstance, PermissionsInstance["id"]>;
-  setPermissions: Sequelize.BelongsToManySetAssociationsMixin<PermissionsInstance, PermissionsInstance["id"]>;
-  addPermission: Sequelize.BelongsToManyAddAssociationMixin<PermissionsInstance, PermissionsInstance["id"]>
-  addPermissions: Sequelize.BelongsToManyAddAssociationsMixin<PermissionsInstance, PermissionsInstance["id"]>
-  removePermission: Sequelize.BelongsToManyRemoveAssociationMixin<PermissionsInstance, PermissionsInstance["id"]>
-  removePermissions: Sequelize.BelongsToManyRemoveAssociationsMixin<PermissionsInstance, PermissionsInstance["id"]>
-  createPermission: Sequelize.BelongsToManyCreateAssociationMixin<PermissionsInstance>
+  hasPermission: Sequelize.BelongsToManyHasAssociationMixin<PermissionInstance, PermissionInstance["id"]>;
+  hasPermissions: Sequelize.BelongsToManyHasAssociationsMixin<PermissionInstance, PermissionInstance["id"]>;
+  setPermissions: Sequelize.BelongsToManySetAssociationsMixin<PermissionInstance, PermissionInstance["id"]>;
+  addPermission: Sequelize.BelongsToManyAddAssociationMixin<PermissionInstance, PermissionInstance["id"]>
+  addPermissions: Sequelize.BelongsToManyAddAssociationsMixin<PermissionInstance, PermissionInstance["id"]>
+  removePermission: Sequelize.BelongsToManyRemoveAssociationMixin<PermissionInstance, PermissionInstance["id"]>
+  removePermissions: Sequelize.BelongsToManyRemoveAssociationsMixin<PermissionInstance, PermissionInstance["id"]>
+  createPermission: Sequelize.BelongsToManyCreateAssociationMixin<PermissionInstance>
 
   getPreferences: Sequelize.BelongsToGetAssociationMixin<PreferencesInstance>;
   setPreferences: Sequelize.BelongsToSetAssociationMixin<PreferencesInstance, PreferencesInstance["id"]>;
@@ -308,8 +308,8 @@ export function UsersModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mod
       return true;
     }
 
-    const { Permissions } = db.getModels();
-    const adminPermission = await Permissions.findOne({ where: { type: "admin" }});
+    const { Permission } = db.getModels();
+    const adminPermission = await Permission.findOne({ where: { type: "admin" }});
 
     if (adminPermission) {
       return await this.hasPermission(adminPermission);

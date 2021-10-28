@@ -26,7 +26,7 @@ class Associations {
     emojiReactionAssociations(models);
     metadataAssociations(models);
     multimediaAssociations(models);
-    permissionsAssociations(models);
+    permissionAssociations(models);
     const postAssociations = postsAssociations(models);
     subtitleAssociations(models);
     tagAssociations(models);
@@ -169,8 +169,8 @@ function postsAssociations(models: DbInterface) {
  *  Create all permissions table relationship with rest of tables
  * @param models DbInterface
  */
-function permissionsAssociations(models: DbInterface): void {
-  models.Permissions.belongsToMany(models.Users, {
+function permissionAssociations(models: DbInterface): void {
+  models.Permission.belongsToMany(models.Users, {
     through: "user_permissions"
   });
 }
@@ -239,7 +239,7 @@ function userAssociations(models: DbInterface): void {
   models.Users.hasMany(models.ConsentForm);
   models.Users.belongsToMany(models.UserGroup, { through: "user_group_users" });
 
-  models.Users.belongsToMany(models.Permissions, {
+  models.Users.belongsToMany(models.Permission, {
     through: "user_permissions"
   });
 

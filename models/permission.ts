@@ -4,17 +4,17 @@ import { v4 as uuidv4 } from "uuid";
 import { CommonAttributes } from "util/typing/modelCommonAttributes";
 import { UsersAttributes, UserInstance } from "./users";
 
-export interface PermissionsAttributes extends CommonAttributes{
+export interface PermissionAttributes extends CommonAttributes{
     type: string;
     user?: UsersAttributes | UsersAttributes["id"];
 }
 
-type PermissionsCreationAttributes = Optional<PermissionsAttributes, "id" | "createdAt" | "updatedAt">;
+type PermissionCreationAttributes = Optional<PermissionAttributes, "id" | "createdAt" | "updatedAt">;
 
 /**
  * Permissions instance object interface
  */
-export interface PermissionsInstance extends Sequelize.Model<PermissionsAttributes, PermissionsCreationAttributes>, PermissionsAttributes {
+export interface PermissionInstance extends Sequelize.Model<PermissionAttributes, PermissionCreationAttributes>, PermissionAttributes {
   getUsers: Sequelize.BelongsToManyGetAssociationsMixin<UserInstance>;
   countUsers: Sequelize.BelongsToManyCountAssociationsMixin;
   hasUser: Sequelize.BelongsToManyHasAssociationMixin<UserInstance, UserInstance["id"]>;
@@ -31,7 +31,7 @@ export interface PermissionsInstance extends Sequelize.Model<PermissionsAttribut
  *  Build Permissionss Model object
  * @param sequelize Sequelize: Conection object with de database
  */
-export function PermissionsModelFactory(sequelize: Sequelize.Sequelize): Sequelize.ModelCtor<PermissionsInstance> {
+export function PermissionModelFactory(sequelize: Sequelize.Sequelize): Sequelize.ModelCtor<PermissionInstance> {
   //  DB table name
   const TABLE_NAME = "permissions";
   // Model attributtes
@@ -51,9 +51,9 @@ export function PermissionsModelFactory(sequelize: Sequelize.Sequelize): Sequeli
   };
 
   // Create the model
-  const Permissions = sequelize.define<PermissionsInstance, PermissionsCreationAttributes>("permissions", attributes, { underscored: true, tableName: TABLE_NAME });
+  const Permission = sequelize.define<PermissionInstance, PermissionCreationAttributes>("Permission", attributes, { underscored: true, tableName: TABLE_NAME });
 
-  Permissions.beforeCreate(permission => { permission.id = uuidv4(); });
+  Permission.beforeCreate(permission => { permission.id = uuidv4(); });
 
-  return Permissions;
+  return Permission;
 }

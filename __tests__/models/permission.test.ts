@@ -11,20 +11,20 @@ describe("Permissions model", () => {
   });
 
   beforeEach(async () => {
-    const { Permissions } = db.getModels();
-    await Permissions.destroy({ truncate: true });
+    const { Permission } = db.getModels();
+    await Permission.destroy({ truncate: true });
   });
 
   it("should retrieve a series of permissions by type", async () => {
-    const { Permissions } = db.getModels();
+    const { Permission } = db.getModels();
 
-    Permissions.create({ type: "permission1" });
-    Permissions.create({ type: "permission2" });
-    Permissions.create({ type: "permission3" });
+    Permission.create({ type: "permission1" });
+    Permission.create({ type: "permission2" });
+    Permission.create({ type: "permission3" });
 
-    expect(await Permissions.count()).toEqual(3);
+    expect(await Permission.count()).toEqual(3);
 
-    const result = await Permissions.findAll({
+    const result = await Permission.findAll({
       where: { type: ["permission1", "permission2"] }
     });
 

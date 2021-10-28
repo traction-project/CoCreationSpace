@@ -4,7 +4,7 @@ import { AudioContentInstance } from "models/audio_content";
 import { DataContainerInstance } from "models/data_container";
 import { MetadataInstance } from "models/metadata";
 import { MultimediaInstance } from "models/multimedia";
-import { PermissionsInstance } from "models/permissions";
+import { PermissionInstance } from "models/permission";
 import { PostInstance } from "models/post";
 import { PreferencesInstance } from "models/preferences";
 import { SubtitlesInstance } from "models/subtitles";
@@ -42,7 +42,7 @@ export interface DbInterface {
     Multimedia: ModelCtor<MultimediaInstance>;
     MultimediaInteraction: ModelCtor<MultimediaInteractionInstance>;
     Notification: ModelCtor<NotificationInstance>;
-    Permissions: ModelCtor<PermissionsInstance>;
+    Permission: ModelCtor<PermissionInstance>;
     PostReferences: ModelCtor<PostReferencesInstance>;
     Posts: ModelCtor<PostInstance>;
     Preferences: ModelCtor<PreferencesInstance>;
