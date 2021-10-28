@@ -21,7 +21,7 @@ import { SubtitlesModelFactory } from "./subtitles";
 import { LikeModelFactory } from "./like";
 import { EmojiReactionModelFactory } from "./emoji_reaction";
 import { InterestModelFactory } from "./interest";
-import { NotificationsModelFactory } from "./notifications";
+import { NotificationModelFactory } from "./notification";
 import { UserGroupModelFactory } from "./user_group";
 import { MultimediaInteractionModelFactory } from "./multimedia_interaction";
 import { SearchQueryModelFactory } from "./search_query";
@@ -57,7 +57,7 @@ class DataBase {
     const Metadata = MetadataModelFactory(sequelize);
     const Multimedia = MultimediaModelFactory(sequelize);
     const MultimediaInteraction = MultimediaInteractionModelFactory(sequelize);
-    const Notifications = NotificationsModelFactory(sequelize);
+    const Notification = NotificationModelFactory(sequelize);
     const Permissions = PermissionsModelFactory(sequelize);
     const PostReferences = PostReferencesModelFactory(sequelize);
     const Posts = PostModelFactory(sequelize);
@@ -84,7 +84,7 @@ class DataBase {
       Metadata,
       Multimedia,
       MultimediaInteraction,
-      Notifications,
+      Notification,
       Permissions,
       PostReferences,
       Posts,

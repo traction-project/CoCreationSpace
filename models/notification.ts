@@ -25,7 +25,7 @@ export interface NotificationInstance extends Sequelize.Model<NotificationAttrib
  *  Build Users Model object
  * @param sequelize Sequelize: Conection object with de database
  */
-export function NotificationsModelFactory(sequelize: Sequelize.Sequelize): Sequelize.ModelCtor<NotificationInstance> {
+export function NotificationModelFactory(sequelize: Sequelize.Sequelize): Sequelize.ModelCtor<NotificationInstance> {
   // Model attributtes
   const attributes = {
     id: {
@@ -63,9 +63,9 @@ export function NotificationsModelFactory(sequelize: Sequelize.Sequelize): Seque
   };
 
   // Create the model
-  const Notifications = sequelize.define<NotificationInstance, NotificationCreationAttributes>("notifications", attributes, { underscored: true, tableName: "notifications", paranoid: true });
+  const Notification = sequelize.define<NotificationInstance, NotificationCreationAttributes>("Notification", attributes, { underscored: true, tableName: "notifications", paranoid: true });
 
-  Notifications.beforeCreate(notification => { notification.id = uuidv4(); });
+  Notification.beforeCreate(notification => { notification.id = uuidv4(); });
 
-  return Notifications;
+  return Notification;
 }

@@ -10,12 +10,12 @@ const router = Router();
  * Retrieve all notifications for the current user.
  */
 router.get("/", authRequired, async (req, res) => {
-  const { Notifications } = db.getModels();
+  const { Notification } = db.getModels();
   const user = req.user as UserInstance;
 
   // TODO Type definitions of models need to be adapted so this is possible
   // without the cast to 'any'
-  const notifications = await Notifications.findAll({
+  const notifications = await Notification.findAll({
     where: { user_id: user.id } as any,
     order: [["createdAt", "DESC"]]
   });
@@ -36,12 +36,12 @@ router.get("/", authRequired, async (req, res) => {
  * Retrieve all new notifications for the current user.
  */
 router.get("/new", authRequired, async (req, res) => {
-  const { Notifications } = db.getModels();
+  const { Notification } = db.getModels();
   const user = req.user as UserInstance;
 
   // TODO Type definitions of models need to be adapted so this is possible
   // without the cast to 'any'
-  const notifications = await Notifications.findAll({
+  const notifications = await Notification.findAll({
     where: { user_id: user.id, seen: false } as any,
     order: [["createdAt", "DESC"]]
   });
@@ -62,10 +62,10 @@ router.get("/new", authRequired, async (req, res) => {
  * Mark the notification with the given ID as seen.
  */
 router.post("/:id/seen", authRequired, async (req, res) => {
-  const { Notifications } = db.getModels();
+  const { Notification } = db.getModels();
   const { id } = req.params;
 
-  const notification = await Notifications.findByPk(id);
+  const notification = await Notification.findByPk(id);
 
   if (notification) {
     notification.seen = true;
@@ -86,10 +86,10 @@ router.post("/:id/seen", authRequired, async (req, res) => {
  * Delete the notification with the given id
  */
 router.delete("/:id", authRequired, async (req, res) => {
-  const { Notifications } = db.getModels();
+  const { Notification } = db.getModels();
   const { id } = req.params;
 
-  const notification = await Notifications.findByPk(id);
+  const notification = await Notification.findByPk(id);
 
   if (notification) {
     await notification.destroy();

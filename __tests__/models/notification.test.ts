@@ -17,14 +17,14 @@ describe("Notifications model", () => {
   });
 
   beforeEach(async () => {
-    const { Notifications } = db.getModels();
-    await Notifications.destroy({ truncate: true });
+    const { Notification } = db.getModels();
+    await Notification.destroy({ truncate: true });
   });
 
   it("should create an empty notification", async () => {
-    const { Notifications } = db.getModels();
+    const { Notification } = db.getModels();
 
-    const notification = await Notifications.build({
+    const notification = await Notification.build({
       data: { text: "Hello World" }
     }).save();
 
@@ -34,9 +34,9 @@ describe("Notifications model", () => {
   });
 
   it("should create a notification with the field 'seen' initialised to false", async () => {
-    const { Notifications } = db.getModels();
+    const { Notification } = db.getModels();
 
-    const notification = await Notifications.build({
+    const notification = await Notification.build({
       data: { text: "Hello World" }
     }).save();
 
@@ -45,26 +45,26 @@ describe("Notifications model", () => {
   });
 
   it("should create a notification an associate it to a user", async () => {
-    const { Notifications, Users } = db.getModels();
+    const { Notification, Users } = db.getModels();
 
     const user = await Users.findOne({ where: { username: "admin" }});
-    const notification = await Notifications.build({
+    const notification = await Notification.build({
       data: { text: "Hello World" }
     }).save();
 
     await notification.setUser(user!);
 
-    const newNotification = await Notifications.findOne({ include: ["user"] });
+    const newNotification = await Notification.findOne({ include: ["user"] });
 
     expect(newNotification).toBeDefined();
     expect(newNotification!.user).toBeDefined();
   });
 
   it("should create a notification and retrieve the user through the getUser method", async () => {
-    const { Notifications, Users } = db.getModels();
+    const { Notification, Users } = db.getModels();
 
     const user = await Users.findOne({ where: { username: "admin" }});
-    const notification = await Notifications.build({
+    const notification = await Notification.build({
       data: { text: "Hello World" }
     }).save();
 
@@ -76,10 +76,10 @@ describe("Notifications model", () => {
   });
 
   it("should create a notification and set the user through user id", async () => {
-    const { Notifications, Users } = db.getModels();
+    const { Notification, Users } = db.getModels();
 
     const user = (await Users.findOne({ where: { username: "admin" }}))!;
-    const notification = await Notifications.build({
+    const notification = await Notification.build({
       data: { text: "Hello World" }
     }).save();
 
@@ -92,15 +92,15 @@ describe("Notifications model", () => {
   });
 
   it("should allow to query all notifications from an user instance", async () => {
-    const { Notifications, Users } = db.getModels();
+    const { Notification, Users } = db.getModels();
     const user = (await Users.findOne({ where: { username: "admin" }}))!;
 
-    let notification = await Notifications.build({
+    let notification = await Notification.build({
       data: { text: "Hello World" }
     }).save();
     await notification.setUser(user);
 
-    notification = await Notifications.build({
+    notification = await Notification.build({
       data: { text: "Hello Space" }
     }).save();
     await notification.setUser(user);
@@ -115,16 +115,16 @@ describe("Notifications model", () => {
   });
 
   it("should allow user IDs in where statements", async () => {
-    const { Notifications, Users } = db.getModels();
+    const { Notification, Users } = db.getModels();
 
     const user = (await Users.findOne({ where: { username: "admin" }}))!;
-    const notification = await Notifications.build({
+    const notification = await Notification.build({
       data: { text: "Hello World" }
     }).save();
 
     await notification.setUser(user.id);
 
-    const savedNotification = await Notifications.findOne({
+    const savedNotification = await Notification.findOne({
       where: {
         data: { text: "Hello World" }
       },
@@ -142,25 +142,25 @@ describe("Notifications model", () => {
   });
 
   it("should soft-delete a notification", async () => {
-    const { Notifications } = db.getModels();
+    const { Notification } = db.getModels();
 
-    const notification = await Notifications.build({
+    const notification = await Notification.build({
       data: { text: "Hello World" }
     }).save();
 
     expect(notification).toBeDefined();
     expect(notification.seen).toBeFalsy();
     expect(notification.isSoftDeleted()).toBeFalsy();
-    expect(await Notifications.count()).toEqual(1);
+    expect(await Notification.count()).toEqual(1);
 
     await notification.destroy();
 
     expect(notification.isSoftDeleted()).toBeTruthy();
-    expect(await Notifications.count()).toEqual(0);
+    expect(await Notification.count()).toEqual(0);
 
     await notification.restore();
 
     expect(notification.isSoftDeleted()).toBeFalsy();
-    expect(await Notifications.count()).toEqual(1);
+    expect(await Notification.count()).toEqual(1);
   });
 });

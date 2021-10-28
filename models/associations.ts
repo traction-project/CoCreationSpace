@@ -232,7 +232,7 @@ function userAssociations(models: DbInterface): void {
   models.Users.hasMany(models.Multimedia, { as: "multimedia", foreignKey: "user_id" });
   models.Users.belongsTo(models.Preferences, { as: "preferences", foreignKey: "preferences_id" });
   models.Users.hasMany(models.Posts, { as: "post", foreignKey: "user_id" });
-  models.Users.hasMany(models.Notifications, { as: "notifications", foreignKey: "user_id" });
+  models.Users.hasMany(models.Notification, { as: "notifications", foreignKey: "user_id" });
   models.Users.hasMany(models.MultimediaInteraction);
   models.Users.hasMany(models.SearchQuery);
   models.Users.hasMany(models.InternalNavigationStep);
@@ -299,7 +299,7 @@ function multimediaInteractionsAssociations(models: DbInterface) {
  * @param models DBInterface
  */
 function notificationAssociations(models: DbInterface) {
-  models.Notifications.belongsTo(models.Users, { as: "user", foreignKey: "user_id" });
+  models.Notification.belongsTo(models.Users, { as: "user", foreignKey: "user_id" });
 }
 
 /**

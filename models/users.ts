@@ -11,7 +11,7 @@ import { PermissionsInstance, PermissionsAttributes } from "./permissions";
 import { PostInstance, PostAttributes } from "./post";
 import { EmojiReactionInstance } from "./emoji_reaction";
 import { TopicInstance } from "./topic";
-import { NotificationAttributes, NotificationInstance } from "./notifications";
+import { NotificationAttributes, NotificationInstance } from "./notification";
 import { UserGroupInstance } from "./user_group";
 import { MultimediaInteractionInstance } from "./multimedia_interaction";
 import { InternalNavigationStepInstance } from "./internal_navigation_step";

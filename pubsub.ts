@@ -106,7 +106,7 @@ function groupConnectionsByUserId(clients: Array<InterestSubscription>): Map<str
  * @returns Function which takes a recipient and creates a notification if that user should receive one
  */
 async function prepareInterestNotification(post: PostInstance): Promise<NotificationSender> {
-  const { Notifications } = db.getModels();
+  const { Notification } = db.getModels();
 
   const author = await post.getUser();
   const thread = await post.getThread();
@@ -145,7 +145,7 @@ async function prepareInterestNotification(post: PostInstance): Promise<Notifica
       console.log("Creating topic notification with hash", notificationDataHash, "for", recipient.id);
 
       // Create notification in database
-      const notification = await Notifications.create({
+      const notification = await Notification.create({
         data,
         user_id: recipient.id,
         hash: notificationDataHash
@@ -176,7 +176,7 @@ async function prepareInterestNotification(post: PostInstance): Promise<Notifica
 }
 
 async function preparePostNotification(post: PostInstance): Promise<NotificationSender> {
-  const { Notifications } = db.getModels();
+  const { Notification } = db.getModels();
 
   const parentPost = await post.getParentPost();
   const author = await post.getUser();
@@ -205,7 +205,7 @@ async function preparePostNotification(post: PostInstance): Promise<Notification
       console.log("Creating post reply notification with hash", notificationDataHash, "for", recipient.id);
 
       // Create notification in database
-      const notification = await Notifications.create({
+      const notification = await Notification.create({
         data,
         user_id: recipient.id,
         hash: notificationDataHash
@@ -340,14 +340,14 @@ async function setupWebSocketServer(server: http.Server) {
 
   });
 
-  const { Posts, Notifications } = db.getModels();
+  const { Posts, Notification } = db.getModels();
 
   Posts.afterCreate(async (post) => {
     console.log("Post created, sending broadcast...");
     await broadcastNotification(post);
   });
 
-  Notifications.afterUpdate(async (notification) => {
+  Notification.afterUpdate(async (notification) => {
     if (!notification.isNewRecord) {
       const user = await notification.getUser();
       console.log("Notification updated, sending refresh to user", user.id);
@@ -356,7 +356,7 @@ async function setupWebSocketServer(server: http.Server) {
     }
   });
 
-  Notifications.afterDestroy(async (notification) => {
+  Notification.afterDestroy(async (notification) => {
     const user = await notification.getUser();
     console.log("Notification deleted, sending refresh to user", user.id);
 

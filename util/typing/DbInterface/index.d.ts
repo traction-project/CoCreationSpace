@@ -18,7 +18,7 @@ import { PostReferencesInstance } from "models/post_references";
 import { LikeInstance } from "models/like";
 import { EmojiReactionInstance } from "models/emoji_reaction";
 import { InterestInstance } from "models/interest";
-import { NotificationInstance } from "models/notifications";
+import { NotificationInstance } from "models/notification";
 import { UserGroupInstance } from "models/user_group";
 import { MultimediaInteractionInstance } from "models/multimedia_interaction";
 import { SearchQueryInstance } from "models/search_query";
@@ -41,7 +41,7 @@ export interface DbInterface {
     Metadata: ModelCtor<MetadataInstance>;
     Multimedia: ModelCtor<MultimediaInstance>;
     MultimediaInteraction: ModelCtor<MultimediaInteractionInstance>;
-    Notifications: ModelCtor<NotificationInstance>;
+    Notification: ModelCtor<NotificationInstance>;
     Permissions: ModelCtor<PermissionsInstance>;
     PostReferences: ModelCtor<PostReferencesInstance>;
     Posts: ModelCtor<PostInstance>;
