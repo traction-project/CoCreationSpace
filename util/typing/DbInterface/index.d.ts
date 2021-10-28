@@ -13,7 +13,7 @@ import { TagReferenceInstance } from "models/tag_reference";
 import { ThreadInstance } from "models/thread";
 import { TopicInstance } from "models/topic";
 import { UserInstance } from "models/users";
-import { UserReferencesInstance } from "models/user_references";
+import { UserReferenceInstance } from "models/user_reference";
 import { PostReferenceInstance } from "models/post_reference";
 import { LikeInstance } from "models/like";
 import { EmojiReactionInstance } from "models/emoji_reaction";
@@ -53,6 +53,6 @@ export interface DbInterface {
     Thread: ModelCtor<ThreadInstance>;
     Topic: ModelCtor<TopicInstance>;
     UserGroup: ModelCtor<UserGroupInstance>;
-    UserReferences: ModelCtor<UserReferencesInstance>;
+    UserReference: ModelCtor<UserReferenceInstance>;
     Users: ModelCtor<UserInstance>;
 }

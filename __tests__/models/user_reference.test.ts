@@ -11,9 +11,9 @@ describe("User references user tests", () => {
   });
 
   beforeEach(async () => {
-    const { UserReferences, Users, Post } = db.getModels();
+    const { UserReference, Users, Post } = db.getModels();
 
-    await UserReferences.destroy({ truncate: true });
+    await UserReference.destroy({ truncate: true });
     await Users.destroy({ truncate: true });
     await Post.destroy({ truncate: true });
   });

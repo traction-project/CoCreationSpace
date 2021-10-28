@@ -13,7 +13,7 @@ import { PostModelFactory } from "./post";
 import { PostReferenceModelFactory } from "./post_reference";
 import { PreferenceModelFactory } from "./preference";
 import { UsersModelFactory } from "./users";
-import { UserReferencesModelFactory } from "./user_references";
+import { UserReferenceModelFactory } from "./user_reference";
 import { DataContainerModelFactory } from "./data_container";
 import { AudioContentModelFactory } from "./audio_content";
 import { MetadataModelFactory } from "./metadata";
@@ -69,7 +69,7 @@ class DataBase {
     const Thread = ThreadModelFactory(sequelize);
     const Topic = TopicModelFactory(sequelize);
     const UserGroup = UserGroupModelFactory(sequelize);
-    const UserReferences = UserReferencesModelFactory(sequelize);
+    const UserReference = UserReferenceModelFactory(sequelize);
     const Users = UsersModelFactory(sequelize);
 
     this.models = {
@@ -96,7 +96,7 @@ class DataBase {
       Thread,
       Topic,
       UserGroup,
-      UserReferences,
+      UserReference,
       Users,
     };
   }
