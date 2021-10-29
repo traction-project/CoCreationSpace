@@ -35,9 +35,9 @@ describe("Preferences tests", () => {
     const preferences = await Preference.findOne({ where: { language: "en" }});
     const user = await User.create({ username: "user" });
 
-    expect(await user.getPreferences()).toBeNull();
-    await user.setPreferences(preferences!);
-    expect(await user.getPreferences()).toBeDefined();
+    expect(await user.getPreference()).toBeNull();
+    await user.setPreference(preferences!);
+    expect(await user.getPreference()).toBeDefined();
   });
 
 });

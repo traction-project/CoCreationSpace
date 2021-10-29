@@ -92,8 +92,8 @@ export interface UserInstance extends Sequelize.Model<UserAttributes, UserCreati
   removePermissions: Sequelize.BelongsToManyRemoveAssociationsMixin<PermissionInstance, PermissionInstance["id"]>
   createPermission: Sequelize.BelongsToManyCreateAssociationMixin<PermissionInstance>
 
-  getPreferences: Sequelize.BelongsToGetAssociationMixin<PreferenceInstance>;
-  setPreferences: Sequelize.BelongsToSetAssociationMixin<PreferenceInstance, PreferenceInstance["id"]>;
+  getPreference: Sequelize.BelongsToGetAssociationMixin<PreferenceInstance>;
+  setPreference: Sequelize.BelongsToSetAssociationMixin<PreferenceInstance, PreferenceInstance["id"]>;
 
   getPosts: Sequelize.HasManyGetAssociationsMixin<MediaItemInstance>;
   countPosts: Sequelize.HasManyCountAssociationsMixin;
