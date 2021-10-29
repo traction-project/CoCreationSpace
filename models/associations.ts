@@ -57,7 +57,7 @@ export default association;
  * @param models DbInterface
  */
 function audioContentAssociations(models: DbInterface): void {
-  models.AudioContent.belongsTo(models.MediaItem, { as: "mediaItem", foreignKey: "media_item_id" });
+  models.AudioContent.belongsTo(models.MediaItem);
   models.AudioContent.hasMany(models.Metadata, { as: "metadatas", foreignKey: "audio_content_id" });
 }
 
@@ -79,8 +79,8 @@ function dataContainerAssociations(models: DbInterface) {
  * @param models DbInterface
  */
 function emojiReactionAssociations(models: DbInterface) {
-  models.EmojiReaction.belongsTo(models.MediaItem, { as: "mediaItem", foreignKey: "media_item_id" });
-  models.EmojiReaction.belongsTo(models.User, { as: "user", foreignKey: "user_id" });
+  models.EmojiReaction.belongsTo(models.MediaItem);
+  models.EmojiReaction.belongsTo(models.User);
 }
 
 /**
@@ -97,14 +97,14 @@ function metadataAssociations(models: DbInterface): void {
  * @param models DbInterface
  */
 function multimediaAssociations(models: DbInterface): void {
-  models.MediaItem.belongsTo(models.User, { as: "user", foreignKey: "user_id" });
+  models.MediaItem.belongsTo(models.User);
   models.MediaItem.belongsTo(models.DataContainer);
-  models.MediaItem.hasMany(models.AudioContent, { as: "audioContent", foreignKey: "media_item_id" });
+  models.MediaItem.hasMany(models.AudioContent);
   models.MediaItem.hasMany(models.Metadata, { as: "metadata", foreignKey: "media_item_id"});
-  models.MediaItem.hasMany(models.Subtitle, { as: "subtitles", foreignKey: "media_item_id"});
-  models.MediaItem.hasMany(models.MultimediaInteraction, { foreignKey: "media_item_id" });
-  models.MediaItem.hasMany(models.EmojiReaction, { as: "emojiReactions", foreignKey: "media_item_id" });
-  models.MediaItem.hasMany(models.AsyncJob, { foreignKey: "media_item_id" });
+  models.MediaItem.hasMany(models.Subtitle);
+  models.MediaItem.hasMany(models.MultimediaInteraction);
+  models.MediaItem.hasMany(models.EmojiReaction);
+  models.MediaItem.hasMany(models.AsyncJob);
 }
 
 /**
@@ -114,8 +114,8 @@ function multimediaAssociations(models: DbInterface): void {
 function postsAssociations(models: DbInterface) {
   const PostDataContainer = models.Post.hasOne(models.DataContainer, { as: "dataContainer", foreignKey: "post_id" });
   models.Post.hasMany(models.Post, { as: "comments", foreignKey: "parent_post_id" });
-  models.Post.belongsTo(models.User, { as: "user", foreignKey: "user_id" });
-  models.Post.belongsTo(models.Thread, { as: "thread", foreignKey: "thread_id" });
+  models.Post.belongsTo(models.User);
+  models.Post.belongsTo(models.Thread);
 
   const optionsPostsPosts = {
     through: {
@@ -180,7 +180,7 @@ function permissionAssociations(models: DbInterface): void {
  * @param models DbInterface
  */
 function subtitleAssociations(models: DbInterface): void {
-  models.Subtitle.belongsTo(models.MediaItem, { as: "mediaItem", foreignKey: "media_item_id" });
+  models.Subtitle.belongsTo(models.MediaItem);
 }
 
 /**
@@ -204,7 +204,7 @@ function tagAssociations(models: DbInterface): void {
  */
 function topicAssociations(models: DbInterface): void {
   models.Topic.belongsTo(models.UserGroup);
-  models.Topic.hasMany(models.Thread, { as: "threads", foreignKey: "topic_id" });
+  models.Topic.hasMany(models.Thread);
   models.Topic.belongsToMany(models.User, {
     through: {
       model: models.Interest,
@@ -220,8 +220,8 @@ function topicAssociations(models: DbInterface): void {
  * @param models DbInterface
  */
 function threadAssociations(models: DbInterface): void {
-  models.Thread.belongsTo(models.Topic, { as: "topic", foreignKey: "topic_id" });
-  models.Thread.hasMany(models.Post, { as: "post", foreignKey: "thread_id" });
+  models.Thread.belongsTo(models.Topic);
+  models.Thread.hasMany(models.Post);
 }
 
 /**
@@ -229,15 +229,19 @@ function threadAssociations(models: DbInterface): void {
  * @param models DbInterface
  */
 function userAssociations(models: DbInterface): void {
-  models.User.hasMany(models.MediaItem, { as: "mediaItems", foreignKey: "user_id" });
-  models.User.belongsTo(models.Preference, { as: "preferences", foreignKey: "preferences_id" });
+  models.User.hasMany(models.MediaItem);
+  models.User.belongsTo(models.Preference);
   models.User.hasMany(models.Post);
-  models.User.hasMany(models.Notification, { as: "notifications", foreignKey: "user_id" });
+  models.User.hasMany(models.Notification);
   models.User.hasMany(models.MultimediaInteraction);
   models.User.hasMany(models.SearchQuery);
   models.User.hasMany(models.InternalNavigationStep);
   models.User.hasMany(models.ConsentForm);
-  models.User.belongsToMany(models.UserGroup, { through: "user_group_users" });
+  models.User.hasMany(models.EmojiReaction);
+
+  models.User.belongsToMany(models.UserGroup, {
+    through: "user_group_users"
+  });
 
   models.User.belongsToMany(models.Permission, {
     through: "user_permissions"
@@ -259,11 +263,6 @@ function userAssociations(models: DbInterface): void {
     },
     foreignKey: "user_id",
     as: "likesPosts"
-  });
-
-  models.User.hasMany(models.EmojiReaction, {
-    foreignKey: "user_id",
-    as: "emojiReactions"
   });
 
   models.User.belongsToMany(models.Topic, {
@@ -291,7 +290,7 @@ function userGroupAssociations(models: DbInterface) {
  */
 function multimediaInteractionsAssociations(models: DbInterface) {
   models.MultimediaInteraction.belongsTo(models.User);
-  models.MultimediaInteraction.belongsTo(models.MediaItem, { foreignKey: "media_item_id" });
+  models.MultimediaInteraction.belongsTo(models.MediaItem);
 }
 
 /**
@@ -299,7 +298,7 @@ function multimediaInteractionsAssociations(models: DbInterface) {
  * @param models DBInterface
  */
 function notificationAssociations(models: DbInterface) {
-  models.Notification.belongsTo(models.User, { as: "user", foreignKey: "user_id" });
+  models.Notification.belongsTo(models.User);
 }
 
 /**
@@ -331,5 +330,5 @@ function consentFormAssociations(models: DbInterface) {
  * @param models DBInterface
  */
 function asyncJobAssociations(models: DbInterface) {
-  models.AsyncJob.belongsTo(models.MediaItem, { foreignKey: "media_item_id" });
+  models.AsyncJob.belongsTo(models.MediaItem);
 }
