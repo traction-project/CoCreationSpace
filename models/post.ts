@@ -58,14 +58,14 @@ export interface PostInstance extends Sequelize.Model<PostAttributes, PostCreati
   countLikesUsers: Sequelize.BelongsToManyCountAssociationsMixin;
 
   getPostReference: Sequelize.BelongsToManyGetAssociationsMixin<PostInstance>;
-  setPostReference: Sequelize.BelongsToManySetAssociationsMixin<PostInstance, PostInstance["id"]>;
+  setPostReferences: Sequelize.BelongsToManySetAssociationsMixin<PostInstance, PostInstance["id"]>;
   addPostReferences: Sequelize.BelongsToManyAddAssociationsMixin<PostInstance, PostInstance["id"]>;
   addPostReference: Sequelize.BelongsToManyAddAssociationMixin<PostInstance, PostInstance["id"]>;
   removePostReference: Sequelize.BelongsToManyRemoveAssociationMixin<PostInstance, PostInstance["id"]>;
   removePostReferences: Sequelize.BelongsToManyRemoveAssociationsMixin<PostInstance, PostInstance["id"]>;
   hasPostReference: Sequelize.BelongsToManyHasAssociationMixin<PostInstance, PostInstance["id"]>;
   hasPostReferences: Sequelize.BelongsToManyHasAssociationsMixin<PostInstance, PostInstance["id"]>;
-  countPostReference: Sequelize.BelongsToManyCountAssociationsMixin;
+  countPostReferences: Sequelize.BelongsToManyCountAssociationsMixin;
 
   getPostReferenced: Sequelize.BelongsToManyGetAssociationsMixin<PostInstance>;
   setPostReferenced: Sequelize.BelongsToManySetAssociationsMixin<PostInstance, PostInstance["id"]>;

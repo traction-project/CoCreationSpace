@@ -112,7 +112,7 @@ function multimediaAssociations(models: DbInterface): void {
  * @param models DbInterface
  */
 function postsAssociations(models: DbInterface) {
-  const PostDataContainer = models.Post.hasOne(models.DataContainer, { as: "dataContainer", foreignKey: "post_id" });
+  const PostDataContainer = models.Post.hasOne(models.DataContainer);
   models.Post.hasMany(models.Post, { as: "comments", foreignKey: "parent_post_id" });
   models.Post.belongsTo(models.User);
   models.Post.belongsTo(models.Thread);
@@ -126,7 +126,7 @@ function postsAssociations(models: DbInterface) {
 
   models.Post.belongsToMany(models.Post, Object.assign(optionsPostsPosts, {
     foreignKey: "post_references_id",
-    as: "postReference"
+    as: "postReferences"
   }));
 
   models.Post.belongsToMany(models.Post, Object.assign(optionsPostsPosts, {
@@ -205,6 +205,7 @@ function tagAssociations(models: DbInterface): void {
 function topicAssociations(models: DbInterface): void {
   models.Topic.belongsTo(models.UserGroup);
   models.Topic.hasMany(models.Thread);
+
   models.Topic.belongsToMany(models.User, {
     through: {
       model: models.Interest,

@@ -34,10 +34,10 @@ describe("Post references post tests", () => {
     const post2 = await Post.create({ title: "Sports" });
     const post3 = await Post.create({ title: "Media" });
 
-    expect(await post1.countPostReference()).toEqual(0);
-    await post1.setPostReference([post2, post3]);
+    expect(await post1.countPostReferences()).toEqual(0);
+    await post1.setPostReferences([post2, post3]);
 
-    expect(await post1.countPostReference()).toEqual(2);
+    expect(await post1.countPostReferences()).toEqual(2);
     expect(await post1.hasPostReference(post2)).toBeTruthy();
     expect(await post1.hasPostReference(post3)).toBeTruthy();
     expect(await post2.hasPostReferenced(post1)).toBeTruthy();
