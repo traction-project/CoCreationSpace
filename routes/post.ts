@@ -35,10 +35,8 @@ router.get("/all/user", authRequired, async (req, res) => {
 
   let queryDataContainer = {
     model: DataContainer,
-    as: "dataContainer",
     include: [{
       model: MediaItem,
-      as: "multimedia",
       attributes: ["status", "id", "type"],
       include: ["emojiReactions"]
     }]
@@ -53,20 +51,16 @@ router.get("/all/user", authRequired, async (req, res) => {
     } as any,
     include: [{
       model: User,
-      as: "user",
       attributes: ["id", "username", "image"],
       where: { id: user.id }
     }, queryDataContainer, "comments", "tags", {
       model: Thread,
-      as: "thread",
       required: true,
       include: [{
         model: Topic,
-        as: "topic",
         required: true,
         include: [{
           model: UserGroup,
-          as: "userGroup",
           required: true
         }]
       }]
@@ -106,10 +100,8 @@ router.get("/all/group", authRequired, async (req, res) => {
 
   let queryDataContainer = {
     model: DataContainer,
-    as: "dataContainer",
     include: [{
       model: MediaItem,
-      as: "multimedia",
       attributes: ["status", "id", "type"],
       include: ["emojiReactions"]
     }]
@@ -127,24 +119,19 @@ router.get("/all/group", authRequired, async (req, res) => {
     distinct: true,
     include: [{
       model: User,
-      as: "user",
       attributes: ["id", "username", "image"]
     }, queryDataContainer, "comments", {
       model: Tag,
-      as: "tags",
       where: (tagId && tagId !== "") ? { id: tagId } : undefined
     }, {
       model: Thread,
-      as: "thread",
       required: true,
       include: [{
         model: Topic,
-        as: "topic",
         required: true,
         where: (interestId && interestId !== "") ? { id: interestId } : undefined,
         include: [{
           model: UserGroup,
-          as: "userGroup",
           where: (groupId && groupId !== "") ? { id: groupId } : { id: groups }
         }]
       }]
@@ -180,24 +167,19 @@ router.get("/:id", authRequired, async (req, res) => {
     include: [
       {
         model: Thread,
-        as: "thread",
         required: true,
         include: [{
           model: Topic,
-          as: "topic",
           required: true,
           include: [{
             model: UserGroup,
-            as: "userGroup"
           }]
         }]
       },
       {
         model: DataContainer,
-        as: "dataContainer",
         include: [{
           model: MediaItem,
-          as: "multimedia",
           attributes: ["status", "id", "type", "title", "file"],
           include: ["emojiReactions"]
         }]
@@ -258,10 +240,8 @@ router.get("/:id/parent", authRequired, async (req, res) => {
       include: [
         {
           model: DataContainer,
-          as: "dataContainer",
           include: [{
             model: MediaItem,
-            as: "multimedia",
             attributes: ["status", "id", "type"],
             include: ["emojiReactions"]
           }]

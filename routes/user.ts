@@ -218,13 +218,13 @@ router.get("/profile/:id", authRequired, async (req, res) => {
     order: [["created_at", "DESC"]],
     include: [
       {
-        model: DataContainer, as: "dataContainer", include: [{
-          model: MediaItem, as: "multimedia", attributes: ["id", "type"]
+        model: DataContainer, include: [{
+          model: MediaItem, attributes: ["id", "type"]
         }]
       },
       {
-        model: Thread, as: "thread", include: [{
-          model: Topic, as: "topic", include: [
+        model: Thread, include: [{
+          model: Topic, include: [
             "userGroup"
           ]
         }]

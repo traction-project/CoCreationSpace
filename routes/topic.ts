@@ -28,7 +28,6 @@ router.get("/group", authRequired, async (req, res) => {
   const topics = await Topic.findAll({
     include: [{
       model: UserGroup,
-      as: "userGroup",
       required: true,
       where: {
         id: groups
@@ -47,10 +46,7 @@ router.get("/:id", async (req, res) => {
   const { Thread, Topic } = db.getModels();
 
   const topic = await Topic.findByPk(id, {
-    include: [{
-      model: Thread,
-      as: "threads"
-    }]
+    include: [Thread]
   });
 
   return res.send(topic);

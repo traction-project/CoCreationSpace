@@ -28,11 +28,9 @@ router.get("/:id", async (req, res) => {
   const tag = await Tag.findByPk(id, {
     include: [{
       model: Post,
-      as: "post",
       where: { parent_post_id: { [Op.is] : null }},
       include: ["user", {
         model: DataContainer,
-        as: "dataContainer",
         include: ["multimedia"]
       }]
     }],

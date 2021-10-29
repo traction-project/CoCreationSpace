@@ -130,7 +130,6 @@ describe("Notifications model", () => {
       },
       include: {
         model: User,
-        as: "user",
         where: { id: user.id }
       }
     });
