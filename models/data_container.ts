@@ -55,7 +55,7 @@ export function DataContainerModelFactory(sequelize: Sequelize.Sequelize): Seque
   };
 
   // Create the model
-  const DataContainer = sequelize.define<DataContainerInstance, DataContainerCreationAttributes>("DataContainer", attributes, { underscored: true, tableName: TABLE_NAME });
+  const DataContainer = sequelize.define<DataContainerInstance, DataContainerCreationAttributes>("dataContainer", attributes, { underscored: true, tableName: TABLE_NAME });
 
   DataContainer.beforeCreate(dataContainer => { dataContainer.id = uuidv4(); });
 

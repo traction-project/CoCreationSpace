@@ -257,7 +257,7 @@ export function UserModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mode
   };
 
   // Create the model
-  const User = sequelize.define<UserInstance, UserCreationAttributes>("User", attributes, { underscored: true, tableName: "users" });
+  const User = sequelize.define<UserInstance, UserCreationAttributes>("user", attributes, { underscored: true, tableName: "users" });
 
   User.beforeCreate(user => { user.id = uuidv4(); });
 

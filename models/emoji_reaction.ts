@@ -61,7 +61,7 @@ export function EmojiReactionModelFactory(sequelize: Sequelize.Sequelize): Seque
   };
 
   // Create the model
-  const EmojiReaction = sequelize.define<EmojiReactionInstance, EmojiReactionCreationAttributes>("EmojiReaction", attributes, { underscored: true, tableName: TABLE_NAME });
+  const EmojiReaction = sequelize.define<EmojiReactionInstance, EmojiReactionCreationAttributes>("emojiReaction", attributes, { underscored: true, tableName: TABLE_NAME });
 
   EmojiReaction.beforeCreate(emoji => { emoji.id = uuidv4(); });
 

@@ -34,7 +34,7 @@ export function TagReferenceModelFactory(sequelize: Sequelize.Sequelize): Sequel
   };
 
   // Create the model
-  const TagReference = sequelize.define<TagReferenceInstance, TagReferenceCreationAttributes>("TagReference", attributes, { underscored: true, tableName: TABLE_NAME });
+  const TagReference = sequelize.define<TagReferenceInstance, TagReferenceCreationAttributes>("tagReference", attributes, { underscored: true, tableName: TABLE_NAME });
 
   return TagReference;
 }

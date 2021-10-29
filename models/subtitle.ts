@@ -51,7 +51,7 @@ export function SubtitleModelFactory(sequelize: Sequelize.Sequelize): Sequelize.
   };
 
   // Create the model
-  const Subtitle = sequelize.define<SubtitleInstance, SubtitleCreationAttributes>("Subtitle", attributes, { underscored: true, tableName: TABLE_NAME });
+  const Subtitle = sequelize.define<SubtitleInstance, SubtitleCreationAttributes>("subtitle", attributes, { underscored: true, tableName: TABLE_NAME });
 
   Subtitle.prototype.isDefault = function () {
     return !!this.confidence;

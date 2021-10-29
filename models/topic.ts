@@ -65,7 +65,7 @@ export function TopicModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mod
   };
 
   // Create the model
-  const Topic = sequelize.define<TopicInstance, TopicCreationAttributes>("Topic", attributes, { underscored: true, tableName: TABLE_NAME });
+  const Topic = sequelize.define<TopicInstance, TopicCreationAttributes>("topic", attributes, { underscored: true, tableName: TABLE_NAME });
 
   Topic.beforeCreate(topic => { topic.id = uuidv4(); });
 

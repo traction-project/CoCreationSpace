@@ -34,7 +34,7 @@ export function PostReferenceModelFactory(sequelize: Sequelize.Sequelize): Seque
   };
 
   // Create the model
-  const PostReference = sequelize.define<PostReferenceInstance, PostReferenceCreationAttributes>("PostReference", attributes, { underscored: true, tableName: TABLE_NAME });
+  const PostReference = sequelize.define<PostReferenceInstance, PostReferenceCreationAttributes>("postReference", attributes, { underscored: true, tableName: TABLE_NAME });
 
   return PostReference;
 }

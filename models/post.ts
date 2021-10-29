@@ -140,7 +140,7 @@ export function PostModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mode
   };
 
   // Create the model
-  const Post = sequelize.define<PostInstance, PostCreationAttributes>("Post", attributes, { underscored: true, tableName: TABLE_NAME });
+  const Post = sequelize.define<PostInstance, PostCreationAttributes>("post", attributes, { underscored: true, tableName: TABLE_NAME });
 
   Post.beforeCreate(post => { post.id = uuidv4(); });
 

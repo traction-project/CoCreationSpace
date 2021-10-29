@@ -64,7 +64,7 @@ export function AsyncJobModelFactory(sequelize: Sequelize.Sequelize): Sequelize.
   };
 
   // Create the model
-  const AsyncJob = sequelize.define<AsyncJobInstance, AsyncJobCreationAttributes>("AsyncJob", attributes, { underscored: true, tableName: TABLE_NAME });
+  const AsyncJob = sequelize.define<AsyncJobInstance, AsyncJobCreationAttributes>("asyncJob", attributes, { underscored: true, tableName: TABLE_NAME });
 
   AsyncJob.beforeCreate((asyncJob) => { asyncJob.id = uuidv4(); });
 

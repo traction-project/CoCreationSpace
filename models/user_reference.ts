@@ -34,7 +34,7 @@ export function UserReferenceModelFactory(sequelize: Sequelize.Sequelize): Seque
   };
 
   // Create the model
-  const UserReference = sequelize.define<UserReferenceInstance, UserReferenceCreationAttribute>("UserReference", attributes, { underscored: true, tableName: TABLE_NAME });
+  const UserReference = sequelize.define<UserReferenceInstance, UserReferenceCreationAttribute>("userReference", attributes, { underscored: true, tableName: TABLE_NAME });
 
   return UserReference;
 }

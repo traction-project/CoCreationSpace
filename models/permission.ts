@@ -51,7 +51,7 @@ export function PermissionModelFactory(sequelize: Sequelize.Sequelize): Sequeliz
   };
 
   // Create the model
-  const Permission = sequelize.define<PermissionInstance, PermissionCreationAttributes>("Permission", attributes, { underscored: true, tableName: TABLE_NAME });
+  const Permission = sequelize.define<PermissionInstance, PermissionCreationAttributes>("permission", attributes, { underscored: true, tableName: TABLE_NAME });
 
   Permission.beforeCreate(permission => { permission.id = uuidv4(); });
 

@@ -34,7 +34,7 @@ export function LikeModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mode
   };
 
   // Create the model
-  const Like = sequelize.define<LikeInstance, LikeCreationAttributes>("Like", attributes, { underscored: true, tableName: TABLE_NAME });
+  const Like = sequelize.define<LikeInstance, LikeCreationAttributes>("like", attributes, { underscored: true, tableName: TABLE_NAME });
 
   return Like;
 }

@@ -184,7 +184,7 @@ export function MediaItemModelFactory(sequelize: Sequelize.Sequelize): Sequelize
   };
 
   // Create the model
-  const MediaItem = sequelize.define<MediaItemInstance, MediaItemCreationAttributes>("MediaItem", attributes, { underscored: true, tableName: TABLE_NAME });
+  const MediaItem = sequelize.define<MediaItemInstance, MediaItemCreationAttributes>("mediaItem", attributes, { underscored: true, tableName: TABLE_NAME });
 
   MediaItem.beforeCreate(multimedia => { multimedia.id = uuidv4(); });
 

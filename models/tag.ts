@@ -51,7 +51,7 @@ export function TagModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Model
   };
 
   // Create the model
-  const Tag = sequelize.define<TagInstance, TagCreationAttributes>("Tag", attributes, { underscored: true, tableName: TABLE_NAME });
+  const Tag = sequelize.define<TagInstance, TagCreationAttributes>("tag", attributes, { underscored: true, tableName: TABLE_NAME });
 
   Tag.beforeCreate(tag => { tag.id = uuidv4(); });
 

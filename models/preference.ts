@@ -38,7 +38,7 @@ export function PreferenceModelFactory(sequelize: Sequelize.Sequelize): Sequeliz
   };
 
   // Create the model
-  const Preference = sequelize.define<PreferenceInstance, PreferenceCreationAttributes>("Preference", attributes, { underscored: true, tableName: TABLE_NAME });
+  const Preference = sequelize.define<PreferenceInstance, PreferenceCreationAttributes>("preference", attributes, { underscored: true, tableName: TABLE_NAME });
 
   Preference.beforeCreate(preference => { preference.id = uuidv4(); });
 
