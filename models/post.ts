@@ -175,8 +175,9 @@ export function PostModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mode
     const thread = await (this as PostInstance).getThread({
       include: [{
         model: Topic,
-        as: "topic",
-        include: [{ model: UserGroup }]
+        include: [
+          UserGroup
+        ]
       }]
     });
 
