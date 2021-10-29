@@ -95,16 +95,16 @@ export interface UserInstance extends Sequelize.Model<UserAttributes, UserCreati
   getPreference: Sequelize.BelongsToGetAssociationMixin<PreferenceInstance>;
   setPreference: Sequelize.BelongsToSetAssociationMixin<PreferenceInstance, PreferenceInstance["id"]>;
 
-  getPosts: Sequelize.HasManyGetAssociationsMixin<MediaItemInstance>;
+  getPosts: Sequelize.HasManyGetAssociationsMixin<PostInstance>;
   countPosts: Sequelize.HasManyCountAssociationsMixin;
-  hasPost: Sequelize.HasManyHasAssociationMixin<MediaItemInstance, MediaItemInstance["id"]>;
-  hasPosts: Sequelize.HasManyHasAssociationsMixin<MediaItemInstance, MediaItemInstance["id"]>;
-  setPosts: Sequelize.HasManySetAssociationsMixin<MediaItemInstance, MediaItemInstance["id"]>;
-  addPost: Sequelize.HasManyAddAssociationMixin<MediaItemInstance, MediaItemInstance["id"]>;
-  addPosts: Sequelize.HasManyAddAssociationsMixin<MediaItemInstance, MediaItemInstance["id"]>;
-  removePost: Sequelize.HasManyRemoveAssociationMixin<MediaItemInstance, MediaItemInstance["id"]>;
-  removePosts: Sequelize.HasManyRemoveAssociationsMixin<MediaItemInstance, MediaItemInstance["id"]>;
-  createPost: Sequelize.HasManyCreateAssociationMixin<MediaItemInstance>;
+  hasPost: Sequelize.HasManyHasAssociationMixin<PostInstance, PostInstance["id"]>;
+  hasPosts: Sequelize.HasManyHasAssociationsMixin<PostInstance, PostInstance["id"]>;
+  setPosts: Sequelize.HasManySetAssociationsMixin<PostInstance, PostInstance["id"]>;
+  addPost: Sequelize.HasManyAddAssociationMixin<PostInstance, PostInstance["id"]>;
+  addPosts: Sequelize.HasManyAddAssociationsMixin<PostInstance, PostInstance["id"]>;
+  removePost: Sequelize.HasManyRemoveAssociationMixin<PostInstance, PostInstance["id"]>;
+  removePosts: Sequelize.HasManyRemoveAssociationsMixin<PostInstance, PostInstance["id"]>;
+  createPost: Sequelize.HasManyCreateAssociationMixin<PostInstance>;
 
   getPostReferenced: Sequelize.BelongsToManyGetAssociationsMixin<PostInstance>;
   setPostReferenced: Sequelize.BelongsToManySetAssociationsMixin<PostInstance, PostInstance["id"]>;

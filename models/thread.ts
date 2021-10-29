@@ -21,16 +21,16 @@ export interface ThreadInstance extends Sequelize.Model<ThreadAttributes, Thread
   getTopic: Sequelize.BelongsToGetAssociationMixin<TopicInstance>;
   setTopic: Sequelize.BelongsToSetAssociationMixin<TopicInstance, TopicInstance["id"]>
 
-  getPost: Sequelize.HasManyGetAssociationsMixin<PostInstance>;
-  setPost: Sequelize.HasManySetAssociationsMixin<PostInstance, PostInstance["id"]>;
-  addPosts: Sequelize.HasManyAddAssociationsMixin<PostInstance, PostInstance["id"]>;
-  addPost: Sequelize.HasManyAddAssociationMixin<PostInstance, PostInstance["id"]>;
-  createPost: Sequelize.HasManyCreateAssociationMixin<PostInstance>;
-  removePost: Sequelize.HasManyRemoveAssociationMixin<PostInstance, PostInstance["id"]>;
-  removePosts: Sequelize.HasManyRemoveAssociationsMixin<PostInstance, PostInstance["id"]>;
+  getPosts: Sequelize.HasManyGetAssociationsMixin<PostInstance>;
+  countPosts: Sequelize.HasManyCountAssociationsMixin;
   hasPost: Sequelize.HasManyHasAssociationMixin<PostInstance, PostInstance["id"]>;
   hasPosts: Sequelize.HasManyHasAssociationsMixin<PostInstance, PostInstance["id"]>;
-  countPost: Sequelize.HasManyCountAssociationsMixin;
+  setPosts: Sequelize.HasManySetAssociationsMixin<PostInstance, PostInstance["id"]>;
+  addPost: Sequelize.HasManyAddAssociationMixin<PostInstance, PostInstance["id"]>;
+  addPosts: Sequelize.HasManyAddAssociationsMixin<PostInstance, PostInstance["id"]>;
+  removePost: Sequelize.HasManyRemoveAssociationMixin<PostInstance, PostInstance["id"]>;
+  removePosts: Sequelize.HasManyRemoveAssociationsMixin<PostInstance, PostInstance["id"]>;
+  createPost: Sequelize.HasManyCreateAssociationMixin<PostInstance>;
 }
 
 /**

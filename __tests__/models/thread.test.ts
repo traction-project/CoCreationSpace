@@ -59,14 +59,14 @@ describe("Preferences tests", () => {
     const post2 = await Post.create();
 
     expect(await thread.hasPost(post1)).toBeFalsy();
-    expect(await thread.countPost()).toEqual(0);
+    expect(await thread.countPosts()).toEqual(0);
 
     await thread.addPost(post1);
     await thread.addPost(post2);
 
     expect(await thread.hasPost(post1)).toBeTruthy();
     expect(await thread.hasPost(post2)).toBeTruthy();
-    expect(await thread.countPost()).toEqual(2);
+    expect(await thread.countPosts()).toEqual(2);
   });
 
   it("should remove post from thread", async () => {
