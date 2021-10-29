@@ -3,14 +3,14 @@ import { v4 as uuidv4} from "uuid";
 
 import { CommonAttributes } from "util/typing/modelCommonAttributes";
 import { MediaItemAttributes, MediaItemInstance } from "./media_item";
-import { MetadataAttributes, MetadataInstance } from "./metadata";
+import { MetadataItemAttributes, MetadataItemInstance } from "./metadata_item";
 
 export interface AudioContentAttributes extends CommonAttributes{
     file: string;
     language?: string;
     audio_type?: string;
     multimedia?: MediaItemAttributes | MediaItemAttributes["id"];
-    metadatas?: MetadataAttributes | MetadataAttributes["id"];
+    metadatas?: MetadataItemAttributes | MetadataItemAttributes["id"];
 }
 
 type AudioContentCreationAttributes = Optional<AudioContentAttributes, "id" | "createdAt" | "updatedAt">;
@@ -22,16 +22,16 @@ export interface AudioContentInstance extends Sequelize.Model<AudioContentAttrib
   getMediaItem: Sequelize.BelongsToGetAssociationMixin<MediaItemInstance>;
   setMediaItem: Sequelize.BelongsToSetAssociationMixin<MediaItemInstance, MediaItemInstance["id"]>;
 
-  getMetadatas: Sequelize.HasManyGetAssociationsMixin<MetadataInstance>;
-  setMetadatas: Sequelize.HasManySetAssociationsMixin<MetadataInstance, MetadataInstance["id"]>;
-  addMetadatas: Sequelize.HasManyAddAssociationsMixin<MetadataInstance, MetadataInstance["id"]>;
-  addMetadata: Sequelize.HasManyAddAssociationMixin<MetadataInstance, MetadataInstance["id"]>;
-  createMetadata: Sequelize.HasManyCreateAssociationMixin<MetadataInstance>;
-  removeMetadata: Sequelize.HasManyRemoveAssociationMixin<MetadataInstance, MetadataInstance["id"]>;
-  removeMetadatas: Sequelize.HasManyRemoveAssociationsMixin<MetadataInstance, MetadataInstance["id"]>;
-  hasMetadata: Sequelize.HasManyHasAssociationMixin<MetadataInstance, MetadataInstance["id"]>;
-  hasMetadatas: Sequelize.HasManyHasAssociationsMixin<MetadataInstance, MetadataInstance["id"]>;
-  countMetadatas: Sequelize.HasManyCountAssociationsMixin;
+  getMetadataItems: Sequelize.HasManyGetAssociationsMixin<MetadataItemInstance>;
+  countMetadataItems: Sequelize.HasManyCountAssociationsMixin;
+  hasMetadataItem: Sequelize.HasManyHasAssociationMixin<MetadataItemInstance, MetadataItemInstance["id"]>;
+  hasMetadataItems: Sequelize.HasManyHasAssociationsMixin<MetadataItemInstance, MetadataItemInstance["id"]>;
+  setMetadataItems: Sequelize.HasManySetAssociationsMixin<MetadataItemInstance, MetadataItemInstance["id"]>;
+  addMetadataItem: Sequelize.HasManyAddAssociationMixin<MetadataItemInstance, MetadataItemInstance["id"]>;
+  addMetadataItems: Sequelize.HasManyAddAssociationsMixin<MetadataItemInstance, MetadataItemInstance["id"]>;
+  removeMetadataItem: Sequelize.HasManyRemoveAssociationMixin<MetadataItemInstance, MetadataItemInstance["id"]>;
+  removeMetadataItems: Sequelize.HasManyRemoveAssociationsMixin<MetadataItemInstance, MetadataItemInstance["id"]>;
+  createMetadataItem: Sequelize.HasManyCreateAssociationMixin<MetadataItemInstance>;
 }
 
 /**

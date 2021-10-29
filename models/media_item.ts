@@ -6,7 +6,7 @@ import { UserAttributes, UserInstance } from "./user";
 import { TranscribeOutput } from "util/transcribe";
 import { DataContainerAttributes, DataContainerInstance } from "./data_container";
 import { AudioContentAttributes, AudioContentInstance } from "./audio_content";
-import { MetadataAttributes, MetadataInstance } from "./metadata";
+import { MetadataItemAttributes, MetadataItemInstance } from "./metadata_item";
 import { SubtitleAttributes, SubtitleInstance } from "./subtitle";
 import { MultimediaInteractionInstance } from "./multimedia_interaction";
 import { EmojiReactionAttributes, EmojiReactionInstance } from "./emoji_reaction";
@@ -31,7 +31,7 @@ export interface MediaItemAttributes extends CommonAttributes {
   user?: UserAttributes | UserAttributes["id"];
   dataContainer?: DataContainerAttributes | DataContainerAttributes["id"];
   audioContent?: AudioContentAttributes | AudioContentAttributes["id"];
-  metadata?: MetadataAttributes | MetadataAttributes["id"];
+  metadata?: MetadataItemAttributes | MetadataItemAttributes["id"];
   subtitle?: SubtitleAttributes | SubtitleAttributes["id"];
   emojiReactions?: EmojiReactionAttributes | EmojiReactionAttributes["id"];
 }
@@ -59,16 +59,16 @@ export interface MediaItemInstance extends Sequelize.Model<MediaItemAttributes, 
   hasAudioContents: Sequelize.HasManyHasAssociationsMixin<AudioContentInstance, AudioContentInstance["id"]>;
   countAudioContents: Sequelize.HasManyCountAssociationsMixin;
 
-  getMetadata: Sequelize.HasManyGetAssociationsMixin<MetadataInstance>;
-  setMetadata: Sequelize.HasManySetAssociationsMixin<MetadataInstance, MetadataInstance["id"]>;
-  addMetadatas: Sequelize.HasManyAddAssociationsMixin<MetadataInstance, MetadataInstance["id"]>;
-  addMetadata: Sequelize.HasManyAddAssociationMixin<MetadataInstance, MetadataInstance["id"]>;
-  createMetadata: Sequelize.HasManyCreateAssociationMixin<MetadataInstance>;
-  removeMetadata: Sequelize.HasManyRemoveAssociationMixin<MetadataInstance, MetadataInstance["id"]>;
-  removeMetadatas: Sequelize.HasManyRemoveAssociationsMixin<MetadataInstance, MetadataInstance["id"]>;
-  hasMetadata: Sequelize.HasManyHasAssociationMixin<MetadataInstance, MetadataInstance["id"]>;
-  hasMetadatas: Sequelize.HasManyHasAssociationsMixin<MetadataInstance, MetadataInstance["id"]>;
-  countMetadatas: Sequelize.HasManyCountAssociationsMixin;
+  getMetadataItems: Sequelize.HasManyGetAssociationsMixin<MetadataItemInstance>;
+  countMetadataItems: Sequelize.HasManyCountAssociationsMixin;
+  hasMetadataItem: Sequelize.HasManyHasAssociationMixin<MetadataItemInstance, MetadataItemInstance["id"]>;
+  hasMetadataItems: Sequelize.HasManyHasAssociationsMixin<MetadataItemInstance, MetadataItemInstance["id"]>;
+  setMetadataItems: Sequelize.HasManySetAssociationsMixin<MetadataItemInstance, MetadataItemInstance["id"]>;
+  addMetadataItem: Sequelize.HasManyAddAssociationMixin<MetadataItemInstance, MetadataItemInstance["id"]>;
+  addMetadataItems: Sequelize.HasManyAddAssociationsMixin<MetadataItemInstance, MetadataItemInstance["id"]>;
+  removeMetadataItem: Sequelize.HasManyRemoveAssociationMixin<MetadataItemInstance, MetadataItemInstance["id"]>;
+  removeMetadataItems: Sequelize.HasManyRemoveAssociationsMixin<MetadataItemInstance, MetadataItemInstance["id"]>;
+  createMetadataItem: Sequelize.HasManyCreateAssociationMixin<MetadataItemInstance>;
 
   getSubtitles: Sequelize.HasManyGetAssociationsMixin<SubtitleInstance>;
   countSubtitles: Sequelize.HasManyCountAssociationsMixin;

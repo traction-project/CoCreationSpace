@@ -2,7 +2,7 @@ import { ModelCtor } from "sequelize";
 
 import { AudioContentInstance } from "models/audio_content";
 import { DataContainerInstance } from "models/data_container";
-import { MetadataInstance } from "models/metadata";
+import { MetadataItemInstance } from "models/metadata_item";
 import { MediaItemInstance } from "models/media_item";
 import { PermissionInstance } from "models/permission";
 import { PostInstance } from "models/post";
@@ -38,7 +38,7 @@ export interface DbInterface {
     Interest: ModelCtor<InterestInstance>;
     InternalNavigationStep: ModelCtor<InternalNavigationStepInstance>;
     Like: ModelCtor<LikeInstance>;
-    Metadata: ModelCtor<MetadataInstance>;
+    MetadataItem: ModelCtor<MetadataItemInstance>;
     MediaItem: ModelCtor<MediaItemInstance>;
     MultimediaInteraction: ModelCtor<MultimediaInteractionInstance>;
     Notification: ModelCtor<NotificationInstance>;

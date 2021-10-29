@@ -11,11 +11,11 @@ describe("Audio Content model", () => {
   });
 
   beforeEach(async () => {
-    const { AudioContent, MediaItem, Metadata } = db.getModels();
+    const { AudioContent, MediaItem, MetadataItem } = db.getModels();
 
     await AudioContent.destroy({ truncate: true });
     await MediaItem.destroy({ truncate: true });
-    await Metadata.destroy({ truncate: true });
+    await MetadataItem.destroy({ truncate: true });
   });
 
   it("should create new audio content with correct attributes", async () => {
@@ -50,72 +50,72 @@ describe("Audio Content model", () => {
   });
 
   it("should return true when audio content has a certain metadata", async () => {
-    const { AudioContent, Metadata } = db.getModels();
+    const { AudioContent, MetadataItem } = db.getModels();
 
     const audioContent = await AudioContent.create({ file: "audio.mp3" });
-    const metadata = await Metadata.create({ value: "metadata" });
-    expect(await audioContent.hasMetadata(metadata)).toBeFalsy();
+    const metadata = await MetadataItem.create({ value: "metadata" });
+    expect(await audioContent.hasMetadataItem(metadata)).toBeFalsy();
 
-    await audioContent.addMetadata(metadata);
-    expect(await audioContent.hasMetadata(metadata)).toBeTruthy();
+    await audioContent.addMetadataItem(metadata);
+    expect(await audioContent.hasMetadataItem(metadata)).toBeTruthy();
   });
 
   it("should count a audio content metadata", async () => {
-    const { AudioContent, Metadata } = db.getModels();
+    const { AudioContent, MetadataItem } = db.getModels();
 
     const audioContent = await AudioContent.create({ file: "audio.mp3" });
-    expect(await audioContent.countMetadatas()).toEqual(0);
+    expect(await audioContent.countMetadataItems()).toEqual(0);
 
-    const metadata = await Metadata.create({ value: "metadata" });
-    await audioContent.addMetadata(metadata);
+    const metadata = await MetadataItem.create({ value: "metadata" });
+    await audioContent.addMetadataItem(metadata);
 
-    expect(await audioContent.countMetadatas()).toEqual(1);
+    expect(await audioContent.countMetadataItems()).toEqual(1);
   });
 
   it("should remove a certain metadata", async () => {
-    const { AudioContent, Metadata } = db.getModels();
+    const { AudioContent, MetadataItem } = db.getModels();
     const audioContent = await AudioContent.create({ file: "audio.mp3" });
-    const metadata = await Metadata.create({ value: "metadata" });
+    const metadata = await MetadataItem.create({ value: "metadata" });
 
-    await audioContent.addMetadata(metadata);
-    expect(await audioContent.hasMetadata(metadata)).toBeTruthy();
+    await audioContent.addMetadataItem(metadata);
+    expect(await audioContent.hasMetadataItem(metadata)).toBeTruthy();
 
-    await audioContent.removeMetadata(metadata);
-    expect(await audioContent.hasMetadata(metadata)).toBeFalsy();
+    await audioContent.removeMetadataItem(metadata);
+    expect(await audioContent.hasMetadataItem(metadata)).toBeFalsy();
   });
 
   it("should return true when audio content has a certain series of metadatas", async () => {
-    const { AudioContent, Metadata } = db.getModels();
+    const { AudioContent, MetadataItem } = db.getModels();
     const audioContent = await AudioContent.create({ file: "audio.mp3" });
-    const metadata1 = await Metadata.create({ value: "voice_metadata" });
-    const metadata2 = await Metadata.create({ value: "type_metadata" });
-    const metadata3 = await Metadata.create({ value: "format_metadata" });
+    const metadata1 = await MetadataItem.create({ value: "voice_metadata" });
+    const metadata2 = await MetadataItem.create({ value: "type_metadata" });
+    const metadata3 = await MetadataItem.create({ value: "format_metadata" });
 
-    await audioContent.setMetadatas([metadata1, metadata2, metadata3]);
+    await audioContent.setMetadataItems([metadata1, metadata2, metadata3]);
 
-    expect(await audioContent.countMetadatas()).toEqual(3);
-    expect(await audioContent.hasMetadatas(
+    expect(await audioContent.countMetadataItems()).toEqual(3);
+    expect(await audioContent.hasMetadataItems(
       [metadata1, metadata2, metadata3]
     )).toBeTruthy();
-    expect(await audioContent.hasMetadatas(
+    expect(await audioContent.hasMetadataItems(
       [metadata1.id, metadata2.id, metadata3.id]
     )).toBeTruthy();
   });
 
   it("should not fail when trying to remove an metadata that the audio content does not have", async () => {
-    const { AudioContent, Metadata } = db.getModels();
+    const { AudioContent, MetadataItem } = db.getModels();
     const audioContent = await AudioContent.create({ file: "audio.mp3" });
-    const metadata1 = await Metadata.create({ value: "voice_metadata" });
-    const metadata2 = await Metadata.create({ value: "type_metadata" });
-    const metadata3 = await Metadata.create({ value: "format_metadata" });
+    const metadata1 = await MetadataItem.create({ value: "voice_metadata" });
+    const metadata2 = await MetadataItem.create({ value: "type_metadata" });
+    const metadata3 = await MetadataItem.create({ value: "format_metadata" });
 
-    await audioContent.addMetadatas([metadata1, metadata2]);
-    expect(await audioContent.countMetadatas()).toEqual(2);
+    await audioContent.addMetadataItems([metadata1, metadata2]);
+    expect(await audioContent.countMetadataItems()).toEqual(2);
 
-    await audioContent.removeMetadata(metadata3);
-    expect(await audioContent.countMetadatas()).toEqual(2);
+    await audioContent.removeMetadataItem(metadata3);
+    expect(await audioContent.countMetadataItems()).toEqual(2);
 
-    await audioContent.removeMetadata(metadata2);
-    expect(await audioContent.countMetadatas()).toEqual(1);
+    await audioContent.removeMetadataItem(metadata2);
+    expect(await audioContent.countMetadataItems()).toEqual(1);
   });
 });

@@ -11,18 +11,18 @@ describe("Metadata model", () => {
   });
 
   beforeEach(async () => {
-    const { Metadata, MediaItem, AudioContent } = db.getModels();
+    const { MetadataItem, MediaItem, AudioContent } = db.getModels();
 
-    await Metadata.destroy({ truncate: true });
+    await MetadataItem.destroy({ truncate: true });
     await MediaItem.destroy({ truncate: true });
     await AudioContent.destroy({ truncate: true });
   });
 
   it("should create new metadata", async () => {
-    const { Metadata } = db.getModels();
+    const { MetadataItem } = db.getModels();
 
     const value = "type_metadata";
-    const metadata = await Metadata.build({
+    const metadata = await MetadataItem.build({
       value,
     }).save();
 
@@ -36,7 +36,7 @@ describe("Metadata model", () => {
   });
 
   it("should create new metdata with type, value, rou and time", async () => {
-    const { Metadata } = db.getModels();
+    const { MetadataItem } = db.getModels();
 
     const attributes = {
       value: "metadata",
@@ -44,7 +44,7 @@ describe("Metadata model", () => {
       roi: "roi",
       time_interval: "50",
     };
-    const metadata = await Metadata.create({
+    const metadata = await MetadataItem.create({
       value: attributes.value,
       metadata_type: attributes.metadata_type,
       roi: attributes.roi,
@@ -66,8 +66,8 @@ describe("Metadata model", () => {
   });
 
   it("should add metadata to multimedia", async () => {
-    const { Metadata, MediaItem } = db.getModels();
-    const metadata = await Metadata.create({ value: "metadata" });
+    const { MetadataItem, MediaItem } = db.getModels();
+    const metadata = await MetadataItem.create({ value: "metadata" });
     const multimedia = await MediaItem.create({ title: "multimedia" });
 
     await metadata.setMediaItem(multimedia);
@@ -77,8 +77,8 @@ describe("Metadata model", () => {
   });
 
   it("should add metadata to audio content", async () => {
-    const { Metadata, AudioContent } = db.getModels();
-    const metadata = await Metadata.create({ value: "metadata" });
+    const { MetadataItem, AudioContent } = db.getModels();
+    const metadata = await MetadataItem.create({ value: "metadata" });
     const audioContent = await AudioContent.create({ file: "audio.mp3" });
 
     await metadata.setAudioContent(audioContent);

@@ -5,7 +5,7 @@ import { CommonAttributes } from "util/typing/modelCommonAttributes";
 import { MediaItemAttributes, MediaItemInstance } from "./media_item";
 import { AudioContentAttributes, AudioContentInstance } from "./audio_content";
 
-export interface MetadataAttributes extends CommonAttributes {
+export interface MetadataItemAttributes extends CommonAttributes {
     metadata_type?: string;
     value: string;
     roi?: string;
@@ -14,12 +14,12 @@ export interface MetadataAttributes extends CommonAttributes {
     audioContent?: AudioContentAttributes | AudioContentAttributes["id"];
 }
 
-type MetadataCreationAttributes = Optional<MetadataAttributes, "id" | "createdAt" | "updatedAt">;
+type MetadataItemCreationAttributes = Optional<MetadataItemAttributes, "id" | "createdAt" | "updatedAt">;
 
 /**
  * Metadata instance object interface
  */
-export interface MetadataInstance extends Sequelize.Model<MetadataAttributes, MetadataCreationAttributes>, MetadataAttributes {
+export interface MetadataItemInstance extends Sequelize.Model<MetadataItemAttributes, MetadataItemCreationAttributes>, MetadataItemAttributes {
   getMediaItem: Sequelize.BelongsToGetAssociationMixin<MediaItemInstance>;
   setMediaItem: Sequelize.BelongsToSetAssociationMixin<MediaItemInstance, MediaItemInstance["id"]>;
 
@@ -31,9 +31,9 @@ export interface MetadataInstance extends Sequelize.Model<MetadataAttributes, Me
  *  Build Metadatas Model object
  * @param sequelize Sequelize: Conection object with de database
  */
-export function MetadataModelFactory(sequelize: Sequelize.Sequelize): Sequelize.ModelCtor<MetadataInstance> {
+export function MetadataItemModelFactory(sequelize: Sequelize.Sequelize): Sequelize.ModelCtor<MetadataItemInstance> {
   //  DB table name
-  const TABLE_NAME = "metadata";
+  const TABLE_NAME = "metadata_items";
   // Model attributtes
   const attributes = {
     id: {
@@ -65,9 +65,9 @@ export function MetadataModelFactory(sequelize: Sequelize.Sequelize): Sequelize.
   };
 
   // Create the model
-  const Metadata = sequelize.define<MetadataInstance, MetadataCreationAttributes>("metadata", attributes, { underscored: true, tableName: TABLE_NAME });
+  const MetadataItem = sequelize.define<MetadataItemInstance, MetadataItemCreationAttributes>("metadataItem", attributes, { underscored: true, tableName: TABLE_NAME });
 
-  Metadata.beforeCreate(metadata => { metadata.id = uuidv4(); });
+  MetadataItem.beforeCreate(metadata => { metadata.id = uuidv4(); });
 
-  return Metadata;
+  return MetadataItem;
 }

@@ -58,7 +58,7 @@ export default association;
  */
 function audioContentAssociations(models: DbInterface): void {
   models.AudioContent.belongsTo(models.MediaItem);
-  models.AudioContent.hasMany(models.Metadata, { as: "metadatas", foreignKey: "audio_content_id" });
+  models.AudioContent.hasMany(models.MetadataItem);
 }
 
 /**
@@ -88,8 +88,8 @@ function emojiReactionAssociations(models: DbInterface) {
  * @param models DbInterface
  */
 function metadataAssociations(models: DbInterface): void {
-  models.Metadata.belongsTo(models.MediaItem, { as: "mediaItem", foreignKey: "media_item_id" });
-  models.Metadata.belongsTo(models.AudioContent, { as: "audioContent", foreignKey: "audio_content_id" });
+  models.MetadataItem.belongsTo(models.MediaItem);
+  models.MetadataItem.belongsTo(models.AudioContent);
 }
 
 /**
@@ -100,7 +100,7 @@ function multimediaAssociations(models: DbInterface): void {
   models.MediaItem.belongsTo(models.User);
   models.MediaItem.belongsTo(models.DataContainer);
   models.MediaItem.hasMany(models.AudioContent);
-  models.MediaItem.hasMany(models.Metadata, { as: "metadata", foreignKey: "media_item_id"});
+  models.MediaItem.hasMany(models.MetadataItem);
   models.MediaItem.hasMany(models.Subtitle);
   models.MediaItem.hasMany(models.MultimediaInteraction);
   models.MediaItem.hasMany(models.EmojiReaction);
