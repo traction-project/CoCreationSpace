@@ -148,8 +148,7 @@ function postsAssociations(models: DbInterface) {
       model: models.TagReference,
       unique: false
     },
-    foreignKey: "post_id",
-    as: "tags"
+    foreignKey: "post_id"
   });
 
   models.Post.belongsToMany(models.User, {
@@ -193,8 +192,7 @@ function tagAssociations(models: DbInterface): void {
       model: models.TagReference,
       unique: false
     },
-    foreignKey: "tag_id",
-    as: "post"
+    foreignKey: "tag_id"
   });
 }
 
