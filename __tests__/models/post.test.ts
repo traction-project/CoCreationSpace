@@ -190,10 +190,10 @@ describe("Post model", () => {
 
   it("should have automatically generated association methods for the DataContainer model", async () => {
     const { Post } = db.getModels();
-    const mediaItem = await Post.create({ title: "test" });
+    const post = await Post.create({ title: "test" });
 
     const expectedMethods = generateHasOneAssociationMethods("DataContainer");
-    const availableMethods = getAllMethods(mediaItem);
+    const availableMethods = getAllMethods(post);
 
     for (const method of expectedMethods) {
       expect(availableMethods).toContain(method);
@@ -202,10 +202,10 @@ describe("Post model", () => {
 
   it("should have automatically generated association methods for the Thread model", async () => {
     const { Post } = db.getModels();
-    const mediaItem = await Post.create({ title: "test" });
+    const post = await Post.create({ title: "test" });
 
     const expectedMethods = generateBelongsToAssociationMethods("Thread");
-    const availableMethods = getAllMethods(mediaItem);
+    const availableMethods = getAllMethods(post);
 
     for (const method of expectedMethods) {
       expect(availableMethods).toContain(method);
@@ -214,10 +214,10 @@ describe("Post model", () => {
 
   it("should have automatically generated association methods for the User model", async () => {
     const { Post } = db.getModels();
-    const mediaItem = await Post.create({ title: "test" });
+    const post = await Post.create({ title: "test" });
 
     const expectedMethods = generateBelongsToAssociationMethods("User");
-    const availableMethods = getAllMethods(mediaItem);
+    const availableMethods = getAllMethods(post);
 
     for (const method of expectedMethods) {
       expect(availableMethods).toContain(method);
@@ -226,10 +226,10 @@ describe("Post model", () => {
 
   it("should have automatically generated association methods for the Like model", async () => {
     const { Post } = db.getModels();
-    const mediaItem = await Post.create({ title: "test" });
+    const post = await Post.create({ title: "test" });
 
     const expectedMethods = generateHasManyAssociationMethods("LikesUser");
-    const availableMethods = getAllMethods(mediaItem);
+    const availableMethods = getAllMethods(post);
 
     for (const method of expectedMethods) {
       expect(availableMethods).toContain(method);
@@ -238,10 +238,10 @@ describe("Post model", () => {
 
   it("should have automatically generated association methods for the Tag model", async () => {
     const { Post } = db.getModels();
-    const mediaItem = await Post.create({ title: "test" });
+    const post = await Post.create({ title: "test" });
 
     const expectedMethods = generateHasManyAssociationMethods("Tag");
-    const availableMethods = getAllMethods(mediaItem);
+    const availableMethods = getAllMethods(post);
 
     for (const method of expectedMethods) {
       expect(availableMethods).toContain(method);

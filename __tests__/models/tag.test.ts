@@ -1,4 +1,5 @@
 import { Sequelize } from "sequelize";
+import { getAllMethods, generateHasManyAssociationMethods } from "../../util";
 
 process.env["SESSION_SECRET"] = "sessionsecret";
 const sequelize = new Sequelize("sqlite::memory:", { logging: false });
@@ -83,4 +84,15 @@ describe("Tag tests", () => {
     expect(await tag.countPosts()).toEqual(2);
   });
 
+  it("should have automatically generated association methods for the Post model", async () => {
+    const { Tag } = db.getModels();
+    const tag = await Tag.create({ tag_name: "test" });
+
+    const expectedMethods = generateHasManyAssociationMethods("Post");
+    const availableMethods = getAllMethods(tag);
+
+    for (const method of expectedMethods) {
+      expect(availableMethods).toContain(method);
+    }
+  });
 });
