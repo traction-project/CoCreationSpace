@@ -1,4 +1,5 @@
 import { Sequelize } from "sequelize";
+import { getAllMethods, generateHasManyAssociationMethods, generateBelongsToAssociationMethods } from "../../util";
 
 process.env["SESSION_SECRET"] = "sessionsecret";
 const sequelize = new Sequelize("sqlite::memory:", { logging: false });
@@ -81,4 +82,27 @@ describe("Preferences tests", () => {
     expect(await thread.hasPost(post1)).toBeFalsy();
   });
 
+  it("should have automatically generated association methods for the Post model", async () => {
+    const { Thread } = db.getModels();
+    const post = await Thread.create({ th_title: "test" });
+
+    const expectedMethods = generateHasManyAssociationMethods("Post");
+    const availableMethods = getAllMethods(post);
+
+    for (const method of expectedMethods) {
+      expect(availableMethods).toContain(method);
+    }
+  });
+
+  it("should have automatically generated association methods for the Topic model", async () => {
+    const { Thread } = db.getModels();
+    const post = await Thread.create({ th_title: "test" });
+
+    const expectedMethods = generateBelongsToAssociationMethods("Topic");
+    const availableMethods = getAllMethods(post);
+
+    for (const method of expectedMethods) {
+      expect(availableMethods).toContain(method);
+    }
+  });
 });
