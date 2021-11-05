@@ -1,5 +1,5 @@
 import { Sequelize } from "sequelize";
-import { getAllMethods } from "../../util";
+import { generateBelongsToAssociationMethods, generateHasManyAssociationMethods, getAllMethods } from "../../util";
 
 process.env["SESSION_SECRET"] = "sessionsecret";
 const sequelize = new Sequelize("sqlite::memory:", { logging: false });
@@ -136,19 +136,7 @@ describe("Data container model", () => {
     const { DataContainer } = db.getModels();
     const dataContainer = await DataContainer.create();
 
-    const expectedMethods = [
-      "getMediaItems",
-      "countMediaItems",
-      "hasMediaItem",
-      "hasMediaItems",
-      "setMediaItems",
-      "addMediaItem",
-      "addMediaItems",
-      "removeMediaItem",
-      "removeMediaItems",
-      "createMediaItem",
-    ];
-
+    const expectedMethods = generateHasManyAssociationMethods("MediaItem");
     const availableMethods = getAllMethods(dataContainer);
 
     for (const method of expectedMethods) {
@@ -160,12 +148,7 @@ describe("Data container model", () => {
     const { DataContainer } = db.getModels();
     const dataContainer = await DataContainer.create();
 
-    const expectedMethods = [
-      "getPost",
-      "setPost",
-      "createPost",
-    ];
-
+    const expectedMethods = generateBelongsToAssociationMethods("Post");
     const availableMethods = getAllMethods(dataContainer);
 
     for (const method of expectedMethods) {
