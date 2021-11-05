@@ -229,6 +229,36 @@ export function getAllMethods(toCheck: any): Array<string> {
 }
 
 /**
+ * Generates expected names for association methods for a given model in a
+ * has-many relationship. This is useful for writing test cases for association
+ * methods.
+ *
+ * @param modelName Name of the associated model
+ * @returns List of generated model names
+ */
+export function generateHasManyAssociationMethods(modelName: string): Array<string> {
+  return ["get", "count", "has", "set", "add", "remove"].map((prefix) => {
+    return `${prefix}${modelName}s`;
+  }).concat(["has", "add", "remove", "create"].map((prefix) => {
+    return `${prefix}${modelName}`;
+  }));
+}
+
+/**
+ * Generates expected names for association methods for a given model in a
+ * belongs-to relationship. This is useful for writing test cases for
+ * association methods.
+ *
+ * @param modelName Name of the associated model
+ * @returns List of generated model names
+ */
+export function generateBelongsToAssociationMethods(modelName: string): Array<string> {
+  return ["get", "set", "create"].map((prefix) => {
+    return `${prefix}${modelName}`;
+  });
+}
+
+/**
  * Get Buffer from stream
  *
  * @param file Readable stream
