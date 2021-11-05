@@ -84,10 +84,10 @@ describe("Preferences tests", () => {
 
   it("should have automatically generated association methods for the Post model", async () => {
     const { Thread } = db.getModels();
-    const post = await Thread.create({ th_title: "test" });
+    const thread = await Thread.create({ th_title: "test" });
 
     const expectedMethods = generateHasManyAssociationMethods("Post");
-    const availableMethods = getAllMethods(post);
+    const availableMethods = getAllMethods(thread);
 
     for (const method of expectedMethods) {
       expect(availableMethods).toContain(method);
@@ -96,10 +96,10 @@ describe("Preferences tests", () => {
 
   it("should have automatically generated association methods for the Topic model", async () => {
     const { Thread } = db.getModels();
-    const post = await Thread.create({ th_title: "test" });
+    const thread = await Thread.create({ th_title: "test" });
 
     const expectedMethods = generateBelongsToAssociationMethods("Topic");
-    const availableMethods = getAllMethods(post);
+    const availableMethods = getAllMethods(thread);
 
     for (const method of expectedMethods) {
       expect(availableMethods).toContain(method);
