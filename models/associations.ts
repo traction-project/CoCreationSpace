@@ -231,7 +231,6 @@ function threadAssociations(models: DbInterface): void {
  */
 function userAssociations(models: DbInterface): void {
   models.User.hasMany(models.MediaItem);
-  models.User.belongsTo(models.Preference);
   models.User.hasMany(models.Post);
   models.User.hasMany(models.Notification);
   models.User.hasMany(models.MultimediaInteraction);

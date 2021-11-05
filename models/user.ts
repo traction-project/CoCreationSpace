@@ -6,7 +6,6 @@ import { v4 as uuidv4 } from "uuid";
 import { CommonAttributes } from "util/typing/modelCommonAttributes";
 import { getFromEnvironment } from "../util";
 import { MediaItemInstance, MediaItemAttributes } from "./media_item";
-import { PreferenceAttributes, PreferenceInstance } from "./preference";
 import { PermissionInstance, PermissionAttributes } from "./permission";
 import { PostInstance, PostAttributes } from "./post";
 import { EmojiReactionInstance } from "./emoji_reaction";
@@ -31,7 +30,6 @@ export interface UserAttributes extends CommonAttributes {
   preferredLanguage?: string;
   likesPosts?: PostAttributes | PostAttributes["id"];
   mediaItem?: MediaItemAttributes | MediaItemAttributes["id"];
-  preferences?: PreferenceAttributes | PreferenceAttributes["id"];
   permission?: PermissionAttributes | PermissionAttributes["id"];
   post?: PostAttributes | PostAttributes["id"];
   notification?: NotificationAttributes | NotificationAttributes["id"];
@@ -91,9 +89,6 @@ export interface UserInstance extends Sequelize.Model<UserAttributes, UserCreati
   removePermission: Sequelize.BelongsToManyRemoveAssociationMixin<PermissionInstance, PermissionInstance["id"]>
   removePermissions: Sequelize.BelongsToManyRemoveAssociationsMixin<PermissionInstance, PermissionInstance["id"]>
   createPermission: Sequelize.BelongsToManyCreateAssociationMixin<PermissionInstance>
-
-  getPreference: Sequelize.BelongsToGetAssociationMixin<PreferenceInstance>;
-  setPreference: Sequelize.BelongsToSetAssociationMixin<PreferenceInstance, PreferenceInstance["id"]>;
 
   getPosts: Sequelize.HasManyGetAssociationsMixin<PostInstance>;
   countPosts: Sequelize.HasManyCountAssociationsMixin;
@@ -241,9 +236,6 @@ export function UserModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mode
     },
     preferredLanguage: {
       type: Sequelize.DataTypes.STRING
-    },
-    preferences_id: {
-      type: Sequelize.DataTypes.UUID
     },
     resettoken: {
       type: Sequelize.DataTypes.STRING

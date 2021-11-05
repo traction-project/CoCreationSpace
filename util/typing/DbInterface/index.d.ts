@@ -6,7 +6,6 @@ import { MetadataItemInstance } from "models/metadata_item";
 import { MediaItemInstance } from "models/media_item";
 import { PermissionInstance } from "models/permission";
 import { PostInstance } from "models/post";
-import { PreferenceInstance } from "models/preference";
 import { SubtitleInstance } from "models/subtitle";
 import { TagInstance } from "models/tag";
 import { TagReferenceInstance } from "models/tag_reference";
@@ -45,7 +44,6 @@ export interface DbInterface {
     Permission: ModelCtor<PermissionInstance>;
     PostReference: ModelCtor<PostReferenceInstance>;
     Post: ModelCtor<PostInstance>;
-    Preference: ModelCtor<PreferenceInstance>;
     SearchQuery: ModelCtor<SearchQueryInstance>;
     Subtitle: ModelCtor<SubtitleInstance>;
     TagReference: ModelCtor<TagReferenceInstance>;
