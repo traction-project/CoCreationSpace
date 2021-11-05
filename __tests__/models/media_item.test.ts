@@ -1,4 +1,5 @@
 import { Sequelize } from "sequelize";
+import { generateBelongsToAssociationMethods, generateHasManyAssociationMethods, getAllMethods } from "../../util";
 
 process.env["SESSION_SECRET"] = "sessionsecret";
 const sequelize = new Sequelize("sqlite::memory:", { logging: false });
@@ -241,5 +242,77 @@ describe("MediaItem model", () => {
 
     expect(associatedReactions.length).toEqual(1);
     expect(associatedReactions[0].id).toEqual(reaction.id);
+  });
+
+  it("should have automatically generated association methods for the DataContainer model", async () => {
+    const { MediaItem } = db.getModels();
+    const mediaItem = await MediaItem.create({ title: "test" });
+
+    const expectedMethods = generateBelongsToAssociationMethods("DataContainer");
+    const availableMethods = getAllMethods(mediaItem);
+
+    for (const method of expectedMethods) {
+      expect(availableMethods).toContain(method);
+    }
+  });
+
+  it("should have automatically generated association methods for the User model", async () => {
+    const { MediaItem } = db.getModels();
+    const mediaItem = await MediaItem.create({ title: "test" });
+
+    const expectedMethods = generateBelongsToAssociationMethods("User");
+    const availableMethods = getAllMethods(mediaItem);
+
+    for (const method of expectedMethods) {
+      expect(availableMethods).toContain(method);
+    }
+  });
+
+  it("should have automatically generated association methods for the Subtitle model", async () => {
+    const { MediaItem } = db.getModels();
+    const mediaItem = await MediaItem.create({ title: "test" });
+
+    const expectedMethods = generateHasManyAssociationMethods("Subtitle");
+    const availableMethods = getAllMethods(mediaItem);
+
+    for (const method of expectedMethods) {
+      expect(availableMethods).toContain(method);
+    }
+  });
+
+  it("should have automatically generated association methods for the AudioContent model", async () => {
+    const { MediaItem } = db.getModels();
+    const mediaItem = await MediaItem.create({ title: "test" });
+
+    const expectedMethods = generateHasManyAssociationMethods("AudioContent");
+    const availableMethods = getAllMethods(mediaItem);
+
+    for (const method of expectedMethods) {
+      expect(availableMethods).toContain(method);
+    }
+  });
+
+  it("should have automatically generated association methods for the EmojiReaction model", async () => {
+    const { MediaItem } = db.getModels();
+    const mediaItem = await MediaItem.create({ title: "test" });
+
+    const expectedMethods = generateHasManyAssociationMethods("EmojiReaction");
+    const availableMethods = getAllMethods(mediaItem);
+
+    for (const method of expectedMethods) {
+      expect(availableMethods).toContain(method);
+    }
+  });
+
+  it("should have automatically generated association methods for the MetadataItem model", async () => {
+    const { MediaItem } = db.getModels();
+    const mediaItem = await MediaItem.create({ title: "test" });
+
+    const expectedMethods = generateHasManyAssociationMethods("MetadataItem");
+    const availableMethods = getAllMethods(mediaItem);
+
+    for (const method of expectedMethods) {
+      expect(availableMethods).toContain(method);
+    }
   });
 });
