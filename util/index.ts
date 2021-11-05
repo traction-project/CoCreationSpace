@@ -259,6 +259,19 @@ export function generateBelongsToAssociationMethods(modelName: string): Array<st
 }
 
 /**
+ * Generates expected names for association methods for a given model in a
+ * has-one relationship. This function is an alias for
+ * `generateBelongsToAssociationMethods`. This is useful for writing test cases
+ * for association methods.
+ *
+ * @param modelName Name of the associated model
+ * @returns List of generated model names
+ */
+export function generateHasOneAssociationMethods(modelName: string) {
+  return generateBelongsToAssociationMethods(modelName);
+}
+
+/**
  * Get Buffer from stream
  *
  * @param file Readable stream
