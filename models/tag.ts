@@ -15,16 +15,16 @@ type TagCreationAttributes = Optional<TagAttributes, "id" | "createdAt" | "updat
  * Tag instance object interface
  */
 export interface TagInstance extends Sequelize.Model<TagAttributes, TagCreationAttributes>, TagAttributes {
-  getPost: Sequelize.BelongsToManyGetAssociationsMixin<PostInstance>;
-  setPost: Sequelize.BelongsToManySetAssociationsMixin<PostInstance, PostInstance["id"]>;
-  addPosts: Sequelize.BelongsToManyAddAssociationsMixin<PostInstance, PostInstance["id"]>;
-  addPost: Sequelize.BelongsToManyAddAssociationMixin<PostInstance, PostInstance["id"]>;
-  createPosts: Sequelize.BelongsToManyCreateAssociationMixin<PostInstance["id"]>;
-  removePost: Sequelize.BelongsToManyRemoveAssociationMixin<PostInstance, PostInstance["id"]>;
-  removePosts: Sequelize.BelongsToManyRemoveAssociationsMixin<PostInstance, PostInstance["id"]>;
+  getPosts: Sequelize.BelongsToManyGetAssociationsMixin<PostInstance>;
+  countPosts: Sequelize.BelongsToManyCountAssociationsMixin;
   hasPost: Sequelize.BelongsToManyHasAssociationMixin<PostInstance, PostInstance["id"]>;
   hasPosts: Sequelize.BelongsToManyHasAssociationsMixin<PostInstance, PostInstance["id"]>;
-  countPost: Sequelize.BelongsToManyCountAssociationsMixin;
+  setPosts: Sequelize.BelongsToManySetAssociationsMixin<PostInstance, PostInstance["id"]>;
+  addPost: Sequelize.BelongsToManyAddAssociationMixin<PostInstance, PostInstance["id"]>;
+  addPosts: Sequelize.BelongsToManyAddAssociationsMixin<PostInstance, PostInstance["id"]>;
+  removePost: Sequelize.BelongsToManyRemoveAssociationMixin<PostInstance, PostInstance["id"]>;
+  removePosts: Sequelize.BelongsToManyRemoveAssociationsMixin<PostInstance, PostInstance["id"]>;
+  createPost: Sequelize.BelongsToManyCreateAssociationMixin<PostInstance["id"]>;
 }
 
 /**
