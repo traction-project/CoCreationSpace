@@ -5,7 +5,7 @@ const sequelize = new Sequelize("sqlite::memory:", { logging: false });
 
 import { db } from "../../models";
 
-describe("Preferences tests", () => {
+describe("Tag tests", () => {
   beforeAll(async () => {
     await db.createDB(sequelize);
   });
@@ -73,14 +73,14 @@ describe("Preferences tests", () => {
 
     expect(await tag.hasPost(post1)).toBeFalsy();
     expect(await tag.hasPost(post2)).toBeFalsy();
-    expect(await tag.countPost()).toEqual(0);
+    expect(await tag.countPosts()).toEqual(0);
 
     await post1.addTag(tag);
     await post2.addTag(tag);
 
     expect(await tag.hasPost(post1)).toBeTruthy();
     expect(await tag.hasPost(post2)).toBeTruthy();
-    expect(await tag.countPost()).toEqual(2);
+    expect(await tag.countPosts()).toEqual(2);
   });
 
 });
