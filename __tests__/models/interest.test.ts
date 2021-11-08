@@ -57,10 +57,10 @@ describe("User interest topic", () => {
     const user2 = await User.create({ username: "test2" });
     const topic = await Topic.create({ title: "sports" });
 
-    expect(await topic.countHasInterest()).toEqual(0);
-    await topic.addHasInterest(user1);
-    await topic.addHasInterest(user2);
-    expect(await topic.countHasInterest()).toEqual(2);
+    expect(await topic.countInterestedUsers()).toEqual(0);
+    await topic.addInterestedUser(user1);
+    await topic.addInterestedUser(user2);
+    expect(await topic.countInterestedUsers()).toEqual(2);
   });
 
 });

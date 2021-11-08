@@ -127,4 +127,16 @@ describe("Topic model", () => {
       expect(availableMethods).toContain(method);
     }
   });
+
+  it("should have automatically generated association methods for the User model via the Interest model", async () => {
+    const { Topic } = db.getModels();
+    const topic = await Topic.create({ title: "test" });
+
+    const expectedMethods = generateHasManyAssociationMethods("InterestedUser");
+    const availableMethods = getAllMethods(topic);
+
+    for (const method of expectedMethods) {
+      expect(availableMethods).toContain(method);
+    }
+  });
 });
