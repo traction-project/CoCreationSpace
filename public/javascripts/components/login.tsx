@@ -20,7 +20,7 @@ interface LoginConnectedProps {
 type LoginProps = LoginActionProps & LoginConnectedProps;
 
 const Login: React.FC<LoginProps> = (props) => {
-  const { register, watch, handleSubmit } = useForm();
+  const { register, watch, handleSubmit, resetField, setFocus } = useForm();
   const { t } = useTranslation();
 
   if (props.login.user) {
@@ -31,6 +31,9 @@ const Login: React.FC<LoginProps> = (props) => {
 
   const onSubmit = handleSubmit(({ username, password }) => {
     props.loginActions.performLogin(username, password);
+
+    resetField("password");
+    setFocus("password");
   });
 
   const submitDisabled = (watch("username") || "").length == 0 || (watch("password") || "").length == 0;
