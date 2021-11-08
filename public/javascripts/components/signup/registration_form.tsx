@@ -14,7 +14,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = (props) => {
 
   const [ error, setError ] = useState<string>();
   const { t } = useTranslation();
-  const { handleSubmit, register, errors, watch } = useForm({});
+  const { handleSubmit, register, formState: { errors }, watch } = useForm({});
 
   const handleButtonSubmitClick = handleSubmit(async ({ username, password, email, preferredLanguage, participantCode }) => {
     try {
@@ -76,10 +76,9 @@ const RegistrationForm: React.FC<RegistrationFormProps> = (props) => {
           <input
             type="text"
             placeholder={t("Username")}
-            name="username"
             className="input"
             required={true}
-            ref={register({
+            {...register("username", {
               required: true
             })}
           />
@@ -93,7 +92,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = (props) => {
       <div className="field">
         <label htmlFor="" className="label">{t("Trial")}</label>
         <div className="select">
-          <select name="participantCode" ref={register}>
+          <select {...register("participantCode")}>
             <option>LICEU</option>
             <option>INO</option>
             <option>SAMP</option>
@@ -107,9 +106,8 @@ const RegistrationForm: React.FC<RegistrationFormProps> = (props) => {
           <input
             type="email"
             placeholder={t("E-Mail")}
-            name="email"
             className="input"
-            ref={register}
+            {...register("email")}
           />
           <span className="icon is-small is-left">
             <i className="fa fa-envelope" />
@@ -123,10 +121,9 @@ const RegistrationForm: React.FC<RegistrationFormProps> = (props) => {
           <input
             type="password"
             placeholder={t("Password")}
-            name="password"
             className="input"
             required={true}
-            ref={register({
+            {...register("password", {
               required: true
             })}
           />
@@ -143,10 +140,9 @@ const RegistrationForm: React.FC<RegistrationFormProps> = (props) => {
           <input
             type="password"
             placeholder={t("Confirm Password")}
-            name="confirmation"
             className="input"
             required={true}
-            ref={register({
+            {...register("confirmation", {
               required: true,
               validate: (value) => value == watch("password")
             })}

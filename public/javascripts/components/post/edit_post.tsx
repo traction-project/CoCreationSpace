@@ -126,9 +126,8 @@ const EditPost: React.FC<EditPostProps> = () => {
                       type="text"
                       defaultValue={post.title}
                       placeholder={`${t("Add title")}...`}
-                      name="title"
                       required={true}
-                      ref={register({
+                      {...register("title", {
                         required: true
                       })}
                     />
@@ -142,9 +141,8 @@ const EditPost: React.FC<EditPostProps> = () => {
                   <textarea
                     placeholder={`${t("Description")}...`}
                     className="textarea"
-                    name="description"
                     defaultValue={post.dataContainer?.text_content}
-                    ref={register}
+                    {...register("description")}
                   />
                 </div>
               </div>
@@ -158,9 +156,8 @@ const EditPost: React.FC<EditPostProps> = () => {
                       <input
                         className="input"
                         type="text"
-                        name="tagName"
                         placeholder={`${t("Add tag")}...`}
-                        ref={register}
+                        {...register("tagName")}
                       />
                     </div>
                     <div className="control">

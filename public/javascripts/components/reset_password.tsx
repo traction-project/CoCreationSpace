@@ -8,7 +8,7 @@ interface ResetPasswordProps {
 }
 
 const ResetPassword: React.FC<ResetPasswordProps> = (props) => {
-  const { register, watch, handleSubmit, errors } = useForm();
+  const { register, watch, handleSubmit, formState: { errors } } = useForm();
   const { t } = useTranslation();
   const { resettoken } = useParams<{ resettoken: string }>();
   const history = useHistory();
@@ -55,10 +55,9 @@ const ResetPassword: React.FC<ResetPasswordProps> = (props) => {
                     <input
                       type="password"
                       placeholder={t("Password")}
-                      name="password"
                       className="input"
                       required={true}
-                      ref={register({
+                      {...register("password", {
                         required: true
                       })}
                     />
@@ -74,10 +73,9 @@ const ResetPassword: React.FC<ResetPasswordProps> = (props) => {
                     <input
                       type="password"
                       placeholder={t("Confirm Password")}
-                      name="confirmation"
                       className="input"
                       required={true}
-                      ref={register({
+                      {...register("confirmation", {
                         required: true,
                         validate: (value) => value == watch("password")
                       })}

@@ -28,7 +28,7 @@ const ConsentForm: React.FC<ConsentFormProps> = (props) => {
       <div className="field">
         <label htmlFor="" className="label">{t("What group are you participanting with?")}</label>
         <div className="select">
-          <select name="group" ref={register}>
+          <select {...register("group")}>
             <option>Cor Drassanes</option>
             <option>Cor Les Flors de Maig</option>
             <option>Grup Mon Raval</option>
@@ -50,7 +50,7 @@ const ConsentForm: React.FC<ConsentFormProps> = (props) => {
       <div className="field">
         <label htmlFor="" className="label">{t("Are you a")}</label>
         <div className="select">
-          <select name="role" ref={register}>
+          <select {...register("role")}>
             <option value="participant">{t("Participant")}</option>
             <option value="director">{t("Director")}</option>
           </select>
@@ -64,7 +64,7 @@ const ConsentForm: React.FC<ConsentFormProps> = (props) => {
       <div className="field">
         <label htmlFor="" className="label">{t("I have read and understood the information given for this research, or have had the information read to me. I have had the opportunity to ask questions about the research. I consent to participate in the research sessions")}</label>
         <div className="select">
-          <select name="consent" ref={register}>
+          <select {...register("consent")}>
             <option value="yes">{t("Yes")}</option>
             <option value="no">{t("No")}</option>
           </select>
@@ -78,7 +78,7 @@ const ConsentForm: React.FC<ConsentFormProps> = (props) => {
       <div className="field">
         <label htmlFor="" className="label">{t("I consent to photo, video, and sound recording")}</label>
         <div className="select">
-          <select name="imageConsent" ref={register}>
+          <select {...register("imageConsent")}>
             <option value="yes">{t("Yes")}</option>
             <option value="no">{t("No")}</option>
           </select>
@@ -90,7 +90,7 @@ const ConsentForm: React.FC<ConsentFormProps> = (props) => {
       <div className="field">
         <label htmlFor="" className="label">{t("Gender")}</label>
         <div className="select">
-          <select name="gender" ref={register}>
+          <select {...register("gender")}>
             <option value="female">{t("Female")}</option>
             <option value="male">{t("Male")}</option>
             <option value="other">{t("Other")}</option>
@@ -105,9 +105,8 @@ const ConsentForm: React.FC<ConsentFormProps> = (props) => {
           <input
             type="text"
             placeholder={t("Postcode")}
-            name="postcode"
             className="input"
-            ref={register}
+            {...register("postcode")}
           />
         </div>
       </div>
@@ -118,9 +117,8 @@ const ConsentForm: React.FC<ConsentFormProps> = (props) => {
           <input
             type="text"
             placeholder={t("Age")}
-            name="age"
             className="input"
-            ref={register}
+            {...register("age")}
           />
         </div>
       </div>
@@ -128,7 +126,7 @@ const ConsentForm: React.FC<ConsentFormProps> = (props) => {
       <div className="field">
         <label htmlFor="" className="label">{t("Are you a person with a disability?")}</label>
         <div className="select">
-          <select name="disability" ref={register}>
+          <select {...register("disability")}>
             <option value="yes">{t("Yes")}</option>
             <option value="no">{t("No")}</option>
             <option value="prefer not to say">{t("Prefer not to say")}</option>
@@ -142,9 +140,8 @@ const ConsentForm: React.FC<ConsentFormProps> = (props) => {
           <input
             type="text"
             placeholder={t("Profession")}
-            name="profession"
             className="input"
-            ref={register}
+            {...register("profession")}
           />
         </div>
       </div>

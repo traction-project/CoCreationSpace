@@ -53,10 +53,9 @@ const RequestReset: React.FC<RequestResetProps> = (props) => {
                     <input
                       type="email"
                       placeholder={t("E-Mail")}
-                      name="email"
                       className="input"
                       required={true}
-                      ref={register}
+                      {...register("email")}
                     />
                     <span className="icon is-small is-left">
                       <i className="fa fa-envelope" />

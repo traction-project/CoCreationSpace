@@ -26,7 +26,7 @@ type ProfileProps = ProfileActionProps & ProfileConnectedProps;
 
 const Profile: React.FC<ProfileProps> = (props) => {
   const [ displayNotification, setDisplayNotification ] = useState<"success" | "error">();
-  const { handleSubmit, register, errors, watch } = useForm({});
+  const { handleSubmit, register, formState: { errors }, watch } = useForm({});
   const { t } = useTranslation();
 
   const handleButtonApplyClick = handleSubmit((data) => {
@@ -88,10 +88,9 @@ const Profile: React.FC<ProfileProps> = (props) => {
                   <input
                     type="email"
                     placeholder={t("E-Mail")}
-                    name="email"
                     defaultValue={user.email}
                     className="input"
-                    ref={register()}
+                    {...register("email")}
                   />
                   <span className="icon is-small is-left">
                     <i className="fa fa-lock"></i>
@@ -105,9 +104,8 @@ const Profile: React.FC<ProfileProps> = (props) => {
                   <input
                     type="password"
                     placeholder={t("Password")}
-                    name="password"
                     className="input"
-                    ref={register()}
+                    {...register("password")}
                   />
                   <span className="icon is-small is-left">
                     <i className="fa fa-lock"></i>
@@ -121,9 +119,8 @@ const Profile: React.FC<ProfileProps> = (props) => {
                   <input
                     type="password"
                     placeholder={t("Confirm Password")}
-                    name="confirmation"
                     className="input"
-                    ref={register({
+                    {...register("confirmation", {
                       validate: (value) => value == watch("password")
                     })}
                   />

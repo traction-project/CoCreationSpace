@@ -20,7 +20,7 @@ const NewComment: React.FC<NewCommentProps> = (props) => {
   const [ loading, setLoading ] = useState<boolean>(false);
   const [ selectedGettimestamp, setSelectedGettimestamp ] = useState<boolean>(false);
 
-  const { handleSubmit, register, errors, reset } = useForm();
+  const { handleSubmit, register, formState: { errors }, reset } = useForm();
 
   const addFile = (filesToUpload: FileList) => {
     if (filesToUpload && filesToUpload.length > 0) {
@@ -74,9 +74,8 @@ const NewComment: React.FC<NewCommentProps> = (props) => {
             className={classNames("textarea", { "alert": errors.comment })}
             placeholder={t("Add a comment") + "..."}
             rows={3}
-            name="comment"
             style={{resize: "none"}}
-            ref={register({
+            {...register("comment", {
               required: true
             })}
           />

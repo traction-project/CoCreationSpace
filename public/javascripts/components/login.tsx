@@ -58,10 +58,9 @@ const Login: React.FC<LoginProps> = (props) => {
                     <input
                       type="text"
                       placeholder={t("Username")}
-                      name="username"
                       className="input"
                       required={true}
-                      ref={register}
+                      {...register("username")}
                     />
                     <span className="icon is-small is-left">
                       <i className="fa fa-user" />
@@ -74,10 +73,9 @@ const Login: React.FC<LoginProps> = (props) => {
                     <input
                       type="password"
                       placeholder={t("Password")}
-                      name="password"
                       className="input"
                       required={true}
-                      ref={register}
+                      {...register("password")}
                     />
                     <span className="icon is-small is-left">
                       <i className="fa fa-lock"></i>

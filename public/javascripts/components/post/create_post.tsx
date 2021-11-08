@@ -271,9 +271,8 @@ const CreatePost: React.FC<CreatePostProps> = ({ file }) => {
                     type="text"
                     placeholder={`${t("Add title")}...`}
                     onKeyDown={(e) => (e.key == "Enter") && e.preventDefault()}
-                    name="title"
                     required={true}
-                    ref={register({
+                    {...register("title", {
                       required: true
                     })}
                   />
@@ -285,8 +284,7 @@ const CreatePost: React.FC<CreatePostProps> = ({ file }) => {
                   <textarea
                     placeholder={`${t("Description")}...`}
                     className="textarea"
-                    name="description"
-                    ref={register}
+                    {...register("description")}
                   />
                 </div>
               </div>
@@ -295,7 +293,7 @@ const CreatePost: React.FC<CreatePostProps> = ({ file }) => {
                 <label className="label">{t("Topic")}</label>
                 <div className="control">
                   <div className="select">
-                    <select name="topic" ref={register}>
+                    <select {...register("topic")}>
                       {topics.map(([id, name, group]) => {
                         return (
                           <option key={id} value={id}>{name} ({group})</option>
@@ -315,7 +313,6 @@ const CreatePost: React.FC<CreatePostProps> = ({ file }) => {
                       <input
                         className="input"
                         type="text"
-                        name="tagName"
                         onKeyDown={(e) => {
                           if (e.key == "Enter") {
                             e.preventDefault();
@@ -325,7 +322,7 @@ const CreatePost: React.FC<CreatePostProps> = ({ file }) => {
                           }
                         }}
                         placeholder={`${t("Add tag")}...`}
-                        ref={register}
+                        {...register("tagName")}
                       />
                     </div>
                     <div className="control">
