@@ -122,14 +122,15 @@ export interface UserInstance extends Sequelize.Model<UserAttributes, UserCreati
   countEmojiReactions: Sequelize.HasManyCountAssociationsMixin;
 
   getInterestedTopics: Sequelize.BelongsToManyGetAssociationsMixin<TopicInstance>;
-  setInterestedTopics: Sequelize.BelongsToManySetAssociationsMixin<TopicInstance, TopicInstance["id"]>;
-  addInterestedTopics: Sequelize.BelongsToManyAddAssociationsMixin<TopicInstance, TopicInstance["id"]>;
-  addInterestedTopic: Sequelize.BelongsToManyAddAssociationMixin<TopicInstance, TopicInstance["id"]>;
-  removeInterestedTopic: Sequelize.BelongsToManyRemoveAssociationMixin<TopicInstance, TopicInstance["id"]>;
-  removeInterestedTopics: Sequelize.BelongsToManyRemoveAssociationsMixin<TopicInstance, TopicInstance["id"]>;
+  countInterestedTopics: Sequelize.BelongsToManyCountAssociationsMixin;
   hasInterestedTopic: Sequelize.BelongsToManyHasAssociationMixin<TopicInstance, TopicInstance["id"]>;
   hasInterestedTopics: Sequelize.BelongsToManyHasAssociationsMixin<TopicInstance, TopicInstance["id"]>;
-  countInterestedTopics: Sequelize.BelongsToManyCountAssociationsMixin;
+  setInterestedTopics: Sequelize.BelongsToManySetAssociationsMixin<TopicInstance, TopicInstance["id"]>;
+  addInterestedTopic: Sequelize.BelongsToManyAddAssociationMixin<TopicInstance, TopicInstance["id"]>;
+  addInterestedTopics: Sequelize.BelongsToManyAddAssociationsMixin<TopicInstance, TopicInstance["id"]>;
+  removeInterestedTopic: Sequelize.BelongsToManyRemoveAssociationMixin<TopicInstance, TopicInstance["id"]>;
+  removeInterestedTopics: Sequelize.BelongsToManyRemoveAssociationsMixin<TopicInstance, TopicInstance["id"]>;
+  createInterestedTopic: Sequelize.BelongsToManyCreateAssociationMixin<TopicInstance>;
 
   getUserGroups: Sequelize.BelongsToManyGetAssociationsMixin<UserGroupInstance>;
   setUserGroups: Sequelize.BelongsToManySetAssociationsMixin<UserGroupInstance, UserGroupInstance["id"]>;

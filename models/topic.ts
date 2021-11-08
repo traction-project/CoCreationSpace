@@ -28,15 +28,16 @@ export interface TopicInstance extends Sequelize.Model<TopicAttributes, TopicCre
   hasThreads: Sequelize.HasManyHasAssociationsMixin<ThreadInstance, ThreadInstance["id"]>;
   countThreads: Sequelize.HasManyCountAssociationsMixin;
 
-  getHasInterests: Sequelize.BelongsToManyGetAssociationsMixin<UserInstance>;
-  setHasInterests: Sequelize.BelongsToManySetAssociationsMixin<UserInstance, UserInstance["id"]>;
-  addHasInterests: Sequelize.BelongsToManyAddAssociationsMixin<UserInstance, UserInstance["id"]>;
-  addHasInterest: Sequelize.BelongsToManyAddAssociationMixin<UserInstance, UserInstance["id"]>;
-  removeHasInterest: Sequelize.BelongsToManyRemoveAssociationMixin<UserInstance, UserInstance["id"]>;
-  removeHasInterests: Sequelize.BelongsToManyRemoveAssociationsMixin<UserInstance, UserInstance["id"]>;
-  hasHasInterest: Sequelize.BelongsToManyHasAssociationMixin<UserInstance, UserInstance["id"]>;
-  hasHasInterests: Sequelize.BelongsToManyHasAssociationsMixin<UserInstance, UserInstance["id"]>;
-  countHasInterest: Sequelize.BelongsToManyCountAssociationsMixin;
+  getInterestedUsers: Sequelize.BelongsToManyGetAssociationsMixin<UserInstance>;
+  countInterestedUsers: Sequelize.BelongsToManyCountAssociationsMixin;
+  hasInterestedUser: Sequelize.BelongsToManyHasAssociationMixin<UserInstance, UserInstance["id"]>;
+  hasInterestedUsers: Sequelize.BelongsToManyHasAssociationsMixin<UserInstance, UserInstance["id"]>;
+  setInterestedUsers: Sequelize.BelongsToManySetAssociationsMixin<UserInstance, UserInstance["id"]>;
+  addInterestedUser: Sequelize.BelongsToManyAddAssociationMixin<UserInstance, UserInstance["id"]>;
+  addInterestedUsers: Sequelize.BelongsToManyAddAssociationsMixin<UserInstance, UserInstance["id"]>;
+  removeInterestedUser: Sequelize.BelongsToManyRemoveAssociationMixin<UserInstance, UserInstance["id"]>;
+  removeInterestedUsers: Sequelize.BelongsToManyRemoveAssociationsMixin<UserInstance, UserInstance["id"]>;
+  createInterestedUser: Sequelize.HasManyCreateAssociationMixin<UserInstance>;
 
   getUserGroup: Sequelize.BelongsToGetAssociationMixin<UserGroupInstance>;
   setUserGroup: Sequelize.BelongsToSetAssociationMixin<UserGroupInstance, UserGroupInstance["id"]>;

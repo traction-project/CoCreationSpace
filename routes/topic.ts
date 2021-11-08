@@ -64,7 +64,7 @@ router.post("/:id/interest", authRequired, async (req, res) => {
   const topic = await Topic.findByPk(id);
 
   if (topic) {
-    await topic.addHasInterest(user);
+    await topic.addInterestedUser(user);
 
     const interests = await user.getInterestedTopics();
     res.send({ interests });

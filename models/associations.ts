@@ -210,7 +210,7 @@ function topicAssociations(models: DbInterface): void {
       unique: false
     },
     foreignKey: "topic_id",
-    as: "hasInterest"
+    as: "interestedUsers"
   });
 }
 
