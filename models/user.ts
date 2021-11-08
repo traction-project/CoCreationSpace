@@ -28,7 +28,7 @@ export interface UserAttributes extends CommonAttributes {
   salt?: string;
   role?: string;
   preferredLanguage?: string;
-  likesPosts?: PostAttributes | PostAttributes["id"];
+  likedPosts?: PostAttributes | PostAttributes["id"];
   mediaItem?: MediaItemAttributes | MediaItemAttributes["id"];
   permission?: PermissionAttributes | PermissionAttributes["id"];
   post?: PostAttributes | PostAttributes["id"];
@@ -58,15 +58,16 @@ export interface UserInstance extends Sequelize.Model<UserAttributes, UserCreati
   getAuth: () => UserToken;
   isAdmin: () => Promise<boolean>;
 
-  getLikesPosts: Sequelize.BelongsToManyGetAssociationsMixin<PostInstance>;
-  setLikesPosts: Sequelize.BelongsToManySetAssociationsMixin<PostInstance, PostInstance["id"]>;
-  addLikesPosts: Sequelize.BelongsToManyAddAssociationsMixin<PostInstance, PostInstance["id"]>;
-  addLikesPost: Sequelize.BelongsToManyAddAssociationMixin<PostInstance, PostInstance["id"]>;
-  removeLikesPost: Sequelize.BelongsToManyRemoveAssociationMixin<PostInstance, PostInstance["id"]>;
-  removeLikesPosts: Sequelize.BelongsToManyRemoveAssociationsMixin<PostInstance, PostInstance["id"]>;
-  hasLikesPost: Sequelize.BelongsToManyHasAssociationMixin<PostInstance, PostInstance["id"]>;
-  hasLikesPosts: Sequelize.BelongsToManyHasAssociationsMixin<PostInstance, PostInstance["id"]>;
-  countLikesPosts: Sequelize.BelongsToManyCountAssociationsMixin;
+  getLikedPosts: Sequelize.BelongsToManyGetAssociationsMixin<PostInstance>;
+  countLikedPosts: Sequelize.BelongsToManyCountAssociationsMixin;
+  hasLikedPost: Sequelize.BelongsToManyHasAssociationMixin<PostInstance, PostInstance["id"]>;
+  hasLikedPosts: Sequelize.BelongsToManyHasAssociationsMixin<PostInstance, PostInstance["id"]>;
+  setLikedPosts: Sequelize.BelongsToManySetAssociationsMixin<PostInstance, PostInstance["id"]>;
+  addLikedPost: Sequelize.BelongsToManyAddAssociationMixin<PostInstance, PostInstance["id"]>;
+  addLikedPosts: Sequelize.BelongsToManyAddAssociationsMixin<PostInstance, PostInstance["id"]>;
+  removeLikedPost: Sequelize.BelongsToManyRemoveAssociationMixin<PostInstance, PostInstance["id"]>;
+  removeLikedPosts: Sequelize.BelongsToManyRemoveAssociationsMixin<PostInstance, PostInstance["id"]>;
+  createLikedPost: Sequelize.BelongsToManyCreateAssociationMixin<PostInstance>;
 
   getMediaItems: Sequelize.HasManyGetAssociationsMixin<MediaItemInstance>;
   countMediaItems: Sequelize.HasManyCountAssociationsMixin;

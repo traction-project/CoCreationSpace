@@ -3,11 +3,11 @@ import { Router } from "express";
 import { db } from "../models";
 import { buildCriteria, isUser, getFromEnvironment } from "../util";
 import { authRequired } from "../util/middleware";
-import { UserInstance } from "models/user";
+import { UserInstance } from "../models/user";
 import association from "../models/associations";
 import { TagInstance } from "models/tag";
 import { PostInstance } from "models/post";
-import { MediaItemAttributes } from "models/media_item";
+import { MediaItemAttributes } from "../models/media_item";
 
 const [ CLOUDFRONT_URL ] = getFromEnvironment("CLOUDFRONT_URL");
 const router = Router();
@@ -193,8 +193,8 @@ router.get("/:id", authRequired, async (req, res) => {
   });
 
   if (post) {
-    const likes = await post.countLikesUsers();
-    const isLiked = await post.hasLikesUser(user);
+    const likes = await post.countLikedUsers();
+    const isLiked = await post.hasLikedUser(user);
 
     if (post.user && isUser(post.user)) {
       post.user.image = `${CLOUDFRONT_URL}/${post.user.image}`;
@@ -262,8 +262,8 @@ router.get("/:id/parent", authRequired, async (req, res) => {
   } while (parentPostId);
 
   if (post) {
-    const likes = await post.countLikesUsers();
-    const isLiked = await post.hasLikesUser(user);
+    const likes = await post.countLikedUsers();
+    const isLiked = await post.hasLikedUser(user);
 
     if (post.user && isUser(post.user)) {
       post.user.image = `${CLOUDFRONT_URL}/${post.user.image}`;
@@ -497,9 +497,9 @@ router.post("/:id/like", authRequired, async (req, res) => {
   const post = await Post.findByPk(id);
 
   if (post) {
-    await post.addLikesUser(user);
+    await post.addLikedUser(user);
 
-    const numLikes = await post.countLikesUsers();
+    const numLikes = await post.countLikedUsers();
     res.send({ count: numLikes });
   }
 
@@ -516,9 +516,9 @@ router.post("/:id/unlike", authRequired, async (req, res) => {
   const post = await Post.findByPk(id);
 
   if (post) {
-    await post.removeLikesUser(user);
+    await post.removeLikedUser(user);
 
-    const numLikes = await post.countLikesUsers();
+    const numLikes = await post.countLikedUsers();
     res.send({ count: numLikes });
   }
 

@@ -157,7 +157,7 @@ function postsAssociations(models: DbInterface) {
       unique: false
     },
     foreignKey: "post_id",
-    as: "likesUsers"
+    as: "likedUsers"
   });
 
   return {
@@ -260,7 +260,7 @@ function userAssociations(models: DbInterface): void {
       unique: false
     },
     foreignKey: "user_id",
-    as: "likesPosts"
+    as: "likedPosts"
   });
 
   models.User.belongsToMany(models.Topic, {
