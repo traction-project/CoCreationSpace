@@ -1,7 +1,7 @@
 import { Sequelize } from "sequelize";
 import jwt from "jsonwebtoken";
 
-import { getAllMethods } from "../../util";
+import { getAllMethods, generateHasManyAssociationMethods } from "../../util";
 
 process.env["SESSION_SECRET"] = "sessionsecret";
 const sequelize = new Sequelize("sqlite::memory:", { logging: false });
@@ -408,19 +408,43 @@ describe("User model", () => {
     const { User } = db.getModels();
     const user = await User.create({ username: "test" });
 
-    const expectedMethods = [
-      "getPosts",
-      "countPosts",
-      "hasPost",
-      "hasPosts",
-      "setPosts",
-      "addPost",
-      "addPosts",
-      "removePost",
-      "removePosts",
-      "createPost",
-    ];
+    const expectedMethods = generateHasManyAssociationMethods("Post");
+    const availableMethods = getAllMethods(user);
 
+    for (const method of expectedMethods) {
+      expect(availableMethods).toContain(method);
+    }
+  });
+
+  it("should have automatically generated association methods for the MediaItem model", async () => {
+    const { User } = db.getModels();
+    const user = await User.create({ username: "test" });
+
+    const expectedMethods = generateHasManyAssociationMethods("MediaItem");
+    const availableMethods = getAllMethods(user);
+
+    for (const method of expectedMethods) {
+      expect(availableMethods).toContain(method);
+    }
+  });
+
+  it("should have automatically generated association methods for the Notification model", async () => {
+    const { User } = db.getModels();
+    const user = await User.create({ username: "test" });
+
+    const expectedMethods = generateHasManyAssociationMethods("Notification");
+    const availableMethods = getAllMethods(user);
+
+    for (const method of expectedMethods) {
+      expect(availableMethods).toContain(method);
+    }
+  });
+
+  it("should have automatically generated association methods for the EmojiReaction model", async () => {
+    const { User } = db.getModels();
+    const user = await User.create({ username: "test" });
+
+    const expectedMethods = generateHasManyAssociationMethods("EmojiReaction");
     const availableMethods = getAllMethods(user);
 
     for (const method of expectedMethods) {
