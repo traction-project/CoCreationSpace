@@ -26,9 +26,9 @@ const frontend = {
       }, {
         test: /\.s[ac]ss$/,
         use: [
-          "style-loader",
-          "css-loader?url=false",
-          "sass-loader"
+          { loader: "style-loader" },
+          { loader: "css-loader", options: { url: false }},
+          { loader: "sass-loader" }
         ]
       },
       {
