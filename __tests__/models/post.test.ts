@@ -224,11 +224,11 @@ describe("Post model", () => {
     }
   });
 
-  it("should have automatically generated association methods for the Like model", async () => {
+  it("should have automatically generated association methods for the Tag model", async () => {
     const { Post } = db.getModels();
     const post = await Post.create({ title: "test" });
 
-    const expectedMethods = generateHasManyAssociationMethods("LikesUser");
+    const expectedMethods = generateHasManyAssociationMethods("Tag");
     const availableMethods = getAllMethods(post);
 
     for (const method of expectedMethods) {
@@ -236,11 +236,11 @@ describe("Post model", () => {
     }
   });
 
-  it("should have automatically generated association methods for the Tag model", async () => {
+  it("should have automatically generated association methods for the Post model via the Like model", async () => {
     const { Post } = db.getModels();
     const post = await Post.create({ title: "test" });
 
-    const expectedMethods = generateHasManyAssociationMethods("Tag");
+    const expectedMethods = generateHasManyAssociationMethods("LikedUser");
     const availableMethods = getAllMethods(post);
 
     for (const method of expectedMethods) {

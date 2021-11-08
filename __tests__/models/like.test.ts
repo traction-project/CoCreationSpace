@@ -23,9 +23,9 @@ describe("User likes post tests", () => {
     const user = await User.create({ username: "test" });
     const post = await Post.create({ title: "sports" });
 
-    await user.addLikesPost(post);
+    await user.addLikedPost(post);
 
-    expect(await user.hasLikesPost(post)).toBeTruthy();
+    expect(await user.hasLikedPost(post)).toBeTruthy();
   });
 
   it("should user can dislike post", async () => {
@@ -33,22 +33,23 @@ describe("User likes post tests", () => {
     const user = await User.create({ username: "test" });
     const post = await Post.create({ title: "sports" });
 
-    await user.addLikesPost(post);
-    expect(await user.hasLikesPost(post)).toBeTruthy();
+    await user.addLikedPost(post);
+    expect(await user.hasLikedPost(post)).toBeTruthy();
 
-    await user.removeLikesPost(post);
-    expect(await user.hasLikesPost(post)).toBeFalsy();
+    await user.removeLikedPost(post);
+    expect(await user.hasLikedPost(post)).toBeFalsy();
   });
 
   it("should can count user' total likes", async () => {
     const { User, Post } = db.getModels();
+
     const user = await User.create({ username: "test" });
     const post1 = await Post.create({ title: "sports" });
     const post2 = await Post.create({ title: "media" });
 
-    expect(await user.countLikesPosts()).toEqual(0);
-    await user.addLikesPosts([post1, post2]);
-    expect(await user.countLikesPosts()).toEqual(2);
+    expect(await user.countLikedPosts()).toEqual(0);
+    await user.addLikedPosts([post1, post2]);
+    expect(await user.countLikedPosts()).toEqual(2);
   });
 
   it("should can count users likes in a specific post", async () => {
@@ -57,9 +58,9 @@ describe("User likes post tests", () => {
     const user2 = await User.create({ username: "test2" });
     const post = await Post.create({ title: "sports" });
 
-    expect(await post.countLikesUsers()).toEqual(0);
-    await post.addLikesUsers([user1, user2]);
-    expect(await post.countLikesUsers()).toEqual(2);
+    expect(await post.countLikedUsers()).toEqual(0);
+    await post.addLikedUsers([user1, user2]);
+    expect(await post.countLikedUsers()).toEqual(2);
   });
 
 });
