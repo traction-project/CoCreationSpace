@@ -137,7 +137,7 @@ const Profile: React.FC<ProfileProps> = (props) => {
               <div className="field">
                 <label className="label">{t("Preferred language")}</label>
                 <div className="control">
-                  <LanguageSwitcher childName="preferredLanguage" childRef={register()} />
+                  <LanguageSwitcher registerFunction={register} />
                 </div>
               </div>
 

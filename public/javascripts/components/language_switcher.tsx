@@ -1,5 +1,6 @@
 import * as React from "react";
 import { useState } from "react";
+import { FieldValues, UseFormRegister } from "react-hook-form";
 
 import i18n from "../i18n";
 
@@ -25,13 +26,11 @@ function processDetectedLanguage() {
 
 interface LanguageSwitcherProps {
   onLanguageChanged?: (selectedLanguage: string, languageName: string) => void;
-
-  childRef?: (elem: HTMLSelectElement) => void;
-  childName?: string;
+  registerFunction?: UseFormRegister<FieldValues>;
 }
 
 const LanguageSwitcher: React.FC<LanguageSwitcherProps> = (props) => {
-  const { onLanguageChanged, childRef, childName } = props;
+  const { onLanguageChanged, registerFunction } = props;
   const [ languageCode, setLanguageCode ] = useState(processDetectedLanguage());
 
   const onChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -44,7 +43,7 @@ const LanguageSwitcher: React.FC<LanguageSwitcherProps> = (props) => {
 
   return (
     <div className="select">
-      <select name={childName || "languageCode"} value={languageCode} onChange={onChange} ref={childRef}>
+      <select value={languageCode} onChange={onChange} {...registerFunction?.("preferredLanguage", { onChange: onChange, value: languageCode })}>
         {Object.entries(availableTranslations).map(([languageCode, languageName]) => {
           return (
             <option key={languageCode} value={languageCode}>{languageName}</option>
