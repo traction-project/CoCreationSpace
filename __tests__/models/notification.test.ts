@@ -1,5 +1,7 @@
-import { UserAttributes } from "models/user";
 import { Sequelize } from "sequelize";
+
+import { UserAttributes } from "models/user";
+import { getAllMethods, generateBelongsToAssociationMethods } from "../../util";
 
 process.env["SESSION_SECRET"] = "sessionsecret";
 const sequelize = new Sequelize("sqlite::memory:", { logging: false });
@@ -161,5 +163,17 @@ describe("Notifications model", () => {
 
     expect(notification.isSoftDeleted()).toBeFalsy();
     expect(await Notification.count()).toEqual(1);
+  });
+
+  it("should have automatically generated association methods for the User model", async () => {
+    const { Notification } = db.getModels();
+    const notification = await Notification.create({ data: {} });
+
+    const expectedMethods = generateBelongsToAssociationMethods("User");
+    const availableMethods = getAllMethods(notification);
+
+    for (const method of expectedMethods) {
+      expect(availableMethods).toContain(method);
+    }
   });
 });
