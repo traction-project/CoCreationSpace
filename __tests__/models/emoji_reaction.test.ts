@@ -1,4 +1,5 @@
 import { Sequelize } from "sequelize";
+import { getAllMethods, generateBelongsToAssociationMethods } from "../../util";
 
 process.env["SESSION_SECRET"] = "sessionsecret";
 const sequelize = new Sequelize("sqlite::memory:", { logging: false });
@@ -107,5 +108,45 @@ describe("EmojiReactions model", () => {
 
     expect(associatedVideo).toBeDefined();
     expect(associatedVideo.id).toEqual(video.id);
+  });
+
+  it("should have automatically generated association methods for the User model", async () => {
+    const { EmojiReaction, User, MediaItem } = db.getModels();
+
+    const user = await User.create({ username: "admin" });
+    const video = await MediaItem.create({ title: "video 3" });
+
+    const emojiReaction = await EmojiReaction.create({
+      emoji: "😋",
+      user_id: user.id,
+      media_item_id: video.id
+    });
+
+    const expectedMethods = generateBelongsToAssociationMethods("User");
+    const availableMethods = getAllMethods(emojiReaction);
+
+    for (const method of expectedMethods) {
+      expect(availableMethods).toContain(method);
+    }
+  });
+
+  it("should have automatically generated association methods for the User model", async () => {
+    const { EmojiReaction, User, MediaItem } = db.getModels();
+
+    const user = await User.create({ username: "admin" });
+    const video = await MediaItem.create({ title: "video 3" });
+
+    const emojiReaction = await EmojiReaction.create({
+      emoji: "😋",
+      user_id: user.id,
+      media_item_id: video.id
+    });
+
+    const expectedMethods = generateBelongsToAssociationMethods("MediaItem");
+    const availableMethods = getAllMethods(emojiReaction);
+
+    for (const method of expectedMethods) {
+      expect(availableMethods).toContain(method);
+    }
   });
 });
