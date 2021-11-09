@@ -3,8 +3,8 @@ import Sequelize, { Optional } from "sequelize";
 import { CommonAttributes } from "util/typing/modelCommonAttributes";
 
 export interface PostReferenceAttributes extends Omit<CommonAttributes, "id"> {
-    post_references_id: number;
-    post_referenced_id: number;
+    postReferencesId: number;
+    postReferencedId: number;
 }
 
 type PostReferenceCreationAttributes = Optional<PostReferenceAttributes, "createdAt" | "updatedAt">
@@ -23,11 +23,11 @@ export function PostReferenceModelFactory(sequelize: Sequelize.Sequelize): Seque
   const TABLE_NAME = "post_references";
   // Model attributtes
   const attributes = {
-    post_references_id: {
+    postReferencesId: {
       type: Sequelize.DataTypes.UUID,
       allowNull: false
     },
-    post_referenced_id: {
+    postReferencedId: {
       type: Sequelize.DataTypes.UUID,
       allowNull: false
     }

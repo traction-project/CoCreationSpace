@@ -6,10 +6,10 @@ import { MediaItemAttributes, MediaItemInstance } from "./media_item";
 import { AudioContentAttributes, AudioContentInstance } from "./audio_content";
 
 export interface MetadataItemAttributes extends CommonAttributes {
-    metadata_type?: string;
+    metadataType?: string;
     value: string;
     roi?: string;
-    time_interval?: string;
+    timeInterval?: string;
     multimedia?: MediaItemAttributes | MediaItemAttributes["id"];
     audioContent?: AudioContentAttributes | AudioContentAttributes["id"];
 }
@@ -43,7 +43,7 @@ export function MetadataItemModelFactory(sequelize: Sequelize.Sequelize): Sequel
       allowNull: false,
       autoIncrement: false
     },
-    metadata_type: {
+    metadataType: {
       type: Sequelize.DataTypes.STRING
     },
     value: {
@@ -53,13 +53,13 @@ export function MetadataItemModelFactory(sequelize: Sequelize.Sequelize): Sequel
     roi: {
       type: Sequelize.DataTypes.STRING
     },
-    time_interval: {
+    timeInterval: {
       type: Sequelize.DataTypes.STRING
     },
-    media_item_id: {
+    mediaItemId: {
       type: Sequelize.DataTypes.UUID
     },
-    audio_content_id: {
+    audioContentId: {
       type: Sequelize.DataTypes.UUID
     }
   };

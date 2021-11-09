@@ -35,12 +35,12 @@ export function NotificationModelFactory(sequelize: Sequelize.Sequelize): Sequel
       allowNull: false,
       autoIncrement: false
     },
-    created_at: {
+    createdAt: {
       type: Sequelize.DataTypes.DATE,
       defaultValue: Sequelize.NOW,
       allowNull: false
     },
-    updated_at: {
+    updatedAt: {
       type: Sequelize.DataTypes.DATE,
       defaultValue: Sequelize.NOW,
       allowNull: false
@@ -54,7 +54,7 @@ export function NotificationModelFactory(sequelize: Sequelize.Sequelize): Sequel
       defaultValue: false,
       allowNull: false
     },
-    user_id : {
+    userId : {
       type: Sequelize.DataTypes.UUID,
     },
     hash: {

@@ -3,8 +3,8 @@ import Sequelize, { Optional } from "sequelize";
 import { CommonAttributes } from "util/typing/modelCommonAttributes";
 
 export interface LikeAttributes extends Omit<CommonAttributes, "id"> {
-    user_id: number;
-    post_id: number;
+    userId: number;
+    postId: number;
 }
 
 export type LikeCreationAttributes = Optional<LikeAttributes, "createdAt" | "updatedAt">;
@@ -23,11 +23,11 @@ export function LikeModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mode
   const TABLE_NAME = "likes";
   // Model attributtes
   const attributes = {
-    user_id : {
+    userId : {
       type: Sequelize.DataTypes.UUID,
       allowNull: false
     },
-    post_id: {
+    postId: {
       type: Sequelize.DataTypes.UUID,
       allowNull: false
     }

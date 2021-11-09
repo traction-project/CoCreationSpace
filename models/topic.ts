@@ -11,7 +11,7 @@ export interface TopicAttributes extends CommonAttributes{
     thread?: ThreadAttributes | ThreadAttributes["id"];
 }
 
-type TopicCreationAttributes = Optional<TopicAttributes, "id" | "createdAt" | "updatedAt">;
+export type TopicCreationAttributes = Optional<TopicAttributes, "id" | "createdAt" | "updatedAt">;
 
 /**
  * Topic instance object interface

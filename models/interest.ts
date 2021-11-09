@@ -3,8 +3,8 @@ import Sequelize, { Optional } from "sequelize";
 import { CommonAttributes } from "util/typing/modelCommonAttributes";
 
 export interface InterestAttributes extends Omit<CommonAttributes, "id"> {
-    user_id: number;
-    topic_id: number;
+  userId: number;
+  topicId: number;
 }
 
 type InterestCreationAttributes = Optional<InterestAttributes, "createdAt" | "updatedAt">
@@ -23,11 +23,11 @@ export function InterestModelFactory(sequelize: Sequelize.Sequelize): Sequelize.
   const TABLE_NAME = "interests";
   // Model attributtes
   const attributes = {
-    user_id : {
+    userId : {
       type: Sequelize.DataTypes.UUID,
       allowNull: false
     },
-    topic_id: {
+    topicId: {
       type: Sequelize.DataTypes.UUID,
       allowNull: false
     }

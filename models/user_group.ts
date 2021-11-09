@@ -6,7 +6,7 @@ import { UserInstance } from "./user";
 import { TopicInstance } from "./topic";
 
 export interface UserGroupAttributes extends CommonAttributes {
-    name: string;
+  name: string;
 }
 
 type UserGroupCreationAttributes = Optional<UserGroupAttributes, "id" | "createdAt" | "updatedAt">

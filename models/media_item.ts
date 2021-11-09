@@ -21,9 +21,9 @@ export interface MediaItemAttributes extends CommonAttributes {
   thumbnails?: Array<string>;
   key?: string;
   transcript?: TranscribeOutput;
-  media_properties?: string;
-  detected_properties?: string;
-  audio_descriptions?: string;
+  mediaProperties?: string;
+  detectedProperties?: string;
+  audioDescriptions?: string;
   duration?: number;
   resolutions?: Array<number>;
   viewCount?: number;
@@ -159,13 +159,13 @@ export function MediaItemModelFactory(sequelize: Sequelize.Sequelize): Sequelize
     transcript: {
       type: Sequelize.DataTypes.JSON
     },
-    media_properties: {
+    mediaProperties: {
       type: Sequelize.DataTypes.STRING
     },
-    detected_properties: {
+    detectedProperties: {
       type: Sequelize.DataTypes.STRING
     },
-    audio_descriptions: {
+    audioDescriptions: {
       type: Sequelize.DataTypes.STRING
     },
     duration: {

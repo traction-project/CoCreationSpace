@@ -2,14 +2,14 @@ import Sequelize, { Optional } from "sequelize";
 import { v4 as uuidv4} from "uuid";
 
 import { CommonAttributes } from "util/typing/modelCommonAttributes";
-import { TopicAttributes, TopicInstance } from "./topic";
+import { TopicCreationAttributes, TopicInstance } from "./topic";
 import { PostAttributes, PostInstance } from "./post";
 
 export interface ThreadAttributes extends CommonAttributes{
-    th_title: string;
-    topic_id?: string;
-    topic?: TopicAttributes | TopicAttributes["id"];
-    post?: PostAttributes | PostAttributes["id"];
+  thTitle: string;
+  topicId?: string;
+  topic?: TopicCreationAttributes;
+  post?: PostAttributes | PostAttributes["id"];
 }
 
 type ThreadCreationAttributes = Optional<ThreadAttributes, "id" | "createdAt" | "updatedAt">;
@@ -49,7 +49,7 @@ export function ThreadModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mo
       allowNull: false,
       autoIncrement: false
     },
-    th_title: {
+    thTitle: {
       type: Sequelize.DataTypes.STRING,
       allowNull: false
     }

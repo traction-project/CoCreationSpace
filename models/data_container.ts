@@ -6,7 +6,7 @@ import { PostAttributes, PostInstance } from "./post";
 import { MediaItemAttributes, MediaItemInstance } from "./media_item";
 
 export interface DataContainerAttributes extends CommonAttributes{
-    text_content?: string;
+    textContent?: string;
     post?: PostAttributes | PostAttributes["id"];
     mediaItem?: MediaItemAttributes[] | MediaItemAttributes["id"][];
 }
@@ -49,7 +49,7 @@ export function DataContainerModelFactory(sequelize: Sequelize.Sequelize): Seque
       allowNull: false,
       autoIncrement: false
     },
-    text_content: {
+    textContent: {
       type: Sequelize.DataTypes.TEXT
     }
   };

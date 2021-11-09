@@ -5,8 +5,8 @@ import { CommonAttributes } from "util/typing/modelCommonAttributes";
 import { UserAttributes, UserInstance } from "./user";
 
 export interface PermissionAttributes extends CommonAttributes{
-    type: string;
-    user?: UserAttributes | UserAttributes["id"];
+  type: string;
+  user?: UserAttributes | UserAttributes["id"];
 }
 
 type PermissionCreationAttributes = Optional<PermissionAttributes, "id" | "createdAt" | "updatedAt">;

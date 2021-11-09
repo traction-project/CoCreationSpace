@@ -49,12 +49,12 @@ export function SearchQueryModelFactory(sequelize: Sequelize.Sequelize): Sequeli
     resultcount: {
       type: Sequelize.DataTypes.INTEGER
     },
-    created_at: {
+    createdAt: {
       type: Sequelize.DataTypes.DATE,
       defaultValue: Sequelize.NOW,
       allowNull: false
     },
-    updated_at: {
+    updatedAt: {
       type: Sequelize.DataTypes.DATE,
       defaultValue: Sequelize.NOW,
       allowNull: false

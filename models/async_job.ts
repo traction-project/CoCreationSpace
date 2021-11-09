@@ -5,10 +5,10 @@ import { CommonAttributes } from "util/typing/modelCommonAttributes";
 import { MediaItemInstance, MediaItemAttributes } from "./media_item";
 
 export interface AsyncJobAttributes extends CommonAttributes{
-    type: string;
-    status: string;
-    jobId: string;
-    multimedia?: MediaItemAttributes | MediaItemAttributes["id"];
+  type: string;
+  status: string;
+  jobId: string;
+  mediaItem?: MediaItemAttributes | MediaItemAttributes["id"];
 }
 
 type AsyncJobCreationAttributes = Optional<AsyncJobAttributes, "id" | "createdAt" | "updatedAt" | "status">;

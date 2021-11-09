@@ -8,9 +8,9 @@ import { MetadataItemAttributes, MetadataItemInstance } from "./metadata_item";
 export interface AudioContentAttributes extends CommonAttributes{
     file: string;
     language?: string;
-    audio_type?: string;
+    audioType?: string;
     multimedia?: MediaItemAttributes | MediaItemAttributes["id"];
-    metadatas?: MetadataItemAttributes | MetadataItemAttributes["id"];
+    metadataItems?: MetadataItemAttributes | MetadataItemAttributes["id"];
 }
 
 type AudioContentCreationAttributes = Optional<AudioContentAttributes, "id" | "createdAt" | "updatedAt">;
@@ -57,7 +57,7 @@ export function AudioContentModelFactory(sequelize: Sequelize.Sequelize): Sequel
     language: {
       type: Sequelize.DataTypes.STRING
     },
-    audio_type: {
+    audioType: {
       type: Sequelize.DataTypes.STRING
     }
   };

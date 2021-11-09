@@ -48,12 +48,12 @@ export function InternalNavigationStepModelFactory(sequelize: Sequelize.Sequeliz
     userAgent: {
       type: Sequelize.DataTypes.STRING
     },
-    created_at: {
+    createdAt: {
       type: Sequelize.DataTypes.DATE,
       defaultValue: Sequelize.NOW,
       allowNull: false
     },
-    updated_at: {
+    updatedAt: {
       type: Sequelize.DataTypes.DATE,
       defaultValue: Sequelize.NOW,
       allowNull: false

@@ -113,7 +113,7 @@ function multimediaAssociations(models: DbInterface): void {
  */
 function postsAssociations(models: DbInterface) {
   const PostDataContainer = models.Post.hasOne(models.DataContainer);
-  models.Post.hasMany(models.Post, { as: "comments", foreignKey: "parent_post_id" });
+  models.Post.hasMany(models.Post, { as: "comments", foreignKey: "parentPostId" });
   models.Post.belongsTo(models.User);
   models.Post.belongsTo(models.Thread);
 
@@ -125,12 +125,12 @@ function postsAssociations(models: DbInterface) {
   };
 
   models.Post.belongsToMany(models.Post, Object.assign(optionsPostsPosts, {
-    foreignKey: "post_references_id",
+    foreignKey: "postReferencesId",
     as: "postReferences"
   }));
 
   models.Post.belongsToMany(models.Post, Object.assign(optionsPostsPosts, {
-    foreignKey: "post_referenced_id",
+    foreignKey: "postReferencedId",
     as: "postReferenced"
   }));
 
@@ -139,7 +139,7 @@ function postsAssociations(models: DbInterface) {
       model: models.UserReference,
       unique: false
     },
-    foreignKey: "post_id",
+    foreignKey: "postId",
     as: "userReferenced"
   });
 
@@ -148,7 +148,7 @@ function postsAssociations(models: DbInterface) {
       model: models.TagReference,
       unique: false
     },
-    foreignKey: "post_id"
+    foreignKey: "postId"
   });
 
   models.Post.belongsToMany(models.User, {
@@ -156,7 +156,7 @@ function postsAssociations(models: DbInterface) {
       model: models.Like,
       unique: false
     },
-    foreignKey: "post_id",
+    foreignKey: "postId",
     as: "likedUsers"
   });
 
@@ -170,7 +170,7 @@ function postsAssociations(models: DbInterface) {
  */
 function permissionAssociations(models: DbInterface): void {
   models.Permission.belongsToMany(models.User, {
-    through: "user_permissions"
+    through: "userPermissions"
   });
 }
 
@@ -192,7 +192,7 @@ function tagAssociations(models: DbInterface): void {
       model: models.TagReference,
       unique: false
     },
-    foreignKey: "tag_id"
+    foreignKey: "tagId"
   });
 }
 
@@ -209,7 +209,7 @@ function topicAssociations(models: DbInterface): void {
       model: models.Interest,
       unique: false
     },
-    foreignKey: "topic_id",
+    foreignKey: "topicId",
     as: "interestedUsers"
   });
 }
@@ -238,11 +238,11 @@ function userAssociations(models: DbInterface): void {
   models.User.hasMany(models.EmojiReaction);
 
   models.User.belongsToMany(models.UserGroup, {
-    through: "user_group_users"
+    through: "userGroupUsers"
   });
 
   models.User.belongsToMany(models.Permission, {
-    through: "user_permissions"
+    through: "userPermissions"
   });
 
   models.User.belongsToMany(models.Post, {
@@ -250,7 +250,7 @@ function userAssociations(models: DbInterface): void {
       model: models.UserReference,
       unique: false
     },
-    foreignKey: "user_id",
+    foreignKey: "userId",
     as: "postReferenced"
   });
 
@@ -259,7 +259,7 @@ function userAssociations(models: DbInterface): void {
       model: models.Like,
       unique: false
     },
-    foreignKey: "user_id",
+    foreignKey: "userId",
     as: "likedPosts"
   });
 
@@ -268,7 +268,7 @@ function userAssociations(models: DbInterface): void {
       model: models.Interest,
       unique: false
     },
-    foreignKey: "user_id",
+    foreignKey: "userId",
     as: "interestedTopics"
   });
 }
@@ -278,7 +278,7 @@ function userAssociations(models: DbInterface): void {
  * @param models DBInterface
  */
 function userGroupAssociations(models: DbInterface) {
-  models.UserGroup.belongsToMany(models.User, { through: "user_group_users" });
+  models.UserGroup.belongsToMany(models.User, { through: "userGroupUsers" });
   models.UserGroup.hasMany(models.Topic);
 }
 

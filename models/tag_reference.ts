@@ -3,8 +3,8 @@ import Sequelize, { Optional } from "sequelize";
 import { CommonAttributes } from "util/typing/modelCommonAttributes";
 
 export interface TagReferenceAttributes extends Omit<CommonAttributes, "id"> {
-    tag_id: number;
-    post_id: number;
+    tagId: number;
+    postId: number;
 }
 
 type TagReferenceCreationAttributes = Optional<TagReferenceAttributes, "createdAt" | "updatedAt">;
@@ -23,11 +23,11 @@ export function TagReferenceModelFactory(sequelize: Sequelize.Sequelize): Sequel
   const TABLE_NAME = "tag_references";
   // Model attributtes
   const attributes = {
-    tag_id: {
+    tagId: {
       type: Sequelize.DataTypes.UUID,
       allowNull: false
     },
-    post_id: {
+    postId: {
       type: Sequelize.DataTypes.UUID,
       allowNull: false
     }

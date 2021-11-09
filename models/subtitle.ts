@@ -5,10 +5,10 @@ import { CommonAttributes } from "util/typing/modelCommonAttributes";
 import { MediaItemAttributes, MediaItemInstance } from "./media_item";
 
 export interface SubtitleAttributes extends CommonAttributes{
-    language?: string;
-    content: string;
-    confidence?: number;
-    mediaItem?: MediaItemAttributes | MediaItemAttributes["id"];
+  language?: string;
+  content: string;
+  confidence?: number;
+  mediaItem?: MediaItemAttributes | MediaItemAttributes["id"];
 }
 
 type SubtitleCreationAttributes = Optional<SubtitleAttributes, "id" | "createdAt" | "updatedAt">;

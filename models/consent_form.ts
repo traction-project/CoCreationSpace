@@ -44,12 +44,12 @@ export function ConsentFormModelFactory(sequelize: Sequelize.Sequelize): Sequeli
     data: {
       type: Sequelize.DataTypes.JSON
     },
-    created_at: {
+    createdAt: {
       type: Sequelize.DataTypes.DATE,
       defaultValue: Sequelize.NOW,
       allowNull: false
     },
-    updated_at: {
+    updatedAt: {
       type: Sequelize.DataTypes.DATE,
       defaultValue: Sequelize.NOW,
       allowNull: false

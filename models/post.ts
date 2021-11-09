@@ -12,11 +12,11 @@ import { db } from "./index";
 export interface PostAttributes extends CommonAttributes{
   title?: string;
   second?: number;
-  parent_post_id?: string;
-  user_id?: string;
-  thread_id?: string;
-  multimedia_ref?: string;
-  karma_points?: number;
+  parentPostId?: string;
+  userId?: string;
+  threadId?: string;
+  multimediaRef?: string;
+  karmaPoints?: number;
   dataContainer?: DataContainerAttributes | DataContainerAttributes["id"];
   comments?: PostAttributes | PostAttributes["id"];
   likedUsers?: UserAttributes | UserAttributes["id"];
@@ -132,10 +132,10 @@ export function PostModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mode
     second: {
       type: Sequelize.DataTypes.DECIMAL
     },
-    karma_points: {
+    karmaPoints: {
       type: Sequelize.DataTypes.INTEGER
     },
-    multimedia_ref: {
+    multimediaRef: {
       type: Sequelize.DataTypes.UUID
     }
   };
@@ -163,7 +163,7 @@ export function PostModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mode
    * post.
    */
   Post.prototype.getParentPost = async function () {
-    return Post.findByPk(this.parent_post_id);
+    return Post.findByPk(this.parentPostId);
   };
 
   /**
