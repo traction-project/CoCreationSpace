@@ -170,7 +170,7 @@ function postsAssociations(models: DbInterface) {
  */
 function permissionAssociations(models: DbInterface): void {
   models.Permission.belongsToMany(models.User, {
-    through: "userPermissions"
+    through: "user_permissions"
   });
 }
 
@@ -238,11 +238,11 @@ function userAssociations(models: DbInterface): void {
   models.User.hasMany(models.EmojiReaction);
 
   models.User.belongsToMany(models.UserGroup, {
-    through: "userGroupUsers"
+    through: "user_group_users"
   });
 
   models.User.belongsToMany(models.Permission, {
-    through: "userPermissions"
+    through: "user_permissions"
   });
 
   models.User.belongsToMany(models.Post, {
@@ -278,7 +278,7 @@ function userAssociations(models: DbInterface): void {
  * @param models DBInterface
  */
 function userGroupAssociations(models: DbInterface) {
-  models.UserGroup.belongsToMany(models.User, { through: "userGroupUsers" });
+  models.UserGroup.belongsToMany(models.User, { through: "user_group_users" });
   models.UserGroup.hasMany(models.Topic);
 }
 
