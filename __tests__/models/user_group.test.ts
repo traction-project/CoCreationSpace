@@ -1,4 +1,5 @@
 import { Sequelize } from "sequelize";
+import { getAllMethods, generateHasManyAssociationMethods } from "../../util";
 
 process.env["SESSION_SECRET"] = "sessionsecret";
 const sequelize = new Sequelize("sqlite::memory:", { logging: false });
@@ -153,5 +154,29 @@ describe("UserGroup model", () => {
 
     expect(await group.countTopics()).toEqual(1);
     expect(await group.hasTopic(topic)).toBeTruthy();
+  });
+
+  it("should have automatically generated association methods for the Topic model", async () => {
+    const { UserGroup } = db.getModels();
+    const group = await UserGroup.create({ name: "test" });
+
+    const expectedMethods = generateHasManyAssociationMethods("Topic");
+    const availableMethods = getAllMethods(group);
+
+    for (const method of expectedMethods) {
+      expect(availableMethods).toContain(method);
+    }
+  });
+
+  it("should have automatically generated association methods for the User model via its junction model", async () => {
+    const { UserGroup } = db.getModels();
+    const group = await UserGroup.create({ name: "test" });
+
+    const expectedMethods = generateHasManyAssociationMethods("User");
+    const availableMethods = getAllMethods(group);
+
+    for (const method of expectedMethods) {
+      expect(availableMethods).toContain(method);
+    }
   });
 });

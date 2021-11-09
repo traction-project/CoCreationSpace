@@ -16,25 +16,26 @@ type UserGroupCreationAttributes = Optional<UserGroupAttributes, "id" | "created
  */
 export interface UserGroupInstance extends Sequelize.Model<UserGroupAttributes, UserGroupCreationAttributes>, UserGroupAttributes {
   getUsers: Sequelize.BelongsToManyGetAssociationsMixin<UserInstance>;
-  setUsers: Sequelize.BelongsToManySetAssociationsMixin<UserInstance, UserInstance["id"]>;
-  addUsers: Sequelize.BelongsToManyAddAssociationsMixin<UserInstance, UserInstance["id"]>;
-  addUser: Sequelize.BelongsToManyAddAssociationMixin<UserInstance, UserInstance["id"]>;
-  removeUser: Sequelize.BelongsToManyRemoveAssociationMixin<UserInstance, UserInstance["id"]>;
-  removeUsers: Sequelize.BelongsToManyRemoveAssociationsMixin<UserInstance, UserInstance["id"]>;
+  countUsers: Sequelize.BelongsToManyCountAssociationsMixin;
   hasUser: Sequelize.BelongsToManyHasAssociationMixin<UserInstance, UserInstance["id"]>;
   hasUsers: Sequelize.BelongsToManyHasAssociationsMixin<UserInstance, UserInstance["id"]>;
-  countUsers: Sequelize.BelongsToManyCountAssociationsMixin;
+  setUsers: Sequelize.BelongsToManySetAssociationsMixin<UserInstance, UserInstance["id"]>;
+  addUser: Sequelize.BelongsToManyAddAssociationMixin<UserInstance, UserInstance["id"]>;
+  addUsers: Sequelize.BelongsToManyAddAssociationsMixin<UserInstance, UserInstance["id"]>;
+  removeUser: Sequelize.BelongsToManyRemoveAssociationMixin<UserInstance, UserInstance["id"]>;
+  removeUsers: Sequelize.BelongsToManyRemoveAssociationsMixin<UserInstance, UserInstance["id"]>;
+  createUser: Sequelize.BelongsToManyCreateAssociationMixin<UserInstance>;
 
   getTopics: Sequelize.HasManyGetAssociationsMixin<TopicInstance>;
-  setTopics: Sequelize.HasManySetAssociationsMixin<TopicInstance, TopicInstance["id"]>;
-  addTopics: Sequelize.HasManyAddAssociationsMixin<TopicInstance, TopicInstance["id"]>;
-  addTopic: Sequelize.HasManyAddAssociationMixin<TopicInstance, TopicInstance["id"]>;
-  createTopic: Sequelize.HasManyCreateAssociationMixin<TopicInstance>;
-  removeTopic: Sequelize.HasManyRemoveAssociationMixin<TopicInstance, TopicInstance["id"]>;
-  removeTopics: Sequelize.HasManyRemoveAssociationsMixin<TopicInstance, TopicInstance["id"]>;
+  countTopics: Sequelize.HasManyCountAssociationsMixin;
   hasTopic: Sequelize.HasManyHasAssociationMixin<TopicInstance, TopicInstance["id"]>;
   hasTopics: Sequelize.HasManyHasAssociationsMixin<TopicInstance, TopicInstance["id"]>;
-  countTopics: Sequelize.HasManyCountAssociationsMixin;
+  setTopics: Sequelize.HasManySetAssociationsMixin<TopicInstance, TopicInstance["id"]>;
+  addTopic: Sequelize.HasManyAddAssociationMixin<TopicInstance, TopicInstance["id"]>;
+  addTopics: Sequelize.HasManyAddAssociationsMixin<TopicInstance, TopicInstance["id"]>;
+  removeTopic: Sequelize.HasManyRemoveAssociationMixin<TopicInstance, TopicInstance["id"]>;
+  removeTopics: Sequelize.HasManyRemoveAssociationsMixin<TopicInstance, TopicInstance["id"]>;
+  createTopic: Sequelize.HasManyCreateAssociationMixin<TopicInstance>;
 }
 
 /**

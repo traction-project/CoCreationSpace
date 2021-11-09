@@ -134,14 +134,15 @@ export interface UserInstance extends Sequelize.Model<UserAttributes, UserCreati
   createInterestedTopic: Sequelize.BelongsToManyCreateAssociationMixin<TopicInstance>;
 
   getUserGroups: Sequelize.BelongsToManyGetAssociationsMixin<UserGroupInstance>;
-  setUserGroups: Sequelize.BelongsToManySetAssociationsMixin<UserGroupInstance, UserGroupInstance["id"]>;
-  addUserGroups: Sequelize.BelongsToManyAddAssociationsMixin<UserGroupInstance, UserGroupInstance["id"]>;
-  addUserGroup: Sequelize.BelongsToManyAddAssociationMixin<UserGroupInstance, UserGroupInstance["id"]>;
-  removeUserGroup: Sequelize.BelongsToManyRemoveAssociationMixin<UserGroupInstance, UserGroupInstance["id"]>;
-  removeUserGroups: Sequelize.BelongsToManyRemoveAssociationsMixin<UserGroupInstance, UserGroupInstance["id"]>;
+  countUserGroups: Sequelize.BelongsToManyCountAssociationsMixin;
   hasUserGroup: Sequelize.BelongsToManyHasAssociationMixin<UserGroupInstance, UserGroupInstance["id"]>;
   hasUserGroups: Sequelize.BelongsToManyHasAssociationsMixin<UserGroupInstance, UserGroupInstance["id"]>;
-  countUserGroups: Sequelize.BelongsToManyCountAssociationsMixin;
+  setUserGroups: Sequelize.BelongsToManySetAssociationsMixin<UserGroupInstance, UserGroupInstance["id"]>;
+  addUserGroup: Sequelize.BelongsToManyAddAssociationMixin<UserGroupInstance, UserGroupInstance["id"]>;
+  addUserGroups: Sequelize.BelongsToManyAddAssociationsMixin<UserGroupInstance, UserGroupInstance["id"]>;
+  removeUserGroup: Sequelize.BelongsToManyRemoveAssociationMixin<UserGroupInstance, UserGroupInstance["id"]>;
+  removeUserGroups: Sequelize.BelongsToManyRemoveAssociationsMixin<UserGroupInstance, UserGroupInstance["id"]>;
+  createUserGroup: Sequelize.BelongsToManyCreateAssociationMixin<UserGroupInstance>;
 
   getNotifications: Sequelize.BelongsToManyGetAssociationsMixin<NotificationInstance>;
   setNotifications: Sequelize.BelongsToManySetAssociationsMixin<NotificationInstance, NotificationInstance["id"]>;
