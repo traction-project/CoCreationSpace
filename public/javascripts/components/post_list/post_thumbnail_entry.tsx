@@ -35,8 +35,8 @@ const PostThumbnailEntry: React.FC<PostThumbnailEntryProps> = (props) => {
           </small>
 
           <div className="m-4" style={{ display: "flex", flexWrap: "wrap" }}>
-            {(post.dataContainer?.multimedia && post.dataContainer.multimedia.length > 0) && (
-              post.dataContainer.multimedia.map(({ id, type }) => {
+            {(post.dataContainer?.mediaItems && post.dataContainer.mediaItems.length > 0) && (
+              post.dataContainer.mediaItems.map(({ id, type }) => {
                 return (
                   <Thumbnail key={id} id={id} type={type} />
                 );

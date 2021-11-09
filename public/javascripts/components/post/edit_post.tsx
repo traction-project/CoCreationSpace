@@ -32,8 +32,8 @@ const EditPost: React.FC<EditPostProps> = () => {
       setPost(data);
       setTags(data.tags.map((t: { tag_name: string }) => t.tag_name));
 
-      if (data?.dataContainer && data.dataContainer.multimedia) {
-        const multimediaArray = data.dataContainer.multimedia.map(
+      if (data?.dataContainer && data.dataContainer.mediaItems) {
+        const multimediaArray = data.dataContainer.mediaItems.map(
           (m: MultimediaItem) => {
             return {
               id: m.id,

@@ -32,7 +32,7 @@ export interface MultimediaItem {
 
 interface DataContainerType {
   textContent?: string;
-  multimedia?: Array<MultimediaItem>;
+  mediaItems?: Array<MultimediaItem>;
 }
 
 export interface PostType extends CommonType {
@@ -96,7 +96,7 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
 
         setPost(data);
         setComments(data.comments);
-        setSelectedItem(data.dataContainer.multimedia[0]);
+        setSelectedItem(data.dataContainer.mediaItems[0]);
 
         if (!data.parentPostId) {
           setShowNewComment(true);
@@ -158,7 +158,7 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
   };
 
   const handleClickTime = (second: number, multimediaRef: string) => {
-    const foundMediaItem = post?.dataContainer?.multimedia?.find((mediaItem) => {
+    const foundMediaItem = post?.dataContainer?.mediaItems?.find((mediaItem) => {
       return mediaItem.id == multimediaRef;
     });
 
@@ -304,19 +304,19 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
             </div>
           </div>
 
-          {(post?.dataContainer?.multimedia && post.dataContainer.multimedia.length > 1) && (
+          {(post?.dataContainer?.mediaItems && post.dataContainer.mediaItems.length > 1) && (
             <div style={{ display: "flex", backgroundColor: "#F5F5F5", overflowX: "scroll" }}>
-              {post.dataContainer.multimedia.map((multimedia, index) => {
+              {post.dataContainer.mediaItems.map((mediaItem, index) => {
                 return (
                   <div
                     key={index}
                     className="is-clickable"
                     style={{ flexShrink: 0 }}
-                    onClick={setSelectedItem.bind(null, multimedia)}
+                    onClick={setSelectedItem.bind(null, mediaItem)}
                   >
                     <Thumbnail
-                      id={multimedia.id}
-                      type={multimedia.type}
+                      id={mediaItem.id}
+                      type={mediaItem.type}
                     />
                   </div>
                 );

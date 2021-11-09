@@ -44,7 +44,7 @@ const PublicProfile: React.FC<PublicProfileProps> = (props) => {
 
   const numPosts = user.posts.filter((p) => p.parentPostId == null).length;
   const numComments = user.posts.filter((p) => p.parentPostId != null).length;
-  const numMedia = user.posts.reduce((sum, p) => sum + (p.dataContainer?.multimedia?.length || 0), 0);
+  const numMedia = user.posts.reduce((sum, p) => sum + (p.dataContainer?.mediaItems?.length || 0), 0);
 
   return (
     <section className="section">
@@ -141,9 +141,9 @@ const PublicProfile: React.FC<PublicProfileProps> = (props) => {
                         </p>
                       </div>
 
-                      {(post.dataContainer && post.dataContainer.multimedia && post.dataContainer.multimedia.length > 0) && (
+                      {(post.dataContainer && post.dataContainer.mediaItems && post.dataContainer.mediaItems.length > 0) && (
                         <div className="list-item__files">
-                          {post.dataContainer.multimedia.map((m, index) => {
+                          {post.dataContainer.mediaItems.map((m, index) => {
                             return (
                               <div key={index}>
                                 <figure className="image is-24x24 list-item__files-item mr-2">
