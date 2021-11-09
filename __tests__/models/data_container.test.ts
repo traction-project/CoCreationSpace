@@ -112,6 +112,25 @@ describe("Data container model", () => {
     expect(multimedia3.id).toEqual(multimedia3Saved.id);
   });
 
+  it("should be able to set media items by ID", async () => {
+    const { DataContainer, MediaItem } = db.getModels();
+    const dataContainer = await DataContainer.create();
+
+    const multimedia1 = await MediaItem.create({ title: "multimedia1" });
+    const multimedia2 = await MediaItem.create({ title: "multimedia2" });
+    const multimedia3 = await MediaItem.create({ title: "multimedia3" });
+
+    await dataContainer.setMediaItems([multimedia1.id, multimedia2.id, multimedia3.id]);
+
+    expect(await dataContainer.countMediaItems()).toEqual(3);
+
+    const [multimedia1Saved, multimedia2Saved, multimedia3Saved] = await dataContainer.getMediaItems();
+
+    expect(multimedia1.id).toEqual(multimedia1Saved.id);
+    expect(multimedia2.id).toEqual(multimedia2Saved.id);
+    expect(multimedia3.id).toEqual(multimedia3Saved.id);
+  });
+
   it("should not fail when trying to remove an multimedia that the data container does not have", async () => {
     const { DataContainer, MediaItem } = db.getModels();
     const dataContainer = await DataContainer.create();

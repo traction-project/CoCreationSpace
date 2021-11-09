@@ -7,6 +7,7 @@ import { MediaItemAttributes, MediaItemInstance } from "./media_item";
 
 export interface DataContainerAttributes extends CommonAttributes{
     textContent?: string;
+    postId?: string;
     post?: PostAttributes | PostAttributes["id"];
     mediaItem?: MediaItemAttributes[] | MediaItemAttributes["id"][];
 }
@@ -39,7 +40,7 @@ export interface DataContainerInstance extends Sequelize.Model<DataContainerAttr
  */
 export function DataContainerModelFactory(sequelize: Sequelize.Sequelize): Sequelize.ModelCtor<DataContainerInstance> {
   // DB table name
-  const TABLE_NAME = "data_container";
+  const TABLE_NAME = "data_containers";
   // Model attributtes
   const attributes = {
     id: {

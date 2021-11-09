@@ -189,7 +189,7 @@ router.get("/:id", authRequired, async (req, res) => {
         include: ["dataContainer", "user"],
       }, "postReferences", "postReferenced", "user", "userReferenced", "tags"
     ],
-    order: [["comments", "createdAt", "asc"]],
+    order: [["comments", "createdAt", "asc"]]
   });
 
   if (post) {
@@ -296,21 +296,18 @@ router.post("/", authRequired, async (req, res) => {
     topicId: topicId
   });
 
-  const post = Post.build({
+  const post = await Post.create({
     title: title,
     userId: user.id,
-    threadId: thread.id,
-    dataContainer: DataContainer.build({
-      textContent: text
-    })
-  }, {
-    include: [ association.getAssociatons().postAssociations.PostDataContainer, "tags" ]
+    threadId: thread.id
   });
 
-  const postSaved = await post.save();
+  const dataContainer = await DataContainer.create({
+    textContent: text,
+    postId: post.id
+  });
 
   if (multimedia && multimedia.length > 0) {
-    const dataContainer = await postSaved.getDataContainer();
     await dataContainer.setMediaItems(multimedia);
   }
 
@@ -322,15 +319,15 @@ router.post("/", authRequired, async (req, res) => {
       const tagSaved = await Tag.findAll({where: query});
 
       if (tagSaved && tagSaved.length > 0) {
-        await postSaved.addTag(tagSaved[0]);
+        await post.addTag(tagSaved[0]);
       } else {
         const newTag = await Tag.create(tag);
-        await postSaved.addTag(newTag);
+        await post.addTag(newTag);
       }
     });
   }
 
-  return res.send(postSaved);
+  return res.send(post);
 });
 
 /**
