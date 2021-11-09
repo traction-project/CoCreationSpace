@@ -1,4 +1,5 @@
 import { Sequelize } from "sequelize";
+import { getAllMethods, generateHasManyAssociationMethods } from "../../util";
 
 process.env["SESSION_SECRET"] = "sessionsecret";
 const sequelize = new Sequelize("sqlite::memory:", { logging: false });
@@ -31,5 +32,17 @@ describe("Permissions model", () => {
     expect(result.length).toEqual(2);
     expect(result[0].type).toEqual("permission1");
     expect(result[1].type).toEqual("permission2");
+  });
+
+  it("should have automatically generated association methods for the User model via its junction model", async () => {
+    const { Permission } = db.getModels();
+    const permission = await Permission.create({ type: "test" });
+
+    const expectedMethods = generateHasManyAssociationMethods("User");
+    const availableMethods = getAllMethods(permission);
+
+    for (const method of expectedMethods) {
+      expect(availableMethods).toContain(method);
+    }
   });
 });
