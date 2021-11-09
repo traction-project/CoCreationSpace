@@ -1,5 +1,4 @@
 import { Router } from "express";
-import { Op } from "sequelize";
 
 import { db } from "../models";
 
@@ -14,8 +13,7 @@ router.get("/all", async (req, res) => {
   const threads = await Thread.findAll({
     include: [{
       model: Post,
-      as: "post",
-      where: { parent_post_id: { [Op.is] : null }}
+      where: { parent_post_id: null }
     }]
   });
 
@@ -29,8 +27,7 @@ router.get("/:id", async (req, res) => {
   const thread = await Thread.findByPk(id, {
     include: [{
       model: Post,
-      as: "post",
-      where: { parent_post_id: { [Op.is] : null }}
+      where: { parent_post_id: null }
     }]
   });
 
