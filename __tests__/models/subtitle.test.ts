@@ -1,4 +1,5 @@
 import { Sequelize } from "sequelize";
+import { getAllMethods, generateBelongsToAssociationMethods } from "../../util";
 
 process.env["SESSION_SECRET"] = "sessionsecret";
 const sequelize = new Sequelize("sqlite::memory:", { logging: false });
@@ -77,5 +78,17 @@ describe("Subtitles tests", () => {
     });
 
     expect(subtitle.isDefault()).toBeTruthy();
+  });
+
+  it("should have automatically generated association methods for the MediaItem model", async () => {
+    const { Subtitle } = db.getModels();
+    const subtitle = await Subtitle.create({ content: "test" });
+
+    const expectedMethods = generateBelongsToAssociationMethods("MediaItem");
+    const availableMethods = getAllMethods(subtitle);
+
+    for (const method of expectedMethods) {
+      expect(availableMethods).toContain(method);
+    }
   });
 });

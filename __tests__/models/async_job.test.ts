@@ -1,4 +1,5 @@
 import { Sequelize } from "sequelize";
+import { getAllMethods, generateBelongsToAssociationMethods } from "../../util";
 
 process.env["SESSION_SECRET"] = "sessionsecret";
 const sequelize = new Sequelize("sqlite::memory:", { logging: false });
@@ -51,5 +52,17 @@ describe("AsyncJob model", () => {
 
     await job.setMediaItem(video);
     expect(await job.getMediaItem()).not.toBeNull();
+  });
+
+  it("should have automatically generated association methods for the MediaItem model", async () => {
+    const { AsyncJob } = db.getModels();
+    const job = await AsyncJob.create({ jobId: "test", type: "test" });
+
+    const expectedMethods = generateBelongsToAssociationMethods("MediaItem");
+    const availableMethods = getAllMethods(job);
+
+    for (const method of expectedMethods) {
+      expect(availableMethods).toContain(method);
+    }
   });
 });
