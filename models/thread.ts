@@ -6,7 +6,7 @@ import { TopicCreationAttributes, TopicInstance } from "./topic";
 import { PostAttributes, PostInstance } from "./post";
 
 export interface ThreadAttributes extends CommonAttributes{
-  thTitle: string;
+  title: string;
   topicId?: string;
   topic?: TopicCreationAttributes;
   post?: PostAttributes | PostAttributes["id"];
@@ -49,7 +49,7 @@ export function ThreadModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mo
       allowNull: false,
       autoIncrement: false
     },
-    thTitle: {
+    title: {
       type: Sequelize.DataTypes.STRING,
       allowNull: false
     }

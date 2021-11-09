@@ -292,7 +292,7 @@ router.post("/", authRequired, async (req, res) => {
   const { Post, Tag, Thread, DataContainer } = db.getModels();
 
   const thread = await Thread.create({
-    thTitle: title,
+    title: title,
     topicId: topicId
   });
 

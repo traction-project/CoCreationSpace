@@ -174,7 +174,7 @@ describe("Post model", () => {
     const topic = await Topic.create({ title: "some topic" });
     await topic.setUserGroup(group);
 
-    const thread = await Thread.create({ thTitle: "some thread" });
+    const thread = await Thread.create({ title: "some thread" });
     await thread.setTopic(topic);
 
     const post = await Post.create({
@@ -191,7 +191,7 @@ describe("Post model", () => {
   it("should return null if the post has no topic", async () => {
     const { User, Post, Thread } = db.getModels();
 
-    const thread = await Thread.create({ thTitle: "some thread" });
+    const thread = await Thread.create({ title: "some thread" });
 
     const post = await Post.create({
       userId: (await User.findOne({}))!.id,

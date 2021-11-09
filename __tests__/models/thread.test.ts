@@ -22,8 +22,8 @@ describe("Preferences tests", () => {
   it("should create new thread", async () => {
     const { Thread } = db.getModels();
 
-    const thread = await Thread.create({ thTitle: "thread" });
-    const threadSaved = await Thread.findOne({ where: { thTitle: "thread" }});
+    const thread = await Thread.create({ title: "thread" });
+    const threadSaved = await Thread.findOne({ where: { title: "thread" }});
 
     expect(threadSaved).toBeDefined();
     expect(thread.id).toEqual(threadSaved!.id);
@@ -31,7 +31,7 @@ describe("Preferences tests", () => {
 
   it("should add thread to a topic", async () => {
     const { Thread, Topic } = db.getModels();
-    const thread = await Thread.create({ thTitle: "thread" });
+    const thread = await Thread.create({ title: "thread" });
     const topic = await Topic.create({ title: "topic" });
 
     expect(await thread.getTopic()).toBeNull();
@@ -42,7 +42,7 @@ describe("Preferences tests", () => {
 
   it("should remove thread from topic", async () => {
     const { Thread, Topic } = db.getModels();
-    const thread = await Thread.create({ thTitle: "thread" });
+    const thread = await Thread.create({ title: "thread" });
     const topic = await Topic.create({ title: "topic" });
 
     await thread.setTopic(topic);
@@ -55,7 +55,7 @@ describe("Preferences tests", () => {
 
   it("should add post to thread", async () => {
     const { Thread, Post } = db.getModels();
-    const thread = await Thread.create({ thTitle: "thread" });
+    const thread = await Thread.create({ title: "thread" });
     const post1 = await Post.create();
     const post2 = await Post.create();
 
@@ -72,7 +72,7 @@ describe("Preferences tests", () => {
 
   it("should remove post from thread", async () => {
     const { Thread, Post } = db.getModels();
-    const thread = await Thread.create({ thTitle: "thread" });
+    const thread = await Thread.create({ title: "thread" });
     const post1 = await Post.create();
 
     await thread.addPost(post1);
@@ -84,7 +84,7 @@ describe("Preferences tests", () => {
 
   it("should have automatically generated association methods for the Post model", async () => {
     const { Thread } = db.getModels();
-    const thread = await Thread.create({ thTitle: "test" });
+    const thread = await Thread.create({ title: "test" });
 
     const expectedMethods = generateHasManyAssociationMethods("Post");
     const availableMethods = getAllMethods(thread);
@@ -96,7 +96,7 @@ describe("Preferences tests", () => {
 
   it("should have automatically generated association methods for the Topic model", async () => {
     const { Thread } = db.getModels();
-    const thread = await Thread.create({ thTitle: "test" });
+    const thread = await Thread.create({ title: "test" });
 
     const expectedMethods = generateBelongsToAssociationMethods("Topic");
     const availableMethods = getAllMethods(thread);
@@ -111,7 +111,7 @@ describe("Preferences tests", () => {
 
     const topic = await Topic.create({ title: "test" });
     const thread = await Thread.create({
-      thTitle: "test",
+      title: "test",
       topicId: topic.id
     });
 
@@ -126,7 +126,7 @@ describe("Preferences tests", () => {
     const { Thread, Topic } = db.getModels();
 
     const thread = await Thread.create({
-      thTitle: "test",
+      title: "test",
       topic: {
         title: "testTopic"
       }
