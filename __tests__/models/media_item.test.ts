@@ -232,8 +232,8 @@ describe("MediaItem model", () => {
     const user = await User.create({ username: "admin" });
     const reaction = await EmojiReaction.create({
       emoji: "😋",
-      user_id: user.id,
-      media_item_id: video.id,
+      userId: user.id,
+      mediaItemId: video.id,
       second: 12.345
     });
 

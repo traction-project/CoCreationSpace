@@ -42,8 +42,8 @@ const PublicProfile: React.FC<PublicProfileProps> = (props) => {
     };
   };
 
-  const numPosts = user.posts.filter((p) => p.parent_post_id == null).length;
-  const numComments = user.posts.filter((p) => p.parent_post_id != null).length;
+  const numPosts = user.posts.filter((p) => p.parentPostId == null).length;
+  const numComments = user.posts.filter((p) => p.parentPostId != null).length;
   const numMedia = user.posts.reduce((sum, p) => sum + (p.dataContainer?.multimedia?.length || 0), 0);
 
   return (
@@ -122,7 +122,7 @@ const PublicProfile: React.FC<PublicProfileProps> = (props) => {
             <h5 className="title is-5">{t("Latest Posts")}</h5>
 
             <div>
-              {user.posts.filter((p) => p.parent_post_id == null).map((post, index) => {
+              {user.posts.filter((p) => p.parentPostId == null).map((post, index) => {
                 return (
                   <article key={index} className="media is-clickable post-entry" onClick={navigateTo(`/post/${post.id}`)}>
                     <div className="media-content">

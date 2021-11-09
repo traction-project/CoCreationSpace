@@ -28,9 +28,9 @@ describe("Post model", () => {
     const { User, Post, DataContainer } = db.getModels();
 
     const post = Post.build({
-      user_id: (await User.findOne({}))!.id,
+      userId: (await User.findOne({}))!.id,
       dataContainer: DataContainer.build({
-        text_content: "This is a comment"
+        textContent: "This is a comment"
       }),
       second: 0
     }, {
@@ -41,7 +41,7 @@ describe("Post model", () => {
     const { dataContainer } = post;
 
     expect(dataContainer).toBeDefined();
-    expect((dataContainer as DataContainerAttributes).text_content).toEqual("This is a comment");
+    expect((dataContainer as DataContainerAttributes).textContent).toEqual("This is a comment");
 
     expect(await DataContainer.count()).toEqual(1);
   });
@@ -50,22 +50,22 @@ describe("Post model", () => {
     const { User, Post } = db.getModels();
 
     const post = await Post.create({
-      user_id: (await User.findOne({}))!.id,
+      userId: (await User.findOne({}))!.id,
     });
 
     expect(await post.countComments()).toEqual(0);
 
     const comment1 = await Post.create({
-      user_id: (await User.findOne({}))!.id,
-      parent_post_id: post.id
+      userId: (await User.findOne({}))!.id,
+      parentPostId: post.id
     });
 
     expect(await post.countComments()).toEqual(1);
     expect(await post.hasComment(comment1)).toBeTruthy();
 
     const comment2 = await Post.create({
-      user_id: (await User.findOne({}))!.id,
-      parent_post_id: post.id
+      userId: (await User.findOne({}))!.id,
+      parentPostId: post.id
     });
 
     expect(await post.countComments()).toEqual(2);
@@ -76,22 +76,22 @@ describe("Post model", () => {
     const { User, Post } = db.getModels();
 
     const post = await Post.create({
-      user_id: (await User.findOne({}))!.id,
+      userId: (await User.findOne({}))!.id,
     });
 
     const comment1 = await Post.create({
-      user_id: (await User.findOne({}))!.id,
-      parent_post_id: post.id
+      userId: (await User.findOne({}))!.id,
+      parentPostId: post.id
     });
 
     const comment1Child = await Post.create({
-      user_id: (await User.findOne({}))!.id,
-      parent_post_id: comment1.id
+      userId: (await User.findOne({}))!.id,
+      parentPostId: comment1.id
     });
 
     const comment2 = await Post.create({
-      user_id: (await User.findOne({}))!.id,
-      parent_post_id: post.id
+      userId: (await User.findOne({}))!.id,
+      parentPostId: post.id
     });
 
     expect(await post.countComments()).toEqual(2);
@@ -108,22 +108,22 @@ describe("Post model", () => {
     const { User, Post } = db.getModels();
 
     const post = await Post.create({
-      user_id: (await User.findOne({}))!.id,
+      userId: (await User.findOne({}))!.id,
     });
 
     const comment1 = await Post.create({
-      user_id: (await User.findOne({}))!.id,
-      parent_post_id: post.id
+      userId: (await User.findOne({}))!.id,
+      parentPostId: post.id
     });
 
     const comment1Child = await Post.create({
-      user_id: (await User.findOne({}))!.id,
-      parent_post_id: comment1.id
+      userId: (await User.findOne({}))!.id,
+      parentPostId: comment1.id
     });
 
     const comment2 = await Post.create({
-      user_id: (await User.findOne({}))!.id,
-      parent_post_id: post.id
+      userId: (await User.findOne({}))!.id,
+      parentPostId: post.id
     });
 
     expect(await post.countComments()).toEqual(2);
@@ -141,12 +141,12 @@ describe("Post model", () => {
     const { User, Post } = db.getModels();
 
     const post = await Post.create({
-      user_id: (await User.findOne({}))!.id,
+      userId: (await User.findOne({}))!.id,
     });
 
     const comment1 = await Post.create({
-      user_id: (await User.findOne({}))!.id,
-      parent_post_id: post.id
+      userId: (await User.findOne({}))!.id,
+      parentPostId: post.id
     });
 
     const parent = await comment1.getParentPost();
@@ -159,7 +159,7 @@ describe("Post model", () => {
     const { User, Post } = db.getModels();
 
     const comment1 = await Post.create({
-      user_id: (await User.findOne({}))!.id,
+      userId: (await User.findOne({}))!.id,
     });
 
     const parent = await comment1.getParentPost();
@@ -174,11 +174,11 @@ describe("Post model", () => {
     const topic = await Topic.create({ title: "some topic" });
     await topic.setUserGroup(group);
 
-    const thread = await Thread.create({ th_title: "some thread" });
+    const thread = await Thread.create({ thTitle: "some thread" });
     await thread.setTopic(topic);
 
     const post = await Post.create({
-      user_id: (await User.findOne({}))!.id,
+      userId: (await User.findOne({}))!.id,
     });
     await post.setThread(thread);
 
@@ -191,10 +191,10 @@ describe("Post model", () => {
   it("should return null if the post has no topic", async () => {
     const { User, Post, Thread } = db.getModels();
 
-    const thread = await Thread.create({ th_title: "some thread" });
+    const thread = await Thread.create({ thTitle: "some thread" });
 
     const post = await Post.create({
-      user_id: (await User.findOne({}))!.id,
+      userId: (await User.findOne({}))!.id,
     });
     await post.setThread(thread);
 

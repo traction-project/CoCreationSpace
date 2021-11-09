@@ -13,7 +13,7 @@ router.get("/all", async (req, res) => {
   const threads = await Thread.findAll({
     include: [{
       model: Post,
-      where: { parent_post_id: null }
+      where: { parentPostId: null }
     }]
   });
 
@@ -27,7 +27,7 @@ router.get("/:id", async (req, res) => {
   const thread = await Thread.findByPk(id, {
     include: [{
       model: Post,
-      where: { parent_post_id: null }
+      where: { parentPostId: null }
     }]
   });
 

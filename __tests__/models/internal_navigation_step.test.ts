@@ -29,8 +29,6 @@ describe("InternalNavigationStep model", () => {
     expect(query.data).toBeUndefined();
     expect(query.user).toBeUndefined();
     expect(query.userAgent).toBeUndefined();
-
-    expect(query.createdAt).toEqual(query.updatedAt);
   });
 
   it("should create a new instance with data", async () => {
@@ -51,7 +49,6 @@ describe("InternalNavigationStep model", () => {
 
     expect(query.user).toBeUndefined();
 
-    expect(query.createdAt).toEqual(query.updatedAt);
     expect(query.data).toEqual({ message: "Hello World" });
     expect(query.userAgent).toEqual(userAgent);
   });

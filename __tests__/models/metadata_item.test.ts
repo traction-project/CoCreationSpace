@@ -40,29 +40,29 @@ describe("Metadata model", () => {
 
     const attributes = {
       value: "metadata",
-      metadata_type: "type_metatadata",
+      metadataType: "type_metatadata",
       roi: "roi",
-      time_interval: "50",
+      timeInterval: "50",
     };
     const metadata = await MetadataItem.create({
       value: attributes.value,
-      metadata_type: attributes.metadata_type,
+      metadataType: attributes.metadataType,
       roi: attributes.roi,
-      time_interval: attributes.time_interval,
+      timeInterval: attributes.timeInterval,
     });
 
     expect(metadata.id).toBeDefined();
     expect(metadata.createdAt).toBeDefined();
     expect(metadata.updatedAt).toBeDefined();
     expect(metadata.value).toBeDefined();
-    expect(metadata.metadata_type).toBeDefined();
+    expect(metadata.metadataType).toBeDefined();
     expect(metadata.roi).toBeDefined();
-    expect(metadata.time_interval).toBeDefined();
+    expect(metadata.timeInterval).toBeDefined();
 
     expect(metadata.value).toEqual(attributes.value);
-    expect(metadata.metadata_type).toEqual(attributes.metadata_type);
+    expect(metadata.metadataType).toEqual(attributes.metadataType);
     expect(metadata.roi).toEqual(attributes.roi);
-    expect(metadata.time_interval).toEqual(attributes.time_interval);
+    expect(metadata.timeInterval).toEqual(attributes.timeInterval);
   });
 
   it("should add metadata to multimedia", async () => {

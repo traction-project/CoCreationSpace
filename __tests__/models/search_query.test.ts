@@ -31,7 +31,6 @@ describe("SearchQuery model", () => {
     expect(query.resultcount).toBeUndefined();
     expect(query.user).toBeUndefined();
 
-    expect(query.createdAt).toEqual(query.updatedAt);
     expect(query.query).toEqual("test");
   });
 

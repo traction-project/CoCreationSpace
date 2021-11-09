@@ -211,7 +211,7 @@ router.post("/upload", authRequired, (req, res) => {
 
 router.get("/all", async (req, res) => {
   const { MediaItem } = db.getModels();
-  const videos = await MediaItem.findAll({ order: [["created_at", "desc"]] });
+  const videos = await MediaItem.findAll({ order: [["createdAt", "desc"]] });
 
   res.send(videos.map((video) => {
     const mainThumbnail = video.thumbnails?.[0];
@@ -299,8 +299,8 @@ router.post("/:id/reaction", authRequired, async (req, res) => {
     const reaction = await EmojiReaction.create({
       emoji,
       second,
-      media_item_id: id,
-      user_id: user.id
+      mediaItemId: id,
+      userId: user.id
     });
 
     return res.send(reaction);

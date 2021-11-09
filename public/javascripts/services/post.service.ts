@@ -1,4 +1,4 @@
-import { MultimediaItem, PostType } from "javascripts/components/post/post";
+import { MultimediaItem, PostType } from "../components/post/post";
 
 /**
  * Make a request with the API to get a Post with a specific id
@@ -69,7 +69,7 @@ export const deletePost = async (id: string) => {
 export const getCommentsForItem = (comments: Array<PostType>, selectedItem: MultimediaItem): Array<PostType> => {
   return comments.reduce<Array<PostType>>((relatedComments, comment) => {
     return relatedComments.concat(
-      (comment.multimedia_ref == selectedItem.id) ? comment : []
+      (comment.multimediaRef == selectedItem.id) ? comment : []
     ).concat(
       (comment.comments) ? getCommentsForItem(comment.comments, selectedItem) : []
     );

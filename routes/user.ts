@@ -215,7 +215,7 @@ router.get("/profile/:id", authRequired, async (req, res) => {
 
   // Retrieve posts for user
   const posts = await user.getPosts({
-    order: [["created_at", "DESC"]],
+    order: [["createdAt", "DESC"]],
     include: [
       {
         model: DataContainer, include: [{

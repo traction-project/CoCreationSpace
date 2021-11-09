@@ -117,7 +117,7 @@ const EditPost: React.FC<EditPostProps> = () => {
             <h1 className="title">{t("Edit Post")}</h1>
 
             <form onSubmit={handleFormSubmission}>
-              {(post.parent_post_id == null) && (
+              {(post.parentPostId == null) && (
                 <div className="field">
                   <label className="label">{t("Title")}</label>
                   <div className="control">
@@ -141,7 +141,7 @@ const EditPost: React.FC<EditPostProps> = () => {
                   <textarea
                     placeholder={`${t("Description")}...`}
                     className="textarea"
-                    defaultValue={post.dataContainer?.text_content}
+                    defaultValue={post.dataContainer?.textContent}
                     {...register("description")}
                   />
                 </div>

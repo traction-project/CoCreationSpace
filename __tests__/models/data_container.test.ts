@@ -22,12 +22,12 @@ describe("Data container model", () => {
   it("should create new data contaienr with text_content", async () => {
     const { DataContainer } = db.getModels();
 
-    const text_content = "data";
+    const textContent = "data";
     const dataContainer = await DataContainer.build({
-      text_content
+      textContent
     }).save();
 
-    expect(dataContainer.text_content).toEqual(text_content);
+    expect(dataContainer.textContent).toEqual(textContent);
 
     expect(dataContainer.id).toBeDefined();
     expect(dataContainer.createdAt).toBeDefined();
@@ -50,7 +50,7 @@ describe("Data container model", () => {
 
   it("should add Post that contains data container", async () => {
     const { DataContainer, Post } = db.getModels();
-    const dataContainer = await DataContainer.create({ text_content: "" });
+    const dataContainer = await DataContainer.create({ textContent: "" });
     const post = await Post.create({ title: "post" });
 
     await dataContainer.setPost(post);

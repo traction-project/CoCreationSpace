@@ -72,7 +72,7 @@ describe("Topic model", () => {
     });
 
     const thread = await Thread.create({
-      th_title: "a thread"
+      thTitle: "a thread"
     });
 
     expect(await topic.countThreads()).toEqual(0);

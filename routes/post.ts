@@ -47,8 +47,8 @@ router.get("/all/user", authRequired, async (req, res) => {
 
   const posts = await Post.findAndCountAll({
     where: {
-      parent_post_id: null
-    } as any,
+      parentPostId: null
+    },
     include: [{
       model: User,
       attributes: ["id", "username", "image"],
@@ -66,7 +66,7 @@ router.get("/all/user", authRequired, async (req, res) => {
       }]
     }],
     order: [
-      ["created_at", "DESC"]
+      ["createdAt", "DESC"]
     ]
   });
 
@@ -114,8 +114,8 @@ router.get("/all/group", authRequired, async (req, res) => {
 
   const posts = await Post.findAndCountAll({
     where: {
-      parent_post_id: null
-    } as any,
+      parentPostId: null
+    },
     distinct: true,
     include: [{
       model: User,
@@ -137,7 +137,7 @@ router.get("/all/group", authRequired, async (req, res) => {
       }]
     }],
     order: [
-      ["created_at", "DESC"]
+      ["createdAt", "DESC"]
     ],
     limit: perPage,
     offset: (page - 1) * perPage
@@ -187,9 +187,9 @@ router.get("/:id", authRequired, async (req, res) => {
         model: Post,
         as: "comments",
         include: ["dataContainer", "user"],
-      }, "postReference", "postReferenced", "user", "userReferenced", "tags"
+      }, "postReferences", "postReferenced", "user", "userReferenced", "tags"
     ],
-    order: [["comments", "created_at", "asc"]],
+    order: [["comments", "createdAt", "asc"]],
   });
 
   if (post) {
@@ -249,16 +249,16 @@ router.get("/:id/parent", authRequired, async (req, res) => {
           model: Post,
           as: "comments",
           include: ["dataContainer", "user"],
-        }, "postReference", "postReferenced", "user", "userReferenced", "tags"
+        }, "postReferences", "postReferenced", "user", "userReferenced", "tags"
       ],
-      order: [["comments","created_at", "desc"]],
+      order: [["comments", "createdAt", "desc"]],
     });
 
     if (post == null) {
       return res.status(404).json([]);
     }
 
-    parentPostId = post.parent_post_id;
+    parentPostId = post.parentPostId;
   } while (parentPostId);
 
   if (post) {
@@ -292,16 +292,16 @@ router.post("/", authRequired, async (req, res) => {
   const { Post, Tag, Thread, DataContainer } = db.getModels();
 
   const thread = await Thread.create({
-    th_title: title,
-    topic_id: topicId
+    thTitle: title,
+    topicId: topicId
   });
 
   const post = Post.build({
     title: title,
-    user_id: user.id,
-    thread_id: thread.id,
+    userId: user.id,
+    threadId: thread.id,
     dataContainer: DataContainer.build({
-      text_content: text
+      textContent: text
     })
   }, {
     include: [ association.getAssociatons().postAssociations.PostDataContainer, "tags" ]
@@ -316,8 +316,8 @@ router.post("/", authRequired, async (req, res) => {
 
   if (tags && tags.length > 0) {
     tags.forEach(async (tag: TagInstance) => {
-      const { id, tag_name } = tag;
-      const query = id ? { id } : { tag_name: tag_name.toLowerCase() };
+      const { id, tagName } = tag;
+      const query = id ? { id } : { tagName: tagName.toLowerCase() };
 
       const tagSaved = await Tag.findAll({where: query});
 
@@ -346,7 +346,7 @@ router.post("/:id/edit", authRequired, async (req, res) => {
   const dataContainer = await DataContainer.findOne({ where: { post_id: id } as any });
 
   if (post && dataContainer) {
-    if (post.user_id != user.id && !user.isAdmin()) {
+    if (post.userId != user.id && !user.isAdmin()) {
       return res.status(401).send({
         status: "ERR",
         message: "Not authorized"
@@ -359,7 +359,7 @@ router.post("/:id/edit", authRequired, async (req, res) => {
     }
 
     if (description) {
-      dataContainer.text_content = description;
+      dataContainer.textContent = description;
       await dataContainer.save();
     }
 
@@ -369,7 +369,7 @@ router.post("/:id/edit", authRequired, async (req, res) => {
 
       // Get tags which are not in the submitted tags list
       const tagsToRemove = existingTags.filter((existingTag) => {
-        return tags.find((t: string) => t == existingTag.tag_name) == undefined;
+        return tags.find((t: string) => t == existingTag.tagName) == undefined;
       });
 
       // Remove tags from post
@@ -377,19 +377,19 @@ router.post("/:id/edit", authRequired, async (req, res) => {
 
       // Get tags which are in the submitted list but not in the database
       const tagsToAdd = tags.filter((t: string) => {
-        return existingTags.find((existingTag) => t == existingTag.tag_name) == undefined;
+        return existingTags.find((existingTag) => t == existingTag.tagName) == undefined;
       });
 
       tagsToAdd.forEach(async (tagToAdd: string) => {
         // Try to find pre-existing tag with same name
-        const preexistingTag = await Tag.findOne({ where: { tag_name: tagToAdd } });
+        const preexistingTag = await Tag.findOne({ where: { tagName: tagToAdd } });
 
         if (preexistingTag) {
           // Associate pre-existing tag with post if possible
           await post.addTag(preexistingTag);
         } else {
           // Otherwise create new tag and associate it with post
-          const newTag = await Tag.create({ tag_name: tagToAdd });
+          const newTag = await Tag.create({ tagName: tagToAdd });
           await post.addTag(newTag);
         }
       });
@@ -432,12 +432,12 @@ router.post("/:id", authRequired, async (req, res) => {
   }
 
   const post = Post.build({
-    parent_post_id: id,
-    user_id: user.id,
-    thread_id: parentPost.thread_id,
-    multimedia_ref: currentItemId,
+    parentPostId: id,
+    userId: user.id,
+    threadId: parentPost.threadId,
+    multimediaRef: currentItemId,
     dataContainer: DataContainer.build({
-      text_content: text
+      textContent: text
     }),
     second
   }, {
@@ -466,7 +466,7 @@ router.delete("/:id", authRequired, async (req, res) => {
   const post = await Post.findByPk(id);
 
   if (post) {
-    if (post.user_id == user.id || user.isAdmin()) {
+    if (post.userId == user.id || user.isAdmin()) {
       await post.destroyWithComments();
 
       return res.send({

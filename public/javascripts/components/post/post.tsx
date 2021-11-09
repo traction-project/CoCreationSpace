@@ -31,18 +31,18 @@ export interface MultimediaItem {
 }
 
 interface DataContainerType {
-  text_content?: string;
+  textContent?: string;
   multimedia?: Array<MultimediaItem>;
 }
 
 export interface PostType extends CommonType {
   title?: string;
   second?: number;
-  parent_post_id: string;
+  parentPostId: string;
   dataContainer?: DataContainerType;
   comments?: PostType[];
-  karma_points?: number;
-  multimedia_ref?: string;
+  karmaPoints?: number;
+  multimediaRef?: string;
   postReference?: PostType[];
   postReferenced?: PostType[];
   user: UserType;
@@ -98,7 +98,7 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
         setComments(data.comments);
         setSelectedItem(data.dataContainer.multimedia[0]);
 
-        if (!data.parent_post_id) {
+        if (!data.parentPostId) {
           setShowNewComment(true);
         }
 
@@ -181,7 +181,7 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
   }
 
   return (
-    <section className={classNames("section", { "is-comment": post.parent_post_id != undefined })}>
+    <section className={classNames("section", { "is-comment": post.parentPostId != undefined })}>
       <div className="container">
         <div className="post-entry">
           <div className="columns">
@@ -199,7 +199,7 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
                       <small className="list-item__date">
                         {post.createdAt && new Date(post.createdAt).toLocaleDateString()}&emsp;
                         {post.createdAt && new Date(post.createdAt).toLocaleTimeString()}&emsp;
-                        {(post.parent_post_id == null) && (
+                        {(post.parentPostId == null) && (
                           <>in <i>{post.thread.topic.userGroup.name}</i>&emsp;</>
                         )}
                         {(user && (user.id == post.user.id || user.admin)) && (
@@ -222,12 +222,12 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
                       </div>
 
                       {(post.second) && (
-                        <a style={{marginRight: "5px"}} onClick={() => callbackClickTime && callbackClickTime(post.second ? post.second : 0, post.multimedia_ref!)}>
+                        <a style={{marginRight: "5px"}} onClick={() => callbackClickTime && callbackClickTime(post.second ? post.second : 0, post.multimediaRef!)}>
                           <strong>{convertHMS(post.second)}</strong>
                         </a>
                       )}
 
-                      {post.dataContainer?.text_content?.split("\n").map((line, i) => {
+                      {post.dataContainer?.textContent?.split("\n").map((line, i) => {
                         return (
                           <React.Fragment key={i}>
                             {line}<br/>

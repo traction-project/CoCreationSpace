@@ -24,12 +24,12 @@ describe("Audio Content model", () => {
     const audioContent = await AudioContent.build({
       file: "audio.mp3",
       language: "es",
-      audio_type: "mp3",
+      audioType: "mp3",
     }).save();
 
     expect(audioContent.file).toEqual("audio.mp3");
     expect(audioContent.language).toEqual("es");
-    expect(audioContent.audio_type).toEqual("mp3");
+    expect(audioContent.audioType).toEqual("mp3");
 
     expect(audioContent.id).toBeDefined();
     expect(audioContent.createdAt).toBeDefined();

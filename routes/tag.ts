@@ -1,8 +1,7 @@
 import { Router } from "express";
-import { db } from "../models";
-import { Op } from "sequelize";
-import { buildCriteria } from "../util";
 
+import { db } from "../models";
+import { buildCriteria } from "../util";
 
 const router = Router();
 
@@ -28,14 +27,14 @@ router.get("/:id", async (req, res) => {
   const tag = await Tag.findByPk(id, {
     include: [{
       model: Post,
-      where: { parent_post_id: { [Op.is] : null }},
+      where: { parentPostId: null },
       include: ["user", {
         model: DataContainer,
         include: ["multimedia"]
       }]
     }],
     order: [
-      ["post", "created_at", "DESC"]
+      ["post", "createdAt", "DESC"]
     ]
   });
 

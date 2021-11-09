@@ -27,8 +27,24 @@ describe("EmojiReactions model", () => {
 
     const reaction = await EmojiReaction.build({
       emoji: "😋",
-      user_id: user.id,
-      media_item_id: video.id
+      userId: user.id,
+      mediaItemId: video.id
+    }).save();
+
+    expect(reaction.id).toBeDefined();
+    expect(reaction.emoji).toBeDefined();
+  });
+
+  it("should initialise a new object", async () => {
+    const { EmojiReaction, User, MediaItem } = db.getModels();
+
+    const user = await User.create({ username: "admin" });
+    const video = await MediaItem.create({ title: "video 1" });
+
+    const reaction = await EmojiReaction.build({
+      emoji: "😋",
+      userId: user.id,
+      mediaItemId: video.id
     }).save();
 
     expect(reaction.id).toBeDefined();
@@ -43,8 +59,8 @@ describe("EmojiReactions model", () => {
 
     const reaction = await EmojiReaction.build({
       emoji: "😋",
-      user_id: user.id,
-      media_item_id: video.id,
+      userId: user.id,
+      mediaItemId: video.id,
       second: 12.345
     }).save();
 
@@ -60,8 +76,8 @@ describe("EmojiReactions model", () => {
 
     const reaction = await EmojiReaction.build({
       emoji: "😋",
-      user_id: user.id,
-      media_item_id: video.id,
+      userId: user.id,
+      mediaItemId: video.id,
       second: 12.345
     }).save();
 
@@ -80,8 +96,8 @@ describe("EmojiReactions model", () => {
 
     const reaction = await EmojiReaction.build({
       emoji: "😋",
-      user_id: user.id,
-      media_item_id: video.id,
+      userId: user.id,
+      mediaItemId: video.id,
       second: 12.345
     }).save();
 
@@ -99,8 +115,8 @@ describe("EmojiReactions model", () => {
 
     const reaction = await EmojiReaction.build({
       emoji: "😋",
-      user_id: user.id,
-      media_item_id: video.id,
+      userId: user.id,
+      mediaItemId: video.id,
       second: 12.345
     }).save();
 
@@ -118,8 +134,8 @@ describe("EmojiReactions model", () => {
 
     const emojiReaction = await EmojiReaction.create({
       emoji: "😋",
-      user_id: user.id,
-      media_item_id: video.id
+      userId: user.id,
+      mediaItemId: video.id
     });
 
     const expectedMethods = generateBelongsToAssociationMethods("User");
@@ -138,8 +154,8 @@ describe("EmojiReactions model", () => {
 
     const emojiReaction = await EmojiReaction.create({
       emoji: "😋",
-      user_id: user.id,
-      media_item_id: video.id
+      userId: user.id,
+      mediaItemId: video.id
     });
 
     const expectedMethods = generateBelongsToAssociationMethods("MediaItem");

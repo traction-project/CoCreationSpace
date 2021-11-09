@@ -21,8 +21,8 @@ describe("Tag tests", () => {
   it("should create new tag", async () => {
     const { Tag } = db.getModels();
 
-    const tag = await Tag.create({ tag_name: "tag" });
-    const tagSaved = await Tag.findOne({ where: { tag_name: "tag" }});
+    const tag = await Tag.create({ tagName: "tag" });
+    const tagSaved = await Tag.findOne({ where: { tagName: "tag" }});
 
     expect(tagSaved).toBeDefined();
     expect(tag.id).toEqual(tagSaved!.id);
@@ -30,7 +30,7 @@ describe("Tag tests", () => {
 
   it("should add tag to post", async () => {
     const { Tag, Post } = db.getModels();
-    const tag = await Tag.create({ tag_name: "tag" });
+    const tag = await Tag.create({ tagName: "tag" });
     const post = await Post.create();
 
     expect(await tag.hasPost(post)).toBeFalsy();
@@ -40,7 +40,7 @@ describe("Tag tests", () => {
 
   it("should remove tag from post", async () => {
     const { Tag, Post } = db.getModels();
-    const tag = await Tag.create({ tag_name: "tag" });
+    const tag = await Tag.create({ tagName: "tag" });
     const post = await Post.create();
 
     await tag.addPost(post);
@@ -52,8 +52,8 @@ describe("Tag tests", () => {
 
   it("should one post has 2 tags", async () => {
     const { Tag, Post } = db.getModels();
-    const tag1 = await Tag.create({ tag_name: "tag1" });
-    const tag2 = await Tag.create({ tag_name: "tag2" });
+    const tag1 = await Tag.create({ tagName: "tag1" });
+    const tag2 = await Tag.create({ tagName: "tag2" });
     const post = await Post.create();
 
     expect(await post.hasTags([tag1, tag2])).toBeFalsy();
@@ -68,7 +68,7 @@ describe("Tag tests", () => {
   it("should one tag has 2 posts", async () => {
     const { Tag, Post } = db.getModels();
 
-    const tag = await Tag.create({ tag_name: "tag" });
+    const tag = await Tag.create({ tagName: "tag" });
     const post1 = await Post.create();
     const post2 = await Post.create();
 
@@ -86,7 +86,7 @@ describe("Tag tests", () => {
 
   it("should have automatically generated association methods for the Post model", async () => {
     const { Tag } = db.getModels();
-    const tag = await Tag.create({ tag_name: "test" });
+    const tag = await Tag.create({ tagName: "test" });
 
     const expectedMethods = generateHasManyAssociationMethods("Post");
     const availableMethods = getAllMethods(tag);

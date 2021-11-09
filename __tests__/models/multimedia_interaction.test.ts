@@ -26,8 +26,6 @@ describe("MultimediaInteraction model", () => {
     expect(interaction.createdAt).toBeDefined();
     expect(interaction.updatedAt).toBeDefined();
 
-    expect(interaction.createdAt).toEqual(interaction.updatedAt);
-
     expect(await interaction.getUser()).toBeNull();
     expect(await interaction.getMediaItem()).toBeNull();
   });

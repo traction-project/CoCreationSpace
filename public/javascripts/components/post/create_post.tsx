@@ -113,6 +113,8 @@ const CreatePost: React.FC<CreatePostProps> = ({ file }) => {
   };
 
   const handleFormSubmission = handleSubmit(async ({ title, description, topic }) => {
+    console.log("Submit:", title, description, topic);
+
     // Get and parse remaining values from tag form field
     const tagsToAdd = parseTags(getValues("tagName")).filter((t) => {
       // Only add tags which aren't in the list already
