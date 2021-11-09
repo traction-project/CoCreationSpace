@@ -188,6 +188,20 @@ describe("Post model", () => {
     expect(associatedGroup!.name).toEqual("some group");
   });
 
+  it("should return null if the post has no topic", async () => {
+    const { User, Post, Thread } = db.getModels();
+
+    const thread = await Thread.create({ th_title: "some thread" });
+
+    const post = await Post.create({
+      user_id: (await User.findOne({}))!.id,
+    });
+    await post.setThread(thread);
+
+    const associatedGroup = await post.getUserGroup();
+    expect(associatedGroup).toBeNull();
+  });
+
   it("should have automatically generated association methods for the DataContainer model", async () => {
     const { Post } = db.getModels();
     const post = await Post.create({ title: "test" });

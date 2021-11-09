@@ -170,7 +170,7 @@ export function PostModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mode
    * Returns the user group that a post was posted in or null if associations
    * could not be queried.
    */
-  Post.prototype.getUserGroup = async function () {
+  Post.prototype.getUserGroup = async function (): Promise<UserGroupInstance | null> {
     const { Topic, UserGroup } = db.getModels();
 
     const thread = await (this as PostInstance).getThread({
