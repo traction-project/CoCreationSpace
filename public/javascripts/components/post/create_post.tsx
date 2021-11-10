@@ -125,7 +125,7 @@ const CreatePost: React.FC<CreatePostProps> = ({ file }) => {
       title,
       text: description,
       multimedia: fileUploads.map((u) => u.id),
-      tags: tags.concat(tagsToAdd).map((tag) => { return { tag_name: tag }; } ),
+      tags: tags.concat(tagsToAdd).map((tag) => { return { name: tag }; } ),
       topicId: topic
     };
 

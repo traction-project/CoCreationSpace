@@ -51,7 +51,7 @@ const PostEntry: React.FC<PostEntryProps> = (props) => {
           {post.tags?.map((t, i) => {
             return (
               <span key={i} className="tag is-light" onClick={filterByTag(t.id)}>
-                {t.tag_name}
+                {t.name}
               </span>
             );
           })}

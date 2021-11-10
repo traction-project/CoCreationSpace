@@ -313,8 +313,8 @@ router.post("/", authRequired, async (req, res) => {
 
   if (tags && tags.length > 0) {
     tags.forEach(async (tag: TagInstance) => {
-      const { id, tagName } = tag;
-      const query = id ? { id } : { tagName: tagName.toLowerCase() };
+      const { id, name } = tag;
+      const query = id ? { id } : { name: name.toLowerCase() };
 
       const tagSaved = await Tag.findAll({where: query});
 
@@ -366,7 +366,7 @@ router.post("/:id/edit", authRequired, async (req, res) => {
 
       // Get tags which are not in the submitted tags list
       const tagsToRemove = existingTags.filter((existingTag) => {
-        return tags.find((t: string) => t == existingTag.tagName) == undefined;
+        return tags.find((t: string) => t == existingTag.name) == undefined;
       });
 
       // Remove tags from post
@@ -374,19 +374,19 @@ router.post("/:id/edit", authRequired, async (req, res) => {
 
       // Get tags which are in the submitted list but not in the database
       const tagsToAdd = tags.filter((t: string) => {
-        return existingTags.find((existingTag) => t == existingTag.tagName) == undefined;
+        return existingTags.find((existingTag) => t == existingTag.name) == undefined;
       });
 
       tagsToAdd.forEach(async (tagToAdd: string) => {
         // Try to find pre-existing tag with same name
-        const preexistingTag = await Tag.findOne({ where: { tagName: tagToAdd } });
+        const preexistingTag = await Tag.findOne({ where: { name: tagToAdd } });
 
         if (preexistingTag) {
           // Associate pre-existing tag with post if possible
           await post.addTag(preexistingTag);
         } else {
           // Otherwise create new tag and associate it with post
-          const newTag = await Tag.create({ tagName: tagToAdd });
+          const newTag = await Tag.create({ name: tagToAdd });
           await post.addTag(newTag);
         }
       });

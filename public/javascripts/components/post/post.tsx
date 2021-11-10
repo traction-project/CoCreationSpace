@@ -215,7 +215,7 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
                         {post.tags?.map((t, i) => {
                           return (
                             <span key={i} className="tag is-light non-clickable">
-                              {t.tag_name}
+                              {t.name}
                             </span>
                           );
                         })}

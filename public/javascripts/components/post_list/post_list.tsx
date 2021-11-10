@@ -17,7 +17,7 @@ interface PostListProps {
 
 export interface TagData {
   id: string;
-  tag_name: string;
+  name: string;
   createdAt: string;
   post?: PostType[]
 }
@@ -130,7 +130,7 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
       }
     });
 
-    return tagsList.sort(({ tag_name: tagA }, { tag_name: tagB }) => {
+    return tagsList.sort(({ name: tagA }, { name: tagB }) => {
       return (tagA < tagB) ? -1 : (tagA > tagB) ? 1 : 0;
     });
   };
@@ -326,7 +326,7 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
                     className={classNames("tag", { "is-primary": filters.has("tag") && filters.get("tag") == tag.id })}
                     onClick={updateFilter.bind(null, { ...fromEntries(filters), tag: tag.id })}
                   >
-                    {tag.tag_name}
+                    {tag.name}
                   </span>
                 );
               })}
