@@ -5,7 +5,7 @@ import { CommonAttributes } from "util/typing/modelCommonAttributes";
 import { PostAttributes, PostInstance } from "./post";
 
 export interface TagAttributes extends CommonAttributes{
-  tagName: string;
+  name: string;
   post?: PostAttributes | PostAttributes["id"];
 }
 
@@ -43,7 +43,7 @@ export function TagModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Model
       allowNull: false,
       autoIncrement: false
     },
-    tagName: {
+    name: {
       type: Sequelize.DataTypes.STRING,
       allowNull: false,
       unique: true
