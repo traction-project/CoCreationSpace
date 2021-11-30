@@ -197,6 +197,22 @@ describe("User model", () => {
     expect(firstUser.permissions[0].userPermission.approved).toEqual(true);
   });
 
+  it("should retrieve only approved permissions through the corresponding method", async () => {
+    const { User, Permission } = db.getModels();
+
+    const user = await User.create({ username: "admin" });
+    const permission1 = await Permission.create({ type: "edit" });
+    const permission2 = await Permission.create({ type: "admin" });
+
+    await user.addPermission(permission1);
+    await user.addPermission(permission2, { through: { approved: true }});
+
+    const approvedPermissions = await user.getApprovedPermissions();
+
+    expect(approvedPermissions.length).toEqual(1);
+    expect(approvedPermissions[0].type).toEqual("admin");
+  });
+
   it("should not fail when trying to remove an interest that the user does not have", async () => {
     const { User, Topic } = db.getModels();
 

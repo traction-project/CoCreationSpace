@@ -57,6 +57,7 @@ export interface UserInstance extends Sequelize.Model<UserAttributes, UserCreati
   generateToken: (validityInDays: number) => string;
   getAuth: () => UserToken;
   isAdmin: () => Promise<boolean>;
+  getApprovedPermissions: () => Promise<PermissionInstance[]>;
 
   getLikedPosts: Sequelize.BelongsToManyGetAssociationsMixin<PostInstance>;
   countLikedPosts: Sequelize.BelongsToManyCountAssociationsMixin;
@@ -311,6 +312,21 @@ export function UserModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mode
     }
 
     return false;
+  };
+
+  User.prototype.getApprovedPermissions = async function (): Promise<PermissionInstance[]> {
+    const { Permission } =db.getModels();
+
+    const approvedPermissions = Permission.findAll({
+      include: {
+        model: User,
+        required: true,
+        through: { where: { approved: true }},
+        attributes: []
+      }
+    });
+
+    return approvedPermissions;
   };
 
   return User;
