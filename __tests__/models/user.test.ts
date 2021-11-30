@@ -135,6 +135,68 @@ describe("User model", () => {
     ])).toBeFalsy();
   });
 
+  it("should initialise a user's new permission approval status as false", async () => {
+    const { User, Permission, UserPermission } = db.getModels();
+
+    const user = await User.create({ username: "admin" });
+    const permission = await Permission.create({ type: "delete" });
+
+    await user.addPermission(permission);
+    expect(await user.countPermissions()).toEqual(1);
+
+    const userPermission = await UserPermission.findOne({ where: {
+      userId: user.id,
+      permissionId: permission.id
+    } as any});
+
+    expect(userPermission).not.toBeNull();
+    expect(userPermission!.approved).toEqual(false);
+  });
+
+  it("should be possible to explicitly initialise a user's new permission approval status to true", async () => {
+    const { User, Permission, UserPermission } = db.getModels();
+
+    const user = await User.create({ username: "admin" });
+    const permission = await Permission.create({ type: "delete" });
+
+    await user.addPermission(permission, { through: { approved: true } });
+    expect(await user.countPermissions()).toEqual(1);
+
+    const userPermission = await UserPermission.findOne({ where: {
+      userId: user.id,
+      permissionId: permission.id
+    } as any});
+
+    expect(userPermission).not.toBeNull();
+    expect(userPermission!.approved).toEqual(true);
+  });
+
+  it("should retrieve only approved permissions", async () => {
+    const { User, Permission } = db.getModels();
+
+    const user = await User.create({ username: "admin" });
+    const permission1 = await Permission.create({ type: "edit" });
+    const permission2 = await Permission.create({ type: "admin" });
+
+    await user.addPermission(permission1);
+    await user.addPermission(permission2, { through: { approved: true }});
+
+    const foundUsers = await User.findAll({
+      where: { username: "admin" },
+      include: [{
+        model: Permission,
+        through: { where: { approved: true } },
+        required: true
+      }]
+    });
+
+    expect(foundUsers.length).toEqual(1);
+
+    const firstUser = foundUsers[0] as any;
+    expect(firstUser.permissions.length).toEqual(1);
+    expect(firstUser.permissions[0].userPermission.approved).toEqual(true);
+  });
+
   it("should not fail when trying to remove an interest that the user does not have", async () => {
     const { User, Topic } = db.getModels();
 
