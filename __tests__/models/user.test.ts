@@ -171,6 +171,30 @@ describe("User model", () => {
     expect(userPermission!.approved).toEqual(true);
   });
 
+  it("should be possible to explicitly initialise a user's new permission to a specific group", async () => {
+    const { User, Permission, UserGroup, UserPermission } = db.getModels();
+
+    const user = await User.create({ username: "admin" });
+    const permission = await Permission.create({ type: "delete" });
+    const group = await UserGroup.create({ name: "group1" });
+
+    await user.addPermission(permission, { through: { approved: true, userGroupId: group.id } });
+    expect(await user.countPermissions()).toEqual(1);
+
+    const userPermission = await UserPermission.findOne({ where: {
+      userId: user.id,
+      permissionId: permission.id
+    } as any});
+
+    expect(userPermission).not.toBeNull();
+    expect(userPermission!.approved).toEqual(true);
+
+    const associatedGroup = await userPermission!.getUserGroup();
+
+    expect(associatedGroup).not.toBeNull();
+    expect(associatedGroup.name).toEqual("group1");
+  });
+
   it("should retrieve only approved permissions", async () => {
     const { User, Permission } = db.getModels();
 
