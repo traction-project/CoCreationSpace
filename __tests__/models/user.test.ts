@@ -251,6 +251,20 @@ describe("User model", () => {
     expect(await user.hasApprovedPermission("admin")).toEqual(true);
   });
 
+  it("should be possible to check whether the user has a certain approved permission for a given group", async () => {
+    const { User, Permission, UserGroup } = db.getModels();
+
+    const user = await User.create({ username: "admin" });
+    const permission = await Permission.create({ type: "edit" });
+    const group = await UserGroup.create({ name: "group1" });
+
+    await user.addPermission(permission, { through: { approved: true, userGroupId: group.id }});
+
+    expect(await user.hasApprovedPermissionForGroup("edit", group.id)).toEqual(true);
+    expect(await user.hasApprovedPermissionForGroup("admin", group.id)).toEqual(false);
+    expect(await user.hasApprovedPermissionForGroup("admin", "some_other_group")).toEqual(false);
+  });
+
   it("should not fail when trying to remove an interest that the user does not have", async () => {
     const { User, Topic } = db.getModels();
 

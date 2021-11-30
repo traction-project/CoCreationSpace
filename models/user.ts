@@ -59,6 +59,7 @@ export interface UserInstance extends Sequelize.Model<UserAttributes, UserCreati
   isAdmin: () => Promise<boolean>;
   getApprovedPermissions: () => Promise<PermissionInstance[]>;
   hasApprovedPermission: (type: string) => Promise<boolean>;
+  hasApprovedPermissionForGroup: (type: string, groupId: string) => Promise<boolean>;
 
   getLikedPosts: Sequelize.BelongsToManyGetAssociationsMixin<PostInstance>;
   countLikedPosts: Sequelize.BelongsToManyCountAssociationsMixin;
@@ -348,6 +349,28 @@ export function UserModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mode
         model: User,
         required: true,
         through: { where: { approved: true }},
+        attributes: []
+      }
+    });
+
+    return permissions != null;
+  };
+
+  /**
+   * Checks whether the current user has a certain permission for a given group
+   * and that permission has been approved
+   */
+  User.prototype.hasApprovedPermissionForGroup = async function (type: string, userGroupId: string): Promise<boolean> {
+    const { Permission } = db.getModels();
+
+    const permissions = await Permission.findOne({
+      where: {
+        type
+      },
+      include: {
+        model: User,
+        required: true,
+        through: { where: { approved: true, userGroupId }},
         attributes: []
       }
     });
