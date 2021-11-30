@@ -170,7 +170,7 @@ function postsAssociations(models: DbInterface) {
  */
 function permissionAssociations(models: DbInterface): void {
   models.Permission.belongsToMany(models.User, {
-    through: "user_permissions"
+    through: models.UserPermission
   });
 }
 
@@ -242,7 +242,7 @@ function userAssociations(models: DbInterface): void {
   });
 
   models.User.belongsToMany(models.Permission, {
-    through: "user_permissions"
+    through: models.UserPermission
   });
 
   models.User.belongsToMany(models.Post, {
