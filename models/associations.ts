@@ -40,6 +40,7 @@ class Associations {
     internalNavigationStepAssociations(models);
     consentFormAssociations(models);
     asyncJobAssociations(models);
+    userPermissionAssociations(models);
 
     this.associatons = {
       datacontainerAssociations,
@@ -280,6 +281,15 @@ function userAssociations(models: DbInterface): void {
 function userGroupAssociations(models: DbInterface) {
   models.UserGroup.belongsToMany(models.User, { through: "user_group_users" });
   models.UserGroup.hasMany(models.Topic);
+  models.UserGroup.hasMany(models.UserPermission);
+}
+
+/**
+ * Create associations for the user_permissions table
+ * @param models DBInterface
+ */
+function userPermissionAssociations(models: DbInterface) {
+  models.UserPermission.belongsTo(models.UserGroup);
 }
 
 /**
