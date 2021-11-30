@@ -84,6 +84,19 @@ describe("User model", () => {
     expect(await user.hasPermission(permission.id)).toBeTruthy();
   });
 
+  it("should not add the same permission twice to a given user", async () => {
+    const { User, Permission } = db.getModels();
+
+    const user = await User.create({ username: "admin" });
+    const permission = await Permission.create({ type: "upload_raw" });
+
+    await user.addPermission(permission);
+    expect(await user.countPermissions()).toEqual(1);
+
+    await user.addPermission(permission);
+    expect(await user.countPermissions()).toEqual(1);
+  });
+
   it("should count a user's permissions", async () => {
     const { User, Permission } = db.getModels();
 
