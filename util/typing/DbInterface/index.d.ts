@@ -19,6 +19,7 @@ import { EmojiReactionInstance } from "models/emoji_reaction";
 import { InterestInstance } from "models/interest";
 import { NotificationInstance } from "models/notification";
 import { UserGroupInstance } from "models/user_group";
+import { UserPermissionInstance } from "models/user_permission";
 import { MultimediaInteractionInstance } from "models/multimedia_interaction";
 import { SearchQueryInstance } from "models/search_query";
 import { InternalNavigationStepInstance } from "models/internal_navigation_step";
@@ -53,4 +54,5 @@ export interface DbInterface {
     UserGroup: ModelCtor<UserGroupInstance>;
     UserReference: ModelCtor<UserReferenceInstance>;
     User: ModelCtor<UserInstance>;
+    UserPermission: ModelCtor<UserPermissionInstance>;
 }
