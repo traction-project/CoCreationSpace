@@ -258,7 +258,7 @@ export function UserModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mode
 
   User.beforeCreate(user => { user.id = uuidv4(); });
 
-  User.prototype.setPassword = function (password: string): void {
+  User.prototype.setPassword = function (this: UserInstance, password: string): void {
     this.salt = crypto.randomBytes(16).toString("hex");
     this.password = crypto.pbkdf2Sync(
       password, this.salt,
@@ -267,9 +267,9 @@ export function UserModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mode
     ).toString("hex");
   };
 
-  User.prototype.validatePassword = function (password: string): boolean {
+  User.prototype.validatePassword = function (this: UserInstance, password: string): boolean {
     const hashedPassword = crypto.pbkdf2Sync(
-      password, this.salt,
+      password, this.salt!,
       10000, keyPasswordLeng,
       "sha512"
     ).toString("hex");
@@ -277,7 +277,7 @@ export function UserModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mode
     return this.password == hashedPassword;
   };
 
-  User.prototype.generateToken = function (validityInDays = 60): string {
+  User.prototype.generateToken = function (this: UserInstance, validityInDays = 60): string {
     // Generate timestamp n days from now
     const now = new Date();
     const expirationDate = new Date().setDate(now.getDate() + validityInDays);
@@ -300,7 +300,7 @@ export function UserModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mode
   /**
    * Checks if the current user has a permission of type 'admin'
    */
-  User.prototype.isAdmin = async function (): Promise<boolean> {
+  User.prototype.isAdmin = async function (this: UserInstance): Promise<boolean> {
     if (this.role == "admin") {
       return true;
     }
@@ -318,7 +318,7 @@ export function UserModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mode
   /**
    * Retrieves a list of approved permissions for the current user
    */
-  User.prototype.getApprovedPermissions = async function (): Promise<PermissionInstance[]> {
+  User.prototype.getApprovedPermissions = async function (this: UserInstance): Promise<PermissionInstance[]> {
     const { Permission } = db.getModels();
 
     const approvedPermissions = Permission.findAll({
@@ -337,7 +337,7 @@ export function UserModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mode
    * Checks whether the current user has a certain permission and that
    * permission has been approved
    */
-  User.prototype.hasApprovedPermission = async function (type: string): Promise<boolean> {
+  User.prototype.hasApprovedPermission = async function (this: UserInstance, type: string): Promise<boolean> {
     const { Permission } = db.getModels();
 
     const permissions = await Permission.findOne({
