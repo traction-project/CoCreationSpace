@@ -187,6 +187,7 @@ router.post("/:id/requestrole/:role", authRequired, async (req, res) => {
   }
 
   membership.role = role;
+  membership.roleApproved = false;
   await membership.save();
 
   res.send({
