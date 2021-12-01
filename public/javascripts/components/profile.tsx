@@ -13,6 +13,7 @@ import LanguageSwitcher from "./language_switcher";
 import ProfilePictureUploadForm from "./signup/profile_picture_upload_form";
 import InterestSelectForm from "./signup/interest_select_form";
 import JoinGroupForm from "./signup/join_group_form";
+import UpdatePermissionsForm from "./update_permissions_form";
 
 interface ProfileActionProps {
   loginActions: LoginActions;
@@ -149,6 +150,19 @@ const Profile: React.FC<ProfileProps> = (props) => {
 
         <div className="columns">
           <div className="column">
+            <h5 className="title is-5">{t("Update Interests")}</h5>
+            <InterestSelectForm
+              deleteUnselectedInterests={true}
+              onComplete={() => {
+                setDisplayNotification("success");
+                setTimeout(() => setDisplayNotification(undefined), 3000);
+              }}
+            />
+          </div>
+        </div>
+
+        <div className="columns">
+          <div className="column">
             <h5 className="title is-5">{t("Update Group Membership")}</h5>
             <JoinGroupForm
               onComplete={() => {
@@ -161,14 +175,8 @@ const Profile: React.FC<ProfileProps> = (props) => {
 
         <div className="columns">
           <div className="column">
-            <h5 className="title is-5">{t("Update Interests")}</h5>
-            <InterestSelectForm
-              deleteUnselectedInterests={true}
-              onComplete={() => {
-                setDisplayNotification("success");
-                setTimeout(() => setDisplayNotification(undefined), 3000);
-              }}
-            />
+            <h5 className="title is-5">{t("Update Group Permission Settings")}</h5>
+            <UpdatePermissionsForm />
           </div>
         </div>
       </div>
