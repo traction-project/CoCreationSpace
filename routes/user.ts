@@ -236,7 +236,7 @@ router.get("/profile/:id", authRequired, async (req, res) => {
   });
 
   // Retrieve groups for user
-  const groups = await user.getUserGroups({ attributes: ["id", "name", "groupMembership"] });
+  const groups = await user.getUserGroups({ attributes: ["id", "name"] });
   // Retrieve interests for user
   const interests = await user.getInterestedTopics({ attributes: ["id", "title"] });
   // Check if user is an admin
