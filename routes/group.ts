@@ -20,13 +20,24 @@ router.get("/all", authRequired, async (req, res) => {
 });
 
 /**
- * Returns the groups that the current user is a member of
+ * Returns the groups that the current user is a member of or has a pending
+ * join request.
  */
 router.get("/me", authRequired, async (req, res) => {
   const user = req.user as UserInstance;
   const groups = await user.getUserGroups({
     attributes: ["id", "name"]
   });
+
+  res.send(groups);
+});
+
+/**
+ * Returns the groups that the current user is an approved member of
+ */
+router.get("/me/approved", authRequired, async (req, res) => {
+  const user = req.user as UserInstance;
+  const groups = await user.getApprovedUserGroups();
 
   res.send(groups);
 });
