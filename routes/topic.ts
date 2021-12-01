@@ -23,7 +23,7 @@ router.get("/group", authRequired, async (req, res) => {
   const user = req.user as UserInstance;
   const { Topic, UserGroup } = db.getModels();
 
-  const groups = (await user.getUserGroups()).map((group) => group.id);
+  const groups = (await user.getApprovedUserGroups()).map((group) => group.id);
 
   const topics = await Topic.findAll({
     include: [{

@@ -110,7 +110,7 @@ router.get("/all/group", authRequired, async (req, res) => {
   const criteria = await buildCriteria(req.query, DataContainer);
   queryDataContainer = Object.assign(queryDataContainer, criteria);
 
-  const groups = (await user.getUserGroups()).map((group) => group.id);
+  const groups = (await user.getApprovedUserGroups()).map((group) => group.id);
 
   const posts = await Post.findAndCountAll({
     where: {

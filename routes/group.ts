@@ -25,7 +25,7 @@ router.get("/all", authRequired, async (req, res) => {
 router.get("/me", authRequired, async (req, res) => {
   const user = req.user as UserInstance;
   const groups = await user.getUserGroups({
-    attributes: ["id", "name"]
+    attributes: ["id", "name", "groupMembership"]
   });
 
   res.send(groups);
