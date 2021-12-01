@@ -4,6 +4,8 @@ import { CommonAttributes } from "util/typing/modelCommonAttributes";
 
 export interface GroupMembershipAttributes extends CommonAttributes {
   approved: boolean;
+  role: "participant" | "facilitator";
+  roleApproved: boolean;
 }
 
 type GroupMembershipCreationAttributes = Optional<GroupMembershipAttributes, "id" | "createdAt" | "updatedAt">
