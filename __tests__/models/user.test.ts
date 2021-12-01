@@ -184,30 +184,6 @@ describe("User model", () => {
     expect(userPermission!.approved).toEqual(true);
   });
 
-  it("should be possible to explicitly initialise a user's new permission to a specific group", async () => {
-    const { User, Permission, UserGroup, UserPermission } = db.getModels();
-
-    const user = await User.create({ username: "admin" });
-    const permission = await Permission.create({ type: "delete" });
-    const group = await UserGroup.create({ name: "group1" });
-
-    await user.addPermission(permission, { through: { approved: true, userGroupId: group.id } });
-    expect(await user.countPermissions()).toEqual(1);
-
-    const userPermission = await UserPermission.findOne({ where: {
-      userId: user.id,
-      permissionId: permission.id
-    } as any});
-
-    expect(userPermission).not.toBeNull();
-    expect(userPermission!.approved).toEqual(true);
-
-    const associatedGroup = await userPermission!.getUserGroup();
-
-    expect(associatedGroup).not.toBeNull();
-    expect(associatedGroup.name).toEqual("group1");
-  });
-
   it("should retrieve only approved permissions", async () => {
     const { User, Permission } = db.getModels();
 
@@ -262,20 +238,6 @@ describe("User model", () => {
 
     expect(await user.hasApprovedPermission("edit")).toEqual(false);
     expect(await user.hasApprovedPermission("admin")).toEqual(true);
-  });
-
-  it("should be possible to check whether the user has a certain approved permission for a given group", async () => {
-    const { User, Permission, UserGroup } = db.getModels();
-
-    const user = await User.create({ username: "admin" });
-    const permission = await Permission.create({ type: "edit" });
-    const group = await UserGroup.create({ name: "group1" });
-
-    await user.addPermission(permission, { through: { approved: true, userGroupId: group.id }});
-
-    expect(await user.hasApprovedPermissionForGroup("edit", group.id)).toEqual(true);
-    expect(await user.hasApprovedPermissionForGroup("admin", group.id)).toEqual(false);
-    expect(await user.hasApprovedPermissionForGroup("admin", "some_other_group")).toEqual(false);
   });
 
   it("should not fail when trying to remove an interest that the user does not have", async () => {

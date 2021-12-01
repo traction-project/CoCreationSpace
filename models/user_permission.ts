@@ -1,7 +1,6 @@
 import Sequelize, { Optional } from "sequelize";
 
 import { CommonAttributes } from "util/typing/modelCommonAttributes";
-import { UserGroupInstance } from "./user_group";
 
 export interface UserPermissionAttributes extends CommonAttributes {
   approved: boolean;
@@ -13,8 +12,6 @@ type UserPermissionCreationAttributes = Optional<UserPermissionAttributes, "id" 
  * UserPermission instance object interface
  */
 export interface UserPermissionInstance extends Sequelize.Model<UserPermissionCreationAttributes>, UserPermissionAttributes {
-  getUserGroup: Sequelize.BelongsToGetAssociationMixin<UserGroupInstance>;
-  setUserGroup: Sequelize.BelongsToSetAssociationMixin<UserGroupInstance, UserGroupInstance["id"]>;
 }
 
 /**
