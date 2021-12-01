@@ -309,7 +309,7 @@ describe("User model", () => {
     expect(await user.countUserGroups()).toEqual(1);
   });
 
-  it("should associate a user with multiple single groups", async () => {
+  it("should associate a user with multiple groups", async () => {
     const { User, UserGroup } = db.getModels();
 
     const user = await User.create(
@@ -343,6 +343,37 @@ describe("User model", () => {
     expect(await user.countUserGroups()).toEqual(2);
     await user.removeUserGroup(group1.id);
     expect(await user.countUserGroups()).toEqual(1);
+  });
+
+  it("should associate a user with a group and initialise their role to a value", async () => {
+    const { User, UserGroup } = db.getModels();
+
+    const user = await User.create({ username: "admin" });
+    const group = await UserGroup.create({ name: "group1" });
+
+    expect(await user.countUserGroups()).toEqual(0);
+
+    await user.addUserGroup(group, { through: { role: "facilitator" } });
+    expect(await user.countUserGroups()).toEqual(1);
+
+    const groups = await user.getUserGroups();
+    expect((groups[0] as any).groupMembership.role).toEqual("facilitator");
+  });
+
+  it("should not be possible to associate a user to a group and specify an invalid value for role", async () => {
+    const { User, UserGroup } = db.getModels();
+
+    const user = await User.create({ username: "admin" });
+    const group = await UserGroup.create({ name: "group1" });
+
+    expect(await user.countUserGroups()).toEqual(0);
+
+    try {
+      await user.addUserGroup(group, { through: { role: "spammer" } });
+      fail();
+    } catch {
+      expect(await user.countUserGroups()).toEqual(0);
+    }
   });
 
   it("should return whether a user is part of a group", async () => {
