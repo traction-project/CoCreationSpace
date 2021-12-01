@@ -361,6 +361,25 @@ describe("User model", () => {
     expect(await user.hasUserGroup(group1)).toBeTruthy();
   });
 
+  it("should return a list of groups for which the user is approved", async () => {
+    const { User, UserGroup } = db.getModels();
+
+    const user = await User.create({ username: "admin" });
+
+    const group1 = await UserGroup.create({ name: "group1" });
+    const group2 = await UserGroup.create({ name: "group2" });
+
+    await user.addUserGroup(group1);
+    await user.addUserGroup(group2, { through: { approved: true }});
+
+    const groups = await user.getUserGroups();
+    expect(groups.length).toEqual(2);
+
+    const approvedGroups = await user.getApprovedUserGroups();
+    expect(approvedGroups.length).toEqual(1);
+    expect(approvedGroups[0].name).toEqual("group2");
+  });
+
   it("should list a user's multimedia interactions", async () => {
     const { User, MultimediaInteraction } = db.getModels();
 
