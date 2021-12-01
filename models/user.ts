@@ -365,18 +365,17 @@ export function UserModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mode
   User.prototype.getApprovedUserGroups = async function (this: UserInstance): Promise<UserGroupInstance[]> {
     const { UserGroup } = db.getModels();
 
-    return UserGroup.findAll({
+    const userWithGroups: any = await User.findByPk(this.id, {
       include: {
-        model: User,
+        model: UserGroup,
         required: true,
-        where: {
-          id: this.id
-        },
         through: {
           where: { approved: true }
         }
       }
     });
+
+    return userWithGroups.userGroups;
   };
 
   /**
