@@ -3,9 +3,14 @@ import { useEffect, useState } from "react";
 import { useTranslation, Trans } from "react-i18next";
 import classNames from "classnames";
 
-interface Group {
+export interface Group {
   id: string;
   name: string;
+  groupMembership: {
+    role: "participant" | "facilitator";
+    approved: boolean;
+    roleApproved: boolean;
+  }
 }
 
 interface JoinGroupFormProps {
