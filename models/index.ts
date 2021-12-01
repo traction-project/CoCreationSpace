@@ -28,6 +28,7 @@ import { InternalNavigationStepModelFactory } from "./internal_navigation_step";
 import { ConsentFormModelFactory } from "./consent_form";
 import { AsyncJobModelFactory } from "./async_job";
 import { UserPermissionModelFactory } from "./user_permission";
+import { GroupMembershipModelFactory } from "./group_membership";
 
 /**
  *  Class that contains all models created in the data base. Also, it is charge of
@@ -71,6 +72,7 @@ class DataBase {
     const UserReference = UserReferenceModelFactory(sequelize);
     const User = UserModelFactory(sequelize);
     const UserPermission = UserPermissionModelFactory(sequelize);
+    const GroupMembership = GroupMembershipModelFactory(sequelize);
 
     this.models = {
       AsyncJob,
@@ -97,7 +99,8 @@ class DataBase {
       UserGroup,
       UserReference,
       User,
-      UserPermission
+      UserPermission,
+      GroupMembership
     };
   }
 

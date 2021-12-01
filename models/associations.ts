@@ -238,7 +238,7 @@ function userAssociations(models: DbInterface): void {
   models.User.hasMany(models.EmojiReaction);
 
   models.User.belongsToMany(models.UserGroup, {
-    through: "user_group_users"
+    through: models.GroupMembership
   });
 
   models.User.belongsToMany(models.Permission, {
@@ -278,7 +278,9 @@ function userAssociations(models: DbInterface): void {
  * @param models DBInterface
  */
 function userGroupAssociations(models: DbInterface) {
-  models.UserGroup.belongsToMany(models.User, { through: "user_group_users" });
+  models.UserGroup.belongsToMany(models.User, {
+    through: models.GroupMembership
+  });
   models.UserGroup.hasMany(models.Topic);
 }
 

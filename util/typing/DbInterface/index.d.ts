@@ -25,6 +25,7 @@ import { SearchQueryInstance } from "models/search_query";
 import { InternalNavigationStepInstance } from "models/internal_navigation_step";
 import { ConsentFormInstance } from "models/consent_form";
 import { AsyncJobInstance } from "models/async_job";
+import { GroupMembershipInstance } from "models/group_membership";
 
 /**
  *  Interface for the objects that containes all models from database
@@ -55,4 +56,5 @@ export interface DbInterface {
     UserReference: ModelCtor<UserReferenceInstance>;
     User: ModelCtor<UserInstance>;
     UserPermission: ModelCtor<UserPermissionInstance>;
+    GroupMembership: ModelCtor<GroupMembershipInstance>;
 }
