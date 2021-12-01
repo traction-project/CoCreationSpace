@@ -120,4 +120,41 @@ router.post("/:id/user/:userId/approve", async (req, res) => {
   });
 });
 
+/**
+ * Approve request for changing a group role for a given user. This action can
+ * only be performed by users with the admin permission.
+ */
+router.post("/:id/user/:userId/approverole", async (req, res) => {
+  const { GroupMembership } = db.getModels();
+  const { id, userId } = req.params;
+  const user = req.user as UserInstance;
+
+  if (!user.isAdmin()) {
+    return res.status(400).send({
+      status: "ERR",
+      message: "Insufficient permissions"
+    });
+  }
+
+  const membership = await GroupMembership.findOne({
+    where: {
+      userGroupId: id, userId
+    } as any
+  });
+
+  if (!membership) {
+    return res.status(400).send({
+      status: "ERR",
+      message: "No such request"
+    });
+  }
+
+  membership.roleApproved = true;
+  await membership.save();
+
+  res.send({
+    status: "OK"
+  });
+});
+
 export default router;
