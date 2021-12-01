@@ -87,7 +87,7 @@ router.post("/:id/leave", authRequired, async (req, res) => {
  * Approve request for joining a group. This action can only be performed by
  * users with the admin permission.
  */
-router.post("/:id/user/:userId/approve", async (req, res) => {
+router.post("/:id/user/:userId/approve", authRequired, async (req, res) => {
   const { GroupMembership } = db.getModels();
   const { id, userId } = req.params;
   const user = req.user as UserInstance;
@@ -124,7 +124,7 @@ router.post("/:id/user/:userId/approve", async (req, res) => {
  * Approve request for changing a group role for a given user. This action can
  * only be performed by users with the admin permission.
  */
-router.post("/:id/user/:userId/approverole", async (req, res) => {
+router.post("/:id/user/:userId/approverole", authRequired, async (req, res) => {
   const { GroupMembership } = db.getModels();
   const { id, userId } = req.params;
   const user = req.user as UserInstance;
@@ -150,6 +150,43 @@ router.post("/:id/user/:userId/approverole", async (req, res) => {
   }
 
   membership.roleApproved = true;
+  await membership.save();
+
+  res.send({
+    status: "OK"
+  });
+});
+
+/**
+ * Creates a new request to change the current user's role within the given
+ * group.
+ */
+router.post("/:id/requestrole/:role", authRequired, async (req, res) => {
+  const { GroupMembership } = db.getModels();
+  const { id, role } = req.params;
+  const user = req.user as UserInstance;
+
+  const membership = await GroupMembership.findOne({
+    where: {
+      userGroupId: id, userId: user.id
+    } as any
+  });
+
+  if (!membership) {
+    return res.status(400).send({
+      status: "ERR",
+      message: "No such request"
+    });
+  }
+
+  if (role != "participant" && role != "facilitator") {
+    return res.status(400).send({
+      status: "ERR",
+      message: "Invalid role"
+    });
+  }
+
+  membership.role = role;
   await membership.save();
 
   res.send({
