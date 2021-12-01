@@ -324,6 +324,7 @@ export function UserModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mode
     const approvedPermissions = Permission.findAll({
       include: {
         model: User,
+        where: { id: this.id },
         required: true,
         through: { where: { approved: true }},
         attributes: []
@@ -347,6 +348,7 @@ export function UserModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mode
       include: {
         model: User,
         required: true,
+        where: { id: this.id },
         through: { where: { approved: true }},
         attributes: []
       }
