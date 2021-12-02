@@ -19,7 +19,7 @@ interface JoinGroupFormProps {
 }
 
 const JoinGroupForm: React.FC<JoinGroupFormProps> = (props) => {
-  const { onComplete, multiSelect = false } = props;
+  const { onComplete, multiSelect = true } = props;
 
   const { t } = useTranslation();
   const [ groups, setGroups ] = useState<Array<Group>>([]);
@@ -36,11 +36,12 @@ const JoinGroupForm: React.FC<JoinGroupFormProps> = (props) => {
     }).then((res) => {
       return res.json();
     }).then((groups: Array<Group>) => {
-      setInitialGroups(groups.map(({ id, groupMembership: { approved } }) => {
+      const initialGroups = groups.map(({ id, groupMembership: { approved } }) => {
         return { id, approved };
-      }));
+      });
 
-      setSelectedGroups(groups.map((g) => g.id));
+      setInitialGroups(initialGroups);
+      setSelectedGroups(initialGroups.map((g) => g.id));
     }).catch((err) => {
       setError(err);
     });
@@ -59,11 +60,6 @@ const JoinGroupForm: React.FC<JoinGroupFormProps> = (props) => {
 
           setSelectedGroups(groups);
         }
-        setSelectedGroups(Array.from(
-          new Set(
-            [...selectedGroups, id]
-          )
-        ));
       } else {
         setSelectedGroups([id]);
       }
@@ -76,6 +72,13 @@ const JoinGroupForm: React.FC<JoinGroupFormProps> = (props) => {
     }
 
     try {
+      // Join selected groups
+      await Promise.all(selectedGroups.map((selectedGroup) => {
+        return fetch(`/groups/${selectedGroup}/join`, {
+          method: "POST",
+        });
+      }));
+
       // Leave all groups which were previously selected, but not anymore
       await Promise.all(initialGroups.filter((initialGroup) => {
         return !selectedGroups.find((selectedGroup) => selectedGroup == initialGroup.id);
@@ -85,14 +88,13 @@ const JoinGroupForm: React.FC<JoinGroupFormProps> = (props) => {
         });
       }));
 
-      // Join selected groups
-      await Promise.all(selectedGroups.map((selectedGroup) => {
-        return fetch(`/groups/${selectedGroup}/join`, {
-          method: "POST",
-        });
-      }));
-
       setInitialGroups(selectedGroups.map((id) => {
+        const previouslySelected = initialGroups.find((initialGroup) => initialGroup.id == id);
+
+        if (previouslySelected) {
+          return previouslySelected;
+        }
+
         return { id, approved: false };
       }));
       onComplete?.();
@@ -161,7 +163,11 @@ const JoinGroupForm: React.FC<JoinGroupFormProps> = (props) => {
 
       <hr/>
 
-      <button className="button is-info" disabled={selectedGroups.length == 0} onClick={onSubmit}>
+      <button
+        className="button is-info"
+        disabled={selectableGroups.filter((g) => selectedGroups.find((selected) => selected == g.id)).length == 0}
+        onClick={onSubmit}
+      >
         {t("Submit")}
       </button>
     </React.Fragment>

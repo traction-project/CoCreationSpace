@@ -79,6 +79,7 @@ const Signup: React.FC<SignupProps> = (props) => {
                     <h4 className="title is-4">{t("Select a group to join")}</h4>
 
                     <JoinGroupForm
+                      multiSelect={false}
                       onComplete={() => {
                         setStep(step + 1);
                       }}
