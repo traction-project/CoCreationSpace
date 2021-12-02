@@ -72,6 +72,21 @@ const JoinGroupForm: React.FC<JoinGroupFormProps> = (props) => {
     }
 
     try {
+      const groupsToLeave = initialGroups.filter((initialGroup) => {
+        return !selectedGroups.find((selectedGroup) => selectedGroup == initialGroup.id);
+      });
+
+      // Ensure we're not leaving all groups
+      const remainingGroups = initialGroups.filter((initialGroup) => {
+        return selectedGroups.find((selectedGroup) => selectedGroup == initialGroup.id);
+      });
+      console.log(remainingGroups);
+
+      if (remainingGroups.length == 0) {
+        setError("No remaining groups");
+        return;
+      }
+
       // Join selected groups
       await Promise.all(selectedGroups.map((selectedGroup) => {
         return fetch(`/groups/${selectedGroup}/join`, {
@@ -80,9 +95,7 @@ const JoinGroupForm: React.FC<JoinGroupFormProps> = (props) => {
       }));
 
       // Leave all groups which were previously selected, but not anymore
-      await Promise.all(initialGroups.filter((initialGroup) => {
-        return !selectedGroups.find((selectedGroup) => selectedGroup == initialGroup.id);
-      }).map((group) => {
+      await Promise.all(groupsToLeave.map((group) => {
         return fetch(`/groups/${group.id}/leave`, {
           method: "POST"
         });
