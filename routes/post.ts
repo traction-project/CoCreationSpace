@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Router, Request, Response } from "express";
 
 import { db } from "../models";
 import { buildCriteria, isUser, getFromEnvironment } from "../util";
@@ -27,59 +27,73 @@ async function logSearchQuery(query: string | undefined, resultcount: number, us
 }
 
 /**
- * Get all post from user
+ * Returns an Express middleware function which will, when called as part of a
+ * request, return all posts associated with the current user. The param
+ * `publishedOnly` can be used to control whether only published posts or only
+ * draft posts should be returned.
+ *
+ * @param publishedOnly Flag to control whether only published posts should be returned
+ * @returns An Express middleware function which returns the current users posts
  */
-router.get("/all/user", authRequired, async (req, res) => {
-  const user = req.user as UserInstance;
-  const { Post, User, DataContainer, MediaItem, Thread, Topic, UserGroup } = db.getModels();
+function getUserPosts(publishedOnly: boolean) {
+  return async (req: Request, res: Response) => {
+    const user = req.user as UserInstance;
+    const { Post, User, DataContainer, MediaItem, Thread, Topic, UserGroup } = db.getModels();
 
-  let queryDataContainer = {
-    model: DataContainer,
-    include: [{
-      model: MediaItem,
-      attributes: ["status", "id", "type"],
-      include: ["emojiReactions"]
-    }]
-  };
-
-  const criteria = await buildCriteria(req.query, DataContainer);
-  queryDataContainer = Object.assign(queryDataContainer, criteria);
-
-  const posts = await Post.findAndCountAll({
-    where: {
-      parentPostId: null
-    },
-    include: [{
-      model: User,
-      attributes: ["id", "username", "image"],
-      where: { id: user.id }
-    }, queryDataContainer, "comments", "tags", {
-      model: Thread,
-      required: true,
+    let queryDataContainer = {
+      model: DataContainer,
       include: [{
-        model: Topic,
+        model: MediaItem,
+        attributes: ["status", "id", "type"],
+        include: ["emojiReactions"]
+      }]
+    };
+
+    const criteria = await buildCriteria(req.query, DataContainer);
+    queryDataContainer = Object.assign(queryDataContainer, criteria);
+
+    const posts = await Post.findAndCountAll({
+      where: {
+        parentPostId: null,
+        published: publishedOnly
+      },
+      include: [{
+        model: User,
+        attributes: ["id", "username", "image"],
+        where: { id: user.id }
+      }, queryDataContainer, "comments", "tags", {
+        model: Thread,
         required: true,
         include: [{
-          model: UserGroup,
-          required: true
+          model: Topic,
+          required: true,
+          include: [{
+            model: UserGroup,
+            required: true
+          }]
         }]
-      }]
-    }],
-    order: [
-      ["createdAt", "DESC"]
-    ]
-  });
+      }],
+      order: [
+        ["createdAt", "DESC"]
+      ]
+    });
 
-  await logSearchQuery(req.query["q"] as string, posts.count, user);
+    await logSearchQuery(req.query["q"] as string, posts.count, user);
 
-  posts.rows.forEach(post => {
-    if (post.user && isUser(post.user)) {
-      post.user.image = `${CLOUDFRONT_URL}/${post.user.image}`;
-    }
-  });
+    posts.rows.forEach(post => {
+      if (post.user && isUser(post.user)) {
+        post.user.image = `${CLOUDFRONT_URL}/${post.user.image}`;
+      }
+    });
 
-  res.send(posts);
-});
+    res.send(posts);
+  };
+}
+
+/**
+ * Get all published posts from user
+ */
+router.get("/all/user", authRequired, getUserPosts(true));
 
 /**
  * Get all published posts for the groups the current user is a member of.
