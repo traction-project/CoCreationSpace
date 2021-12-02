@@ -96,6 +96,11 @@ function getUserPosts(publishedOnly: boolean) {
 router.get("/all/user", authRequired, getUserPosts(true));
 
 /**
+ * Get all draft posts from user
+ */
+router.get("/draft/user", authRequired, getUserPosts(false));
+
+/**
  * Get all published posts for the groups the current user is a member of.
  */
 router.get("/all/group", authRequired, async (req, res) => {
