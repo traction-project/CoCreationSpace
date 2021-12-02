@@ -411,6 +411,36 @@ describe("User model", () => {
     expect(approvedGroups[0].name).toEqual("group2");
   });
 
+  it("should return an empty list if the user is not approved to any group", async () => {
+    const { User, UserGroup } = db.getModels();
+
+    const user = await User.create({ username: "admin" });
+
+    const group1 = await UserGroup.create({ name: "group1" });
+    const group2 = await UserGroup.create({ name: "group2" });
+
+    await user.addUserGroup(group1);
+    await user.addUserGroup(group2);
+
+    const groups = await user.getUserGroups();
+    expect(groups.length).toEqual(2);
+
+    const approvedGroups = await user.getApprovedUserGroups();
+    expect(approvedGroups.length).toEqual(0);
+  });
+
+  it("should return an empty list if the user is not a member of any group", async () => {
+    const { User } = db.getModels();
+
+    const user = await User.create({ username: "admin" });
+
+    const groups = await user.getUserGroups();
+    expect(groups.length).toEqual(0);
+
+    const approvedGroups = await user.getApprovedUserGroups();
+    expect(approvedGroups.length).toEqual(0);
+  });
+
   it("should return a list of groups for which the user is approved", async () => {
     const { User, UserGroup } = db.getModels();
 

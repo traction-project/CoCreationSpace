@@ -375,7 +375,7 @@ export function UserModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mode
       }
     });
 
-    return userWithGroups.userGroups;
+    return userWithGroups?.userGroups || [];
   };
 
   /**
