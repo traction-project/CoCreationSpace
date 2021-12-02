@@ -43,8 +43,10 @@ router.get("/me/approved", authRequired, async (req, res) => {
 });
 
 /**
- * Makes the current user join the group identified by the given id. Returns
- * 200 on success, or 404 if the group with the given id cannot be found.
+ * Makes the current user join the group identified by the given id. If the
+ * selected group is the first group that the user joins, no admin approval is
+ * required. Returns 200 on success, or 404 if the group with the given id
+ * cannot be found.
  */
 router.post("/:id/join", authRequired, async (req, res) => {
   const { UserGroup } = db.getModels();
@@ -52,10 +54,15 @@ router.post("/:id/join", authRequired, async (req, res) => {
   const { id } = req.params;
   const user = req.user as UserInstance;
 
+  const isFirstGroup = (await user.countUserGroups()) == 0;
   const group = await UserGroup.findByPk(id);
 
   if (group) {
-    await user.addUserGroup(group);
+    if (isFirstGroup) {
+      await user.addUserGroup(group, { through: { approved: true }});
+    } else {
+      await user.addUserGroup(group);
+    }
 
     res.send({
       status: "OK"
