@@ -88,6 +88,9 @@ const App: React.FC<AppProps> = () => {
               <PrivateRoute path="/userPosts">
                 <PostList endpoint="/posts/all/user" />
               </PrivateRoute>
+              <PrivateRoute path="/drafts">
+                <PostList endpoint="/posts/draft/user" />
+              </PrivateRoute>
               <Route path="/">
                 <Home />
               </Route>
