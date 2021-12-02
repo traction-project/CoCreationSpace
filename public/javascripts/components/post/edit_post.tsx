@@ -16,7 +16,7 @@ interface EditPostProps {
 const EditPost: React.FC<EditPostProps> = () => {
   const { id } = useParams<{ id: string }>();
   const history = useHistory();
-  const { register, handleSubmit, getValues, setValue } = useForm();
+  const { register, handleSubmit, getValues, setValue, reset } = useForm();
   const { t } = useTranslation();
 
   const [ post, setPost ] = useState<PostType>();
@@ -43,6 +43,8 @@ const EditPost: React.FC<EditPostProps> = () => {
         );
         setMultimedia(multimediaArray);
       }
+
+      reset();
     });
   }, []);
 
@@ -86,7 +88,7 @@ const EditPost: React.FC<EditPostProps> = () => {
     setTags(tags.concat(tagsToAdd));
   };
 
-  const handleFormSubmission = handleSubmit(async ({ title, description }) => {
+  const handleFormSubmission = handleSubmit(async ({ title, description, draft }) => {
     const multimediaIdArray = multimedia.map(m => m.id);
 
     const res = await fetch(`/posts/${id}/edit`, {
@@ -96,7 +98,8 @@ const EditPost: React.FC<EditPostProps> = () => {
         title,
         description,
         tags,
-        multimedia: multimediaIdArray
+        multimedia: multimediaIdArray,
+        published: !draft
       })
     });
 
@@ -236,6 +239,17 @@ const EditPost: React.FC<EditPostProps> = () => {
                     </span>
                   </span>
                 </label>
+              </div>
+
+              <hr/>
+
+              <div className="field">
+                <div className="control">
+                  <label className="checkbox">
+                    <input type="checkbox" {...register("draft")} defaultChecked={!post.published} />
+                    &nbsp;{t("Save as draft")}
+                  </label>
+                </div>
               </div>
 
               <div className="field pt-4">
