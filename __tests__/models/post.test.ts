@@ -46,6 +46,29 @@ describe("Post model", () => {
     expect(await DataContainer.count()).toEqual(1);
   });
 
+  it("should create a post with the property 'published' initialised to 'true'", async () => {
+    const { User, Post } = db.getModels();
+
+    const post = await Post.create({
+      userId: (await User.findOne({}))!.id,
+    });
+
+    expect(post.isNewRecord).toBeFalsy();
+    expect(post.published).toEqual(true);
+  });
+
+  it("should create a post with the property 'published' explicitly set to false", async () => {
+    const { User, Post } = db.getModels();
+
+    const post = await Post.create({
+      userId: (await User.findOne({}))!.id,
+      published: false
+    });
+
+    expect(post.isNewRecord).toBeFalsy();
+    expect(post.published).toEqual(false);
+  });
+
   it("should retrieve all comments for a post", async () => {
     const { User, Post } = db.getModels();
 
