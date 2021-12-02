@@ -114,8 +114,8 @@ const CreatePost: React.FC<CreatePostProps> = ({ file }) => {
     setDisplayNotification(undefined);
   };
 
-  const handleFormSubmission = handleSubmit(async ({ title, description, topic }) => {
-    console.log("Submit:", title, description, topic);
+  const handleFormSubmission = handleSubmit(async ({ title, description, topic, draft }) => {
+    console.log("Submit:", title, description, topic, draft);
 
     // Get and parse remaining values from tag form field
     const tagsToAdd = parseTags(getValues("tagName")).filter((t) => {
@@ -128,7 +128,8 @@ const CreatePost: React.FC<CreatePostProps> = ({ file }) => {
       text: description,
       multimedia: fileUploads.map((u) => u.id),
       tags: tags.concat(tagsToAdd).map((tag) => { return { name: tag }; } ),
-      topicId: topic
+      topicId: topic,
+      published: !draft
     };
 
     try {
@@ -358,6 +359,15 @@ const CreatePost: React.FC<CreatePostProps> = ({ file }) => {
                   ) : (
                     <p>{t("No tags added yet")}</p>
                   )}
+                </div>
+              </div>
+
+              <div className="field">
+                <div className="control">
+                  <label className="checkbox">
+                    <input type="checkbox" {...register("draft")} />
+                    &nbsp;{t("Save as draft")}
+                  </label>
                 </div>
               </div>
 
