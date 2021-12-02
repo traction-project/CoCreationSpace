@@ -28,7 +28,7 @@ interface CreatePostProps {
 const CreatePost: React.FC<CreatePostProps> = ({ file }) => {
   const history = useHistory();
   const { t } = useTranslation();
-  const { handleSubmit, register, setValue, getValues, watch } = useForm();
+  const { handleSubmit, register, setValue, getValues, watch, reset } = useForm();
 
   const [ fileUploads, setFileUploads ] = useState<Array<FileUpload>>([]);
   const [ displayNotification, setDisplayNotification] = useState<"success" | "error">();
@@ -42,6 +42,8 @@ const CreatePost: React.FC<CreatePostProps> = ({ file }) => {
       setTopics(topics.map((t: { id: string, title: string, userGroup: { name: string } }) => {
         return [t.id, t.title, t.userGroup.name];
       }));
+
+      reset({ "topic": topics[0].id });
     });
   }, []);
 
