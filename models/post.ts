@@ -27,6 +27,7 @@ export interface PostAttributes extends CommonAttributes{
   userReferenced?: UserAttributes | UserAttributes["id"];
   thread?: ThreadAttributes | ThreadAttributes["id"];
   tags?: TagAttributes | TagAttributes["id"];
+  published?: boolean;
 }
 
 type PostCreationAttributes = Optional<PostAttributes, "id" | "createdAt" | "updatedAt">;
@@ -137,6 +138,10 @@ export function PostModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mode
     },
     multimediaRef: {
       type: Sequelize.DataTypes.UUID
+    },
+    published: {
+      type: Sequelize.DataTypes.BOOLEAN,
+      defaultValue: true
     }
   };
 
