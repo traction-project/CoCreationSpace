@@ -193,6 +193,12 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
                 <div className="media-content">
                   <div className="content">
                     <div>
+                      {(!post.published) && (
+                        <span className="tag is-warning non-clickable mr-2">
+                          {t("Draft")}
+                        </span>
+                      )}
+
                       {(post.title) && (
                         <strong className="post-title">{post.title}</strong>
                       )}
