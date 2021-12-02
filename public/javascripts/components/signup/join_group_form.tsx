@@ -24,7 +24,7 @@ const JoinGroupForm: React.FC<JoinGroupFormProps> = (props) => {
   const { t } = useTranslation();
   const [ groups, setGroups ] = useState<Array<Group>>([]);
   const [ selectedGroups, setSelectedGroups ] = useState<Array<string>>([]);
-  const [ initialGroups, setInitialGroups ] = useState<Array<string>>([]);
+  const [ initialGroups, setInitialGroups ] = useState<Array<{ id: string, approved: boolean }>>([]);
   const [ error, setError ] = useState<string>();
 
   useEffect(() => {
@@ -35,9 +35,12 @@ const JoinGroupForm: React.FC<JoinGroupFormProps> = (props) => {
       return fetch("/groups/me");
     }).then((res) => {
       return res.json();
-    }).then((myGroups: Array<{ id: string }>) => {
-      setInitialGroups(myGroups.map((g) => g.id));
-      setSelectedGroups(myGroups.map((g) => g.id));
+    }).then((groups: Array<Group>) => {
+      setInitialGroups(groups.map(({ id, groupMembership: { approved } }) => {
+        return { id, approved };
+      }));
+
+      setSelectedGroups(groups.map((g) => g.id));
     }).catch((err) => {
       setError(err);
     });
@@ -46,6 +49,16 @@ const JoinGroupForm: React.FC<JoinGroupFormProps> = (props) => {
   const onGroupSelected = (id: string) => {
     return () => {
       if (multiSelect) {
+        const index = selectedGroups.findIndex((groupId) => id == groupId);
+
+        if (index < 0) {
+          setSelectedGroups([...selectedGroups, id]);
+        } else {
+          const groups = selectedGroups.slice();
+          groups.splice(index, 1);
+
+          setSelectedGroups(groups);
+        }
         setSelectedGroups(Array.from(
           new Set(
             [...selectedGroups, id]
@@ -65,9 +78,9 @@ const JoinGroupForm: React.FC<JoinGroupFormProps> = (props) => {
     try {
       // Leave all groups which were previously selected, but not anymore
       await Promise.all(initialGroups.filter((initialGroup) => {
-        return !selectedGroups.find((selectedGroup) => selectedGroup == initialGroup);
+        return !selectedGroups.find((selectedGroup) => selectedGroup == initialGroup.id);
       }).map((group) => {
-        return fetch(`/groups/${group}/leave`, {
+        return fetch(`/groups/${group.id}/leave`, {
           method: "POST"
         });
       }));
@@ -79,12 +92,28 @@ const JoinGroupForm: React.FC<JoinGroupFormProps> = (props) => {
         });
       }));
 
-      setInitialGroups(selectedGroups);
+      setInitialGroups(selectedGroups.map((id) => {
+        return { id, approved: false };
+      }));
       onComplete?.();
     } catch (err) {
       setError(err);
     }
   };
+
+  // Filter out groups which have a pending join request
+  const selectableGroups = groups.filter((g) => {
+    return initialGroups.find((initialGroup) => {
+      return initialGroup.id == g.id && initialGroup.approved == false;
+    }) == null;
+  });
+
+  const pendingGroups = initialGroups.filter((g) => !g.approved).map((g) => {
+    return {
+      ...g,
+      name: groups.find((existingGroup) => existingGroup.id == g.id)?.name
+    };
+  });
 
   return (
     <React.Fragment>
@@ -100,7 +129,7 @@ const JoinGroupForm: React.FC<JoinGroupFormProps> = (props) => {
 
       <hr/>
 
-      {groups.map(({ id, name }) => {
+      {selectableGroups.map(({ id, name }) => {
         return (
           <span
             key={id}
@@ -111,6 +140,24 @@ const JoinGroupForm: React.FC<JoinGroupFormProps> = (props) => {
           </span>
         );
       })}
+
+      {(pendingGroups.length > 0) && (
+        <>
+          <hr/>
+          <h6 className="title is-6">{t("Pending requests")}</h6>
+
+          {pendingGroups.map(({ id, name }) => {
+            return (
+              <span
+                key={id}
+                className={classNames("tag", "is-large", "is-light", "non-clickable")}
+              >
+                {name}
+              </span>
+            );
+          })}
+        </>
+      )}
 
       <hr/>
 
