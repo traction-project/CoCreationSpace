@@ -82,7 +82,7 @@ router.get("/all/user", authRequired, async (req, res) => {
 });
 
 /**
- * Get all posts for the groups the current user is a member of.
+ * Get all published posts for the groups the current user is a member of.
  */
 router.get("/all/group", authRequired, async (req, res) => {
   const user = req.user as UserInstance;
@@ -114,7 +114,8 @@ router.get("/all/group", authRequired, async (req, res) => {
 
   const posts = await Post.findAndCountAll({
     where: {
-      parentPostId: null
+      parentPostId: null,
+      published: true
     },
     distinct: true,
     include: [{
