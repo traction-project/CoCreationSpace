@@ -13,6 +13,12 @@ export interface Group {
   }
 }
 
+interface GroupSelection {
+  id: string;
+  name: string;
+  status: "joined" | "requested" | "unselected";
+}
+
 interface JoinGroupFormProps {
   multiSelect?: boolean;
   onComplete?: () => void;
@@ -22,74 +28,107 @@ const JoinGroupForm: React.FC<JoinGroupFormProps> = (props) => {
   const { onComplete, multiSelect = true } = props;
 
   const { t } = useTranslation();
-  const [ groups, setGroups ] = useState<Array<Group>>([]);
-  const [ selectedGroups, setSelectedGroups ] = useState<Array<string>>([]);
-  const [ initialGroups, setInitialGroups ] = useState<Array<{ id: string, approved: boolean }>>([]);
+  const [ groups, setGroups ] = useState<Array<GroupSelection>>([]);
+  const [ initialGroups, setInitialGroups ] = useState<Array<GroupSelection>>([]);
   const [ error, setError ] = useState<string>();
 
   useEffect(() => {
-    fetch("/groups/all").then((res) => {
-      return res.json();
-    }).then((groups: Array<Group>) => {
-      setGroups(groups);
-      return fetch("/groups/me");
-    }).then((res) => {
-      return res.json();
-    }).then((groups: Array<Group>) => {
-      const initialGroups = groups.map(({ id, groupMembership: { approved } }) => {
-        return { id, approved };
+    (async () => {
+      const groupReq = await fetch("/groups/all");
+      const groups: Array<Group> = await groupReq.json();
+
+      const joinedGroupReq = await fetch("/groups/me");
+      const joinedGroups: Array<Group> = await joinedGroupReq.json();
+
+      const groupSelection: Array<GroupSelection> = groups.map((g) => {
+        const joinedGroup = joinedGroups.find((joined) => joined.id == g.id);
+
+        return {
+          id: g.id,
+          name: g.name,
+          status: (!joinedGroup) ? (
+            "unselected"
+          ) : (joinedGroup.groupMembership.approved) ? (
+            "joined"
+          ) : (
+            "requested"
+          )
+        };
       });
 
-      setInitialGroups(initialGroups);
-      setSelectedGroups(initialGroups.map((g) => g.id));
-    }).catch((err) => {
-      setError(err);
-    });
+      setGroups(groupSelection);
+      setInitialGroups(groupSelection);
+    })();
   }, []);
 
   const onGroupSelected = (id: string) => {
     return () => {
       if (multiSelect) {
-        const index = selectedGroups.findIndex((groupId) => id == groupId);
+        setGroups(groups.map((g) => {
+          if (g.id == id) {
+            return { ...g, status: (g.status == "unselected") ? "joined" : "unselected" };
+          }
 
-        if (index < 0) {
-          setSelectedGroups([...selectedGroups, id]);
-        } else {
-          const groups = selectedGroups.slice();
-          groups.splice(index, 1);
-
-          setSelectedGroups(groups);
-        }
+          return { ...g };
+        }));
       } else {
-        setSelectedGroups([id]);
+        setGroups(groups.map((g) => {
+          if (g.id == id) {
+            return { ...g, status: "joined" };
+          }
+
+          return { ...g, status: "unselected" };
+        }));
       }
     };
   };
 
+  const getGroupsToJoin = () => {
+    return groups.filter((g) => {
+      // Get initial status of given group
+      const initialStatus = initialGroups.find((initial) => initial.id == g.id)!.status;
+      // If initial status was unselected and current status is joined, we want to join the group
+      return initialStatus == "unselected" && g.status == "joined";
+    });
+  };
+
+  const getGroupsToLeave = () => {
+    return groups.filter((g) => {
+      // Get initial status of given group
+      const initialStatus = initialGroups.find((initial) => initial.id == g.id)!.status;
+      // If initial status was joined and current status is unselected, we want to leave the group
+      return initialStatus == "joined" && g.status == "unselected";
+    });
+  };
+
+  const getRemainingGroups = () => {
+    return initialGroups.filter((g) => {
+      return g.status == "joined";
+    }).filter((g) => {
+      // Check if the group is in the groups to leave
+      const willLeave = getGroupsToLeave().find((leave) => leave.id == g.id);
+      return !willLeave;
+    });
+  };
+
   const onSubmit = async () => {
-    if (selectedGroups.length == 0) {
+    if (groups.filter((g) => g.status == "joined").length == 0) {
       return;
     }
 
     try {
-      const groupsToLeave = initialGroups.filter((initialGroup) => {
-        return !selectedGroups.find((selectedGroup) => selectedGroup == initialGroup.id);
-      });
+      const groupsToJoin = getGroupsToJoin();
+      const groupsToLeave = getGroupsToLeave();
 
-      // Ensure we're not leaving all groups
-      const remainingGroups = initialGroups.filter((initialGroup) => {
-        return selectedGroups.find((selectedGroup) => selectedGroup == initialGroup.id);
-      });
-      console.log(remainingGroups);
+      const remainingGroups = getRemainingGroups();
 
       if (remainingGroups.length == 0) {
-        setError("No remaining groups");
         return;
       }
 
       // Join selected groups
-      await Promise.all(selectedGroups.map((selectedGroup) => {
-        return fetch(`/groups/${selectedGroup}/join`, {
+      await Promise.all(groupsToJoin.map((group) => {
+        return fetch(`/groups/${group.id}/join`, {
           method: "POST",
         });
       }));
@@ -101,15 +140,18 @@ const JoinGroupForm: React.FC<JoinGroupFormProps> = (props) => {
         });
       }));
 
-      setInitialGroups(selectedGroups.map((id) => {
-        const previouslySelected = initialGroups.find((initialGroup) => initialGroup.id == id);
+      const newGroups: Array<GroupSelection> = groups.map((g) => {
+        const initialStatus = initialGroups.find((initial) => initial.id == g.id)!.status;
 
-        if (previouslySelected) {
-          return previouslySelected;
+        if (initialStatus == "unselected" && g.status == "joined") {
+          return { ...g, status: "requested" };
         }
 
-        return { id, approved: false };
-      }));
+        return { ...g };
+      });
+
+      setGroups(newGroups);
+      setInitialGroups(newGroups);
       onComplete?.();
     } catch (err) {
       setError(err);
@@ -117,17 +159,12 @@ const JoinGroupForm: React.FC<JoinGroupFormProps> = (props) => {
   };
 
   // Filter out groups which have a pending join request
-  const selectableGroups = groups.filter((g) => {
-    return initialGroups.find((initialGroup) => {
-      return initialGroup.id == g.id && initialGroup.approved == false;
-    }) == null;
+  const selectableGroups = groups.filter(({ status }) => {
+    return status == "joined" || status == "unselected";
   });
 
-  const pendingGroups = initialGroups.filter((g) => !g.approved).map((g) => {
-    return {
-      ...g,
-      name: groups.find((existingGroup) => existingGroup.id == g.id)?.name
-    };
+  const pendingGroups = initialGroups.filter(({ status }) => {
+    return status == "requested";
   });
 
   return (
@@ -144,12 +181,12 @@ const JoinGroupForm: React.FC<JoinGroupFormProps> = (props) => {
 
       <hr/>
 
-      {selectableGroups.map(({ id, name }) => {
+      {selectableGroups.map(({ id, name, status }) => {
         return (
           <span
             key={id}
             onClick={onGroupSelected(id)}
-            className={classNames("tag", "is-large", "is-primary", { "is-light": !selectedGroups.find((groupId) => groupId == id) })}
+            className={classNames("tag", "is-large", "is-primary", { "is-light": status == "unselected" })}
           >
             {name}
           </span>
@@ -178,7 +215,7 @@ const JoinGroupForm: React.FC<JoinGroupFormProps> = (props) => {
 
       <button
         className="button is-info"
-        disabled={selectableGroups.filter((g) => selectedGroups.find((selected) => selected == g.id)).length == 0}
+        disabled={selectableGroups.filter((g) => g.status == "joined").length == 0 || getRemainingGroups().length == 0}
         onClick={onSubmit}
       >
         {t("Submit")}
