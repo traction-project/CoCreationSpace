@@ -69,6 +69,35 @@ describe("Post model", () => {
     expect(post.published).toEqual(false);
   });
 
+  it("should return posts based on the value of the property published", async () => {
+    const { User, Post } = db.getModels();
+
+    await Post.create({
+      title: "post1",
+      userId: (await User.findOne({}))!.id,
+      published: false
+    });
+    await Post.create({
+      title: "post2",
+      userId: (await User.findOne({}))!.id,
+      published: true
+    });
+    await Post.create({
+      title: "post3",
+      userId: (await User.findOne({}))!.id,
+      published: false
+    });
+
+    const draftPosts = await Post.findAll({ where: { published: false }});
+    expect(draftPosts.length).toEqual(2);
+
+    const publishedPosts = await Post.findAll({ where: { published: true }});
+    expect(publishedPosts.length).toEqual(1);
+
+    const allPosts = await Post.findAll();
+    expect(allPosts.length).toEqual(3);
+  });
+
   it("should retrieve all comments for a post", async () => {
     const { User, Post } = db.getModels();
 
