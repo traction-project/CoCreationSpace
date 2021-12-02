@@ -40,14 +40,22 @@ const PostEntry: React.FC<PostEntryProps> = (props) => {
             in <i>{post.thread.topic.userGroup.name}</i> by <i>{post.user.username}</i>
           </small>
 
-          <p className="mt-2">
-            <i className="far fa-comment" />&nbsp;
-            {post.comments?.length || 0}&nbsp;
-            {t("Comment", { count: post.comments?.length || 0 })}
-          </p>
+          {(post.published) && (
+            <p className="mt-2">
+              <i className="far fa-comment" />&nbsp;
+              {post.comments?.length || 0}&nbsp;
+              {t("Comment", { count: post.comments?.length || 0 })}
+            </p>
+          )}
         </div>
 
         <div>
+          {(!post.published) && (
+            <span className="tag is-warning non-clickable mr-2">
+              {t("Draft")}
+            </span>
+          )}
+
           {post.tags?.map((t, i) => {
             return (
               <span key={i} className="tag is-light" onClick={filterByTag(t.id)}>
