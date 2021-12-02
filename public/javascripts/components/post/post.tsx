@@ -57,6 +57,7 @@ export interface PostType extends CommonType {
   };
   userReferenced?: UserType[];
   tags?: TagData[];
+  published: boolean;
 }
 
 interface PostConnectedProps {
@@ -325,19 +326,21 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
           )}
         </div>
 
-        <div className="columns">
-          <div className="column">
-            {(showNewComment) && (
-              <NewComment
-                handleSubmitNewComment={handleSubmitNewComment}
-                handleClickCancel={handleClickCancel}
-                enableTimestamp={(selectedItem && (selectedItem.type == "video" || selectedItem.type == "audio"))}>
-              </NewComment>
-            )}
+        {(post.published) && (
+          <div className="columns">
+            <div className="column">
+              {(showNewComment) && (
+                <NewComment
+                  handleSubmitNewComment={handleSubmitNewComment}
+                  handleClickCancel={handleClickCancel}
+                  enableTimestamp={(selectedItem && (selectedItem.type == "video" || selectedItem.type == "audio"))}>
+                </NewComment>
+              )}
 
-            <CommentList posts={comments} callbackClickTime={handleClickTime} />
+              <CommentList posts={comments} callbackClickTime={handleClickTime} />
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
       {isOpen && (
