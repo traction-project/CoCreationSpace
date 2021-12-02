@@ -40,7 +40,7 @@ export function GroupMembershipModelFactory(sequelize: Sequelize.Sequelize): Seq
     },
     roleApproved: {
       type: Sequelize.DataTypes.BOOLEAN,
-      defaultValue: false
+      defaultValue: true
     }
   };
 
