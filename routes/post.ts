@@ -356,7 +356,7 @@ router.post("/", authRequired, async (req, res) => {
  */
 router.post("/:id/edit", authRequired, async (req, res) => {
   const { id } = req.params;
-  const { title, description, multimedia, tags } = req.body;
+  const { title, description, multimedia, tags, published } = req.body;
 
   const { Post, DataContainer, Tag } = db.getModels();
   const user = req.user as UserInstance;
@@ -373,8 +373,10 @@ router.post("/:id/edit", authRequired, async (req, res) => {
 
     if (title) {
       post.title = title;
-      await post.save();
     }
+
+    post.published = published;
+    await post.save();
 
     if (description) {
       dataContainer.textContent = description;
