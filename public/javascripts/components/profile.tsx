@@ -4,6 +4,7 @@ import { Dispatch, bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import { useHistory } from "react-router-dom";
 
 import { ApplicationState } from "../store";
 import { actionCreators as loginActionCreators, LoginActions } from "../actions/login";
@@ -29,6 +30,7 @@ const Profile: React.FC<ProfileProps> = (props) => {
   const [ displayNotification, setDisplayNotification ] = useState<"success" | "error">();
   const { handleSubmit, register, formState: { errors }, watch } = useForm({});
   const { t } = useTranslation();
+  const history = useHistory();
 
   const handleButtonApplyClick = handleSubmit((data) => {
     fetch("/users", {
@@ -168,6 +170,9 @@ const Profile: React.FC<ProfileProps> = (props) => {
               onComplete={() => {
                 setDisplayNotification("success");
                 setTimeout(() => setDisplayNotification(undefined), 3000);
+
+                // Refresh page
+                history.go(0);
               }}
             />
           </div>
