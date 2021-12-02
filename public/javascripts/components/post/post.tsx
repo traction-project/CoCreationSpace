@@ -192,7 +192,7 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
 
                 <div className="media-content">
                   <div className="content">
-                    <p>
+                    <div>
                       {(post.title) && (
                         <strong className="post-title">{post.title}</strong>
                       )}
@@ -235,7 +235,7 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
                           </React.Fragment>
                         );
                       })}
-                    </p>
+                    </div>
                   </div>
                 </div>
               </article>
@@ -277,33 +277,35 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
             </div>
           )}
 
-          <div className="columns">
-            <div className="column">
-              <nav className="level is-mobile" style={{position: "relative"}}>
-                <div className="level-left">
-                  <a className="level-item" onClick={handleClickReply}>
-                    <span className="icon is-small"><i className="fas fa-reply"></i></span>
-                  </a>
+          {(post.published) && (
+            <div className="columns">
+              <div className="column">
+                <nav className="level is-mobile" style={{position: "relative"}}>
+                  <div className="level-left">
+                    <a className="level-item" onClick={handleClickReply}>
+                      <span className="icon is-small"><i className="fas fa-reply"></i></span>
+                    </a>
 
-                  <a className="level-item" onClick={handleClickLike}>
-                    <span key="unique" className="icon is-small">
-                      <i className={classNames("fa-heart", { "fas": isLike, "far": !isLike })} />
-                    </span>
-                  </a>
-                  <span className="level-item">
-                    {likes}
-                  </span>
-                  {(selectedItem) && (
-                    <a href={selectedItem.title} className="level-item" download>
-                      <span className="icon is-small">
-                        <i className="fas fa-download"/>
+                    <a className="level-item" onClick={handleClickLike}>
+                      <span key="unique" className="icon is-small">
+                        <i className={classNames("fa-heart", { "fas": isLike, "far": !isLike })} />
                       </span>
                     </a>
-                  )}
-                </div>
-              </nav>
+                    <span className="level-item">
+                      {likes}
+                    </span>
+                    {(selectedItem) && (
+                      <a href={selectedItem.title} className="level-item" download>
+                        <span className="icon is-small">
+                          <i className="fas fa-download"/>
+                        </span>
+                      </a>
+                    )}
+                  </div>
+                </nav>
+              </div>
             </div>
-          </div>
+          )}
 
           {(post?.dataContainer?.mediaItems && post.dataContainer.mediaItems.length > 1) && (
             <div style={{ display: "flex", backgroundColor: "#F5F5F5", overflowX: "scroll" }}>
