@@ -26,6 +26,7 @@ import { InternalNavigationStepInstance } from "models/internal_navigation_step"
 import { ConsentFormInstance } from "models/consent_form";
 import { AsyncJobInstance } from "models/async_job";
 import { GroupMembershipInstance } from "models/group_membership";
+import { NoteCollectionInstance } from "models/note_collection";
 
 /**
  *  Interface for the objects that containes all models from database
@@ -57,4 +58,5 @@ export interface DbInterface {
     User: ModelCtor<UserInstance>;
     UserPermission: ModelCtor<UserPermissionInstance>;
     GroupMembership: ModelCtor<GroupMembershipInstance>;
+    NoteCollection: ModelCtor<NoteCollectionInstance>;
 }
