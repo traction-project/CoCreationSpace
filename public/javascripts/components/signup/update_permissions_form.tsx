@@ -2,7 +2,7 @@ import * as React from "react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import { Group, UserRole } from "./signup/join_group_form";
+import { Group, UserRole } from "./join_group_form";
 
 interface RequestableGroup extends Group {
   requested: boolean;

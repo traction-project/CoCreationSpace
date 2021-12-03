@@ -14,7 +14,7 @@ import LanguageSwitcher from "./language_switcher";
 import ProfilePictureUploadForm from "./signup/profile_picture_upload_form";
 import InterestSelectForm from "./signup/interest_select_form";
 import JoinGroupForm from "./signup/join_group_form";
-import UpdatePermissionsForm from "./update_permissions_form";
+import UpdatePermissionsForm from "./signup/update_permissions_form";
 
 interface ProfileActionProps {
   loginActions: LoginActions;
