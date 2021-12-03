@@ -35,7 +35,7 @@ export function GroupMembershipModelFactory(sequelize: Sequelize.Sequelize): Seq
       type: Sequelize.DataTypes.STRING,
       defaultValue: "participant",
       validate: {
-        isIn: [["participant", "facilitator"]]
+        isIn: [["participant", "facilitator", "moderator", "admin"]]
       }
     },
     roleApproved: {
