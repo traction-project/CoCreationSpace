@@ -360,6 +360,26 @@ describe("User model", () => {
     expect((groups[0] as any).groupMembership.role).toEqual("facilitator");
   });
 
+  it("should accept valid roles for group membership", async () => {
+    const { User, UserGroup } = db.getModels();
+
+    const user = await User.create({ username: "admin" });
+    const group = await UserGroup.create({ name: "group1" });
+
+    expect(await user.countUserGroups()).toEqual(0);
+
+    for (const role of ["participant", "facilitator", "moderator", "admin"]) {
+      await user.addUserGroup(group, { through: { role } });
+      expect(await user.countUserGroups()).toEqual(1);
+
+      const groups = await user.getUserGroups();
+      expect((groups[0] as any).groupMembership.role).toEqual(role);
+
+      await user.removeUserGroup(group);
+      expect(await user.countUserGroups()).toEqual(0);
+    }
+  });
+
   it("should not be possible to associate a user to a group and specify an invalid value for role", async () => {
     const { User, UserGroup } = db.getModels();
 
