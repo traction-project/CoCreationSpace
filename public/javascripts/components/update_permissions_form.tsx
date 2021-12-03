@@ -2,7 +2,7 @@ import * as React from "react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import { Group } from "./signup/join_group_form";
+import { Group, UserRole } from "./signup/join_group_form";
 
 interface RequestableGroup extends Group {
   requested: boolean;
@@ -57,7 +57,7 @@ const UpdatePermissionForm: React.FC<UpdatePermissionsFormProps> = (props) => {
             ...g,
             groupMembership: {
               ...g.groupMembership,
-              role: e.target.value as "facilitator" | "participant"
+              role: e.target.value as UserRole
             }
           };
         }
@@ -82,6 +82,8 @@ const UpdatePermissionForm: React.FC<UpdatePermissionsFormProps> = (props) => {
                   <select name="role" value={g.groupMembership.role} onChange={onRoleUpdated(g.id)}>
                     <option value="participant">{t("Participant")}</option>
                     <option value="facilitator">{t("Facilitator")}</option>
+                    <option value="moderator">{t("Moderator")}</option>
+                    <option value="admin">{t("Admin")}</option>
                   </select>
                 </span>
               </p>

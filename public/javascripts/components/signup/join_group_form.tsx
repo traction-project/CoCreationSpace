@@ -3,11 +3,13 @@ import { useEffect, useState } from "react";
 import { useTranslation, Trans } from "react-i18next";
 import classNames from "classnames";
 
+export type UserRole = "participant" | "facilitator" | "moderator" | "admin";
+
 export interface Group {
   id: string;
   name: string;
   groupMembership: {
-    role: "participant" | "facilitator";
+    role: UserRole;
     approved: boolean;
     roleApproved: boolean;
   }
