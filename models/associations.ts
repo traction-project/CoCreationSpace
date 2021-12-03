@@ -25,7 +25,7 @@ class Associations {
     const datacontainerAssociations = dataContainerAssociations(models);
     emojiReactionAssociations(models);
     metadataAssociations(models);
-    multimediaAssociations(models);
+    mediaItemAssociations(models);
     permissionAssociations(models);
     const postAssociations = postsAssociations(models);
     subtitleAssociations(models);
@@ -40,6 +40,7 @@ class Associations {
     internalNavigationStepAssociations(models);
     consentFormAssociations(models);
     asyncJobAssociations(models);
+    noteCollectionAssociations(models);
 
     this.associatons = {
       datacontainerAssociations,
@@ -93,10 +94,10 @@ function metadataAssociations(models: DbInterface): void {
 }
 
 /**
- *  Create all multimedia table relationship with rest of tables
+ *  Create all mediaItem table relationship with rest of tables
  * @param models DbInterface
  */
-function multimediaAssociations(models: DbInterface): void {
+function mediaItemAssociations(models: DbInterface): void {
   models.MediaItem.belongsTo(models.User);
   models.MediaItem.belongsTo(models.DataContainer);
   models.MediaItem.hasMany(models.AudioContent);
@@ -105,6 +106,21 @@ function multimediaAssociations(models: DbInterface): void {
   models.MediaItem.hasMany(models.MultimediaInteraction);
   models.MediaItem.hasMany(models.EmojiReaction);
   models.MediaItem.hasMany(models.AsyncJob);
+
+  models.MediaItem.belongsToMany(models.NoteCollection, {
+    through: "note_collection_media_items"
+  });
+}
+
+/**
+ *  Create all noteCollection table relationship with rest of tables
+ * @param models DbInterface
+ */
+
+function noteCollectionAssociations(models: DbInterface): void {
+  models.NoteCollection.belongsToMany(models.MediaItem, {
+    through: "note_collection_media_items"
+  });
 }
 
 /**
