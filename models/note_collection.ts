@@ -2,6 +2,7 @@ import Sequelize, { Optional } from "sequelize";
 import { v4 as uuidv4} from "uuid";
 
 import { CommonAttributes } from "util/typing/modelCommonAttributes";
+import { MediaItemInstance } from "./media_item";
 
 export interface NoteCollectionAttributes extends CommonAttributes {
   name: string;
@@ -15,6 +16,16 @@ type NoteCollectionCreationAttributes = Optional<NoteCollectionAttributes, "id" 
  * NoteCollection instance object interface
  */
 export interface NoteCollectionInstance extends Sequelize.Model<NoteCollectionAttributes, NoteCollectionCreationAttributes>, NoteCollectionAttributes {
+  getMediaItems: Sequelize.BelongsToManyGetAssociationsMixin<MediaItemInstance>;
+  countMediaItems: Sequelize.BelongsToManyCountAssociationsMixin;
+  hasMediaItem: Sequelize.BelongsToManyHasAssociationMixin<MediaItemInstance, MediaItemInstance["id"]>;
+  hasMediaItems: Sequelize.BelongsToManyHasAssociationsMixin<MediaItemInstance, MediaItemInstance["id"]>;
+  setMediaItems: Sequelize.BelongsToManySetAssociationsMixin<MediaItemInstance, MediaItemInstance["id"]>;
+  addMediaItem: Sequelize.BelongsToManyAddAssociationMixin<MediaItemInstance, MediaItemInstance["id"]>;
+  addMediaItems: Sequelize.BelongsToManyAddAssociationsMixin<MediaItemInstance, MediaItemInstance["id"]>;
+  removeMediaItem: Sequelize.BelongsToManyRemoveAssociationMixin<MediaItemInstance, MediaItemInstance["id"]>;
+  removeMediaItems: Sequelize.BelongsToManyRemoveAssociationsMixin<MediaItemInstance, MediaItemInstance["id"]>;
+  createMediaItem: Sequelize.BelongsToManyCreateAssociationMixin<MediaItemInstance>;
 }
 
 /**

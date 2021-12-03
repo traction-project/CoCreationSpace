@@ -11,6 +11,7 @@ import { SubtitleAttributes, SubtitleInstance } from "./subtitle";
 import { MultimediaInteractionInstance } from "./multimedia_interaction";
 import { EmojiReactionAttributes, EmojiReactionInstance } from "./emoji_reaction";
 import { AsyncJobInstance } from "./async_job";
+import { NoteCollectionInstance } from "./note_collection";
 
 export interface MediaItemAttributes extends CommonAttributes {
   title: string;
@@ -110,6 +111,17 @@ export interface MediaItemInstance extends Sequelize.Model<MediaItemAttributes, 
   hasAsyncJob: Sequelize.HasManyHasAssociationMixin<AsyncJobInstance, AsyncJobInstance["id"]>;
   hasAsyncJobs: Sequelize.HasManyHasAssociationsMixin<AsyncJobInstance, AsyncJobInstance["id"]>;
   countAsyncJobs: Sequelize.HasManyCountAssociationsMixin;
+
+  getNoteCollections: Sequelize.BelongsToManyGetAssociationsMixin<NoteCollectionInstance>;
+  countNoteCollections: Sequelize.BelongsToManyCountAssociationsMixin;
+  hasNoteCollection: Sequelize.BelongsToManyHasAssociationMixin<NoteCollectionInstance, NoteCollectionInstance["id"]>;
+  hasNoteCollections: Sequelize.BelongsToManyHasAssociationsMixin<NoteCollectionInstance, NoteCollectionInstance["id"]>;
+  setNoteCollections: Sequelize.BelongsToManySetAssociationsMixin<NoteCollectionInstance, NoteCollectionInstance["id"]>;
+  addNoteCollection: Sequelize.BelongsToManyAddAssociationMixin<NoteCollectionInstance, NoteCollectionInstance["id"]>;
+  addNoteCollections: Sequelize.BelongsToManyAddAssociationsMixin<NoteCollectionInstance, NoteCollectionInstance["id"]>;
+  removeNoteCollection: Sequelize.BelongsToManyRemoveAssociationMixin<NoteCollectionInstance, NoteCollectionInstance["id"]>;
+  removeNoteCollections: Sequelize.BelongsToManyRemoveAssociationsMixin<NoteCollectionInstance, NoteCollectionInstance["id"]>;
+  createNoteCollection: Sequelize.BelongsToManyCreateAssociationMixin<NoteCollectionInstance>;
 
   incrementViewCount: () => Promise<void>;
   isDoneTranscoding: () => Promise<boolean>;
