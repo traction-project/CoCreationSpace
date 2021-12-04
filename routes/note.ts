@@ -61,3 +61,5 @@ router.get("/collection/:id", authRequired, async (req, res) => {
 
   res.send(collection);
 });
+
+export default router;

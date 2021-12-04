@@ -17,6 +17,7 @@ import UserRouter from "./user";
 import NotificationRouter from "./notification";
 import GroupRouter from "./group";
 import PermissionRouter from "./permission";
+import NoteRouter from "./note";
 
 import { UserInstance } from "../models/user";
 import { db } from "../models";
@@ -38,6 +39,7 @@ router.use("/notifications", NotificationRouter);
 router.use("/images", ImageRouter);
 router.use("/groups", GroupRouter);
 router.use("/permissions", PermissionRouter);
+router.use("/notes", NoteRouter);
 
 router.get("/", (_, res) => {
   res.render("index", { title: "CoCreation Space", enableAnalytics: process.env.ENABLE_ANALYTICS == "true" });
