@@ -199,15 +199,15 @@ export interface UserInstance extends Sequelize.Model<UserAttributes, UserCreati
   hasSearchQueries: Sequelize.HasManyHasAssociationsMixin<SearchQueryInstance, SearchQueryInstance["id"]>;
   countSearchQueries: Sequelize.HasManyCountAssociationsMixin;
 
-  getUsers: Sequelize.HasManyGetAssociationsMixin<NoteCollectionInstance>;
-  setUsers: Sequelize.HasManySetAssociationsMixin<NoteCollectionInstance, NoteCollectionInstance["id"]>;
-  addUsers: Sequelize.HasManyAddAssociationsMixin<NoteCollectionInstance, NoteCollectionInstance["id"]>;
-  addUser: Sequelize.HasManyAddAssociationMixin<NoteCollectionInstance, NoteCollectionInstance["id"]>;
-  removeUser: Sequelize.HasManyRemoveAssociationMixin<NoteCollectionInstance, NoteCollectionInstance["id"]>;
-  removeUsers: Sequelize.HasManyRemoveAssociationsMixin<NoteCollectionInstance, NoteCollectionInstance["id"]>;
-  hasUser: Sequelize.HasManyHasAssociationMixin<NoteCollectionInstance, NoteCollectionInstance["id"]>;
-  hasUsers: Sequelize.HasManyHasAssociationsMixin<NoteCollectionInstance, NoteCollectionInstance["id"]>;
-  countUsers: Sequelize.HasManyCountAssociationsMixin;
+  getNoteCollections: Sequelize.HasManyGetAssociationsMixin<NoteCollectionInstance>;
+  setNoteCollections: Sequelize.HasManySetAssociationsMixin<NoteCollectionInstance, NoteCollectionInstance["id"]>;
+  addNoteCollections: Sequelize.HasManyAddAssociationsMixin<NoteCollectionInstance, NoteCollectionInstance["id"]>;
+  addNoteCollection: Sequelize.HasManyAddAssociationMixin<NoteCollectionInstance, NoteCollectionInstance["id"]>;
+  removeNoteCollection: Sequelize.HasManyRemoveAssociationMixin<NoteCollectionInstance, NoteCollectionInstance["id"]>;
+  removeNoteCollections: Sequelize.HasManyRemoveAssociationsMixin<NoteCollectionInstance, NoteCollectionInstance["id"]>;
+  hasNoteCollection: Sequelize.HasManyHasAssociationMixin<NoteCollectionInstance, NoteCollectionInstance["id"]>;
+  hasNoteCollections: Sequelize.HasManyHasAssociationsMixin<NoteCollectionInstance, NoteCollectionInstance["id"]>;
+  countNoteCollections: Sequelize.HasManyCountAssociationsMixin;
 }
 
 /**
