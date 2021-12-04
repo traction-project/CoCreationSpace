@@ -8,6 +8,7 @@ import { UserInstance } from "./user";
 export interface NoteCollectionAttributes extends CommonAttributes {
   name: string;
   description?: string;
+  user_id?: string;
 }
 
 

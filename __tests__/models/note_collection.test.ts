@@ -87,6 +87,30 @@ describe("NoteCollection model", () => {
     expect(associatedUser.username).toEqual("admin");
   });
 
+  it("should be able to query a NoteCollection with user_id", async () => {
+    const { User, NoteCollection } = db.getModels();
+
+    const user = await User.create({
+      username: "admin",
+    });
+
+    const collection = await NoteCollection.create({
+      name: "Collection 1"
+    });
+
+    await collection.setUser(user);
+    expect(await collection.getUser()).not.toBeNull();
+
+    const result = await NoteCollection.findOne({
+      where: {
+        user_id: user.id
+      }
+    });
+
+    expect(result).not.toBeNull();
+    expect(result!.name).toEqual("Collection 1");
+  });
+
   it("should have automatically generated association methods for the MediaItem model", async () => {
     const { NoteCollection } = db.getModels();
     const noteCollection = await NoteCollection.create({ name: "test" });
