@@ -49,7 +49,8 @@ router.get("/collection/:id", authRequired, async (req, res) => {
   const collection = await NoteCollection.findOne({
     where: {
       id, user_id: user.id
-    }
+    },
+    include: ["mediaItems"]
   });
 
   if (!collection) {
