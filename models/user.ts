@@ -17,6 +17,7 @@ import { InternalNavigationStepInstance } from "./internal_navigation_step";
 import { ConsentFormInstance } from "./consent_form";
 import { SearchQueryInstance } from "./search_query";
 import { db } from "./index";
+import { NoteCollectionInstance } from "./note_collection";
 
 const [ SESSION_SECRET ] = getFromEnvironment("SESSION_SECRET");
 
@@ -197,6 +198,16 @@ export interface UserInstance extends Sequelize.Model<UserAttributes, UserCreati
   hasSearchQuery: Sequelize.HasManyHasAssociationMixin<SearchQueryInstance, SearchQueryInstance["id"]>;
   hasSearchQueries: Sequelize.HasManyHasAssociationsMixin<SearchQueryInstance, SearchQueryInstance["id"]>;
   countSearchQueries: Sequelize.HasManyCountAssociationsMixin;
+
+  getUsers: Sequelize.HasManyGetAssociationsMixin<NoteCollectionInstance>;
+  setUsers: Sequelize.HasManySetAssociationsMixin<NoteCollectionInstance, NoteCollectionInstance["id"]>;
+  addUsers: Sequelize.HasManyAddAssociationsMixin<NoteCollectionInstance, NoteCollectionInstance["id"]>;
+  addUser: Sequelize.HasManyAddAssociationMixin<NoteCollectionInstance, NoteCollectionInstance["id"]>;
+  removeUser: Sequelize.HasManyRemoveAssociationMixin<NoteCollectionInstance, NoteCollectionInstance["id"]>;
+  removeUsers: Sequelize.HasManyRemoveAssociationsMixin<NoteCollectionInstance, NoteCollectionInstance["id"]>;
+  hasUser: Sequelize.HasManyHasAssociationMixin<NoteCollectionInstance, NoteCollectionInstance["id"]>;
+  hasUsers: Sequelize.HasManyHasAssociationsMixin<NoteCollectionInstance, NoteCollectionInstance["id"]>;
+  countUsers: Sequelize.HasManyCountAssociationsMixin;
 }
 
 /**

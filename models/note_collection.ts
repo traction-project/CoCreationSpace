@@ -3,6 +3,7 @@ import { v4 as uuidv4} from "uuid";
 
 import { CommonAttributes } from "util/typing/modelCommonAttributes";
 import { MediaItemInstance } from "./media_item";
+import { UserInstance } from "./user";
 
 export interface NoteCollectionAttributes extends CommonAttributes {
   name: string;
@@ -26,6 +27,9 @@ export interface NoteCollectionInstance extends Sequelize.Model<NoteCollectionAt
   removeMediaItem: Sequelize.BelongsToManyRemoveAssociationMixin<MediaItemInstance, MediaItemInstance["id"]>;
   removeMediaItems: Sequelize.BelongsToManyRemoveAssociationsMixin<MediaItemInstance, MediaItemInstance["id"]>;
   createMediaItem: Sequelize.BelongsToManyCreateAssociationMixin<MediaItemInstance>;
+
+  getUser: Sequelize.BelongsToGetAssociationMixin<UserInstance>;
+  setUser: Sequelize.BelongsToSetAssociationMixin<UserInstance, UserInstance["id"]>
 }
 
 /**

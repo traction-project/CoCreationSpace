@@ -1,5 +1,5 @@
 import { Sequelize } from "sequelize";
-import { generateHasManyAssociationMethods, getAllMethods } from "../../util";
+import { generateBelongsToAssociationMethods, generateHasManyAssociationMethods, getAllMethods } from "../../util";
 
 process.env["SESSION_SECRET"] = "sessionsecret";
 const sequelize = new Sequelize("sqlite::memory:", { logging: false });
@@ -69,6 +69,18 @@ describe("NoteCollection model", () => {
     const noteCollection = await NoteCollection.create({ name: "test" });
 
     const expectedMethods = generateHasManyAssociationMethods("MediaItem");
+    const availableMethods = getAllMethods(noteCollection);
+
+    for (const method of expectedMethods) {
+      expect(availableMethods).toContain(method);
+    }
+  });
+
+  it("should have automatically generated association methods for the NoteCollection model", async () => {
+    const { NoteCollection } = db.getModels();
+    const noteCollection = await NoteCollection.create({ name: "test" });
+
+    const expectedMethods = generateBelongsToAssociationMethods("User");
     const availableMethods = getAllMethods(noteCollection);
 
     for (const method of expectedMethods) {
