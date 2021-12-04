@@ -62,4 +62,44 @@ router.get("/collection/:id", authRequired, async (req, res) => {
   res.send(collection);
 });
 
+/**
+ * Add the media item given my `mediaItemId` to the collection given by
+ * `collectionId`. The function verifies that the collection belongs to the
+ * current user before adding the media item to the collection.
+ */
+router.post("/add/:collectionId/:mediaItemId", authRequired, async (req, res) => {
+  const user = req.user as UserInstance;
+  const { collectionId, mediaItemId } = req.params;
+
+  const { NoteCollection, MediaItem } = db.getModels();
+
+  const noteCollection = await NoteCollection.findOne({
+    where: {
+      id: collectionId, user_id: user.id
+    }
+  });
+
+  if (!noteCollection) {
+    return res.status(404).send({
+      status: "ERR",
+      message: "No such collection"
+    });
+  }
+
+  const mediaItem = await MediaItem.findByPk(mediaItemId);
+
+  if (!mediaItem) {
+    return res.status(404).send({
+      status: "ERR",
+      message: "No such media item"
+    });
+  }
+
+  await noteCollection.addMediaItem(mediaItem);
+
+  res.send({
+    status: "OK"
+  });
+});
+
 export default router;
