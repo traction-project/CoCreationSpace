@@ -19,7 +19,7 @@ import { LoginState } from "../../reducers/login";
 import { ApplicationState } from "../../store";
 import File from "../file";
 import DeletePostModal from "./delete_post_modal";
-import NoteIcon from "../note_icon";
+import NoteIcon from "./note_icon";
 
 export interface MultimediaItem {
   id: string;
