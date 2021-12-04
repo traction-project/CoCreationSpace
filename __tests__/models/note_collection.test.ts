@@ -44,7 +44,7 @@ describe("NoteCollection model", () => {
     expect(await NoteCollection.count()).toEqual(1);
   });
 
-  it("should associate a NoteCollection to a MediaItem", async () => {
+  it("should add a MediaItem to a NoteCollection", async () => {
     const { MediaItem, NoteCollection } = db.getModels();
 
     const collection = await NoteCollection.create({
@@ -63,6 +63,24 @@ describe("NoteCollection model", () => {
     const mediaItems = await collection.getMediaItems();
     expect(mediaItems.length).toEqual(1);
     expect(mediaItems[0].id).toEqual(mediaItem.id);
+  });
+
+  it("should remove a MediaItem from a NoteCollection", async () => {
+    const { MediaItem, NoteCollection } = db.getModels();
+
+    const collection = await NoteCollection.create({
+      name: "Collection 1"
+    });
+
+    const mediaItem = await MediaItem.create({
+      title: "test",
+    });
+
+    await collection.addMediaItem(mediaItem);
+    expect(await collection.countMediaItems()).toEqual(1);
+
+    await collection.removeMediaItem(mediaItem);
+    expect(await collection.countMediaItems()).toEqual(0);
   });
 
   it("should associate a NoteCollection to a User", async () => {
