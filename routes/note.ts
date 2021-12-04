@@ -7,6 +7,14 @@ import { UserInstance } from "../models/user";
 const router = Router();
 
 /**
+ * Returns all collections associated to the current user.
+ */
+router.get("/collections", authRequired, async (req, res) => {
+  const user = req.user as UserInstance;
+  res.send(await user.getNoteCollections({ include: ["mediaItems"] }));
+});
+
+/**
  * Create a new collection by passing name and description as JSON params in
  * the POST body. The name param is required. If the collection was created
  * successfully, an object containing the new collection's ID is returned.
