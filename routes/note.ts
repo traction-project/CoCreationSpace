@@ -45,6 +45,45 @@ router.post("/collection", authRequired, async (req, res) => {
 });
 
 /**
+ * Updates an existing collection by optionally passing name or description in
+ * a JSON object in the the POST body. The function also verifies that the given
+ * collection is owned by the current user.
+ */
+router.post("/collection/:id", authRequired, async (req, res) => {
+  const user = req.user as UserInstance;
+  const { id } = req.params;
+  const { name, description } = req.body;
+
+  const { NoteCollection } = db.getModels();
+  const collection = await NoteCollection.findOne({
+    where: {
+      id, user_id: user.id
+    }
+  });
+
+  if (!collection) {
+    return res.status(400).send({
+      status: "ERR",
+      message: "No such collection"
+    });
+  }
+
+  if (name) {
+    collection.name = name;
+  }
+
+  if (description) {
+    collection.description = description;
+  }
+
+  await collection.save();
+
+  res.send({
+    status: "OK"
+  });
+});
+
+/**
  * Retrieve the note collection with the given ID, provided it belongs to the
  * current user.
  */
