@@ -64,7 +64,7 @@ router.get("/collection/:id", authRequired, async (req, res) => {
 });
 
 /**
- * Add the media item given my `mediaItemId` to the collection given by
+ * Add the media item given by `mediaItemId` to the collection given by
  * `collectionId`. The function verifies that the collection belongs to the
  * current user before adding the media item to the collection.
  */
@@ -97,6 +97,46 @@ router.post("/add/:collectionId/:mediaItemId", authRequired, async (req, res) =>
   }
 
   await noteCollection.addMediaItem(mediaItem);
+
+  res.send({
+    status: "OK"
+  });
+});
+
+/**
+ * Remove the media item given by `mediaItemId` from the collection given by
+ * `collectionId`. The function verifies that the collection belongs to the
+ * current user before removing the media item from the collection.
+ */
+router.post("/remove/:collectionId/:mediaItemId", authRequired, async (req, res) => {
+  const user = req.user as UserInstance;
+  const { collectionId, mediaItemId } = req.params;
+
+  const { NoteCollection, MediaItem } = db.getModels();
+
+  const noteCollection = await NoteCollection.findOne({
+    where: {
+      id: collectionId, user_id: user.id
+    }
+  });
+
+  if (!noteCollection) {
+    return res.status(404).send({
+      status: "ERR",
+      message: "No such collection"
+    });
+  }
+
+  const mediaItem = await MediaItem.findByPk(mediaItemId);
+
+  if (!mediaItem) {
+    return res.status(404).send({
+      status: "ERR",
+      message: "No such media item"
+    });
+  }
+
+  await noteCollection.removeMediaItem(mediaItem);
 
   res.send({
     status: "OK"
