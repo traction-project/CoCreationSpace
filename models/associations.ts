@@ -118,6 +118,7 @@ function mediaItemAssociations(models: DbInterface): void {
  */
 
 function noteCollectionAssociations(models: DbInterface): void {
+  models.NoteCollection.belongsTo(models.User);
   models.NoteCollection.belongsToMany(models.MediaItem, {
     through: "note_collection_media_items"
   });
@@ -252,6 +253,7 @@ function userAssociations(models: DbInterface): void {
   models.User.hasMany(models.InternalNavigationStep);
   models.User.hasMany(models.ConsentForm);
   models.User.hasMany(models.EmojiReaction);
+  models.User.hasMany(models.NoteCollection);
 
   models.User.belongsToMany(models.UserGroup, {
     through: models.GroupMembership
