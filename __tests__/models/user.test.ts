@@ -15,11 +15,13 @@ describe("User model", () => {
   });
 
   beforeEach(async () => {
-    const { User, UserGroup, Permission } = db.getModels();
+    const { User, UserGroup, Permission, NoteCollection, MediaItem } = db.getModels();
 
     await User.destroy({ truncate: true });
     await Permission.destroy({ truncate: true });
     await UserGroup.destroy({ truncate: true });
+    await NoteCollection.destroy({ truncate: true });
+    await MediaItem.destroy({ truncate: true });
   });
 
   it("should create a new user with just a username", async () => {
@@ -627,6 +629,60 @@ describe("User model", () => {
 
     await user.addPermission(permission);
     expect(await user.isAdmin()).toBeTruthy();
+  });
+
+  it("should return all note collections associated to the user", async () => {
+    const { User, NoteCollection } = db.getModels();
+
+    const collection1 = await NoteCollection.create({ name: "collection1" });
+    const collection2 = await NoteCollection.create({ name: "collection2" });
+    const collection3 = await NoteCollection.create({ name: "collection3" });
+
+    const user = await User.create({
+      username: "admin",
+    });
+
+    await user.addNoteCollections([collection1, collection2, collection3]);
+    const foundCollections = await user.getNoteCollections();
+
+    expect(foundCollections.length).toEqual(3);
+
+    expect(foundCollections[0].name).toEqual("collection1");
+    expect(foundCollections[1].name).toEqual("collection2");
+    expect(foundCollections[2].name).toEqual("collection3");
+  });
+
+  it("should return all note collections including media associated to the user", async () => {
+    const { User, NoteCollection, MediaItem } = db.getModels();
+
+    const collection1 = await NoteCollection.create({ name: "collection1" });
+    const collection2 = await NoteCollection.create({ name: "collection2" });
+    const collection3 = await NoteCollection.create({ name: "collection3" });
+
+    const mediaItem1 = await MediaItem.create({ title: "media1" });
+    const mediaItem2 = await MediaItem.create({ title: "media2" });
+    const mediaItem3 = await MediaItem.create({ title: "media3" });
+
+    collection1.addMediaItem(mediaItem1);
+    collection3.addMediaItems([mediaItem2, mediaItem3]);
+
+    const user = await User.create({
+      username: "admin",
+    });
+
+    await user.addNoteCollections([collection1, collection2, collection3]);
+    const foundCollections = await user.getNoteCollections({ include: "mediaItems" });
+
+    expect(foundCollections.length).toEqual(3);
+
+    expect(foundCollections[0].mediaItems).toBeDefined();
+    expect(foundCollections[0].mediaItems!.length).toEqual(1);
+
+    expect(foundCollections[1].mediaItems).toBeDefined();
+    expect(foundCollections[1].mediaItems!.length).toEqual(0);
+
+    expect(foundCollections[2].mediaItems).toBeDefined();
+    expect(foundCollections[2].mediaItems!.length).toEqual(2);
   });
 
   it("should have automatically generated association methods for the Post model", async () => {
