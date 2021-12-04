@@ -35,3 +35,29 @@ router.post("/collection", authRequired, async (req, res) => {
     id: collection.id
   });
 });
+
+/**
+ * Retrieve the note collection with the given ID, provided it belongs to the
+ * current user.
+ */
+router.get("/collection/:id", authRequired, async (req, res) => {
+  const user = req.user as UserInstance;
+  const { id } = req.params;
+
+  const { NoteCollection } = db.getModels();
+
+  const collection = await NoteCollection.findOne({
+    where: {
+      id, user_id: user.id
+    }
+  });
+
+  if (!collection) {
+    return res.status(404).send({
+      status: "ERR",
+      message: "No such collection"
+    });
+  }
+
+  res.send(collection);
+});
