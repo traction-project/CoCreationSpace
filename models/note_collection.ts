@@ -9,6 +9,7 @@ export interface NoteCollectionAttributes extends CommonAttributes {
   name: string;
   description?: string;
   user_id?: string;
+  mediaItems?: Array<MediaItemInstance>;
 }
 
 

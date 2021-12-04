@@ -111,6 +111,28 @@ describe("NoteCollection model", () => {
     expect(result!.name).toEqual("Collection 1");
   });
 
+  it("should be able to return a note collection and all its associated media items", async () => {
+    const { MediaItem, NoteCollection } = db.getModels();
+
+    const collection = await NoteCollection.create({
+      name: "Collection 1"
+    });
+
+    const mediaItem1 = await MediaItem.create({ title: "media1" });
+    const mediaItem2 = await MediaItem.create({ title: "media2" });
+    const mediaItem3 = await MediaItem.create({ title: "media3" });
+
+    await collection.addMediaItems([mediaItem1, mediaItem2, mediaItem3]);
+    expect(await collection.countMediaItems()).toEqual(3);
+
+    const foundCollection = await NoteCollection.findByPk(collection.id, {
+      include: "mediaItems"
+    });
+
+    expect(foundCollection).not.toBeNull();
+    expect(foundCollection!.mediaItems!.length).toEqual(3);
+  });
+
   it("should have automatically generated association methods for the MediaItem model", async () => {
     const { NoteCollection } = db.getModels();
     const noteCollection = await NoteCollection.create({ name: "test" });
