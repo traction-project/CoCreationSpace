@@ -12,10 +12,11 @@ describe("NoteCollection model", () => {
   });
 
   beforeEach(async () => {
-    const { MediaItem, NoteCollection } = db.getModels();
+    const { MediaItem, NoteCollection, User } = db.getModels();
 
     await NoteCollection.destroy({ truncate: true });
     await MediaItem.destroy({ truncate: true });
+    await User.destroy({ truncate: true });
   });
 
   it("should create a basic NoteCollection entry", async () => {
@@ -43,7 +44,7 @@ describe("NoteCollection model", () => {
     expect(await NoteCollection.count()).toEqual(1);
   });
 
-  it("should association a NoteCollection to a MediaItem", async () => {
+  it("should associate a NoteCollection to a MediaItem", async () => {
     const { MediaItem, NoteCollection } = db.getModels();
 
     const collection = await NoteCollection.create({
@@ -62,6 +63,28 @@ describe("NoteCollection model", () => {
     const mediaItems = await collection.getMediaItems();
     expect(mediaItems.length).toEqual(1);
     expect(mediaItems[0].id).toEqual(mediaItem.id);
+  });
+
+  it("should associate a NoteCollection to a User", async () => {
+    const { User, NoteCollection } = db.getModels();
+
+    const collection = await NoteCollection.create({
+      name: "Collection 1"
+    });
+
+    const user = await User.create({
+      username: "admin",
+    });
+
+    expect(await collection.getUser()).toBeNull();
+
+    await collection.setUser(user);
+    expect(await collection.getUser()).not.toBeNull();
+
+    const associatedUser = await collection.getUser();
+
+    expect(associatedUser.id).toEqual(user.id);
+    expect(associatedUser.username).toEqual("admin");
   });
 
   it("should have automatically generated association methods for the MediaItem model", async () => {
