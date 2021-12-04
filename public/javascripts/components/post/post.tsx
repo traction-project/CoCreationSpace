@@ -250,7 +250,7 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
 
           {(selectedItem) && (
             <div className="columns is-centered">
-              <div className="column is-8-desktop is-10-tablet">
+              <div className="column is-8-desktop is-10-tablet" style={{ position: "relative" }}>
                 {(selectedItem.type == "video") ? (
                   <MediaPlayerWithToolbar
                     id={selectedItem.id}
@@ -279,6 +279,23 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
                     {selectedItem.file}
                   </p>
                 )}
+
+                <div
+                  style={{
+                    position: "absolute",
+                    top: 15, right: 15,
+                    width: 30, height: 30,
+                    borderRadius: 2,
+                    backgroundColor: "#FFFFFF",
+                    boxShadow: "1px 1px 3px 0px rgba(60,60,60,0.75)",
+                    cursor: "pointer"
+                  }}
+                  onClick={() => {}}
+                >
+                  <p style={{ textAlign: "center", marginTop: 5 }}>
+                    <i className="far fa-bookmark" style={{ fontSize: 20 }} />
+                  </p>
+                </div>
               </div>
             </div>
           )}
