@@ -10,6 +10,7 @@ import { MultimediaItem } from "../post/post";
 export interface NoteCollection {
   id: string;
   name: string;
+  description: string;
   mediaItems: Array<MultimediaItem>;
 }
 

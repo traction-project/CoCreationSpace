@@ -2,6 +2,7 @@ import * as React from "react";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useForm } from "react-hook-form";
 
 import { NoteCollection } from "./notes_list";
 import { MultimediaItem } from "../post/post";
@@ -16,9 +17,11 @@ interface NoteEntryProps {
 const NoteEntry: React.FC<NoteEntryProps> = (props) => {
   const { id } = useParams<{ id: string }>();
   const { t } = useTranslation();
+  const { handleSubmit, register } = useForm();
 
   const [ noteCollection, setNoteCollection ] = useState<NoteCollection>();
   const [ selectedItem, setSelectedItem ] = useState<MultimediaItem>();
+  const [ editDescription, setEditDescription ] = useState(false);
 
   useEffect(() => {
     fetch(`/notes/collection/${id}`).then((res) => {
@@ -29,11 +32,30 @@ const NoteEntry: React.FC<NoteEntryProps> = (props) => {
     });
   }, [id]);
 
+  const onDescriptionEdited = handleSubmit(async ({ description }) => {
+    const res = await fetch(`/notes/collection/${id}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        description
+      })
+    });
+
+    if (res.ok) {
+      setNoteCollection({
+        ...noteCollection!,
+        description
+      });
+
+      setEditDescription(false);
+    }
+  });
+
   if (!noteCollection) {
     return null;
   }
 
-  const { name, mediaItems } = noteCollection;
+  const { name, description, mediaItems } = noteCollection;
 
   return (
     <section className="section">
@@ -90,6 +112,40 @@ const NoteEntry: React.FC<NoteEntryProps> = (props) => {
                   })}
                 </div>
               )}
+
+              <hr/>
+
+              <h6 className="title is-6">
+                  Description
+              </h6>
+
+              {(!editDescription) ? (
+                <div>
+                  <p>{description}</p>
+                  <hr/>
+                  <a onClick={() => setEditDescription(true)}>
+                    {t("Edit description")}
+                  </a>
+                </div>
+              ) : (
+                <div>
+                  <div className="field">
+                    <div className="control">
+                      <textarea className="textarea" {...register("description", { value: description })}>
+                        {description}
+                      </textarea>
+                    </div>
+                  </div>
+                  <div className="field">
+                    <p className="control">
+                      <button className="button is-info" onClick={onDescriptionEdited}>
+                        Save
+                      </button>
+                    </p>
+                  </div>
+                </div>
+              )}
+
             </div>
           </div>
         </div>
