@@ -11,11 +11,11 @@ interface NoteCollection {
 interface AddToCollectionModalProps {
   id: string;
   onClose: () => void;
-  onItemAdded?: () => void;
+  onItemAdded?: (collectionId: string, mediaItemId: string) => void;
 }
 
 const AddToCollectionModal: React.FC<AddToCollectionModalProps> = (props) => {
-  const { onClose, onItemAdded } = props;
+  const { id, onClose, onItemAdded } = props;
   const { handleSubmit, register, reset, watch } = useForm();
   const { t } = useTranslation();
 
@@ -30,8 +30,39 @@ const AddToCollectionModal: React.FC<AddToCollectionModalProps> = (props) => {
     });
   }, []);
 
-  const onConfirm = handleSubmit(async () => {
-    onItemAdded?.();
+  const onConfirm = handleSubmit(async ({ collection, name }) => {
+    console.log({ collection, name });
+
+    // If value is empty string, we create a new collection
+    if (collection == "") {
+      const res = await fetch("/notes/collection", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name
+        })
+      });
+
+      if (!res.ok) {
+        console.error("Could not create collection");
+        return;
+      }
+
+      const { id } = await res.json();
+      console.log("Created new collection with id:", id);
+      collection = id;
+    }
+
+    const res = await fetch(`/notes/add/${collection}/${id}`, {
+      method: "POST"
+    });
+
+    if (!res.ok) {
+      console.error("Could add item to collection");
+      return;
+    }
+
+    onItemAdded?.(collection, id);
     onClose();
   });
 
@@ -68,7 +99,7 @@ const AddToCollectionModal: React.FC<AddToCollectionModalProps> = (props) => {
             <div className="field">
               <label className="label">{t("Name")}</label>
               <div className="control">
-                <input className="input" type="text" />
+                <input className="input" type="text" {...register("name", { required: true })} />
               </div>
             </div>
           )}
