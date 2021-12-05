@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 
 import { NoteCollection } from "./notes_list";
 import { MultimediaItem } from "../post/post";
-import MediaPlayerWithToolbar from "../media_player_with_toolbar";
+import MediaPlayer from "../media_player";
 import Image from "../image";
 import File from "../file";
 import Thumbnail from "../thumbnail";
@@ -72,13 +72,13 @@ const NoteEntry: React.FC<NoteEntryProps> = (props) => {
                 <div className="columns is-centered">
                   <div className="column" style={{ position: "relative" }}>
                     {(selectedItem.type == "video") ? (
-                      <MediaPlayerWithToolbar
+                      <MediaPlayer
                         comments={[]}
                         emojis={[]}
                         id={selectedItem.id}
                       />
                     ) : (selectedItem.type == "audio") ? (
-                      <MediaPlayerWithToolbar
+                      <MediaPlayer
                         id={selectedItem.id}
                         comments={[]}
                         emojis={[]}
