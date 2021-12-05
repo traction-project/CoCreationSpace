@@ -281,7 +281,7 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
                   </p>
                 )}
 
-                <NoteIcon />
+                <NoteIcon id={selectedItem.id} />
               </div>
             </div>
           )}

@@ -1,9 +1,12 @@
 import * as React from "react";
 
 interface NoteIconProps {
+  id: string;
 }
 
 const NoteIcon: React.FC<NoteIconProps> = (props) => {
+  const { id } = props;
+
   return (
     <div
       style={{
