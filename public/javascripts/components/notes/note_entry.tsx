@@ -134,12 +134,17 @@ const NoteEntry: React.FC<NoteEntryProps> = (props) => {
                       <textarea className="textarea" {...register("description", { value: description })} />
                     </div>
                   </div>
-                  <div className="field">
-                    <p className="control">
+                  <div className="field is-grouped">
+                    <div className="control">
                       <button className="button is-info" onClick={onDescriptionEdited}>
                         Save
                       </button>
-                    </p>
+                    </div>
+                    <div className="control">
+                      <button className="button is-info is-light" onClick={() => setEditDescription(false)}>
+                        Cancel
+                      </button>
+                    </div>
                   </div>
                 </div>
               )}
