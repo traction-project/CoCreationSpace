@@ -6,7 +6,7 @@
     "build": "webpack"
   },
   "dependencies": {
-    "bulma": "^0.9.0",
+    "bulma": "^0.9.3",
     "classnames": "^2.2.6",
     "dashjs": "^3.2.1",
     "lodash.debounce": "^4.0.8",
@@ -17,7 +17,7 @@
     "react-pdf": "^5.3.2",
     "react-redux": "^7.2.0",
     "react-router-dom": "^5.1.2",
-    "react-useportal": "^1.0.13",
+    "react-useportal": "^1.0.14",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0"
   },
