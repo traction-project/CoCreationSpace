@@ -67,10 +67,10 @@ const NoteEntry: React.FC<NoteEntryProps> = (props) => {
 
         <div className="post-entry">
           <div className="columns is-centered">
-            <div className="column is-9">
+            <div className="column">
               {(selectedItem) && (
                 <div className="columns is-centered">
-                  <div className="column is-8-desktop is-10-tablet" style={{ position: "relative" }}>
+                  <div className="column" style={{ position: "relative" }}>
                     {(selectedItem.type == "video") ? (
                       <MediaPlayerWithToolbar
                         comments={[]}
@@ -131,9 +131,7 @@ const NoteEntry: React.FC<NoteEntryProps> = (props) => {
                 <div>
                   <div className="field">
                     <div className="control">
-                      <textarea className="textarea" {...register("description", { value: description })}>
-                        {description}
-                      </textarea>
+                      <textarea className="textarea" {...register("description", { value: description })} />
                     </div>
                   </div>
                   <div className="field">
