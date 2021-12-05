@@ -77,7 +77,7 @@ const AddToCollectionModal: React.FC<AddToCollectionModalProps> = (props) => {
           <div className="field">
             <div className="control">
               <div className="select">
-                <select {...register("collection")}>
+                <select {...register("collection")} defaultValue="">
                   <optgroup label={t("New")}>
                     <option style={{ fontStyle: "italic" }} value="">
                       {t("Create new collection")}

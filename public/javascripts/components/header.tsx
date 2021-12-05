@@ -78,11 +78,11 @@ const Header: React.FC<HeaderProps> = (props) => {
             {t("Home")}
           </Link>
           <Link
-            className={classNames("navbar-item", { "is-active": location.pathname == "/userPosts" })}
+            className={classNames("navbar-item", { "is-active": location.pathname == "/mySpace" })}
             onClick={() => setBurgerActive(false)}
-            to={"/userPosts"}
+            to={"/mySpace"}
           >
-            {t("My Posts")}
+            {t("My Space")}
           </Link>
           <Link
             className={classNames("navbar-item", { "is-active": location.pathname == "/posts" })}

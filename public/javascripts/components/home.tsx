@@ -44,8 +44,8 @@ const Home: React.FC<HomeProps> = (props) => {
             <div className="column is-5-desktop is-6-tablet is-10-mobile">
               {(props.login.loggedIn) ? (
                 <ul className="home__menu">
-                  <li className="home__menu-item" onClick={navigateTo("/userPosts")}>
-                    {t("My Posts")}
+                  <li className="home__menu-item" onClick={navigateTo("/mySpace")}>
+                    {t("My Space")}
                   </li>
                   <li className="home__menu-item" onClick={navigateTo("/posts")}>
                     {t("Explore")}
