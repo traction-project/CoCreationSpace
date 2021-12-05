@@ -5,9 +5,10 @@ interface ThumbnailProps {
   id: string;
   type: string;
   height?: number;
+  padding?: number | string;
 }
 
-const Thumbnail: React.FC<ThumbnailProps> = ({ id, type, height = 100 }) => {
+const Thumbnail: React.FC<ThumbnailProps> = ({ id, type, height = 100, padding = "0.25rem" }) => {
   const [ url, setUrl ] = useState<string>();
 
   useEffect(() => {
@@ -35,7 +36,7 @@ const Thumbnail: React.FC<ThumbnailProps> = ({ id, type, height = 100 }) => {
   }, []);
 
   return (
-    <img src={url} style={{ height, padding: "0.25rem" }} />
+    <img src={url} style={{ height, padding }} />
   );
 };
 
