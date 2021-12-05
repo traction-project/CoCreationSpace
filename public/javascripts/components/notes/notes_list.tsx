@@ -1,17 +1,16 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useHistory } from "react-router-dom";
 import classNames from "classnames";
 
 import Thumbnail from "../thumbnail";
+import { MultimediaItem } from "../post/post";
 
-interface NoteCollection {
+export interface NoteCollection {
   id: string;
   name: string;
-  mediaItems: Array<{
-    id: string,
-    type: string
-  }>;
+  mediaItems: Array<MultimediaItem>;
 }
 
 interface NotesListProps {
@@ -19,6 +18,8 @@ interface NotesListProps {
 
 const NotesList: React.FC<NotesListProps> = (props) => {
   const { t } = useTranslation();
+  const history = useHistory();
+
   const [ notes, setNotes ] = useState<Array<NoteCollection>>([]);
 
   useEffect(() => {
@@ -29,16 +30,27 @@ const NotesList: React.FC<NotesListProps> = (props) => {
     });
   }, []);
 
+  const navigateTo = (destination: string) => {
+    return () => {
+      history.push(destination);
+    };
+  };
+
   return (
     <section className="section">
       <div className="container">
         <div className="columns is-centered">
           <div className="column is-9">
-            <h4 className="title is-3">{t("Notes")}</h4>
+            <h4 className="title is-4">{t("Notes")}</h4>
+            <hr/>
 
             {notes.map(({ id, name, mediaItems }) => {
               return (
-                <article key={id} className={classNames("media", "is-clickable", "p-4", "is-highlighted", "notes-list-entry")}>
+                <article
+                  key={id}
+                  className={classNames("media", "is-clickable", "p-4", "is-highlighted", "notes-list-entry")}
+                  onClick={navigateTo(`/note/${id}`)}
+                >
                   <figure className="media-left">
                     <p className="image is-64x64">
                       {(mediaItems.length > 0) && (

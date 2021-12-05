@@ -25,6 +25,7 @@ import ResetPassword from "./reset_password";
 import PublicProfile from "./public_profile";
 import MySpace from "./my_space";
 import NotesList from "./notes/notes_list";
+import NoteEntry from "./notes/note_entry";
 
 async function checkLogin() {
   const loginStatus = await verifyLoginStatus();
@@ -98,6 +99,9 @@ const App: React.FC<AppProps> = () => {
               </PrivateRoute>
               <PrivateRoute path="/notes">
                 <NotesList />
+              </PrivateRoute>
+              <PrivateRoute path="/note/:id">
+                <NoteEntry />
               </PrivateRoute>
               <Route path="/">
                 <Home />
