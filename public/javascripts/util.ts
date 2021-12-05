@@ -412,3 +412,27 @@ export function Range(start: number, end: number) {
     return start + i;
   });
 }
+
+export async function isImageBlurry(image: HTMLImageElement): Promise<boolean> {
+  const cv = await import("@techstark/opencv-js");
+  const src = cv.imread(image);
+
+  const dst = new cv.Mat();
+  const mean = new cv.Mat();
+  const stdDev = new cv.Mat();
+
+  cv.cvtColor(src, src, cv.COLOR_RGB2GRAY, 0);
+  const laplace = cv.Laplacian(src, dst, cv.CV_64F, 1, 1, 0, cv.BORDER_DEFAULT);
+  const meanstdev = cv.meanStdDev(src, mean, stdDev);
+
+  console.log(laplace, meanstdev, stdDev.data64F[0], mean.data64F[0]);
+
+  src.delete();
+  dst.delete();
+
+  if (stdDev.data64F[0] > 10) {
+    return false;
+  }
+
+  return true;
+}
