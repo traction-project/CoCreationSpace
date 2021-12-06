@@ -424,13 +424,16 @@ export async function isImageBlurry(image: HTMLImageElement): Promise<boolean> {
   const stdDev = new cv.Mat();
 
   cv.cvtColor(src, src, cv.COLOR_RGB2GRAY, 0);
-  const laplace = cv.Laplacian(src, dst, cv.CV_64F, 1, 1, 0, cv.BORDER_DEFAULT);
-  const meanstdev = cv.meanStdDev(src, mean, stdDev);
-
-  console.log(laplace, meanstdev, stdDev.data64F[0], mean.data64F[0]);
+  cv.Laplacian(src, dst, cv.CV_64F, 1, 1, 0, cv.BORDER_DEFAULT);
+  cv.meanStdDev(src, mean, stdDev);
 
   src.delete();
   dst.delete();
+
+  // If stdDev and mean are both zero, the image passed in was empty
+  if (stdDev.data64F[0] == 0 && mean.data64F[0] == 0) {
+    return false;
+  }
 
   if (stdDev.data64F[0] > 10) {
     return false;
