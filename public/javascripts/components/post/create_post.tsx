@@ -6,11 +6,9 @@ import { useForm } from "react-hook-form";
 
 import { getFilesFromList, parseTags, postFile, ResponseUploadType } from "../../util";
 import Dropzone from "../dropzone";
-import MediaPlayer from "../media_player";
 import ProgressBox from "../progress_box";
 import BlankVideo from "../blank_video";
-import Image from "../image";
-import File from "../file";
+import UploadedMediaItem from "./uploaded_media_item";
 
 interface FileUpload {
   status: "progressing" | "failed" | "done";
@@ -173,26 +171,6 @@ const CreatePost: React.FC<CreatePostProps> = ({ file }) => {
     setTags(tags.concat(tagsToAdd));
   };
 
-  const renderMediaItem = (id: string, type: string) => {
-    if (type == "video") {
-      return (
-        <MediaPlayer id={id} />
-      );
-    } else if (type == "audio"){
-      return (
-        <MediaPlayer type="audio" id={id} />
-      );
-    } else if (type == "image" ){
-      return (
-        <Image id={id} detectBlur={true} />
-      );
-    } else {
-      return (
-        <File id={id} />
-      );
-    }
-  };
-
   return (
     <section className="section">
       <div className="container">
@@ -213,7 +191,7 @@ const CreatePost: React.FC<CreatePostProps> = ({ file }) => {
                   ) : (upload.status == "failed") ? (
                     <BlankVideo message="failed" />
                   ) : (
-                    renderMediaItem(upload.id!, upload.type!)
+                    <UploadedMediaItem id={upload.id!} type={upload.type!} />
                   )}
                 </div>
               );
