@@ -425,7 +425,7 @@ export async function isImageBlurry(image: HTMLImageElement, threshold = 10): Pr
 
   cv.cvtColor(src, src, cv.COLOR_RGB2GRAY, 0);
   cv.Laplacian(src, dst, cv.CV_64F, 1, 1, 0, cv.BORDER_DEFAULT);
-  cv.meanStdDev(src, mean, stdDev);
+  cv.meanStdDev(dst, mean, stdDev);
 
   let result = true;
 
