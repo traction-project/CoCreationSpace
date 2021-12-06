@@ -6,6 +6,11 @@ import { db } from "../models";
 const [ CLOUDFRONT_URL ] = getFromEnvironment("CLOUDFRONT_URL");
 const router = Router();
 
+/**
+ * Retrieves all information related to the image identified by the given ID.
+ * This includes CloudFront URL and thumbnails. If there is no image with the
+ * given ID, 404 is returned.
+ */
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
   const { MediaItem } = db.getModels();

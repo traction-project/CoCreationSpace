@@ -414,7 +414,7 @@ export function Range(start: number, end: number) {
 }
 
 export async function isImageBlurry(image: HTMLImageElement): Promise<boolean> {
-  const cv = await import("@techstark/opencv-js");
+  const cv = await import("./vendor/opencv");
   const src = cv.imread(image);
 
   const dst = new cv.Mat();
