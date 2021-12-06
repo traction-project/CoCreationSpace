@@ -427,17 +427,22 @@ export async function isImageBlurry(image: HTMLImageElement, threshold = 10): Pr
   cv.Laplacian(src, dst, cv.CV_64F, 1, 1, 0, cv.BORDER_DEFAULT);
   cv.meanStdDev(src, mean, stdDev);
 
-  src.delete();
-  dst.delete();
+  let result = true;
 
   // If stdDev and mean are both zero, the image passed in was empty
   if (stdDev.data64F[0] == 0 && mean.data64F[0] == 0) {
-    return false;
+    result = false;
   }
 
   if (stdDev.data64F[0] > threshold) {
-    return false;
+    result = false;
   }
 
-  return true;
+  src.delete();
+  dst.delete();
+
+  stdDev.delete();
+  mean.delete();
+
+  return result;
 }
