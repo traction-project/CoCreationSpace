@@ -15,7 +15,10 @@ const frontend = {
     extensions: ['.tsx', '.ts', '.js'],
     fallback: {
       "buffer": require.resolve("buffer"),
-      "stream": require.resolve("stream-browserify")
+      "stream": require.resolve("stream-browserify"),
+      "fs": false,
+      "crypto": false,
+      "path": false
     }
   },
   module: {
