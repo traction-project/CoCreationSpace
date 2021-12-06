@@ -13,13 +13,16 @@ interface ImageProps {
 const Image: React.FC<ImageProps> = ({ id, onBlurDetected }) => {
   const { isOpen, Portal, openPortal, closePortal } = usePortal();
   const imageRef = useRef<HTMLImageElement>(null);
+
   const [ imageUrl, setImageUrl ] = useState<string>();
+  const [ imageText, setImageText ] = useState<Array<string>>([]);
 
   useEffect(() => {
     fetch(`/images/${id}`).then((res) => {
       return res.json();
     }).then((data) => {
       setImageUrl(data.url);
+      setImageText(data.ocrData.map(({ line }: { line: string }) => line));
     });
   }, [id]);
 
@@ -36,31 +39,41 @@ const Image: React.FC<ImageProps> = ({ id, onBlurDetected }) => {
 
   const wrapperStyle: React.CSSProperties = {
     width: "100%",
-    paddingBottom: "56.25%",
-    position: "relative"
+    aspectRatio: "16/9"
   };
 
   const innerStyle: React.CSSProperties = {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    position: "absolute",
-    top: 0, left: 0, bottom: 0, right: 0
   };
 
   return (
     <div style={wrapperStyle}>
-      <div style={innerStyle}>
-        {(imageUrl) && (
-          <img
-            src={imageUrl}
-            ref={imageRef}
-            onLoad={imageLoaded}
-            style={{ maxHeight: "100%", cursor: "pointer" }}
-            onClick={openPortal}
-          />
-        )}
+      <div style={{ width: "100%", backgroundColor: "#F9F9F9" }}>
+        <div style={innerStyle}>
+          {(imageUrl) && (
+            <img
+              src={imageUrl}
+              ref={imageRef}
+              onLoad={imageLoaded}
+              style={{ maxHeight: "100%", cursor: "pointer" }}
+              onClick={openPortal}
+            />
+          )}
+        </div>
       </div>
+
+      {(imageText.length > 0) && (
+        <div className="mt-2">
+          {imageText.map((line, i) => {
+            return (
+              <p key={i}>{line}</p>
+            );
+          })}
+          <hr/>
+        </div>
+      )}
 
       {(isOpen) && (
         <Portal>
