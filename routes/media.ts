@@ -4,7 +4,7 @@ import { v4 as uuid4 } from "uuid";
 import sharp from "sharp";
 
 import { db } from "../models";
-import { getExtension, getFromEnvironment, streamToBuffer } from "../util";
+import { getExtension, getFromEnvironment, performOCR, streamToBuffer } from "../util";
 import { authRequired } from "../util/middleware";
 import { encodeDash, encodeAudio, encodeHLS, encodeHLSAudio } from "../util/transcode";
 import { uploadToS3 } from "../util/s3";
@@ -102,6 +102,9 @@ const processUploadedImage = async (file: NodeJS.ReadableStream, filename: strin
   const newName = uuid4() + getExtension(filename);
   await uploadToS3(newName, bufferFile, BUCKET_NAME);
 
+  // Perform OCR on image
+  const ocrResult = await performOCR(newName, BUCKET_NAME);
+
   // Generate thumbnail.
   // Set thumbnail width. Resize will set the height automatically to maintain aspect ratio.
   const resizerImageBuffer = await sharp(bufferFile).resize(300).toBuffer();
@@ -116,6 +119,7 @@ const processUploadedImage = async (file: NodeJS.ReadableStream, filename: strin
   image.file = filename;
   image.status = "done";
   image.type = "image";
+  image.ocrData = ocrResult;
 
   if (image.thumbnails && image.thumbnails.length > 0) {
     image.thumbnails?.push(thumbnailName);
