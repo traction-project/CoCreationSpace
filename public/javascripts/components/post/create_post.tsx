@@ -198,13 +198,14 @@ const CreatePost: React.FC<CreatePostProps> = ({ file }) => {
           ) : (
             fileUploads.map((upload, i) => {
               return (
-                <div className="column" key={i}>
+                <div className="column" key={upload.id || i}>
                   {(upload.status == "progressing") ? (
                     <ProgressBox progress={upload.progress} total={upload.total} />
                   ) : (upload.status == "failed") ? (
                     <BlankVideo message="failed" />
                   ) : (
                     <UploadedMediaItem
+                      key={upload.id!}
                       id={upload.id!}
                       type={upload.type!}
                       onDelete={deleteUploadedItem}

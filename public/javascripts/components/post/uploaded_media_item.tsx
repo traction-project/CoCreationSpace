@@ -17,7 +17,7 @@ const UploadedMediaItem: React.FC<UploadedMediaItemProps> = ({ id, type, onDelet
   const { ref, isOpen, openPortal, closePortal, Portal } = usePortal();
 
   const onBlurDetected = (isBlurry: boolean) => {
-    console.log("image blurry:", isBlurry);
+    console.log("image", id, "blurry:", isBlurry);
 
     if (isBlurry) {
       openPortal();
