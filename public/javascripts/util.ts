@@ -413,6 +413,18 @@ export function Range(start: number, end: number) {
   });
 }
 
+export async function isImageEmpty(image: HTMLImageElement): Promise<boolean> {
+  const cv = await import("./vendor/opencv");
+
+  image.crossOrigin = "Anonymous";
+  const src = cv.imread(image);
+
+  const result = src.data64F.every((n) => n == 0);
+  src.delete();
+
+  return result;
+}
+
 export async function isImageBlurry(image: HTMLImageElement, threshold = 10): Promise<boolean> {
   const cv = await import("./vendor/opencv");
 
