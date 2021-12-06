@@ -108,6 +108,52 @@ export async function translateText(input: string, targetLanguage: string, sourc
 }
 
 /**
+ * Performs OCR on a given image in an S3 bucket and returns detected lines as
+ * an array of objects containing the detected lines and confidence values.
+ *
+ * @param inputPath Path of the image file to be analysed within the bucket
+ * @param bucket The name of the bucket the image is located in
+ * @returns A promise which resolves to a list of lines detected within the image alongside the confidence
+ */
+export async function performOCR(inputPath: string, bucket: string): Promise<Array<{ line: string, confidence: number}>> {
+  return new Promise((resolve, reject) => {
+    const ocr = new aws.Rekognition();
+
+    const params: aws.Rekognition.DetectTextRequest = {
+      Image: {
+        S3Object: {
+          Bucket: bucket,
+          Name: inputPath
+        }
+      }
+    };
+
+    ocr.detectText(params, (err, data) => {
+      if (err) {
+        reject(err);
+      } else {
+        if (!data.TextDetections) {
+          resolve([]);
+        } else {
+          const result = data.TextDetections.reduce<Array<{ line: string, confidence: number }>>((acc, detectedText) => {
+            if (detectedText.Type == "LINE" && detectedText.DetectedText) {
+              return acc.concat({
+                line: detectedText.DetectedText,
+                confidence: detectedText.Confidence!
+              });
+            }
+
+            return acc;
+          }, []);
+
+          resolve(result);
+        }
+      }
+    });
+  });
+}
+
+/**
  * Splits an input string into chunks of given maximum length taking sentence
  * boundaries into account.
  *
