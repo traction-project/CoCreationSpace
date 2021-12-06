@@ -413,7 +413,7 @@ export function Range(start: number, end: number) {
   });
 }
 
-export async function isImageBlurry(image: HTMLImageElement): Promise<boolean> {
+export async function isImageBlurry(image: HTMLImageElement, threshold = 10): Promise<boolean> {
   const cv = await import("./vendor/opencv");
 
   image.crossOrigin = "Anonymous";
@@ -435,7 +435,7 @@ export async function isImageBlurry(image: HTMLImageElement): Promise<boolean> {
     return false;
   }
 
-  if (stdDev.data64F[0] > 10) {
+  if (stdDev.data64F[0] > threshold) {
     return false;
   }
 
