@@ -7,10 +7,10 @@ import { isImageBlurry, isImageEmpty } from "../util";
 
 interface ImageProps {
   id: string;
-  detectBlur?: boolean
+  onBlurDetected?: (isBlurry: boolean) => void;
 }
 
-const Image: React.FC<ImageProps> = ({ id, detectBlur = false }) => {
+const Image: React.FC<ImageProps> = ({ id, onBlurDetected }) => {
   const { isOpen, Portal, openPortal, closePortal } = usePortal();
   const imageRef = useRef<HTMLImageElement>(null);
   const [ imageUrl, setImageUrl ] = useState<string>();
@@ -24,12 +24,12 @@ const Image: React.FC<ImageProps> = ({ id, detectBlur = false }) => {
   }, [id]);
 
   const imageLoaded = async () => {
-    if (detectBlur && imageRef.current) {
+    if (onBlurDetected && imageRef.current) {
       const isEmpty = await isImageEmpty(imageRef.current);
 
       if (!isEmpty) {
         const isBlurry = await isImageBlurry(imageRef.current);
-        console.log("image blurry:", isBlurry);
+        onBlurDetected(isBlurry);
       }
     }
   };
