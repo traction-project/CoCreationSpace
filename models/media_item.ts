@@ -1,9 +1,11 @@
 import Sequelize, { Optional, Op } from "sequelize";
 import { v4 as uuidv4} from "uuid";
 
-import { CommonAttributes } from "util/typing/modelCommonAttributes";
+import { CommonAttributes } from "../util/typing/modelCommonAttributes";
 import { UserAttributes, UserInstance } from "./user";
-import { TranscribeOutput } from "util/transcribe";
+import { TranscribeOutput } from "../util/transcribe";
+import { OCRLine } from "../util";
+
 import { DataContainerAttributes, DataContainerInstance } from "./data_container";
 import { AudioContentAttributes, AudioContentInstance } from "./audio_content";
 import { MetadataItemAttributes, MetadataItemInstance } from "./metadata_item";
@@ -28,6 +30,7 @@ export interface MediaItemAttributes extends CommonAttributes {
   duration?: number;
   resolutions?: Array<number>;
   viewCount?: number;
+  ocrData?: Array<OCRLine>;
   type?: string;
   user?: UserAttributes | UserAttributes["id"];
   dataContainer?: DataContainerAttributes | DataContainerAttributes["id"];
@@ -192,6 +195,9 @@ export function MediaItemModelFactory(sequelize: Sequelize.Sequelize): Sequelize
     viewCount: {
       type: Sequelize.DataTypes.INTEGER,
       defaultValue: 0
+    },
+    ocrData: {
+      type: Sequelize.DataTypes.JSON
     }
   };
 
