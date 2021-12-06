@@ -446,6 +446,8 @@ export async function isImageBlurry(image: HTMLImageElement, threshold = 10): Pr
     result = false;
   }
 
+  console.log("blurriness:", stdDev.data64F[0]);
+
   if (stdDev.data64F[0] > threshold) {
     result = false;
   }
