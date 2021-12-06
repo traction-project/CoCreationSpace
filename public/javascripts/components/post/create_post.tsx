@@ -184,7 +184,7 @@ const CreatePost: React.FC<CreatePostProps> = ({ file }) => {
       );
     } else if (type == "image" ){
       return (
-        <Image id={id} />
+        <Image id={id} detectBlur={true} />
       );
     } else {
       return (
