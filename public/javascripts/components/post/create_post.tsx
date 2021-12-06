@@ -171,6 +171,19 @@ const CreatePost: React.FC<CreatePostProps> = ({ file }) => {
     setTags(tags.concat(tagsToAdd));
   };
 
+  const deleteUploadedItem = (id: string) => {
+    const index = fileUploads.findIndex((f) => f.id == id);
+
+    if (index >= 0) {
+      const uploads = fileUploads.slice();
+      uploads.splice(index, 1);
+
+      setFileUploads(uploads);
+    } else {
+      console.warn("Item with ID", id, "not found");
+    }
+  };
+
   return (
     <section className="section">
       <div className="container">
@@ -191,7 +204,11 @@ const CreatePost: React.FC<CreatePostProps> = ({ file }) => {
                   ) : (upload.status == "failed") ? (
                     <BlankVideo message="failed" />
                   ) : (
-                    <UploadedMediaItem id={upload.id!} type={upload.type!} />
+                    <UploadedMediaItem
+                      id={upload.id!}
+                      type={upload.type!}
+                      onDelete={deleteUploadedItem}
+                    />
                   )}
                 </div>
               );
