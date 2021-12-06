@@ -107,6 +107,11 @@ export async function translateText(input: string, targetLanguage: string, sourc
   return translatedChunks.join(" ");
 }
 
+export interface OCRLine {
+  line: string;
+  confidence: number;
+}
+
 /**
  * Performs OCR on a given image in an S3 bucket and returns detected lines as
  * an array of objects containing the detected lines and confidence values.
@@ -115,7 +120,7 @@ export async function translateText(input: string, targetLanguage: string, sourc
  * @param bucket The name of the bucket the image is located in
  * @returns A promise which resolves to a list of lines detected within the image alongside the confidence
  */
-export async function performOCR(inputPath: string, bucket: string): Promise<Array<{ line: string, confidence: number}>> {
+export async function performOCR(inputPath: string, bucket: string): Promise<Array<OCRLine>> {
   return new Promise((resolve, reject) => {
     const ocr = new aws.Rekognition();
 
@@ -135,7 +140,7 @@ export async function performOCR(inputPath: string, bucket: string): Promise<Arr
         if (!data.TextDetections) {
           resolve([]);
         } else {
-          const result = data.TextDetections.reduce<Array<{ line: string, confidence: number }>>((acc, detectedText) => {
+          const result = data.TextDetections.reduce<Array<OCRLine>>((acc, detectedText) => {
             if (detectedText.Type == "LINE" && detectedText.DetectedText) {
               return acc.concat({
                 line: detectedText.DetectedText,
