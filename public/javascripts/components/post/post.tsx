@@ -270,7 +270,7 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
                     type="audio"
                   />
                 ) : (selectedItem.type == "image") ? (
-                  <Image id={selectedItem.id} />
+                  <Image id={selectedItem.id} showDetectedText={true} />
                 ) : (
                   <File id={selectedItem.id} />
                 )}

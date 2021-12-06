@@ -7,10 +7,11 @@ import { isImageBlurry, isImageEmpty } from "../util";
 
 interface ImageProps {
   id: string;
+  showDetectedText?: boolean;
   onBlurDetected?: (isBlurry: boolean) => void;
 }
 
-const Image: React.FC<ImageProps> = ({ id, onBlurDetected }) => {
+const Image: React.FC<ImageProps> = ({ id, showDetectedText = false, onBlurDetected }) => {
   const { isOpen, Portal, openPortal, closePortal } = usePortal();
   const imageRef = useRef<HTMLImageElement>(null);
 
@@ -64,7 +65,7 @@ const Image: React.FC<ImageProps> = ({ id, onBlurDetected }) => {
         </div>
       </div>
 
-      {(imageText.length > 0) && (
+      {(showDetectedText && imageText.length > 0) && (
         <div className="mt-2">
           {imageText.map((line, i) => {
             return (
