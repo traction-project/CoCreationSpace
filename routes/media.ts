@@ -385,6 +385,9 @@ router.post("/:id/interaction", authRequired, async (req, res) => {
   }
 });
 
+/**
+ * Returns the current processing status of the media item with the given ID.
+ */
 router.get("/:id/status", async (req, res) => {
   const { id } = req.params;
   const { MediaItem } = db.getModels();
@@ -400,6 +403,27 @@ router.get("/:id/status", async (req, res) => {
   }
 });
 
+/**
+ * Returns the list of chapters sorted ascendingly by starting time associated
+ * with the media item with the given ID.
+ */
+router.get("/:id/chapters", async (req, res) => {
+  const { id } = req.params;
+  const { MediaItem } = db.getModels();
+
+  const mediaItem = await MediaItem.findByPk(id);
+
+  if (mediaItem) {
+    return res.send({
+      chapters: await mediaItem.getSortedChapters()
+    });
+  }
+
+  return res.status(404).send({
+    status: "ERR",
+    message: "Media item not found"
+  });
+});
 /**
  * Retrieve available subtitles for the media item identified by the given ID.
  */
