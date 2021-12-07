@@ -14,6 +14,7 @@ import { MultimediaInteractionInstance } from "./multimedia_interaction";
 import { EmojiReactionAttributes, EmojiReactionInstance } from "./emoji_reaction";
 import { AsyncJobInstance } from "./async_job";
 import { NoteCollectionInstance } from "./note_collection";
+import { VideoChapterInstance } from "./video_chapter";
 
 export interface MediaItemAttributes extends CommonAttributes {
   title: string;
@@ -125,6 +126,17 @@ export interface MediaItemInstance extends Sequelize.Model<MediaItemAttributes, 
   removeNoteCollection: Sequelize.BelongsToManyRemoveAssociationMixin<NoteCollectionInstance, NoteCollectionInstance["id"]>;
   removeNoteCollections: Sequelize.BelongsToManyRemoveAssociationsMixin<NoteCollectionInstance, NoteCollectionInstance["id"]>;
   createNoteCollection: Sequelize.BelongsToManyCreateAssociationMixin<NoteCollectionInstance>;
+
+  getVideoChapters: Sequelize.BelongsToManyGetAssociationsMixin<VideoChapterInstance>;
+  countVideoChapters: Sequelize.BelongsToManyCountAssociationsMixin;
+  hasVideoChapter: Sequelize.BelongsToManyHasAssociationMixin<VideoChapterInstance, VideoChapterInstance["id"]>;
+  hasVideoChapters: Sequelize.BelongsToManyHasAssociationsMixin<VideoChapterInstance, VideoChapterInstance["id"]>;
+  setVideoChapters: Sequelize.BelongsToManySetAssociationsMixin<VideoChapterInstance, VideoChapterInstance["id"]>;
+  addVideoChapter: Sequelize.BelongsToManyAddAssociationMixin<VideoChapterInstance, VideoChapterInstance["id"]>;
+  addVideoChapters: Sequelize.BelongsToManyAddAssociationsMixin<VideoChapterInstance, VideoChapterInstance["id"]>;
+  removeVideoChapter: Sequelize.BelongsToManyRemoveAssociationMixin<VideoChapterInstance, VideoChapterInstance["id"]>;
+  removeVideoChapters: Sequelize.BelongsToManyRemoveAssociationsMixin<VideoChapterInstance, VideoChapterInstance["id"]>;
+  createVideoChapter: Sequelize.BelongsToManyCreateAssociationMixin<VideoChapterInstance>;
 
   incrementViewCount: () => Promise<void>;
   isDoneTranscoding: () => Promise<boolean>;
