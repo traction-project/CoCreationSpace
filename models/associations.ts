@@ -41,6 +41,7 @@ class Associations {
     consentFormAssociations(models);
     asyncJobAssociations(models);
     noteCollectionAssociations(models);
+    videoChapterAssociations(models);
 
     this.associatons = {
       datacontainerAssociations,
@@ -106,6 +107,7 @@ function mediaItemAssociations(models: DbInterface): void {
   models.MediaItem.hasMany(models.MultimediaInteraction);
   models.MediaItem.hasMany(models.EmojiReaction);
   models.MediaItem.hasMany(models.AsyncJob);
+  models.MediaItem.hasMany(models.VideoChapter);
 
   models.MediaItem.belongsToMany(models.NoteCollection, {
     through: "note_collection_media_items"
@@ -113,15 +115,22 @@ function mediaItemAssociations(models: DbInterface): void {
 }
 
 /**
- *  Create all noteCollection table relationship with rest of tables
+ * Create all noteCollection table relationship with rest of tables
  * @param models DbInterface
  */
-
 function noteCollectionAssociations(models: DbInterface): void {
   models.NoteCollection.belongsTo(models.User);
   models.NoteCollection.belongsToMany(models.MediaItem, {
     through: "note_collection_media_items"
   });
+}
+
+/**
+ * Create all videoChapter table relationship with rest of tables
+ * @param models DbInterface
+ */
+function videoChapterAssociations(models: DbInterface): void {
+  models.VideoChapter.belongsTo(models.MediaItem);
 }
 
 /**
