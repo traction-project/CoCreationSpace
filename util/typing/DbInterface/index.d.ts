@@ -27,6 +27,7 @@ import { ConsentFormInstance } from "models/consent_form";
 import { AsyncJobInstance } from "models/async_job";
 import { GroupMembershipInstance } from "models/group_membership";
 import { NoteCollectionInstance } from "models/note_collection";
+import { VideoChapterInstance } from "models/video_chapter";
 
 /**
  *  Interface for the objects that containes all models from database
@@ -59,4 +60,5 @@ export interface DbInterface {
     UserPermission: ModelCtor<UserPermissionInstance>;
     GroupMembership: ModelCtor<GroupMembershipInstance>;
     NoteCollection: ModelCtor<NoteCollectionInstance>;
+    VideoChapter: ModelCtor<VideoChapterInstance>;
 }
