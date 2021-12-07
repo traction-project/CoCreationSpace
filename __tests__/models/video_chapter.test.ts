@@ -18,7 +18,7 @@ describe("VideoChapter model", () => {
     await MediaItem.destroy({ truncate: true });
   });
 
-  it("should create a basic NoteCollection entry", async () => {
+  it("should create a basic VideoChapter entry", async () => {
     const { VideoChapter } = db.getModels();
 
     const chapter = await VideoChapter.create({
@@ -29,6 +29,38 @@ describe("VideoChapter model", () => {
     expect(chapter.name).toEqual("Chapter 1");
     expect(chapter.startTime).toEqual(0);
     expect(await VideoChapter.count()).toEqual(1);
+  });
+
+  it("should create a basic VideoChapter entry and associate it to a MediaItem", async () => {
+    const { MediaItem, VideoChapter } = db.getModels();
+
+    const chapter = await VideoChapter.create({
+      name: "Chapter 1",
+      startTime: 0
+    });
+
+    const mediaItem = await MediaItem.create({ title: "test" });
+
+    expect(await chapter.getMediaItem()).toBeNull();
+    chapter.setMediaItem(mediaItem);
+
+    expect(await chapter.getMediaItem()).not.toBeNull();
+    expect((await chapter.getMediaItem()).id).toEqual(mediaItem.id);
+  });
+
+  it("should be possible to add multiple chapters to a MediaItem instance", async () => {
+    const { MediaItem, VideoChapter } = db.getModels();
+
+    const chapter1 = await VideoChapter.create({ name: "Chapter 1", startTime: 0 });
+    const chapter2 = await VideoChapter.create({ name: "Chapter 2", startTime: 5 });
+    const chapter3 = await VideoChapter.create({ name: "Chapter 3", startTime: 10 });
+    const chapter4 = await VideoChapter.create({ name: "Chapter 4", startTime: 20 });
+
+    const mediaItem = await MediaItem.create({ title: "test" });
+    expect(await mediaItem.countVideoChapters()).toEqual(0);
+
+    await mediaItem.addVideoChapters([chapter1, chapter2, chapter3, chapter4]);
+    expect(await mediaItem.countVideoChapters()).toEqual(4);
   });
 
   it("should have automatically generated association methods for the MediaItem model", async () => {
