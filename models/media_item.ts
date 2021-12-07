@@ -140,6 +140,7 @@ export interface MediaItemInstance extends Sequelize.Model<MediaItemAttributes, 
 
   incrementViewCount: () => Promise<void>;
   isDoneTranscoding: () => Promise<boolean>;
+  getSortedChapters: () => Promise<VideoChapterInstance[]>;
 }
 
 /**
@@ -215,15 +216,14 @@ export function MediaItemModelFactory(sequelize: Sequelize.Sequelize): Sequelize
 
   // Create the model
   const MediaItem = sequelize.define<MediaItemInstance, MediaItemCreationAttributes>("mediaItem", attributes, { underscored: true, tableName: TABLE_NAME });
-
   MediaItem.beforeCreate(multimedia => { multimedia.id = uuidv4(); });
 
-  MediaItem.prototype.incrementViewCount = async function () {
+  MediaItem.prototype.incrementViewCount = async function (this: MediaItemInstance) {
     await this.increment("viewCount");
     await this.reload();
   };
 
-  MediaItem.prototype.isDoneTranscoding = async function () {
+  MediaItem.prototype.isDoneTranscoding = async function (this: MediaItemInstance) {
     const processingJobCount = await this.countAsyncJobs({
       where: {
         type: { [Op.like]: "transcode_%" },
@@ -232,6 +232,10 @@ export function MediaItemModelFactory(sequelize: Sequelize.Sequelize): Sequelize
     });
 
     return processingJobCount == 0;
+  };
+
+  MediaItem.prototype.getSortedChapters = async function (this: MediaItemInstance) {
+    return this.getVideoChapters({ order: [["startTime", "ASC"]] });
   };
 
   return MediaItem;

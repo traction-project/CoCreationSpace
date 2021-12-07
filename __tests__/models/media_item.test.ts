@@ -12,11 +12,12 @@ describe("MediaItem model", () => {
   });
 
   beforeEach(async () => {
-    const { AsyncJob, MediaItem, EmojiReaction } = db.getModels();
+    const { AsyncJob, MediaItem, EmojiReaction, VideoChapter } = db.getModels();
 
     await MediaItem.destroy({ truncate: true });
     await EmojiReaction.destroy({ truncate: true });
     await AsyncJob.destroy({ truncate: true });
+    await VideoChapter.destroy({ truncate: true });
   });
 
   it("should create a multimedia entry with a array for the field 'resolutions'", async () => {
@@ -242,6 +243,37 @@ describe("MediaItem model", () => {
 
     expect(associatedReactions.length).toEqual(1);
     expect(associatedReactions[0].id).toEqual(reaction.id);
+  });
+
+  it("should be possible to return a sorted list of chapters", async () => {
+    const { MediaItem, VideoChapter } = db.getModels();
+
+    const chapter1 = await VideoChapter.create({ name: "Chapter 3", startTime: 10 });
+    const chapter2 = await VideoChapter.create({ name: "Chapter 2", startTime: 5 });
+    const chapter3 = await VideoChapter.create({ name: "Chapter 1", startTime: 0 });
+    const chapter4 = await VideoChapter.create({ name: "Chapter 4", startTime: 20 });
+
+    const mediaItem = await MediaItem.create({ title: "test" });
+    await mediaItem.addVideoChapters([chapter1, chapter2, chapter3, chapter4]);
+
+    expect(await mediaItem.countVideoChapters()).toEqual(4);
+    // Verify result is returned unsorted
+    expect((await mediaItem.getVideoChapters({ limit: 1 }))[0].name).toEqual("Chapter 3");
+
+    const sortedChapters = await mediaItem.getSortedChapters();
+    expect(sortedChapters.length).toEqual(4);
+
+    expect(sortedChapters[0].name).toEqual("Chapter 1");
+    expect(sortedChapters[0].startTime).toEqual(0);
+
+    expect(sortedChapters[1].name).toEqual("Chapter 2");
+    expect(sortedChapters[1].startTime).toEqual(5);
+
+    expect(sortedChapters[2].name).toEqual("Chapter 3");
+    expect(sortedChapters[2].startTime).toEqual(10);
+
+    expect(sortedChapters[3].name).toEqual("Chapter 4");
+    expect(sortedChapters[3].startTime).toEqual(20);
   });
 
   it("should have automatically generated association methods for the DataContainer model", async () => {
