@@ -424,6 +424,42 @@ router.get("/:id/chapters", async (req, res) => {
     message: "Media item not found"
   });
 });
+
+/**
+ * Adds a new chapter to the media item identified by the given ID. The name
+ * and start time for the chapter needs to be passed as JSON body. If either
+ * param is missing, 400 is returned. If there is no media item with the given
+ * ID, 404 is returned. Upon success the newly created chapter is returned.
+ */
+router.post("/:id/chapters", async (req, res) => {
+  const { MediaItem, VideoChapter } = db.getModels();
+
+  const { id } = req.params;
+  const { name, startTime } = req.body;
+
+  if (!name || !startTime) {
+    return res.status(400).send({
+      status: "ERR",
+      message: "Missing parameters"
+    });
+  }
+
+  const mediaItem = await MediaItem.findByPk(id);
+
+  if (!mediaItem) {
+    return res.status(404).send({
+      status: "ERR",
+      message: "Media item not found"
+    });
+  }
+
+  const chapter = await VideoChapter.create({ name, startTime });
+  await mediaItem.addVideoChapter(chapter);
+
+  return res.send({
+    chapter: chapter.toJSON()
+  });
+});
 /**
  * Retrieve available subtitles for the media item identified by the given ID.
  */
