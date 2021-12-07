@@ -7,6 +7,7 @@ import { MediaItemInstance } from "./media_item";
 export interface VideoChapterAttributes extends CommonAttributes {
   name: string;
   startTime: number;
+  mediaItemId?: string;
 }
 
 

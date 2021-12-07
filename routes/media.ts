@@ -460,6 +460,34 @@ router.post("/:id/chapters", async (req, res) => {
     chapter: chapter.toJSON()
   });
 });
+
+/**
+ * Removes a chapter given by an ID from the media item identified by a given
+ * ID. If there is no media item or chapter with the given ID, or the chapter
+ * is not associated to the media item, 404 is returned.
+ */
+router.delete("/:mediaItemId/chapter/:chapterId", async (req, res) => {
+  const { VideoChapter } = db.getModels();
+  const { mediaItemId, chapterId } = req.params;
+
+  const chapter = await VideoChapter.findOne({ where: {
+    id: chapterId, mediaItemId
+  }});
+
+  if (!chapter) {
+    return res.status(404).send({
+      status: "ERR",
+      message: "No chapter meeting the requirements found"
+    });
+  }
+
+  await chapter.destroy();
+
+  return res.send({
+    status: "OK"
+  });
+});
+
 /**
  * Retrieve available subtitles for the media item identified by the given ID.
  */
