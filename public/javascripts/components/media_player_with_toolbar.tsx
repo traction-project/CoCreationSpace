@@ -13,6 +13,7 @@ interface MediaPlayerWithToolbarProps {
   id: string;
   emojis: Array<EmojiReaction>;
   comments: Array<PostType>;
+  videoChapters: Array<VideoChapter>;
   onTimeUpdate?: (currentTime: number) => void;
   type?: "video" | "audio";
   startTime?: number;
@@ -21,12 +22,11 @@ interface MediaPlayerWithToolbarProps {
 const EMOJIS = ["👍","💓","😊","😍","😂","😡"];
 
 const MediaPlayerWithToolbar: React.FC<MediaPlayerWithToolbarProps> = (props) => {
-  const { id: videoId, emojis, comments, onTimeUpdate, type = "video" } = props;
+  const { id: videoId, emojis, comments, videoChapters, onTimeUpdate, type = "video" } = props;
 
   const currentVideoTime = useRef(0);
   const [ viewCount, setViewCount ] = useState<number>();
   const [ emojiReactions, setEmojiReactions ] = useState(emojis);
-  const [ chapters, setChapters ] = useState<Array<VideoChapter>>([]);
   const [ startTime, setStartTime ] = useState(0);
 
   useEffect(() => {
@@ -48,14 +48,6 @@ const MediaPlayerWithToolbar: React.FC<MediaPlayerWithToolbarProps> = (props) =>
   useEffect(() => {
     props.startTime && setStartTime(props.startTime);
   }, [props.startTime]);
-
-  useEffect(() => {
-    fetch(`/media/${videoId}/chapters`).then((res) => {
-      return res.json();
-    }).then(({ chapters }) => {
-      setChapters(chapters);
-    });
-  }, []);
 
   const handleClickEmojiItem = async (emoji: string) => {
     const response = await postEmojiReaction(videoId, emoji, currentVideoTime.current);
@@ -111,7 +103,7 @@ const MediaPlayerWithToolbar: React.FC<MediaPlayerWithToolbarProps> = (props) =>
       </nav>
 
       <ChapterList
-        chapters={chapters}
+        chapters={videoChapters}
         onChapterClicked={(startTime) => setStartTime(startTime)}
       />
     </>

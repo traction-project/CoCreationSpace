@@ -20,12 +20,14 @@ import { ApplicationState } from "../../store";
 import File from "../file";
 import DeletePostModal from "./delete_post_modal";
 import NoteIcon from "./note_icon";
+import { VideoChapter } from "../media_player_with_chapters";
 
 export interface MultimediaItem {
   id: string;
   status: string;
   type: string;
   emojiReactions: Array<EmojiReaction>;
+  videoChapters: VideoChapter[];
   title: string;
   file: string;
   startTime?: number;
@@ -257,6 +259,7 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
                     id={selectedItem.id}
                     emojis={selectedItem.emojiReactions}
                     comments={getCommentsForItem(comments, selectedItem)}
+                    videoChapters={selectedItem.videoChapters}
                     onTimeUpdate={(time) => currentTime.current = time}
                     startTime={selectedItem.startTime}
                   />
@@ -264,6 +267,7 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
                   <MediaPlayerWithToolbar
                     id={selectedItem.id}
                     emojis={selectedItem.emojiReactions}
+                    videoChapters={selectedItem.videoChapters}
                     comments={getCommentsForItem(comments, selectedItem)}
                     onTimeUpdate={(time) => currentTime.current = time}
                     startTime={selectedItem.startTime}
