@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
-import ChapterList from "./chapter_list";
 
+import ChapterList from "./chapter_list";
 import MediaPlayer from "./media_player";
 
 export interface VideoChapter {

@@ -5,7 +5,9 @@ import { Trans } from "react-i18next";
 import { postEmojiReaction } from "../services/multimedia.service";
 import { EmojiReaction } from "../util";
 import { PostType } from "./post/post";
+import { VideoChapter } from "./media_player_with_chapters";
 import MediaPlayer from "./media_player";
+import ChapterList from "./chapter_list";
 
 interface MediaPlayerWithToolbarProps {
   id: string;
@@ -19,11 +21,13 @@ interface MediaPlayerWithToolbarProps {
 const EMOJIS = ["👍","💓","😊","😍","😂","😡"];
 
 const MediaPlayerWithToolbar: React.FC<MediaPlayerWithToolbarProps> = (props) => {
-  const { id: videoId, emojis, comments, onTimeUpdate, startTime, type = "video" } = props;
+  const { id: videoId, emojis, comments, onTimeUpdate, type = "video" } = props;
 
   const currentVideoTime = useRef(0);
   const [ viewCount, setViewCount ] = useState<number>();
   const [ emojiReactions, setEmojiReactions ] = useState(emojis);
+  const [ chapters, setChapters ] = useState<Array<VideoChapter>>([]);
+  const [ startTime, setStartTime ] = useState(0);
 
   useEffect(() => {
     setEmojiReactions(emojis);
@@ -40,6 +44,18 @@ const MediaPlayerWithToolbar: React.FC<MediaPlayerWithToolbarProps> = (props) =>
       });
     }
   }, [videoId]);
+
+  useEffect(() => {
+    props.startTime && setStartTime(props.startTime);
+  }, [props.startTime]);
+
+  useEffect(() => {
+    fetch(`/media/${videoId}/chapters`).then((res) => {
+      return res.json();
+    }).then(({ chapters }) => {
+      setChapters(chapters);
+    });
+  }, []);
 
   const handleClickEmojiItem = async (emoji: string) => {
     const response = await postEmojiReaction(videoId, emoji, currentVideoTime.current);
@@ -93,6 +109,11 @@ const MediaPlayerWithToolbar: React.FC<MediaPlayerWithToolbarProps> = (props) =>
           </div>
         </div>
       </nav>
+
+      <ChapterList
+        chapters={chapters}
+        onChapterClicked={(startTime) => setStartTime(startTime)}
+      />
     </>
   );
 };

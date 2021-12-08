@@ -21,7 +21,7 @@ const ChapterList: React.FC<ChapterListProps> = ({ chapters, onChapterClicked })
             {chapters.map(({ name, startTime}, i) => {
               return (
                 <tr key={i} style={{ cursor: "pointer" }} onClick={() => onChapterClicked(startTime)}>
-                  <td style={{ width: 300 }}>[{convertHMS(startTime)}]</td>
+                  <td style={{ width: 75 }}>[{convertHMS(startTime)}]</td>
                   <td>{name}</td>
                 </tr>
               );
