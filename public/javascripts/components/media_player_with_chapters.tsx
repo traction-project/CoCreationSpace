@@ -11,7 +11,9 @@ interface MediaPlayerWithChaptersProps {
 
 const MediaPlayerWithChapters: React.FC<MediaPlayerWithChaptersProps> = (props) => {
   const { id: videoId, type = "video" } = props;
+
   const [ chapters, setChapters ] = useState<Array<VideoChapter>>([]);
+  const [ startTime, setStartTime ] = useState<number>(0);
 
   const fetchChapters = () => {
     fetch(`/media/${videoId}/chapters`).then((res) => {
@@ -30,6 +32,7 @@ const MediaPlayerWithChapters: React.FC<MediaPlayerWithChaptersProps> = (props) 
       <MediaPlayer
         id={videoId}
         onChapterAdded={fetchChapters}
+        startTime={startTime}
         type={type}
       />
 
@@ -40,7 +43,7 @@ const MediaPlayerWithChapters: React.FC<MediaPlayerWithChaptersProps> = (props) 
               <tbody>
                 {chapters.map(({ name, startTime}, i) => {
                   return (
-                    <tr key={i}>
+                    <tr key={i} style={{ cursor: "pointer" }} onClick={() => setStartTime(startTime)}>
                       <td style={{ width: 300 }}>[{convertHMS(startTime)}]</td>
                       <td>{name}</td>
                     </tr>
