@@ -201,7 +201,7 @@ router.get("/:id", authRequired, async (req, res) => {
         include: [{
           model: MediaItem,
           attributes: ["status", "id", "type", "title", "file"],
-          include: ["emojiReactions"]
+          include: ["emojiReactions", "videoChapters"]
         }]
       }, {
         model: Post,
@@ -263,7 +263,7 @@ router.get("/:id/parent", authRequired, async (req, res) => {
           include: [{
             model: MediaItem,
             attributes: ["status", "id", "type"],
-            include: ["emojiReactions"]
+            include: ["emojiReactions", "videoChapters"]
           }]
         }, {
           model: Post,
