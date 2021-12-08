@@ -22,16 +22,16 @@ interface MediaPlayerProps {
   chapters?: Array<VideoChapter>;
   emojis?: Array<EmojiReaction>;
   comments?: Array<PostType>;
-  onTimeUpdate?: (currentTime: number) => void;
   type?: "video" | "audio";
   startTime?: number;
-  withChapterIcon?: boolean;
+  onTimeUpdate?: (currentTime: number) => void;
+  onChapterAdded?: (chapter: VideoChapter) => void;
 }
 
 const MediaPlayer: React.FC<MediaPlayerProps> = (props) => {
   const { t } = useTranslation();
   const { ref, isOpen, openPortal, closePortal, Portal } = usePortal();
-  const { id, emojis, comments, onTimeUpdate, startTime, type = "video", withChapterIcon = false } = props;
+  const { id, emojis, comments, onTimeUpdate, startTime, type = "video", onChapterAdded } = props;
 
   const totalPlayTime = useRef(0);
   const lastTimestamp = useRef(0);
@@ -120,7 +120,7 @@ const MediaPlayer: React.FC<MediaPlayerProps> = (props) => {
               videoInteractionTracker={new UserVideoInteractionTracker(`/media/${id}/interaction`)}
             />
 
-            {(withChapterIcon) && (
+            {(onChapterAdded != undefined) && (
               <div ref={ref}>
                 <AddChapterIcon onClick={openPortal} />
               </div>
@@ -136,7 +136,7 @@ const MediaPlayer: React.FC<MediaPlayerProps> = (props) => {
               mediaItemId={id}
               startTime={currentTime.current}
               onClose={closePortal}
-              onChapterAdded={() => console.log("chapter added")}
+              onChapterAdded={onChapterAdded}
             />
           </Portal>
         )}
