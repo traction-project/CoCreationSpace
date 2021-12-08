@@ -27,11 +27,11 @@ const UploadedMediaItem: React.FC<UploadedMediaItemProps> = ({ id, type, onDelet
   const renderMediaItem = () => {
     if (type == "video") {
       return (
-        <MediaPlayer id={id} />
+        <MediaPlayer id={id} withChapterIcon={true} />
       );
     } else if (type == "audio"){
       return (
-        <MediaPlayer type="audio" id={id} />
+        <MediaPlayer type="audio" id={id} withChapterIcon={true} />
       );
     } else if (type == "image" ){
       return (
