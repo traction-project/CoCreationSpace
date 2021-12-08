@@ -431,13 +431,13 @@ router.get("/:id/chapters", async (req, res) => {
  * param is missing, 400 is returned. If there is no media item with the given
  * ID, 404 is returned. Upon success the newly created chapter is returned.
  */
-router.post("/:id/chapters", async (req, res) => {
+router.post("/:id/chapter", async (req, res) => {
   const { MediaItem, VideoChapter } = db.getModels();
 
   const { id } = req.params;
   const { name, startTime } = req.body;
 
-  if (!name || !startTime) {
+  if (name == undefined || startTime == undefined) {
     return res.status(400).send({
       status: "ERR",
       message: "Missing parameters"
