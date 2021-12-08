@@ -1,7 +1,7 @@
 import * as React from "react";
 import usePortal from "react-useportal";
 
-import MediaPlayer from "../media_player";
+import MediaPlayerWithChapters from "../media_player_with_chapters";
 import Image from "../image";
 import File from "../file";
 import DeleteIcon from "./delete_icon";
@@ -27,11 +27,11 @@ const UploadedMediaItem: React.FC<UploadedMediaItemProps> = ({ id, type, onDelet
   const renderMediaItem = () => {
     if (type == "video") {
       return (
-        <MediaPlayer id={id} withChapterIcon={true} />
+        <MediaPlayerWithChapters id={id} />
       );
     } else if (type == "audio"){
       return (
-        <MediaPlayer type="audio" id={id} withChapterIcon={true} />
+        <MediaPlayerWithChapters type="audio" id={id} />
       );
     } else if (type == "image" ){
       return (

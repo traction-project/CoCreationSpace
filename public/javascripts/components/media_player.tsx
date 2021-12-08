@@ -19,7 +19,6 @@ export interface VideoChapter {
 
 interface MediaPlayerProps {
   id: string;
-  chapters?: Array<VideoChapter>;
   emojis?: Array<EmojiReaction>;
   comments?: Array<PostType>;
   type?: "video" | "audio";
