@@ -9,13 +9,9 @@ import useInterval from "./use_interval";
 import { UserVideoInteractionTracker } from "../video_interaction_tracker";
 import { EmojiReaction } from "javascripts/util";
 import { PostType } from "./post/post";
+import { VideoChapter } from "./media_player_with_chapters";
 import AddChapterIcon from "./player/add_chapter_icon";
 import AddChapterModal from "./player/add_chapter_modal";
-
-export interface VideoChapter {
-  name: string;
-  startTime: number;
-}
 
 interface MediaPlayerProps {
   id: string;

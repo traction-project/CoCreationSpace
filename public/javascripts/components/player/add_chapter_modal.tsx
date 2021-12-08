@@ -2,7 +2,7 @@ import * as React from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
-import { VideoChapter } from "../media_player";
+import { VideoChapter } from "../media_player_with_chapters";
 
 interface AddChapterModalProps {
   mediaItemId: string;

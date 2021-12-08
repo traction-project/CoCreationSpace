@@ -1,8 +1,13 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
+import ChapterList from "./chapter_list";
 
-import { convertHMS } from "../util";
-import MediaPlayer, { VideoChapter } from "./media_player";
+import MediaPlayer from "./media_player";
+
+export interface VideoChapter {
+  name: string;
+  startTime: number;
+}
 
 interface MediaPlayerWithChaptersProps {
   id: string;
@@ -36,24 +41,10 @@ const MediaPlayerWithChapters: React.FC<MediaPlayerWithChaptersProps> = (props) 
         type={type}
       />
 
-      {(chapters.length > 0) && (
-        <div className="mt-2 columns is-centered">
-          <div className="column is-10">
-            <table className="table is-striped is-hoverable is-fullwidth is-bordered">
-              <tbody>
-                {chapters.map(({ name, startTime}, i) => {
-                  return (
-                    <tr key={i} style={{ cursor: "pointer" }} onClick={() => setStartTime(startTime)}>
-                      <td style={{ width: 300 }}>[{convertHMS(startTime)}]</td>
-                      <td>{name}</td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      )}
+      <ChapterList
+        chapters={chapters}
+        onChapterClicked={(startTime) => setStartTime(startTime)}
+      />
     </>
   );
 };
