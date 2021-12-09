@@ -197,14 +197,14 @@ router.post("/:id/requestrole/:role", authRequired, async (req, res) => {
     });
   }
 
-  if (role != "participant" && role != "facilitator") {
+  if (!["participant", "facilitator", "moderator", "admin"].find((r) => r == role)) {
     return res.status(400).send({
       status: "ERR",
       message: "Invalid role"
     });
   }
 
-  membership.role = role;
+  membership.role = role as any;
   membership.roleApproved = false;
   await membership.save();
 

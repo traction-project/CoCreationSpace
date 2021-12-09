@@ -4,7 +4,7 @@ import { CommonAttributes } from "util/typing/modelCommonAttributes";
 
 export interface GroupMembershipAttributes extends CommonAttributes {
   approved: boolean;
-  role: "participant" | "facilitator";
+  role: "participant" | "facilitator" | "moderator" | "admin";
   roleApproved: boolean;
 }
 
