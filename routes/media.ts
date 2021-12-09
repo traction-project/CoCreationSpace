@@ -133,27 +133,19 @@ router.post("/upload", authRequired, (req, res) => {
 
   busboy.on("file", async (fieldname, file, filename, encoding, mimetype) => {
     try {
-      if (mimetype.startsWith("video")) {
-        const videoId = await processUploadedStreamingFile(
-          "video", file, filename, user.id
+      const type = mimetype.split("/")[0];
+
+      if (type == "video" || type == "audio") {
+        const mediaItemId = await processUploadedStreamingFile(
+          type, file, filename, user.id
         );
 
         res.send({
           status: "OK",
-          id: videoId,
-          type: "video"
+          id: mediaItemId,
+          type
         });
-      } else if (mimetype.startsWith("audio")) {
-        const audioId = await processUploadedStreamingFile(
-          "audio", file, filename, user.id
-        );
-
-        res.send({
-          status: "OK",
-          id: audioId,
-          type: "audio"
-        });
-      } else if (mimetype.startsWith("image")) {
+      } else if (type == "image") {
         const imageId = await processUploadedImage(
           file, filename, user.id
         );
