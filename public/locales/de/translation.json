@@ -81,14 +81,12 @@
     "Delete Post": "Beitrag löschen",
     "Are you sure you want to delete this post?": "Bist du dir sicher, dass du diesen Beitrag löschen möchtest?",
     "E-Mail": "E-Mail",
-    "request-reset-error": "<0>Fehler!</0> Konnte Anfrage zur Passwortrücksetzung nicht abschließen.",
     "Request password reset": "Passwortrücksetzung anfordern",
     "Request reset": "Passwortrücksetzung",
     "Reset password": "Passwort zurücksetzen",
     "Defaults": "Standard",
     "Other": "Andere",
     "notification-reply-title": "Antwort auf deinen Post",
-    "notification-reply-body": " hat auf deinen Post geantwortet",
     "The selected media item has no transcript available and thus cannot be translated.": "Das ausgewählte Medienobjekt hat kein Transkript und kann deshalb nicht übersetzt werden.",
     "Close": "Schließen",
     "Filter by group": "Nach Gruppe filtern",
@@ -147,5 +145,10 @@
     "Moderator": "__STRING_NOT_TRANSLATED__",
     "Admin": "__STRING_NOT_TRANSLATED__",
     "Approval pending": "__STRING_NOT_TRANSLATED__",
-    "Request new role": "__STRING_NOT_TRANSLATED__"
+    "Request new role": "__STRING_NOT_TRANSLATED__",
+    "view-count_plural": "<0>{{viewCount}}</0> views",
+    "collection-count": "<0>{{mediaItemCount}}</0> items in collection",
+    "notification-reply-body": "<0>{{username}}</0> replied to your post.",
+    "request-reset-error-email": "<0>Error!</0> Could not request password reset for the given e-mail address.",
+    "request-reset-error": "<0>Error!</0> Could not reset password."
 }

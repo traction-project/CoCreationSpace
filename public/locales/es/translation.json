@@ -88,12 +88,9 @@
     "Upload new file": "Subir un nuevo archivo",
     "Defaults": "__STRING_NOT_TRANSLATED__",
     "Other": "Otro",
-    "notification-reply-title": "Reply to your post",
-    "notification-reply-body": " replied to your post.",
     "The selected media item has no transcript available and thus cannot be translated.": "__STRING_NOT_TRANSLATED__",
     "Close": "__STRING_NOT_TRANSLATED__",
     "Filter by group": "Filtrar por grupo",
-    "processing-message": "All files have finished uploading. You can add more files or simply hit <1>Submit</1> after you have completed the form below. Any videos that are still processing will be processed in the background.",
     "What group are you participanting with?": "¿En qué grupo estás participando?",
     "Costume Designers (led by Montse Amenós)": "Costume Designers (led by Montse Amenós)",
     "Music Director": "Music Director",
@@ -147,5 +144,11 @@
     "Moderator": "__STRING_NOT_TRANSLATED__",
     "Admin": "__STRING_NOT_TRANSLATED__",
     "Approval pending": "__STRING_NOT_TRANSLATED__",
-    "Request new role": "__STRING_NOT_TRANSLATED__"
+    "Request new role": "__STRING_NOT_TRANSLATED__",
+    "view-count_plural": "<0>{{viewCount}}</0> views",
+    "collection-count": "<0>{{mediaItemCount}}</0> items in collection",
+    "notification-reply-body": "<0>{{username}}</0> replied to your post.",
+    "processing-message": "All files have finished uploading. You can add more files or simply hit <1>Submit</1> after you have completed the form below. Any videos that are still processing will be processed in the background.",
+    "request-reset-error-email": "<0>Error!</0> Could not request password reset for the given e-mail address.",
+    "notification-reply-title": "New reply to your post"
 }

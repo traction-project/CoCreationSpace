@@ -83,7 +83,7 @@
     "interests-error-unknown": "<0>La selecció ha fallat.</0> S'ha produït un error desconegut.",
     "login-error": "<0>No s'ha pogut iniciar la sessió.</0>El nom d'usuari o contrasenya no són correctes.",
     "notification-comment": "Nou comentari al tema <1>{{topicTitle}}</1>",
-    "notification-reply-body": "{{name}} ha respost a la teva publicació.",
+    "notification-reply-body": "{{username}} ha respost a la teva publicació.",
     "notification-reply-title": "Respon a la teva publicació",
     "notification-text": "S'ha enviat una nova publicació titulada <1><0>{{postTitle}}</0></1> al tema <3><0>{{topicTitle}}</0></3>",
     "notification-text-comment": "S'ha enviat un nou comentari al tema <1><0>{{topicTitle}}</0></1>",
@@ -91,7 +91,6 @@
     "processing-message": "S'han pujat tots els fitxers. Pots afegir més fitxers o prémer <1>Envia</1>  quan hagis omplert el formulari de sota. Els vídeos que encara s'estiguin processant es processaran en segon pla.",
     "registration-error-unknown": "registre-error-desconegut,<0>El registre ha fallat.</0> S'ha produït un error desconegut.",
     "registration-error-username-exists": "<0>El registre ha fallat.</0> Aquest nom d'usuari ja existeix.",
-    "request-reset-error": "<0>Error!</0> No s'ha pogut reestablir la contrasenya per al correu electrònic introduït.",
     "required": "obligatori",
     "view-count": "<0>{{viewCount}}</0> visualitzacions",
     "What group are you participanting with?": "Quin és el teu identificador de participant?",
@@ -147,5 +146,9 @@
     "Moderator": "__STRING_NOT_TRANSLATED__",
     "Admin": "__STRING_NOT_TRANSLATED__",
     "Approval pending": "__STRING_NOT_TRANSLATED__",
-    "Request new role": "__STRING_NOT_TRANSLATED__"
+    "Request new role": "__STRING_NOT_TRANSLATED__",
+    "view-count_plural": "<0>{{viewCount}}</0> views",
+    "collection-count": "<0>{{mediaItemCount}}</0> items in collection",
+    "request-reset-error-email": "<0>Error!</0> Could not request password reset for the given e-mail address.",
+    "request-reset-error": "<0>Error!</0> Could not reset password."
 }
