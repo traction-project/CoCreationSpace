@@ -10,6 +10,7 @@ interface EditableImageProps {
 
 const EditableImage: React.FC<EditableImageProps> = ({ imageUrl, dimensions: [ width, height ] }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const imageRef = useRef<HTMLImageElement>();
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -24,6 +25,7 @@ const EditableImage: React.FC<EditableImageProps> = ({ imageUrl, dimensions: [ w
       context.drawImage(image, 0, 0, width, height);
     };
     image.src = imageUrl;
+    imageRef.current = image;
 
     let isDrawing = false;
     let prevCoords: Coords;
@@ -51,8 +53,6 @@ const EditableImage: React.FC<EditableImageProps> = ({ imageUrl, dimensions: [ w
         const [ x, y ] = getMousePosition(e);
         const [ prevX, prevY ] = prevCoords;
 
-        console.log("drawing at:", x, y);
-
         context.beginPath();
         context.moveTo(prevX, prevY);
         context.lineTo(x, y);
@@ -67,6 +67,13 @@ const EditableImage: React.FC<EditableImageProps> = ({ imageUrl, dimensions: [ w
       }
     };
   }, []);
+
+  const onClearClicked = () => {
+    const context = canvasRef.current?.getContext("2d");
+    imageRef.current && context?.drawImage(imageRef.current, 0, 0, width, height);
+
+    console.log("clear:", context, imageRef.current);
+  };
 
   const wrapperStyle: React.CSSProperties = {
     width: "100%",
@@ -94,7 +101,7 @@ const EditableImage: React.FC<EditableImageProps> = ({ imageUrl, dimensions: [ w
               <div className="column">
                 <div className="field is-grouped is-grouped-left m-2">
                   <p className="control ml-2">
-                    <a className="button is-danger">
+                    <a className="button is-danger" onClick={onClearClicked}>
                       Clear
                     </a>
                   </p>
