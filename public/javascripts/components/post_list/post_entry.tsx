@@ -15,9 +15,7 @@ const PostEntry: React.FC<PostEntryProps> = (props) => {
   const history = useHistory();
 
   const navigateTo = (destination: string) => {
-    return () => {
-      history.push(destination);
-    };
+    history.push(destination);
   };
 
   const filterByTag = (tagId: string) => {
@@ -27,8 +25,16 @@ const PostEntry: React.FC<PostEntryProps> = (props) => {
     };
   };
 
+  const entryClicked = () => {
+    if (post.published) {
+      navigateTo(`/post/${post.id}`);
+    } else {
+      navigateTo(`/post/${post.id}/edit`);
+    }
+  };
+
   return (
-    <article className="media is-clickable post-entry" onClick={navigateTo(`/post/${post.id}`)}>
+    <article className="media is-clickable post-entry" onClick={entryClicked}>
       <UserLogo user={post.user} hideName />
 
       <div className="media-content">
