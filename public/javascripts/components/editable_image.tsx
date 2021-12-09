@@ -83,11 +83,40 @@ const EditableImage: React.FC<EditableImageProps> = ({ imageUrl, dimensions: [ w
     <div style={wrapperStyle}>
       <div style={{ width: "100%", backgroundColor: "#F9F9F9" }}>
         <div style={innerStyle}>
-          <canvas
-            ref={canvasRef}
-            width={width}
-            height={height}
-          />
+          <div>
+            <canvas
+              ref={canvasRef}
+              width={width}
+              height={height}
+            />
+
+            <div className="columns">
+              <div className="column">
+                <div className="field is-grouped is-grouped-left m-2">
+                  <p className="control ml-2">
+                    <a className="button is-danger">
+                      Clear
+                    </a>
+                  </p>
+                </div>
+              </div>
+
+              <div className="column">
+                <div className="field is-grouped is-grouped-right m-2">
+                  <p className="control">
+                    <a className="button is-info">
+                      Save
+                    </a>
+                  </p>
+                  <p className="control">
+                    <a className="button is-info is-light">
+                      Cancel
+                    </a>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
