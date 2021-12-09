@@ -153,6 +153,10 @@ const processUploadedFile = async (stream: NodeJS.ReadableStream, filename: stri
   return file.id;
 };
 
+/**
+ * Handles uploaded files and prepares them for further processing depending
+ * on the file's mime type.
+ */
 router.post("/upload", authRequired, (req, res) => {
   const busboy = new Busboy({ headers: req.headers });
   const user = req.user as UserInstance;
@@ -211,6 +215,27 @@ router.post("/upload", authRequired, (req, res) => {
   });
 
   req.pipe(busboy);
+});
+
+/**
+ * Replaces the contents of a previously uploaded file with the file submitted
+ * in this request.
+ */
+router.post("/:id/replace", authRequired, (req, res) => {
+  const busboy = new Busboy({ headers: req.headers });
+
+  busboy.on("file", async (fieldname, file, filename, encoding, mimetype) => {
+    try {
+      // TODO Replace existing file on S3 and update database if necessary
+    } catch (e) {
+      console.error(e);
+
+      res.status(500).send({
+        status: "ERR",
+        message: "Could not upload to S3"
+      });
+    }
+  });
 });
 
 router.get("/all", async (req, res) => {
