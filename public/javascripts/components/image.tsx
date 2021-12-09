@@ -97,7 +97,7 @@ const Image: React.FC<ImageProps> = ({ id, showDetectedText = false, isEditable 
         </div>
       )}
 
-      {(isEditable) && (
+      {(isEditable && !editImage) && (
         <EditImageIcon
           onClick={() => setEditImage(true)}
         />
