@@ -80,6 +80,11 @@ const Image: React.FC<ImageProps> = ({ id, showDetectedText = false, isEditable 
               <EditableImage
                 imageUrl={imageUrl}
                 dimensions={dimensionRef.current || [0, 0]}
+                onSave={(data) => {
+                  console.log("Image saved:", data);
+                  setEditImage(false);
+                }}
+                onCancel={() => setEditImage(false)}
               />
             )
           )}
