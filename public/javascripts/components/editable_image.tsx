@@ -94,6 +94,9 @@ const EditableImage: React.FC<EditableImageProps> = ({ imageUrl, dimensions: [ w
 
     canvas.onmousemove = onMove;
     canvas.ontouchmove = (e: TouchEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+
       const touch = e.touches[0];
       onMove(touch);
     };
