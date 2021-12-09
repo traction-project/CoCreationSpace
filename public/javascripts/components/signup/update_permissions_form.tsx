@@ -113,6 +113,12 @@ const UpdatePermissionForm: React.FC<UpdatePermissionsFormProps> = (props) => {
                 )}
               </p>
             </div>
+
+            <article className="message">
+              <div className="message-body">
+                {getRoleDescription(g.groupMembership.role)}
+              </div>
+            </article>
           </div>
         );
       })}
