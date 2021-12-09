@@ -1,29 +1,27 @@
 import * as React from "react";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 
 interface EditableImageProps {
-  image: HTMLImageElement
+  imageUrl: string;
+  dimensions: [number, number];
 }
 
-const EditableImage: React.FC<EditableImageProps> = ({ image }) => {
+const EditableImage: React.FC<EditableImageProps> = ({ imageUrl, dimensions: [ width, height ] }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  const canvasLoaded = () => {
-    console.log("canvas loaded");
-    const canvas = canvasRef.current;
+  useEffect(() => {
+    const image = new Image();
 
-    if (!canvas) {
-      return;
-    }
+    image.onload = () => {
+      const context = canvasRef.current?.getContext("2d");
 
-    const context = canvas.getContext("2d");
+      if (context) {
+        context.drawImage(image, 0, 0, width, height);
+      }
+    };
 
-    if (!context) {
-      return;
-    }
-
-    context.drawImage(image, 0, 0);
-  };
+    image.src = imageUrl;
+  }, []);
 
   const wrapperStyle: React.CSSProperties = {
     width: "100%",
@@ -42,9 +40,8 @@ const EditableImage: React.FC<EditableImageProps> = ({ image }) => {
         <div style={innerStyle}>
           <canvas
             ref={canvasRef}
-            onLoad={canvasLoaded}
-            width={image.width}
-            height={image.height}
+            width={width}
+            height={height}
           />
         </div>
       </div>
