@@ -117,8 +117,6 @@
     "My Space": "__STRING_NOT_TRANSLATED__",
     "Drafts": "__STRING_NOT_TRANSLATED__",
     "Notes": "__STRING_NOT_TRANSLATED__",
-    "items in collection": "__STRING_NOT_TRANSLATED__",
-    "items in collection_plural": "__STRING_NOT_TRANSLATED__",
     "Edit description": "__STRING_NOT_TRANSLATED__",
     "Add chapter to video": "__STRING_NOT_TRANSLATED__",
     "Start": "__STRING_NOT_TRANSLATED__",
@@ -150,5 +148,7 @@
     "notification-reply-body": "<0>{{username}}</0> replied to your post.",
     "processing-message": "All files have finished uploading. You can add more files or simply hit <1>Submit</1> after you have completed the form below. Any videos that are still processing will be processed in the background.",
     "request-reset-error-email": "<0>Error!</0> Could not request password reset for the given e-mail address.",
-    "notification-reply-title": "New reply to your post"
+    "notification-reply-title": "New reply to your post",
+    "Clear": "__STRING_NOT_TRANSLATED__",
+    "Save": "__STRING_NOT_TRANSLATED__"
 }

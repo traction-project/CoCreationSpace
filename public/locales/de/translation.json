@@ -95,8 +95,6 @@
     "My Space": "__STRING_NOT_TRANSLATED__",
     "Drafts": "__STRING_NOT_TRANSLATED__",
     "Notes": "__STRING_NOT_TRANSLATED__",
-    "items in collection": "__STRING_NOT_TRANSLATED__",
-    "items in collection_plural": "__STRING_NOT_TRANSLATED__",
     "Edit description": "__STRING_NOT_TRANSLATED__",
     "Add chapter to video": "__STRING_NOT_TRANSLATED__",
     "Start": "__STRING_NOT_TRANSLATED__",
@@ -150,5 +148,7 @@
     "collection-count": "<0>{{mediaItemCount}}</0> items in collection",
     "notification-reply-body": "<0>{{username}}</0> replied to your post.",
     "request-reset-error-email": "<0>Error!</0> Could not request password reset for the given e-mail address.",
-    "request-reset-error": "<0>Error!</0> Could not reset password."
+    "request-reset-error": "<0>Error!</0> Could not reset password.",
+    "Clear": "__STRING_NOT_TRANSLATED__",
+    "Save": "__STRING_NOT_TRANSLATED__"
 }
