@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useParams, useHistory } from "react-router-dom";
@@ -24,6 +24,7 @@ const EditPost: React.FC<EditPostProps> = () => {
   const [ tags, setTags ] = useState<Array<string>>([]);
   const [ loading, setLoading ] = useState<boolean>(false);
   const [ fileToUpload, setFileToUpload ] = useState<File>();
+  const saveAsDraft = useRef(false);
 
   useEffect(() => {
     getPostId(id).then((res) => {
@@ -88,7 +89,7 @@ const EditPost: React.FC<EditPostProps> = () => {
     setTags(tags.concat(tagsToAdd));
   };
 
-  const handleFormSubmission = handleSubmit(async ({ title, description, draft }) => {
+  const handleFormSubmission = handleSubmit(async ({ title, description }) => {
     const multimediaIdArray = multimedia.map(m => m.id);
 
     const res = await fetch(`/posts/${id}/edit`, {
@@ -99,7 +100,7 @@ const EditPost: React.FC<EditPostProps> = () => {
         description,
         tags,
         multimedia: multimediaIdArray,
-        published: !draft
+        published: !saveAsDraft.current
       })
     });
 
@@ -243,12 +244,18 @@ const EditPost: React.FC<EditPostProps> = () => {
 
               <hr/>
 
-              <div className="field">
+              <div className="field pt-4">
                 <div className="control">
-                  <label className="checkbox">
-                    <input type="checkbox" {...register("draft")} defaultChecked={!post.published} />
-                    &nbsp;{t("Save as draft")}
-                  </label>
+                  <button
+                    type="submit"
+                    className="button is-info is-fullwidth"
+                    disabled={loading}
+                    onClick={() => {
+                      saveAsDraft.current = true;
+                    }}
+                  >
+                    {t("Save as draft")}
+                  </button>
                 </div>
               </div>
 
@@ -256,8 +263,11 @@ const EditPost: React.FC<EditPostProps> = () => {
                 <div className="control">
                   <button
                     type="submit"
-                    className="button is-link is-fullwidth"
+                    className="button is-info is-fullwidth"
                     disabled={loading}
+                    onClick={() => {
+                      saveAsDraft.current = false;
+                    }}
                   >
                     {t("Submit")}
                   </button>
