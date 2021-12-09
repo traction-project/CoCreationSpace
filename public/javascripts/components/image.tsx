@@ -6,6 +6,13 @@ import FullscreenImage from "./fullscreen_image";
 import EditImageIcon from "./edit_image_icon";
 import { isImageBlurry, isImageEmpty, postFile, dataURLToFile } from "../util";
 import EditableImage from "./editable_image";
+import ProgressBox from "./progress_box";
+
+interface UploadStatus {
+  status: "done" | "progressing";
+  total: number;
+  loaded: number;
+}
 
 interface ImageProps {
   id: string;
@@ -19,6 +26,7 @@ const Image: React.FC<ImageProps> = ({ id, showDetectedText = false, isEditable 
   const imageRef = useRef<HTMLImageElement>(null);
   const dimensionRef = useRef<[number, number]>();
 
+  const [ uploadStatus, setUploadStatus ] = useState<UploadStatus>({ status: "done", total: 0, loaded: 0 });
   const [ imageUrl, setImageUrl ] = useState<string>();
   const [ imageText, setImageText ] = useState<Array<string>>([]);
   const [ editImage, setEditImage ] = useState(false);
@@ -55,8 +63,11 @@ const Image: React.FC<ImageProps> = ({ id, showDetectedText = false, isEditable 
   const onEditSaved = async (imageData: string) => {
     const file = await dataURLToFile(imageData, `${id}.png`);
 
-    const res = await postFile(`/media/${id}/replace`, file, (e) => {
-      console.log("progress:", e.total, e.loaded);
+    const res = await postFile(`/media/${id}/replace`, file, ({ total, loaded }) => {
+      setUploadStatus({
+        status: "progressing",
+        total, loaded
+      });
     });
 
     const data = JSON.parse(res);
@@ -64,6 +75,10 @@ const Image: React.FC<ImageProps> = ({ id, showDetectedText = false, isEditable 
 
     setImageUrl(data.url);
     setEditImage(false);
+
+    setUploadStatus({
+      status: "done", total: 0, loaded: 0
+    });
   };
 
   const wrapperStyle: React.CSSProperties = {
@@ -90,12 +105,17 @@ const Image: React.FC<ImageProps> = ({ id, showDetectedText = false, isEditable 
                 style={{ maxHeight: "100%", cursor: "pointer" }}
                 onClick={openPortal}
               />
-            ) : (
+            ) : (uploadStatus.status == "done") ? (
               <EditableImage
                 imageUrl={imageUrl}
                 dimensions={dimensionRef.current || [0, 0]}
                 onSave={onEditSaved}
                 onCancel={() => setEditImage(false)}
+              />
+            ) : (
+              <ProgressBox
+                progress={uploadStatus.loaded}
+                total={uploadStatus.total}
               />
             )
           )}
