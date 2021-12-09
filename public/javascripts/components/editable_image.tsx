@@ -2,6 +2,8 @@ import * as React from "react";
 import { useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 
+import ColorPicker from "./color_picker";
+
 type Coords = [x: number, y: number];
 
 interface EditableImageProps {
@@ -16,6 +18,7 @@ const EditableImage: React.FC<EditableImageProps> = ({ imageUrl, dimensions: [ w
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const imageRef = useRef<HTMLImageElement>();
+  const penColor = useRef("red");
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -63,8 +66,8 @@ const EditableImage: React.FC<EditableImageProps> = ({ imageUrl, dimensions: [ w
         context.moveTo(prevX, prevY);
         context.lineTo(x, y);
 
-        context.strokeStyle = "red";
-        context.lineWidth = 2;
+        context.strokeStyle = penColor.current;
+        context.lineWidth = 4;
 
         context.stroke();
         context.closePath();
@@ -109,6 +112,13 @@ const EditableImage: React.FC<EditableImageProps> = ({ imageUrl, dimensions: [ w
               height={height}
             />
 
+            <ColorPicker
+              onColorPicked={(color) => {
+                console.log("color picked:", color);
+                penColor.current = color;
+              }}
+            />
+
             <div className="columns">
               <div className="column">
                 <div className="field is-grouped is-grouped-left mt-2 mb-2">
@@ -121,7 +131,7 @@ const EditableImage: React.FC<EditableImageProps> = ({ imageUrl, dimensions: [ w
               </div>
 
               <div className="column">
-                <div className="field is-grouped is-grouped-right m-2">
+                <div className="field is-grouped is-grouped-right mt-2 mb-2">
                   <p className="control">
                     <a className="button is-info" onClick={onSaveClicked}>
                       {t("Save")}
