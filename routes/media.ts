@@ -181,12 +181,44 @@ router.post("/upload", authRequired, (req, res) => {
  * Replaces the contents of a previously uploaded file with the file submitted
  * in this request.
  */
-router.post("/:id/replace", authRequired, (req, res) => {
-  const busboy = new Busboy({ headers: req.headers });
+router.post("/:id/replace", authRequired, async (req, res) => {
+  const { id } = req.params;
+  const { MediaItem } = db.getModels();
 
-  busboy.on("file", async (fieldname, file, filename, encoding, mimetype) => {
+  const mediaItem = await MediaItem.findByPk(id);
+
+  if (!mediaItem) {
+    return res.status(400).send({
+      status: "ERR",
+      message: "No such media item"
+    });
+  }
+
+  const busboy = new Busboy({ headers: req.headers });
+  busboy.on("file", async (_, file) => {
     try {
-      // TODO Replace existing file on S3 and update database if necessary
+      const existingFilename = mediaItem.title;
+      const { type } = mediaItem;
+
+      if (type == "video" || type == "audio") {
+        await uploadStreamingFile(
+          type, file, existingFilename
+        );
+      } else if (type == "image") {
+        const thumbFilename = mediaItem.thumbnails![0];
+
+        await uploadImage(
+          file, existingFilename, thumbFilename
+        );
+      } else {
+        await uploadToS3(existingFilename, file, BUCKET_NAME);
+      }
+
+      res.send({
+        status: "OK",
+        id: mediaItem.id,
+        type
+      });
     } catch (e) {
       console.error(e);
 
