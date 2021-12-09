@@ -9,18 +9,19 @@ interface PostReplyNotificationProps {
 
 const PostReplyNotification: React.FC<PostReplyNotificationProps> = (props) => {
   const { data: { creator } } = props;
+  const { username } = creator;
 
   return (
     <p>
       <strong>
         <Trans i18nKey="notification-reply-title">
-          Reply to your post
+          New reply to your post
         </Trans>
       </strong>
       <br />
       <br />
       <Trans i18nKey="notification-reply-body">
-        {creator.username} replied to your post.
+        {{username}} replied to your post.
       </Trans>
     </p>
   );

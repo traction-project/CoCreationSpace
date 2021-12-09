@@ -40,7 +40,7 @@ const RequestReset: React.FC<RequestResetProps> = (props) => {
                 {hasError && (
                   <article className="message is-danger">
                     <div className="message-body">
-                      <Trans i18nKey="request-reset-error">
+                      <Trans i18nKey="request-reset-error-email">
                         <strong>Error!</strong> Could not request password reset for the given e-mail address.
                       </Trans>
                     </div>
