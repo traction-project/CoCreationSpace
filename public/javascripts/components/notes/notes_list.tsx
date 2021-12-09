@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslation, Trans } from "react-i18next";
 import { useHistory } from "react-router-dom";
 import classNames from "classnames";
 
@@ -46,6 +46,8 @@ const NotesList: React.FC<NotesListProps> = (props) => {
             <hr/>
 
             {notes.map(({ id, name, mediaItems }) => {
+              const mediaItemCount = mediaItems.length;
+
               return (
                 <article
                   key={id}
@@ -72,7 +74,9 @@ const NotesList: React.FC<NotesListProps> = (props) => {
                         </strong>
                         <br />
                         <br />
-                        {mediaItems.length} {t("items in collection", { count: mediaItems.length })}
+                        <Trans i18nKey="collection-count" count={mediaItems.length}>
+                          {{mediaItemCount}} items in collection
+                        </Trans>
                       </p>
                     </div>
                   </div>

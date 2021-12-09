@@ -96,7 +96,7 @@ const MediaPlayerWithToolbar: React.FC<MediaPlayerWithToolbarProps> = (props) =>
         <div className="level-right">
           <div className="level-item">
             {(viewCount) && (
-              <Trans i18nKey="view-count">{{viewCount}} views</Trans>
+              <Trans i18nKey="view-count" count={viewCount}>{{viewCount}} views</Trans>
             )}
           </div>
         </div>
