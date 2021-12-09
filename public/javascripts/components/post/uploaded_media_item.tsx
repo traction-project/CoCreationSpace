@@ -35,7 +35,7 @@ const UploadedMediaItem: React.FC<UploadedMediaItemProps> = ({ id, type, onDelet
       );
     } else if (type == "image" ){
       return (
-        <Image id={id} onBlurDetected={onBlurDetected} />
+        <Image id={id} onBlurDetected={onBlurDetected} isEditable={true} />
       );
     } else {
       return (
