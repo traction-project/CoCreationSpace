@@ -44,12 +44,12 @@ export interface ResponseUploadType {
   type: string;
 }
 
-export function postFile(endpoint: string, file: File, onProgress: (e: ProgressEvent) => void, field = "file"): Promise<string> {
+export function postFile(endpoint: string, file: File, onProgress?: (e: ProgressEvent) => void, field = "file"): Promise<string> {
   const formData = new FormData();
   formData.append(field, file);
 
   const xhr = new XMLHttpRequest();
-  xhr.upload.onprogress = onProgress;
+  xhr.upload.onprogress = onProgress || (() => {});
 
   const promise: Promise<string> = new Promise((resolve, reject) => {
     xhr.onreadystatechange = () => {
