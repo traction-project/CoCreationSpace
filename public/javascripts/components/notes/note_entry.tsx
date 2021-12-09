@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { useTranslation } from "react-i18next";
+import { useTranslation, Trans } from "react-i18next";
 import { useForm } from "react-hook-form";
 
 import { NoteCollection } from "./notes_list";
@@ -56,13 +56,16 @@ const NoteEntry: React.FC<NoteEntryProps> = (props) => {
   }
 
   const { name, description, mediaItems } = noteCollection;
+  const mediaItemCount = mediaItems.length;
 
   return (
     <section className="section">
       <div className="container">
         <h4 className="title is-4">{name}</h4>
         <h5 className="subtitle is-5">
-          {mediaItems.length} {t("items in collection", { count: mediaItems.length })}
+          <Trans i18nKey="collection-count" count={mediaItems.length}>
+            {{ mediaItemCount }} items in collection
+          </Trans>
         </h5>
 
         <div className="post-entry">
