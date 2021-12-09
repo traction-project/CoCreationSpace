@@ -67,6 +67,19 @@ const UpdatePermissionForm: React.FC<UpdatePermissionsFormProps> = (props) => {
     };
   };
 
+  const getRoleDescription = (role: UserRole) => {
+    switch (role) {
+    case "participant":
+      return t("The participant is a non-professional artist that participates in tasks that are directed by the facilitator. They are a member of one group, and can see and comment on content within that group. They have permission to edit and delete their own content.");
+    case "facilitator":
+      return t("The facilitator is a professional artist that sets tasks and gives directions to participants. They are a member of one group, and can download and edit content inside their group, and share it with the permission of participants. In addition, they can see drafts of participant content, but cannot share or edit private content.");
+    case "moderator":
+      return t("The moderator checks that participants' work is protected and is allowed to download and share content approved by participants and facilitators outside of the Cocreation Space. The moderator’s role is also to flag and remove negative comments from the system, and to change other users' level of permissions.");
+    case "admin":
+      return t("The administrator makes sure the Cocreation Space is running smoothly. This role has access to download, share, restrict content and change permissions.");
+    }
+  };
+
   return (
     <>
       <hr/>
