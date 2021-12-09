@@ -228,6 +228,8 @@ router.post("/:id/replace", authRequired, async (req, res) => {
       });
     }
   });
+
+  req.pipe(busboy);
 });
 
 router.get("/all", async (req, res) => {
