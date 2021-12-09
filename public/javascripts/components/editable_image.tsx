@@ -1,5 +1,6 @@
 import * as React from "react";
 import { useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 
 type Coords = [x: number, y: number];
 
@@ -11,6 +12,8 @@ interface EditableImageProps {
 }
 
 const EditableImage: React.FC<EditableImageProps> = ({ imageUrl, dimensions: [ width, height ], onSave, onCancel }) => {
+  const { t } = useTranslation();
+
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const imageRef = useRef<HTMLImageElement>();
 
@@ -111,7 +114,7 @@ const EditableImage: React.FC<EditableImageProps> = ({ imageUrl, dimensions: [ w
                 <div className="field is-grouped is-grouped-left m-2">
                   <p className="control ml-2">
                     <a className="button is-danger" onClick={onClearClicked}>
-                      Clear
+                      {t("Clear")}
                     </a>
                   </p>
                 </div>
@@ -121,12 +124,12 @@ const EditableImage: React.FC<EditableImageProps> = ({ imageUrl, dimensions: [ w
                 <div className="field is-grouped is-grouped-right m-2">
                   <p className="control">
                     <a className="button is-info" onClick={onSaveClicked}>
-                      Save
+                      {t("Save")}
                     </a>
                   </p>
                   <p className="control">
                     <a className="button is-info is-light" onClick={onCancel}>
-                      Cancel
+                      {t("Cancel")}
                     </a>
                   </p>
                 </div>
