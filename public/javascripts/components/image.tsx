@@ -4,7 +4,7 @@ import usePortal from "react-useportal";
 
 import FullscreenImage from "./fullscreen_image";
 import EditImageIcon from "./edit_image_icon";
-import { isImageBlurry, isImageEmpty } from "../util";
+import { isImageBlurry, isImageEmpty, postFile, dataURLToFile } from "../util";
 import EditableImage from "./editable_image";
 
 interface ImageProps {
@@ -52,6 +52,20 @@ const Image: React.FC<ImageProps> = ({ id, showDetectedText = false, isEditable 
     }
   };
 
+  const onEditSaved = async (imageData: string) => {
+    const file = await dataURLToFile(imageData, `${id}.png`);
+
+    const res = await postFile(`/media/${id}/replace`, file, (e) => {
+      console.log("progress:", e.total, e.loaded);
+    });
+
+    const data = JSON.parse(res);
+    console.log("response:", data);
+
+    setImageUrl(data.url);
+    setEditImage(false);
+  };
+
   const wrapperStyle: React.CSSProperties = {
     width: "100%",
     aspectRatio: "16/9"
@@ -80,10 +94,7 @@ const Image: React.FC<ImageProps> = ({ id, showDetectedText = false, isEditable 
               <EditableImage
                 imageUrl={imageUrl}
                 dimensions={dimensionRef.current || [0, 0]}
-                onSave={(data) => {
-                  console.log("Image saved:", data);
-                  setEditImage(false);
-                }}
+                onSave={onEditSaved}
                 onCancel={() => setEditImage(false)}
               />
             )
