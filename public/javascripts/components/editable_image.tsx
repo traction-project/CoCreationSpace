@@ -97,6 +97,22 @@ const EditableImage: React.FC<EditableImageProps> = ({ imageUrl, dimensions: [ w
       const touch = e.touches[0];
       onMove(touch);
     };
+
+    const willPreventDefault = (e: TouchEvent) => {
+      if (e.target == canvas) {
+        e.preventDefault();
+      }
+    };
+
+    document.body.addEventListener("touchstart", willPreventDefault, false);
+    document.body.addEventListener("touchmove", willPreventDefault, false);
+    document.body.addEventListener("touchend", willPreventDefault, false);
+
+    return () => {
+      document.body.removeEventListener("touchstart", willPreventDefault);
+      document.body.removeEventListener("touchmove", willPreventDefault);
+      document.body.removeEventListener("touchend", willPreventDefault);
+    };
   }, []);
 
   const onSaveClicked = () => {
