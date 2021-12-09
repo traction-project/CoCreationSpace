@@ -15,27 +15,33 @@ import { AsyncJobInstance } from "models/async_job";
 
 const [ BUCKET_NAME, ETS_PIPELINE, CLOUDFRONT_URL ] = getFromEnvironment("BUCKET_NAME", "ETS_PIPELINE", "CLOUDFRONT_URL");
 
-async function processUploadedStreamingFile(type: "audio" | "video", file: NodeJS.ReadableStream, filename: string, userId: string): Promise<string> {
-  const { MediaItem, AsyncJob } = db.getModels();
+async function uploadStreamingFile(type: "audio" | "video", file: NodeJS.ReadableStream, filename: string) {
+  await uploadToS3(filename, file, BUCKET_NAME);
 
-  const newName = uuid4() + getExtension(filename);
-  await uploadToS3(newName, file, BUCKET_NAME);
-
-  transcribeMediaFile(newName, BUCKET_NAME);
+  transcribeMediaFile(filename, BUCKET_NAME);
   let dashJobId: string | undefined, hlsJobId: string | undefined;
 
   if (type == "video") {
-    dashJobId = await encodeDash(ETS_PIPELINE, newName);
-    hlsJobId = await encodeHLS(ETS_PIPELINE, newName);
+    dashJobId = await encodeDash(ETS_PIPELINE, filename);
+    hlsJobId = await encodeHLS(ETS_PIPELINE, filename);
   } else {
-    dashJobId = await encodeAudio(ETS_PIPELINE, newName);
-    hlsJobId = await encodeHLSAudio(ETS_PIPELINE, newName);
+    dashJobId = await encodeAudio(ETS_PIPELINE, filename);
+    hlsJobId = await encodeHLSAudio(ETS_PIPELINE, filename);
   }
+
+  return [dashJobId, hlsJobId];
+}
+
+async function processAndUploadStreamingFile(type: "audio" | "video", file: NodeJS.ReadableStream, originalFilename: string, userId: string): Promise<string> {
+  const { MediaItem, AsyncJob } = db.getModels();
+
+  const newName = uuid4() + getExtension(originalFilename);
+  const [ dashJobId, hlsJobId ] = await uploadStreamingFile(type, file, newName);
 
   const mediaItem = MediaItem.build();
 
   mediaItem.title = newName;
-  mediaItem.file = filename;
+  mediaItem.file = originalFilename;
   mediaItem.key = newName.split(".")[0];
   mediaItem.type = type;
 
@@ -60,31 +66,33 @@ async function processUploadedStreamingFile(type: "audio" | "video", file: NodeJ
   return mediaItem.id;
 }
 
-const processUploadedImage = async (file: NodeJS.ReadableStream, filename: string, userId: string) => {
-  const { MediaItem } = db.getModels();
-
+async function uploadImage(file: NodeJS.ReadableStream, filename: string, thumbnailName: string) {
   // Get file stream buffer
   const bufferFile = await streamToBuffer(file);
-
-  // Upload image to S3
-  const newName = uuid4() + getExtension(filename);
-  await uploadToS3(newName, bufferFile, BUCKET_NAME);
+  await uploadToS3(filename, bufferFile, BUCKET_NAME);
 
   // Perform OCR on image
-  const ocrResult = await performOCR(newName, BUCKET_NAME);
+  const ocrResult = await performOCR(filename, BUCKET_NAME);
 
   // Generate thumbnail.
   // Set thumbnail width. Resize will set the height automatically to maintain aspect ratio.
   const resizerImageBuffer = await sharp(bufferFile).resize(300).toBuffer();
-
-  // Upload thumbnail to S3.
-  const thumbnailName = uuid4() + getExtension(filename);
   await uploadToS3(thumbnailName, resizerImageBuffer, BUCKET_NAME);
+
+  return ocrResult;
+}
+
+async function processAndUploadImage(file: NodeJS.ReadableStream, originalFilename: string, userId: string): Promise<string> {
+  const { MediaItem } = db.getModels();
+
+  const newName = uuid4() + getExtension(originalFilename);
+  const thumbnailName = uuid4() + getExtension(originalFilename);
+  const ocrResult = await uploadImage(file, newName, thumbnailName);
 
   const image: MediaItemInstance = MediaItem.build();
 
   image.title = newName;
-  image.file = filename;
+  image.file = originalFilename;
   image.status = "done";
   image.type = "image";
   image.ocrData = ocrResult;
@@ -99,9 +107,9 @@ const processUploadedImage = async (file: NodeJS.ReadableStream, filename: strin
   image.setUser(userId);
 
   return image.id;
-};
+}
 
-const processUploadedFile = async (stream: NodeJS.ReadableStream, filename: string, userId: string) => {
+async function processAndUploadFile(stream: NodeJS.ReadableStream, filename: string, userId: string): Promise<string> {
   const { MediaItem } = db.getModels();
 
   const newName = uuid4() + getExtension(filename);
@@ -119,7 +127,7 @@ const processUploadedFile = async (stream: NodeJS.ReadableStream, filename: stri
   await file.setUser(userId);
 
   return file.id;
-};
+}
 
 const router = Router();
 
