@@ -140,7 +140,12 @@ const CreatePost: React.FC<CreatePostProps> = ({ file }) => {
 
       if (res.ok) {
         const post = await res.json();
-        history.push(`/post/${post.id}`);
+
+        if (!saveAsDraft.current) {
+          history.push(`/post/${post.id}`);
+        } else {
+          history.push("/drafts");
+        }
       } else {
         throw new Error("HTTP status code: " + res.status);
       }
