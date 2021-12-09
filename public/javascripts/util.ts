@@ -413,6 +413,14 @@ export function Range(start: number, end: number) {
   });
 }
 
+/**
+ * Checks whether the given HTML image element is empty. This can either be a
+ * completely uniform image or an image whose data hasn't been properly loaded
+ * yet.
+ *
+ * @param image HTML image element to be examined
+ * @returns Whether the image is empty
+ */
 export async function isImageEmpty(image: HTMLImageElement): Promise<boolean> {
   const cv = await import("./vendor/opencv");
 
@@ -425,6 +433,14 @@ export async function isImageEmpty(image: HTMLImageElement): Promise<boolean> {
   return result;
 }
 
+/**
+ * Checks whether the given HTML image element is blurry or not given the
+ * threshold value.
+ *
+ * @param image HTML image element to be examined
+ * @param threshold Threshold for blurriness, defaults to 10
+ * @returns Whether the image is blurry
+ */
 export async function isImageBlurry(image: HTMLImageElement, threshold = 10): Promise<boolean> {
   const cv = await import("./vendor/opencv");
 
@@ -459,4 +475,20 @@ export async function isImageBlurry(image: HTMLImageElement, threshold = 10): Pr
   mean.delete();
 
   return result;
+}
+
+/**
+ * Converts a data URL to a JavaScript file object.
+ *
+ * @param dataURL A data url
+ * @param name The desired name for the file
+ * @returns A JavaScript file object
+ */
+export async function dataURLToFile(dataURL: string, name: string): Promise<File> {
+  const mime = dataURL.split(";")[0].replace("data:", "");
+
+  const res = await fetch(dataURL);
+  const blob = await res.blob();
+
+  return new File([blob], name, { type: mime });
 }
