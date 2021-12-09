@@ -6,6 +6,11 @@ import ColorPicker from "./color_picker";
 
 type Coords = [x: number, y: number];
 
+interface CoordinateEvent {
+  clientX: number;
+  clientY: number;
+}
+
 interface EditableImageProps {
   imageUrl: string;
   dimensions: [number, number];
@@ -39,7 +44,7 @@ const EditableImage: React.FC<EditableImageProps> = ({ imageUrl, dimensions: [ w
     let isDrawing = false;
     let prevCoords: Coords;
 
-    const getMousePosition = (e: MouseEvent): Coords => {
+    const getMousePosition = (e: CoordinateEvent): Coords => {
       const boundingRect = canvas.getBoundingClientRect();
 
       return [
@@ -53,11 +58,22 @@ const EditableImage: React.FC<EditableImageProps> = ({ imageUrl, dimensions: [ w
       prevCoords = getMousePosition(e);
     };
 
+    canvas.ontouchstart = (e: TouchEvent) => {
+      isDrawing = true;
+      const touch = e.touches[0];
+
+      prevCoords = getMousePosition(touch);
+    };
+
     canvas.onmouseup = () => {
       isDrawing = false;
     };
 
-    canvas.onmousemove = (e: MouseEvent) => {
+    canvas.ontouchend = () => {
+      isDrawing = false;
+    };
+
+    const onMove = (e: CoordinateEvent) => {
       if (isDrawing) {
         const [ x, y ] = getMousePosition(e);
         const [ prevX, prevY ] = prevCoords;
@@ -74,6 +90,12 @@ const EditableImage: React.FC<EditableImageProps> = ({ imageUrl, dimensions: [ w
 
         prevCoords = [x, y];
       }
+    };
+
+    canvas.onmousemove = onMove;
+    canvas.ontouchmove = (e: TouchEvent) => {
+      const touch = e.touches[0];
+      onMove(touch);
     };
   }, []);
 
