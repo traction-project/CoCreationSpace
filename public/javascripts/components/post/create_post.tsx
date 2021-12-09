@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useHistory } from "react-router-dom";
 import { useTranslation, Trans } from "react-i18next";
 import { useForm } from "react-hook-form";
@@ -32,6 +32,7 @@ const CreatePost: React.FC<CreatePostProps> = ({ file }) => {
   const [ displayNotification, setDisplayNotification] = useState<"success" | "error">();
   const [ tags, setTags ] = useState<Array<string>>([]);
   const [ topics, setTopics ] = useState<Array<[string, string, string]>>([]);
+  const saveAsDraft = useRef(false);
 
   useEffect(() => {
     fetch("/topics/group").then((res) => {
@@ -112,8 +113,8 @@ const CreatePost: React.FC<CreatePostProps> = ({ file }) => {
     setDisplayNotification(undefined);
   };
 
-  const handleFormSubmission = handleSubmit(async ({ title, description, topic, draft }) => {
-    console.log("Submit:", title, description, topic, draft);
+  const handleFormSubmission = handleSubmit(async ({ title, description, topic }) => {
+    console.log("Submit:", title, description, topic, saveAsDraft.current);
 
     // Get and parse remaining values from tag form field
     const tagsToAdd = parseTags(getValues("tagName")).filter((t) => {
@@ -127,7 +128,7 @@ const CreatePost: React.FC<CreatePostProps> = ({ file }) => {
       multimedia: fileUploads.map((u) => u.id),
       tags: tags.concat(tagsToAdd).map((tag) => { return { name: tag }; } ),
       topicId: topic,
-      published: !draft
+      published: !saveAsDraft.current
     };
 
     try {
@@ -358,20 +359,29 @@ const CreatePost: React.FC<CreatePostProps> = ({ file }) => {
                 </div>
               </div>
 
-              <div className="field">
-                <div className="control">
-                  <label className="checkbox">
-                    <input type="checkbox" {...register("draft")} />
-                    &nbsp;{t("Save as draft")}
-                  </label>
-                </div>
-              </div>
-
               <div className="field pt-4">
                 <div className="control">
                   <button
                     type="submit"
-                    className="button is-link is-fullwidth"
+                    className="button is-info is-fullwidth"
+                    onClick={() => {
+                      saveAsDraft.current = true;
+                    }}
+                    disabled={watch("title")?.length == 0 || fileUploads.some((u) => u.status == "progressing")}
+                  >
+                    {t("Save as draft")}
+                  </button>
+                </div>
+              </div>
+
+              <div className="field">
+                <div className="control">
+                  <button
+                    type="submit"
+                    className="button is-info is-fullwidth"
+                    onClick={() => {
+                      saveAsDraft.current = false;
+                    }}
                     disabled={watch("title")?.length == 0 || fileUploads.some((u) => u.status == "progressing")}
                   >
                     {t("Submit")}
