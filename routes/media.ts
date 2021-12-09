@@ -200,23 +200,30 @@ router.post("/:id/replace", authRequired, async (req, res) => {
       const existingFilename = mediaItem.title;
       const { type } = mediaItem;
 
+      const newName = uuid4() + getExtension(existingFilename);
+
       if (type == "video" || type == "audio") {
         await uploadStreamingFile(
-          type, file, existingFilename
+          type, file, newName
         );
       } else if (type == "image") {
-        const thumbFilename = mediaItem.thumbnails![0];
+        const thumbFilename = uuid4() + getExtension(existingFilename);
+        mediaItem.thumbnails = [thumbFilename];
 
         await uploadImage(
-          file, existingFilename, thumbFilename
+          file, newName, thumbFilename
         );
       } else {
-        await uploadToS3(existingFilename, file, BUCKET_NAME);
+        await uploadToS3(newName, file, BUCKET_NAME);
       }
+
+      mediaItem.title = newName;
+      await mediaItem.save();
 
       res.send({
         status: "OK",
         id: mediaItem.id,
+        url: `${CLOUDFRONT_URL}/${newName}`,
         type
       });
     } catch (e) {
