@@ -124,7 +124,7 @@ const JoinGroupForm: React.FC<JoinGroupFormProps> = (props) => {
 
       const remainingGroups = getRemainingGroups();
 
-      if (remainingGroups.length == 0) {
+      if (groupsToJoin.length > 1 && remainingGroups.length == 0) {
         return;
       }
 
@@ -168,6 +168,14 @@ const JoinGroupForm: React.FC<JoinGroupFormProps> = (props) => {
   const pendingGroups = initialGroups.filter(({ status }) => {
     return status == "requested";
   });
+
+  const isSubmitDisabled = () => {
+    if (groups.length == 1 && groups[0].status == "joined") {
+      return false;
+    }
+
+    return selectableGroups.filter((g) => g.status == "joined").length == 0 || getRemainingGroups().length == 0;
+  };
 
   return (
     <React.Fragment>
@@ -217,7 +225,7 @@ const JoinGroupForm: React.FC<JoinGroupFormProps> = (props) => {
 
       <button
         className="button is-info"
-        disabled={selectableGroups.filter((g) => g.status == "joined").length == 0 || getRemainingGroups().length == 0}
+        disabled={isSubmitDisabled()}
         onClick={onSubmit}
       >
         {t("Submit")}
