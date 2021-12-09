@@ -2,6 +2,7 @@ import * as React from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
+import { convertHMS } from "../../util";
 import { VideoChapter } from "../media_player_with_chapters";
 
 interface AddChapterModalProps {
@@ -16,9 +17,11 @@ const AddChapterModal: React.FC<AddChapterModalProps> = (props) => {
   const { handleSubmit, register } = useForm();
   const { t } = useTranslation();
 
-  const onConfirm = handleSubmit(async ({ name, minutes, seconds }) => {
-    console.log({ name, minutes, seconds });
-    const startTime = minutes * 60 + seconds;
+  const onConfirm = handleSubmit(async ({ name, timestamp }) => {
+    console.log({ name, timestamp });
+
+    const [ minutes, seconds ] = timestamp.split(":");
+    const startTime = parseInt(minutes) * 60 + parseInt(seconds);
 
     const res = await fetch(`/media/${mediaItemId}/chapter`, {
       method: "POST",
@@ -39,9 +42,6 @@ const AddChapterModal: React.FC<AddChapterModalProps> = (props) => {
     onClose();
   });
 
-  const minutes = Math.floor(startTime / 60);
-  const seconds = Math.floor(startTime - (minutes * 60));
-
   return (
     <div className="modal is-active">
       <div className="modal-background" onClick={onClose} />
@@ -55,21 +55,16 @@ const AddChapterModal: React.FC<AddChapterModalProps> = (props) => {
               <label className="label">{t("Start")} (MM:SS)</label>
             </div>
             <div className="field-body">
-              <div className="field">
+              <div className="field is-expanded">
                 <p className="control">
                   <input
                     className="input"
-                    type="number"
-                    {...register("minutes", { value: minutes })}
-                  />
-                </p>
-              </div>
-              <div className="field">
-                <p className="control">
-                  <input
-                    className="input"
-                    type="number"
-                    {...register("seconds", { value: seconds })}
+                    type="text"
+                    {...register("timestamp", {
+                      value: convertHMS(startTime),
+                      required: true,
+                      pattern: /^[0-9]{2}:[0-9]{2}$/
+                    })}
                   />
                 </p>
               </div>
@@ -82,11 +77,9 @@ const AddChapterModal: React.FC<AddChapterModalProps> = (props) => {
             </div>
             <div className="field-body">
               <div className="field is-expanded">
-                <div className="field has-addons">
-                  <p className="control">
-                    <input className="input" type="text" {...register("name", { required: true })} />
-                  </p>
-                </div>
+                <p className="control">
+                  <input className="input" type="text" {...register("name", { required: true })} />
+                </p>
               </div>
             </div>
           </div>
