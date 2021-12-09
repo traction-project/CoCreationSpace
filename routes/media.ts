@@ -14,24 +14,30 @@ import { UserInstance } from "../models/user";
 import { AsyncJobInstance } from "models/async_job";
 
 const [ BUCKET_NAME, ETS_PIPELINE, CLOUDFRONT_URL ] = getFromEnvironment("BUCKET_NAME", "ETS_PIPELINE", "CLOUDFRONT_URL");
-const router = Router();
 
-const processUploadedVideo = async (file: NodeJS.ReadableStream, filename: string, userId: string) => {
+async function processUploadedStreamingFile(type: "audio" | "video", file: NodeJS.ReadableStream, filename: string, userId: string): Promise<string> {
   const { MediaItem, AsyncJob } = db.getModels();
 
   const newName = uuid4() + getExtension(filename);
   await uploadToS3(newName, file, BUCKET_NAME);
 
   transcribeMediaFile(newName, BUCKET_NAME);
-  const dashJobId = await encodeDash(ETS_PIPELINE, newName);
-  const hlsJobId = await encodeHLS(ETS_PIPELINE, newName);
+  let dashJobId: string | undefined, hlsJobId: string | undefined;
 
-  const video: MediaItemInstance = MediaItem.build();
+  if (type == "video") {
+    dashJobId = await encodeDash(ETS_PIPELINE, newName);
+    hlsJobId = await encodeHLS(ETS_PIPELINE, newName);
+  } else {
+    dashJobId = await encodeAudio(ETS_PIPELINE, newName);
+    hlsJobId = await encodeHLSAudio(ETS_PIPELINE, newName);
+  }
 
-  video.title = newName;
-  video.file = filename;
-  video.key = newName.split(".")[0];
-  video.type = "video";
+  const mediaItem = MediaItem.build();
+
+  mediaItem.title = newName;
+  mediaItem.file = filename;
+  mediaItem.key = newName.split(".")[0];
+  mediaItem.type = type;
 
   let jobs: Array<AsyncJobInstance> = [];
 
@@ -42,55 +48,17 @@ const processUploadedVideo = async (file: NodeJS.ReadableStream, filename: strin
       { type: "transcribe", jobId: newName.split(".")[0] }
     ]);
 
-    video.status = "processing";
+    mediaItem.status = "processing";
   } else {
-    video.status = "error";
+    mediaItem.status = "error";
   }
 
-  await video.save();
-  await video.setUser(userId);
-  await video.setAsyncJobs(jobs);
+  await mediaItem.save();
+  await mediaItem.setUser(userId);
+  await mediaItem.setAsyncJobs(jobs);
 
-  return video.id;
-};
-
-const processUploadedAudio = async (file: NodeJS.ReadableStream, filename: string, userId: string) => {
-  const { AsyncJob, MediaItem } = db.getModels();
-
-  const newName = uuid4() + getExtension(filename);
-  await uploadToS3(newName, file, BUCKET_NAME);
-
-  transcribeMediaFile(newName, BUCKET_NAME);
-  const dashJobId = await encodeAudio(ETS_PIPELINE, newName);
-  const hlsJobId = await encodeHLSAudio(ETS_PIPELINE, newName);
-
-  const audio: MediaItemInstance = MediaItem.build();
-
-  audio.title = newName;
-  audio.file = filename;
-  audio.key = newName.split(".")[0];
-  audio.type = "audio";
-
-  let jobs: Array<AsyncJobInstance> = [];
-
-  if (dashJobId && hlsJobId) {
-    jobs = await AsyncJob.bulkCreate([
-      { type: "transcode_dash", jobId: dashJobId },
-      { type: "transcode_hls", jobId: hlsJobId },
-      { type: "transcribe", jobId: newName.split(".")[0] }
-    ]);
-
-    audio.status = "processing";
-  } else {
-    audio.status = "error";
-  }
-
-  await audio.save();
-  await audio.setUser(userId);
-  await audio.setAsyncJobs(jobs);
-
-  return audio.id;
-};
+  return mediaItem.id;
+}
 
 const processUploadedImage = async (file: NodeJS.ReadableStream, filename: string, userId: string) => {
   const { MediaItem } = db.getModels();
@@ -153,6 +121,8 @@ const processUploadedFile = async (stream: NodeJS.ReadableStream, filename: stri
   return file.id;
 };
 
+const router = Router();
+
 /**
  * Handles uploaded files and prepares them for further processing depending
  * on the file's mime type.
@@ -164,8 +134,8 @@ router.post("/upload", authRequired, (req, res) => {
   busboy.on("file", async (fieldname, file, filename, encoding, mimetype) => {
     try {
       if (mimetype.startsWith("video")) {
-        const videoId = await processUploadedVideo(
-          file, filename, user.id
+        const videoId = await processUploadedStreamingFile(
+          "video", file, filename, user.id
         );
 
         res.send({
@@ -174,8 +144,8 @@ router.post("/upload", authRequired, (req, res) => {
           type: "video"
         });
       } else if (mimetype.startsWith("audio")) {
-        const audioId = await processUploadedAudio(
-          file, filename, user.id
+        const audioId = await processUploadedStreamingFile(
+          "audio", file, filename, user.id
         );
 
         res.send({
