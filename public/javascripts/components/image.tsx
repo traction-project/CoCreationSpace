@@ -37,6 +37,22 @@ const Image: React.FC<ImageProps> = ({ id, showDetectedText = false, isEditable 
     }).then((data) => {
       setImageUrl(data.url);
       setImageText(data.ocrData?.map(({ line }: { line: string }) => line) || []);
+
+      if (!onBlurDetected) {
+        return;
+      }
+
+      const image = new window.Image();
+      image.src = data.url;
+
+      image.onload = async () => {
+        const isEmpty = await isImageEmpty(image);
+
+        if (!isEmpty) {
+          const isBlurry = await isImageBlurry(image);
+          onBlurDetected(isBlurry);
+        }
+      };
     });
   }, [id]);
 
@@ -48,15 +64,6 @@ const Image: React.FC<ImageProps> = ({ id, showDetectedText = false, isEditable 
         image.width,
         image.height
       ];
-
-      if (onBlurDetected != undefined) {
-        const isEmpty = await isImageEmpty(image);
-
-        if (!isEmpty) {
-          const isBlurry = await isImageBlurry(image);
-          onBlurDetected(isBlurry);
-        }
-      }
     }
   };
 
