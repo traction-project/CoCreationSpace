@@ -89,29 +89,39 @@ const UpdatePermissionForm: React.FC<UpdatePermissionsFormProps> = (props) => {
           <div key={g.id} className="mb-4">
             <h6 className="title is-6">{g.name}</h6>
 
-            <div className="field has-addons">
-              <p className="control">
-                <span className="select">
-                  <select name="role" value={g.groupMembership.role} onChange={onRoleUpdated(g.id)}>
-                    <option value="participant">{t("Participant level")}</option>
-                    <option value="facilitator">{t("Facilitator level")}</option>
-                    <option value="moderator">{t("Moderator level")}</option>
-                    <option value="admin">{t("Admin level")}</option>
-                  </select>
-                </span>
-              </p>
+            <div className="field is-horizontal">
+              <div className="field-label is-normal">
+                <div className="field">
+                  <label className="label">{t("Level")}</label>
+                </div>
+              </div>
 
-              <p className="control">
-                {(g.requested || !g.groupMembership.roleApproved) ? (
-                  <button className="button is-disabled" disabled>
-                    {t("Approval pending")}
-                  </button>
-                ) : (
-                  <button className="button is-info" onClick={onPermissionRequested(g.id)}>
-                    {t("Request new role")}
-                  </button>
-                )}
-              </p>
+              <div className="field-body">
+                <div className="field has-addons">
+                  <p className="control">
+                    <span className="select">
+                      <select name="role" value={g.groupMembership.role} onChange={onRoleUpdated(g.id)}>
+                        <option value="participant">{t("Participant")}</option>
+                        <option value="facilitator">{t("Facilitator")}</option>
+                        <option value="moderator">{t("Moderator")}</option>
+                        <option value="admin">{t("Admin")}</option>
+                      </select>
+                    </span>
+                  </p>
+
+                  <p className="control">
+                    {(g.requested || !g.groupMembership.roleApproved) ? (
+                      <button className="button is-disabled" disabled>
+                        {t("Approval pending")}
+                      </button>
+                    ) : (
+                      <button className="button is-info" onClick={onPermissionRequested(g.id)}>
+                        {t("Request new role")}
+                      </button>
+                    )}
+                  </p>
+                </div>
+              </div>
             </div>
 
             <article className="message">
