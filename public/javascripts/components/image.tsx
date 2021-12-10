@@ -135,16 +135,16 @@ const Image: React.FC<ImageProps> = ({ id, showDetectedText = false, isEditable 
           )}
 
           {(showBlurryWarning) && (
-            <div style={{ width: "100%", height: "100%", position: "absolute", backgroundColor: "rgba(0, 0, 0, 0.7)" }}>
-              <div className="columns is-centered">
+            <div className="blur-warning">
+              <div className="columns is-centered mt-4">
                 <div className="column">
-                  <p style={{ textAlign: "center", marginTop: "35%", color: "#FFFFFF", fontSize: 15, padding: 5 }}>
+                  <p style={{ textAlign: "center", color: "#FFFFFF", fontSize: 15, padding: 5 }}>
                     {t("The image you uploaded appears to be excessively blurry. Are you sure you want to keep it?")}
                   </p>
                 </div>
               </div>
 
-              <div className="columns is-centered pt-4">
+              <div className="columns is-centered pt-2">
                 <div className="column">
                   <div className="field is-grouped" style={{ justifyContent: "center" }}>
                     <div className="control">
