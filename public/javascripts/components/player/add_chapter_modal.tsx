@@ -8,20 +8,24 @@ import { VideoChapter } from "../media_player_with_chapters";
 interface AddChapterModalProps {
   mediaItemId: string;
   startTime?: number;
+  totalDuration?: number;
   onClose: () => void;
   onChapterAdded?: (videoChapter: VideoChapter) => void;
 }
 
 const AddChapterModal: React.FC<AddChapterModalProps> = (props) => {
-  const { mediaItemId, onClose, onChapterAdded, startTime = 0 } = props;
+  const { mediaItemId, onClose, onChapterAdded, startTime = 0, totalDuration = -1 } = props;
   const { handleSubmit, register } = useForm();
   const { t } = useTranslation();
 
+  const timecodeToNumber = (timecode: string) => {
+    const [ minutes, seconds ] = timecode.split(":");
+    return parseInt(minutes) * 60 + parseInt(seconds);
+  };
+
   const onConfirm = handleSubmit(async ({ name, timestamp }) => {
     console.log({ name, timestamp });
-
-    const [ minutes, seconds ] = timestamp.split(":");
-    const startTime = parseInt(minutes) * 60 + parseInt(seconds);
+    const startTime = timecodeToNumber(timestamp);
 
     const res = await fetch(`/media/${mediaItemId}/chapter`, {
       method: "POST",
@@ -63,7 +67,10 @@ const AddChapterModal: React.FC<AddChapterModalProps> = (props) => {
                     {...register("timestamp", {
                       value: convertHMS(startTime),
                       required: true,
-                      pattern: /^[0-9]{2}:[0-9]{2}$/
+                      pattern: /^[0-9]{2}:[0-9]{2}$/,
+                      validate: (val) => {
+                        return totalDuration == -1 || timecodeToNumber(val) <= totalDuration;
+                      }
                     })}
                   />
                 </p>
