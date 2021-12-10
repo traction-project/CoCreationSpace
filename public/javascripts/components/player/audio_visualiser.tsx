@@ -2,11 +2,12 @@ import * as React from "react";
 import { useEffect, useRef, useState } from "react";
 
 interface AudioVisualiserProps {
+  onClick?: () => void;
   audioRef: React.RefObject<HTMLAudioElement>;
 }
 
 const AudioVisualiser: React.FC<AudioVisualiserProps> = (props) => {
-  const { audioRef } = props;
+  const { audioRef, onClick } = props;
 
   const wrapperRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -97,7 +98,7 @@ const AudioVisualiser: React.FC<AudioVisualiserProps> = (props) => {
 
   return (
     <div ref={wrapperRef} className="audiovis">
-      <canvas ref={canvasRef} className="audiovis" />
+      <canvas ref={canvasRef} onClick={onClick} className="audiovis" />
 
       {(activeCue && activeCue.length > 0) && (
         <div className="cue">

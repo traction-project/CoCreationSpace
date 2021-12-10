@@ -245,7 +245,7 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
         </video>
       ) : (
         <>
-          <AudioVisualiser audioRef={videoNode} />
+          <AudioVisualiser audioRef={videoNode} onClick={togglePlayback} />
           <audio autoPlay={false} ref={videoNode}>
             {subtitles.map((s, i) => {
               return (
