@@ -236,7 +236,7 @@ const DashPlayer: React.FC<DashPlayerProps> = (props) => {
   return (
     <div ref={wrapperNode} className="dash-player">
       {(type == "video") ? (
-        <video autoPlay={false} ref={videoNode}>
+        <video autoPlay={false} ref={videoNode} onClick={togglePlayback}>
           {subtitles.map((s, i) => {
             return (
               <track key={s.url} src={s.url} label={s.language} srcLang={s.language} />
