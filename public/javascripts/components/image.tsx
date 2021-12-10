@@ -1,5 +1,6 @@
 import * as React from "react";
 import { useEffect, useState, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import usePortal from "react-useportal";
 
 import FullscreenImage from "./fullscreen_image";
@@ -18,11 +19,13 @@ interface ImageProps {
   id: string;
   showDetectedText?: boolean;
   isEditable?: boolean;
-  onBlurDetected?: (isBlurry: boolean) => void;
+  onDelete?: (id: string) => void;
 }
 
-const Image: React.FC<ImageProps> = ({ id, showDetectedText = false, isEditable = false, onBlurDetected }) => {
+const Image: React.FC<ImageProps> = ({ id, showDetectedText = false, isEditable = false, onDelete }) => {
   const { isOpen, Portal, openPortal, closePortal } = usePortal();
+  const { t } = useTranslation();
+
   const imageRef = useRef<HTMLImageElement>(null);
   const dimensionRef = useRef<[number, number]>();
 
@@ -30,6 +33,7 @@ const Image: React.FC<ImageProps> = ({ id, showDetectedText = false, isEditable 
   const [ imageUrl, setImageUrl ] = useState<string>();
   const [ imageText, setImageText ] = useState<Array<string>>([]);
   const [ editImage, setEditImage ] = useState(false);
+  const [ showBlurryWarning, setShowBlurryWarning ] = useState(false);
 
   useEffect(() => {
     fetch(`/images/${id}`).then((res) => {
@@ -38,7 +42,7 @@ const Image: React.FC<ImageProps> = ({ id, showDetectedText = false, isEditable 
       setImageUrl(data.url);
       setImageText(data.ocrData?.map(({ line }: { line: string }) => line) || []);
 
-      if (!onBlurDetected) {
+      if (!isEditable) {
         return;
       }
 
@@ -50,7 +54,7 @@ const Image: React.FC<ImageProps> = ({ id, showDetectedText = false, isEditable 
 
         if (!isEmpty) {
           const isBlurry = await isImageBlurry(image);
-          onBlurDetected(isBlurry);
+          setShowBlurryWarning(isBlurry);
         }
       };
     });
@@ -97,6 +101,7 @@ const Image: React.FC<ImageProps> = ({ id, showDetectedText = false, isEditable 
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+    position: "relative"
   };
 
   return (
@@ -126,6 +131,43 @@ const Image: React.FC<ImageProps> = ({ id, showDetectedText = false, isEditable 
               />
             )
           )}
+
+          {(showBlurryWarning) && (
+            <div style={{ width: "100%", height: "100%", position: "absolute", backgroundColor: "rgba(0, 0, 0, 0.7)" }}>
+              <div className="columns is-centered">
+                <div className="column">
+                  <p style={{ textAlign: "center", marginTop: "35%", color: "#FFFFFF", fontSize: 15, padding: 5 }}>
+                    {t("The image you uploaded appears to be excessively blurry. Are you sure you want to keep it?")}
+                  </p>
+                </div>
+              </div>
+
+              <div className="columns is-centered pt-4">
+                <div className="column">
+                  <div className="field is-grouped" style={{ justifyContent: "center" }}>
+                    <div className="control">
+                      <button
+                        className="button is-link"
+                        onClick={() => setShowBlurryWarning(false)}
+                      >
+                        {t("Keep image")}
+                      </button>
+                    </div>
+                    <div className="control">
+                      <button
+                        className="button is-danger is-light"
+                        onClick={() => {
+                          onDelete?.(id);
+                        }}
+                      >
+                        {t("Delete")}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
@@ -140,7 +182,7 @@ const Image: React.FC<ImageProps> = ({ id, showDetectedText = false, isEditable 
         </div>
       )}
 
-      {(isEditable && !editImage) && (
+      {(isEditable && !editImage && !showBlurryWarning) && (
         <EditImageIcon
           onClick={() => setEditImage(true)}
         />
