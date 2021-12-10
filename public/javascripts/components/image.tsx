@@ -94,14 +94,16 @@ const Image: React.FC<ImageProps> = ({ id, showDetectedText = false, isEditable 
 
   const wrapperStyle: React.CSSProperties = {
     width: "100%",
-    aspectRatio: "16/9"
+    paddingBottom: "56.25%",
+    position: "relative"
   };
 
   const innerStyle: React.CSSProperties = {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    position: "relative"
+    position: "absolute",
+    top: 0, left: 0, bottom: 0, right: 0
   };
 
   return (
