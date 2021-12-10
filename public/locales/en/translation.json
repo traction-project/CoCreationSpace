@@ -117,13 +117,11 @@
     "Consent": "Consent",
     "My Space": "My Space",
     "Drafts": "Drafts",
-    "Notes": "Notes",
     "Edit description": "Edit description",
     "Add chapter to video": "Add chapter to video",
     "Start": "Start",
     "Name": "Name",
     "Draft": "Draft",
-    "Add to Note Collection": "Add to Note Collection",
     "New": "New",
     "Create new collection": "Create new collection",
     "Existing": "Existing1",
@@ -153,5 +151,8 @@
     "The participant is a non-professional artist that participates in tasks that are directed by the facilitator. They are a member of one group, and can see and comment on content within that group. They have permission to edit and delete their own content.": "The participant is a non-professional artist that participates in tasks that are directed by the facilitator. They are a member of one group, and can see and comment on content within that group. They have permission to edit and delete their own content.",
     "The facilitator is a professional artist that sets tasks and gives directions to participants. They are a member of one group, and can download and edit content inside their group, and share it with the permission of participants. In addition, they can see drafts of participant content, but cannot share or edit private content.": "The facilitator is a professional artist that sets tasks and gives directions to participants. They are a member of one group, and can download and edit content inside their group, and share it with the permission of participants. In addition, they can see drafts of participant content, but cannot share or edit private content.",
     "The moderator checks that participants' work is protected and is allowed to download and share content approved by participants and facilitators outside of the Cocreation Space. The moderator’s role is also to flag and remove negative comments from the system, and to change other users' level of permissions.": "The moderator checks that participants' work is protected and is allowed to download and share content approved by participants and facilitators outside of the Cocreation Space. The moderator’s role is also to flag and remove negative comments from the system, and to change other users' level of permissions.",
-    "The administrator makes sure the Cocreation Space is running smoothly. This role has access to download, share, restrict content and change permissions.": "The administrator makes sure the Cocreation Space is running smoothly. This role has access to download, share, restrict content and change permissions."
+    "The administrator makes sure the Cocreation Space is running smoothly. This role has access to download, share, restrict content and change permissions.": "The administrator makes sure the Cocreation Space is running smoothly. This role has access to download, share, restrict content and change permissions.",
+    "Media Boards": "Media Boards",
+    "Add to Media Board": "Add to Media Board",
+    "Level": "Level"
 }
