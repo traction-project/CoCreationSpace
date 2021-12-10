@@ -95,7 +95,6 @@
     "My Space": "Mein Space",
     "Drafts": "Entwürfe",
     "Edit description": "Beschreibung bearbeiten",
-    "Add chapter to video": "Kapitel zu Video hinzufügen",
     "Start": "Start",
     "Name": "Name",
     "Draft": "Entwurf",
@@ -154,5 +153,6 @@
     "The administrator makes sure the Cocreation Space is running smoothly. This role has access to download, share, restrict content and change permissions.": "Ein Administrator stellt sicher dass der CoCreation Space richtig läuft. Er/sie hat Zugriff auf Funktionen zum Herunterladen, Teilen oder Sperren von Inhalten, sowie das Ändern von Benutzerrollen.",
     "Media Boards": "Medienpinnwand",
     "Add to Media Board": "Zu Pinnwand hinzufügen",
-    "Level": "Level"
+    "Level": "Level",
+    "Add highlight": "Highlight hinzufügen"
 }

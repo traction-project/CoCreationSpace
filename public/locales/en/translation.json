@@ -118,7 +118,6 @@
     "My Space": "My Space",
     "Drafts": "Drafts",
     "Edit description": "Edit description",
-    "Add chapter to video": "Add chapter to video",
     "Start": "Start",
     "Name": "Name",
     "Draft": "Draft",
@@ -154,5 +153,6 @@
     "The administrator makes sure the Cocreation Space is running smoothly. This role has access to download, share, restrict content and change permissions.": "The administrator makes sure the Cocreation Space is running smoothly. This role has access to download, share, restrict content and change permissions.",
     "Media Boards": "Media Boards",
     "Add to Media Board": "Add to Media Board",
-    "Level": "Level"
+    "Level": "Level",
+    "Add highlight": "Add highlight"
 }

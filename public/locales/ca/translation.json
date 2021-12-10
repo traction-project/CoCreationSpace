@@ -119,7 +119,6 @@
     "My Space": "El meu espai",
     "Drafts": "Esborranys",
     "Edit description": "Edita la descripció",
-    "Add chapter to video": "Afegeix un capítol al vídeo",
     "Start": "Inici",
     "Name": "Nom",
     "Draft": "Esborrany",
@@ -154,5 +153,6 @@
     "The administrator makes sure the Cocreation Space is running smoothly. This role has access to download, share, restrict content and change permissions.": "L'administrador s'assegura que l'Espai de CoCreació funcioni correctament. El moderador té accés per descarregar, compartir, restringir contingut i canviar els permisos.",
     "Media Boards": "Taulers de multimèdia",
     "Add to Media Board": "Afegeix al tauler de multimèdia",
-    "Level": "Nivell"
+    "Level": "Nivell",
+    "Add highlight": "Afegeix ressaltar"
 }

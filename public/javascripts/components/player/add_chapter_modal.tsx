@@ -51,7 +51,7 @@ const AddChapterModal: React.FC<AddChapterModalProps> = (props) => {
       <div className="modal-background" onClick={onClose} />
       <div className="modal-content">
         <div className="box">
-          <h4 className="title is-4">{t("Add chapter to video")}</h4>
+          <h4 className="title is-4">{t("Add highlight")}</h4>
           <hr/>
 
           <div className="field is-horizontal">
