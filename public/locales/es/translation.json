@@ -127,7 +127,6 @@
     "Create new collection": "Crear nueva colección",
     "Existing": "Existente",
     "Save as draft": "Guardar como borrador",
-    "Blurry image": "Imagen borrosa",
     "The image you uploaded appears to be excessively blurry. Are you sure you want to keep it?": "La imagen que ha subido parece excesivamente borrosa. ¿Seguro que la quiere conservar?",
     "Keep image": "Conservar imagen",
     "Update Group Permission Settings": "Actualizar la configuración de permisos de grupo",
@@ -150,5 +149,9 @@
     "request-reset-error-email": "<0>Error!</0> No se pudo solicitar el restablecimiento de la contraseña para la dirección de correo electrónico proporcionada.",
     "notification-reply-title": "Nueva respuesta a tu publicación",
     "Clear": "Limpiar",
-    "Save": "Guardar"
+    "Save": "Guardar",
+    "The participant is a non-professional artist that participates in tasks that are directed by the facilitator. They are a member of one group, and can see and comment on content within that group. They have permission to edit and delete their own content.": "__STRING_NOT_TRANSLATED__",
+    "The facilitator is a professional artist that sets tasks and gives directions to participants. They are a member of one group, and can download and edit content inside their group, and share it with the permission of participants. In addition, they can see drafts of participant content, but cannot share or edit private content.": "__STRING_NOT_TRANSLATED__",
+    "The moderator checks that participants' work is protected and is allowed to download and share content approved by participants and facilitators outside of the Cocreation Space. The moderator’s role is also to flag and remove negative comments from the system, and to change other users' level of permissions.": "__STRING_NOT_TRANSLATED__",
+    "The administrator makes sure the Cocreation Space is running smoothly. This role has access to download, share, restrict content and change permissions.": "__STRING_NOT_TRANSLATED__"
 }
