@@ -31,6 +31,7 @@ const MediaPlayer: React.FC<MediaPlayerProps> = (props) => {
   const totalPlayTime = useRef(0);
   const lastTimestamp = useRef(0);
   const currentTime = useRef(0);
+  const totalDuration = useRef(-1);
   const viewCounted = useRef(false);
 
   const [ videoUrl, setVideoUrl ] = useState<string | undefined>(undefined);
@@ -93,6 +94,7 @@ const MediaPlayer: React.FC<MediaPlayerProps> = (props) => {
     onTimeUpdate?.(time);
 
     currentTime.current = time;
+    totalDuration.current = duration;
   };
 
   useEffect(fetchVideo, [id]);
@@ -130,6 +132,7 @@ const MediaPlayer: React.FC<MediaPlayerProps> = (props) => {
             <AddChapterModal
               mediaItemId={id}
               startTime={currentTime.current}
+              totalDuration={totalDuration.current}
               onClose={closePortal}
               onChapterAdded={onChapterAdded}
             />
