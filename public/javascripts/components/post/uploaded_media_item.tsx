@@ -1,11 +1,9 @@
 import * as React from "react";
-import usePortal from "react-useportal";
 
 import MediaPlayerWithChapters from "../media_player_with_chapters";
 import Image from "../image";
 import File from "../file";
 import DeleteIcon from "./delete_icon";
-import ImageBlurryModal from "./image_blurry_modal";
 
 interface UploadedMediaItemProps {
   id: string;
@@ -14,16 +12,6 @@ interface UploadedMediaItemProps {
 }
 
 const UploadedMediaItem: React.FC<UploadedMediaItemProps> = ({ id, type, onDelete }) => {
-  const { ref, isOpen, openPortal, closePortal, Portal } = usePortal();
-
-  const onBlurDetected = (isBlurry: boolean) => {
-    console.log("image", id, "blurry:", isBlurry);
-
-    if (isBlurry) {
-      openPortal();
-    }
-  };
-
   const renderMediaItem = () => {
     if (type == "video") {
       return (
@@ -35,7 +23,7 @@ const UploadedMediaItem: React.FC<UploadedMediaItemProps> = ({ id, type, onDelet
       );
     } else if (type == "image" ){
       return (
-        <Image id={id} onBlurDetected={onBlurDetected} isEditable={true} />
+        <Image id={id} onDelete={onDelete} isEditable={true} />
       );
     } else {
       return (
@@ -47,19 +35,7 @@ const UploadedMediaItem: React.FC<UploadedMediaItemProps> = ({ id, type, onDelet
   return (
     <div style={{ position: "relative" }}>
       {renderMediaItem()}
-
-      <div ref={ref}>
-        <DeleteIcon onClick={() => onDelete(id)} />
-      </div>
-
-      {isOpen && (
-        <Portal>
-          <ImageBlurryModal
-            onClose={closePortal}
-            onDelete={() => onDelete(id)}
-          />
-        </Portal>
-      )}
+      <DeleteIcon onClick={() => onDelete(id)} />
     </div>
   );
 };
