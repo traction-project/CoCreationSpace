@@ -160,7 +160,7 @@ const EditableImage: React.FC<EditableImageProps> = ({ imageUrl, dimensions: [ w
               }}
             />
 
-            <div className="columns">
+            <div className="columns is-mobile">
               <div className="column">
                 <div className="field is-grouped is-grouped-left mt-2 mb-2">
                   <p className="control">
