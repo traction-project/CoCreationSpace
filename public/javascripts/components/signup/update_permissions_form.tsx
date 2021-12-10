@@ -93,10 +93,10 @@ const UpdatePermissionForm: React.FC<UpdatePermissionsFormProps> = (props) => {
               <p className="control">
                 <span className="select">
                   <select name="role" value={g.groupMembership.role} onChange={onRoleUpdated(g.id)}>
-                    <option value="participant">{t("Participant")}</option>
-                    <option value="facilitator">{t("Facilitator")}</option>
-                    <option value="moderator">{t("Moderator")}</option>
-                    <option value="admin">{t("Admin")}</option>
+                    <option value="participant">{t("Participant level")}</option>
+                    <option value="facilitator">{t("Facilitator level")}</option>
+                    <option value="moderator">{t("Moderator level")}</option>
+                    <option value="admin">{t("Admin level")}</option>
                   </select>
                 </span>
               </p>
