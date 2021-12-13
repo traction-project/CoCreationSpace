@@ -31,7 +31,6 @@ const Image: React.FC<ImageProps> = ({ id, showDetectedText = false, isEditable 
 
   const [ uploadStatus, setUploadStatus ] = useState<UploadStatus>({ status: "done", total: 0, loaded: 0 });
   const [ imageUrl, setImageUrl ] = useState<string>();
-  const [ imageText, setImageText ] = useState<Array<string>>([]);
   const [ editImage, setEditImage ] = useState(false);
   const [ showBlurryWarning, setShowBlurryWarning ] = useState(false);
 
@@ -40,7 +39,6 @@ const Image: React.FC<ImageProps> = ({ id, showDetectedText = false, isEditable 
       return res.json();
     }).then((data) => {
       setImageUrl(data.url);
-      setImageText(data.ocrData?.map(({ line }: { line: string }) => line) || []);
 
       if (!isEditable) {
         return;
@@ -172,17 +170,6 @@ const Image: React.FC<ImageProps> = ({ id, showDetectedText = false, isEditable 
           )}
         </div>
       </div>
-
-      {(showDetectedText && imageText.length > 0) && (
-        <div className="mt-2">
-          {imageText.map((line, i) => {
-            return (
-              <p key={i}>{line}</p>
-            );
-          })}
-          <hr/>
-        </div>
-      )}
 
       {(isEditable && !editImage && !showBlurryWarning) && (
         <EditImageIcon
