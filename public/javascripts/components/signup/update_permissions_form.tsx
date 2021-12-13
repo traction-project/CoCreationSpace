@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslation, Trans } from "react-i18next";
 
 import { Group, UserRole } from "./join_group_form";
 
@@ -67,19 +67,6 @@ const UpdatePermissionForm: React.FC<UpdatePermissionsFormProps> = (props) => {
     };
   };
 
-  const getRoleDescription = (role: UserRole) => {
-    switch (role) {
-    case "participant":
-      return t("The participant is a non-professional artist that participates in tasks that are directed by the facilitator. They are a member of one group, and can see and comment on content within that group. They have permission to edit and delete their own content.");
-    case "facilitator":
-      return t("The facilitator is a professional artist that sets tasks and gives directions to participants. They are a member of one group, and can download and edit content inside their group, and share it with the permission of participants. In addition, they can see drafts of participant content, but cannot share or edit private content.");
-    case "moderator":
-      return t("The moderator checks that participants' work is protected and is allowed to download and share content approved by participants and facilitators outside of the Cocreation Space. The moderator’s role is also to flag and remove negative comments from the system, and to change other users' level of permissions.");
-    case "admin":
-      return t("The administrator makes sure the Cocreation Space is running smoothly. This role has access to download, share, restrict content and change permissions.");
-    }
-  };
-
   return (
     <>
       <hr/>
@@ -126,7 +113,23 @@ const UpdatePermissionForm: React.FC<UpdatePermissionsFormProps> = (props) => {
 
             <article className="message">
               <div className="message-body">
-                {getRoleDescription(g.groupMembership.role)}
+                {(g.groupMembership.role == "participant") ? (
+                  <Trans i18nKey="participant-description">
+                    The participant is a non-professional artist that participates in tasks that are directed by the facilitator. They are a member of one group, and can see and comment on content within that group. They have permission to edit and delete their own content.
+                  </Trans>
+                ) : (g.groupMembership.role == "facilitator") ? (
+                  <Trans i18nKey="facilitator-description">
+                    The facilitator is a professional artist that sets tasks and gives directions to participants. They are a member of one group, and can download and edit content inside their group, and share it with the permission of participants. In addition, they can see drafts of participant content, but cannot share or edit private content.
+                  </Trans>
+                ) : (g.groupMembership.role == "moderator") ? (
+                  <Trans i18nKey="moderator-description">
+                    The moderator checks that participants&apos; work is protected and is allowed to download and share content approved by participants and facilitators outside of the Cocreation Space. The moderator’s role is also to flag and remove negative comments from the system, and to change other users&apos; level of permissions.
+                  </Trans>
+                ) : (
+                  <Trans i18nKey="admin-description">
+                    The administrator makes sure the Cocreation Space is running smoothly. This role has access to download, share, restrict content and change permissions.
+                  </Trans>
+                )}
               </div>
             </article>
           </div>
