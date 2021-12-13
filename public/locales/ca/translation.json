@@ -126,7 +126,7 @@
     "Create new collection": "Crear nova col·lecció",
     "Existing": "Existent",
     "Save as draft": "Desa com a esborrany",
-    "The image you uploaded appears to be excessively blurry. Are you sure you want to keep it?": "La imatge que heu penjat sembla excessivament borrosa. Segur que la voleu conservar?",
+    "image-blurry-description": "La imatge que heu penjat sembla excessivament borrosa. Segur que la voleu conservar?",
     "Keep image": "Conservar imatge",
     "Update Group Permission Settings": "Actualitza la configuració de permisos de grup",
     "Posts": "Publicacions",

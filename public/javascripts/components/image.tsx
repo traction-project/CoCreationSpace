@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useEffect, useState, useRef } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslation, Trans } from "react-i18next";
 import usePortal from "react-useportal";
 
 import FullscreenImage from "./fullscreen_image";
@@ -137,7 +137,9 @@ const Image: React.FC<ImageProps> = ({ id, showDetectedText = false, isEditable 
               <div className="columns is-centered mt-4">
                 <div className="column">
                   <p style={{ textAlign: "center", color: "#FFFFFF", fontSize: 15, padding: 5 }}>
-                    {t("The image you uploaded appears to be excessively blurry. Are you sure you want to keep it?")}
+                    <Trans i18nKey="image-blurry-description">
+                      The image you uploaded appears to be excessively blurry. Are you sure you want to keep it?
+                    </Trans>
                   </p>
                 </div>
               </div>

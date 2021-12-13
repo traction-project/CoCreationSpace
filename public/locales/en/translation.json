@@ -125,7 +125,7 @@
     "Create new collection": "Create new collection",
     "Existing": "Existing1",
     "Save as draft": "Save as draft",
-    "The image you uploaded appears to be excessively blurry. Are you sure you want to keep it?": "The image you uploaded appears to be excessively blurry. Are you sure you want to keep it?",
+    "image-blurry-description": "The image you uploaded appears to be excessively blurry. Are you sure you want to keep it?",
     "Keep image": "Keep image",
     "Update Group Permission Settings": "Update Group Permission Setting",
     "Posts": "Posts",

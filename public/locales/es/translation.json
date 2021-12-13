@@ -124,7 +124,7 @@
     "Create new collection": "Crear nueva colección",
     "Existing": "Existente",
     "Save as draft": "Guardar como borrador",
-    "The image you uploaded appears to be excessively blurry. Are you sure you want to keep it?": "La imagen que ha subido parece excesivamente borrosa. ¿Seguro que la quiere conservar?",
+    "image-blurry-description": "La imagen que ha subido parece excesivamente borrosa. ¿Seguro que la quiere conservar?",
     "Keep image": "Conservar imagen",
     "Update Group Permission Settings": "Actualizar la configuración de permisos de grupo",
     "Posts": "Publicaciones",

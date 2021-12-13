@@ -102,7 +102,7 @@
     "Create new collection": "Neue Notizensammlung",
     "Existing": "Existierend",
     "Save as draft": "Als Entwurf speichern",
-    "The image you uploaded appears to be excessively blurry. Are you sure you want to keep it?": "Das hochgeladene Bild ist deutlich unscharf. Bist du sicher, dass du es behalten willst?",
+    "image-blurry-description": "Das hochgeladene Bild ist deutlich unscharf. Bist du sicher, dass du es behalten willst?",
     "Keep image": "Bild behalten",
     "Update Group Permission Settings": "Gruppengenehmigungen ändern",
     "Posts": "Beiträge",
