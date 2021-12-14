@@ -67,7 +67,7 @@ const AddChapterModal: React.FC<AddChapterModalProps> = (props) => {
                     {...register("timestamp", {
                       value: convertHMS(startTime),
                       required: true,
-                      pattern: /^[0-9]{2}:[0-9]{2}$/,
+                      pattern: /^[0-9]{1,2}:[0-9]{1,2}$/,
                       validate: (val) => {
                         return totalDuration == -1 || timecodeToNumber(val) <= totalDuration;
                       }
