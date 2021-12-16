@@ -16,7 +16,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = (props) => {
   const { t } = useTranslation();
   const { handleSubmit, register, formState: { errors }, watch } = useForm({});
 
-  const handleButtonSubmitClick = handleSubmit(async ({ username, password, email, preferredLanguage, participantCode }) => {
+  const handleButtonSubmitClick = handleSubmit(async ({ username, password, email, preferredLanguage, participantCode, verification }) => {
     try {
       const res = await fetch("/register", {
         method: "POST",
@@ -24,7 +24,8 @@ const RegistrationForm: React.FC<RegistrationFormProps> = (props) => {
         body: JSON.stringify({
           username, password, preferredLanguage,
           participantCode: participantCode || undefined,
-          email: email || undefined
+          email: email || undefined,
+          verification
         })
       });
 
@@ -152,6 +153,25 @@ const RegistrationForm: React.FC<RegistrationFormProps> = (props) => {
           </span>
         </div>
         {errors.confirmation && <p className="help is-danger">{t("The passwords do not match")}</p>}
+      </div>
+
+      <div className="field">
+        <label htmlFor="" className="label">{t("Verification Code")} *</label>
+        <div className="control has-icons-left">
+          <input
+            type="text"
+            placeholder={t("Verification Code")}
+            className="input"
+            required={true}
+            {...register("verification", {
+              required: true
+            })}
+          />
+          <span className="icon is-small is-left">
+            <i className="fa fa-lock" />
+          </span>
+        </div>
+        {errors.verification && <p className="help is-danger">{t("required")}</p>}
       </div>
 
       <div className="field">

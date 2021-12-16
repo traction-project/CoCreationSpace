@@ -23,7 +23,7 @@ import { UserInstance } from "../models/user";
 import { db } from "../models";
 import { getFromEnvironment, loadTemplate, sendEmail } from "../util";
 
-const [ CLOUDFRONT_URL, SMTP_ADDRESS, SMTP_CREDENTIALS ] = getFromEnvironment("CLOUDFRONT_URL", "SMTP_ADDRESS", "SMTP_CREDENTIALS");
+const [ CLOUDFRONT_URL, SMTP_ADDRESS, SMTP_CREDENTIALS, VERIFICATION ] = getFromEnvironment("CLOUDFRONT_URL", "SMTP_ADDRESS", "SMTP_CREDENTIALS", "VERIFICATION");
 const router = Router();
 
 router.use("/api", APIRouter);
@@ -63,7 +63,14 @@ router.post("/login", passport.authenticate("local"), async (req, res) => {
 
 router.post("/register", async (req, res) => {
   const { User } = db.getModels();
-  const { username, password, email, preferredLanguage, participantCode } = req.body;
+  const { username, password, email, preferredLanguage, participantCode, verification } = req.body;
+
+  if (!verification || (verification != VERIFICATION)) {
+    res.status(400).send({
+      status: "ERR",
+      message: "Verification code invalid"
+    });
+  }
 
   const userExists = await User.findOne({ where: { username } });
 
