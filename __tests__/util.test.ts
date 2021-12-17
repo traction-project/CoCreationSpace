@@ -1,3 +1,4 @@
+import fs from "fs";
 import sinon from "sinon";
 import aws from "aws-sdk";
 import nodemailer, { SentMessageInfo } from "nodemailer";
@@ -492,5 +493,34 @@ describe("Utility function generateHasOneAssociationMethods()", () => {
     expect(result).toContain("getUser");
     expect(result).toContain("setUser");
     expect(result).toContain("createUser");
+  });
+});
+
+describe("Utility function loadTemplate()", () => {
+  afterEach(() => {
+    sinon.restore();
+  });
+
+  it("should resolve with a string", async () => {
+    sinon.stub(fs, "readFile").yields(null, "Hello World!");
+
+    const result = await util.loadTemplate({
+      get: () => ""
+    } as any, "some_template");
+
+    expect(result).toEqual("Hello World!");
+  });
+
+  it("should reject with an error if the error value to readFile is not null", async () => {
+    sinon.stub(fs, "readFile").yields(new Error("An error occurred"), "Hello World!");
+
+    try {
+      await util.loadTemplate({
+        get: () => ""
+      } as any, "some_template");
+      fail("No error caught");
+    } catch (e) {
+      expect(e.message).toEqual("An error occurred");
+    }
   });
 });
