@@ -400,3 +400,87 @@ describe("Utility function processInputPath()", () => {
     expect(extension).toEqual("m4a");
   });
 });
+
+describe("Utility function getJobStatus()", () => {
+  afterEach(() => {
+    sinon.restore();
+  });
+
+  it("should resolve the promise with the job status", async () => {
+    sinon.stub(aws, "ElasticTranscoder").returns({
+      readJob: (params: any, callback: (err: Error | null, data: any) => void) => {
+        callback(null, { Job: { Status: "Progressing" } });
+      }
+    });
+
+    expect(
+      await transcode.getJobStatus("some_job_id")
+    ).toEqual(["Progressing"]);
+  });
+
+  it("should resolve the promise with the job status and manifest path if job status is 'Complete'", async () => {
+    sinon.stub(aws, "ElasticTranscoder").returns({
+      readJob: (params: any, callback: (err: Error | null, data: any) => void) => {
+        callback(null, {
+          Job: {
+            Status: "Complete",
+            OutputKeyPrefix: "/some/path/",
+            Playlists: [{ Name: "some_manifest" }]
+          }
+        });
+      }
+    });
+
+    expect(
+      await transcode.getJobStatus("some_job_id")
+    ).toEqual([
+      "Complete",
+      "/some/path/some_manifest.mpd"
+    ]);
+  });
+
+  it("should reject with undefined if the job has no status field", async () => {
+    sinon.stub(aws, "ElasticTranscoder").returns({
+      readJob: (params: any, callback: (err: Error | null, data: any) => void) => {
+        callback(null, { Job: { } });
+      }
+    });
+
+    try {
+      await transcode.getJobStatus("some_job_id");
+      fail("No error caught");
+    } catch (e) {
+      expect(e).toBeUndefined();
+    }
+  });
+
+  it("should reject with undefined if the result is empty", async () => {
+    sinon.stub(aws, "ElasticTranscoder").returns({
+      readJob: (params: any, callback: (err: Error | null, data: any) => void) => {
+        callback(null, {});
+      }
+    });
+
+    try {
+      await transcode.getJobStatus("some_job_id");
+      fail("No error caught");
+    } catch (e) {
+      expect(e).toBeUndefined();
+    }
+  });
+
+  it("should reject with undefined if the API returned an error", async () => {
+    sinon.stub(aws, "ElasticTranscoder").returns({
+      readJob: (params: any, callback: (err: Error | null, data: any) => void) => {
+        callback(new Error("An error occurred"), {});
+      }
+    });
+
+    try {
+      await transcode.getJobStatus("some_job_id");
+      fail("No error caught");
+    } catch (e) {
+      expect(e.message).toEqual("An error occurred");
+    }
+  });
+});
