@@ -359,3 +359,94 @@ describe("Utility function getAllMethods()", () => {
     expect(functions.includes("hello")).toBeTruthy();
   });
 });
+
+describe("Utility function performOCR()", () => {
+  afterEach(() => {
+    sinon.restore();
+  });
+
+  it("should resolve with a list of detected lines", async () => {
+    sinon.stub(aws, "Rekognition").returns({
+      detectText: (params: any, callback: (err: Error | null, data: any) => void) => {
+        callback(null, {
+          TextDetections: [
+            { Type: "LINE", DetectedText: "Hello", Confidence: 0.99 },
+            { Type: "LINE", DetectedText: "World", Confidence: 0.95 }
+          ]
+        });
+      }
+    });
+
+    const result = await util.performOCR("/some/path", "some_bucket");
+    expect(result.length).toEqual(2);
+
+    expect(result[0].line).toEqual("Hello");
+    expect(result[0].confidence).toEqual(0.99);
+
+    expect(result[1].line).toEqual("World");
+    expect(result[1].confidence).toEqual(0.95);
+  });
+
+  it("should only resolve with a list of detected lines", async () => {
+    sinon.stub(aws, "Rekognition").returns({
+      detectText: (params: any, callback: (err: Error | null, data: any) => void) => {
+        callback(null, {
+          TextDetections: [
+            { Type: "WORD", DetectedText: "word", Confidence: 0.99 },
+            { Type: "LINE", DetectedText: "line", Confidence: 0.95 },
+            { Type: "WORD", DetectedText: "word", Confidence: 0.95 },
+            { Type: "LINE", DetectedText: "line2", Confidence: 0.95 }
+          ]
+        });
+      }
+    });
+
+    const result = await util.performOCR("/some/path", "some_bucket");
+    expect(result.length).toEqual(2);
+
+    expect(result[0].line).toEqual("line");
+    expect(result[0].confidence).toEqual(0.95);
+
+    expect(result[1].line).toEqual("line2");
+    expect(result[1].confidence).toEqual(0.95);
+  });
+
+  it("should resolve with an empty list of the response doesn't contain the key TextDetections", async () => {
+    sinon.stub(aws, "Rekognition").returns({
+      detectText: (params: any, callback: (err: Error | null, data: any) => void) => {
+        callback(null, {});
+      }
+    });
+
+    const result = await util.performOCR("/some/path", "some_bucket");
+    expect(result.length).toEqual(0);
+  });
+
+  it("should resolve with an empty list of the response doesn't any lines", async () => {
+    sinon.stub(aws, "Rekognition").returns({
+      detectText: (params: any, callback: (err: Error | null, data: any) => void) => {
+        callback(null, {
+          TextDetections: []
+        });
+      }
+    });
+
+    const result = await util.performOCR("/some/path", "some_bucket");
+    expect(result.length).toEqual(0);
+  });
+
+  it("should reject if the error object is not null", async () => {
+    sinon.stub(aws, "Rekognition").returns({
+      detectText: (params: any, callback: (err: Error | null, data: any) => void) => {
+        callback(new Error("An error occurred"), null);
+      }
+    });
+
+    try {
+      await util.performOCR("/some/path", "some_bucket");
+      fail("No error caught");
+    } catch (e) {
+      expect(e.message).toEqual("An error occurred");
+    }
+  });
+});
