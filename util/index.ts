@@ -200,7 +200,7 @@ export function findTerm(value: string, term: string): string {
   }
 
   return "";
-};
+}
 
 /**
  * Check if the model attribute type and return the value casted with that typ

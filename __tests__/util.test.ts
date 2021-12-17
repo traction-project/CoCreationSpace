@@ -4,6 +4,7 @@ import aws from "aws-sdk";
 import nodemailer, { SentMessageInfo } from "nodemailer";
 import Mail from "nodemailer/lib/mailer";
 import { PassThrough } from "stream";
+import { Op } from "sequelize";
 
 process.env["SESSION_SECRET"] = "sessionsecret";
 
@@ -522,5 +523,159 @@ describe("Utility function loadTemplate()", () => {
     } catch (e) {
       expect(e.message).toEqual("An error occurred");
     }
+  });
+});
+
+describe("Utility function buildCriteria()", () => {
+  it("should return an empty object if no query is supplied", async () => {
+    const result = await util.buildCriteria({}, {
+      describe: () => {}
+    } as any);
+
+    expect(result).toEqual({});
+  });
+
+  it("should return an empty object if the query is empty", async () => {
+    const result = await util.buildCriteria({ q: "" }, {
+      describe: () => {}
+    } as any);
+
+    expect(result).toEqual({});
+  });
+
+  it("should return an object with an empty where key if the given model only has unsupported fields", async () => {
+    const result: any = await util.buildCriteria({ q: "test" }, {
+      describe: () => {
+        return {
+          id: { type: "UUID" },
+          updated_at: { type: "DATETIME" },
+          created_at: { type: "DATETIME" },
+        };
+      }
+    } as any);
+
+    expect(result.where).toBeDefined();
+    expect(result.where).toEqual({});
+  });
+
+  it("should return an object with an empty where key if the given model has a single TIMESTAMP field", async () => {
+    const result: any = await util.buildCriteria({ q: "test" }, {
+      describe: () => {
+        return {
+          updated_at: { type: "TIMESTAMP" },
+        };
+      }
+    } as any);
+
+    expect(result.where).toBeDefined();
+    expect(result.where).toEqual({});
+  });
+
+  it("should return an object with a where condition matching the integer if the model has a single INTEGER field", async () => {
+    const result: any = await util.buildCriteria({ q: "12" }, {
+      describe: () => {
+        return {
+          number: { type: "INTEGER" },
+        };
+      }
+    } as any);
+
+    expect(result.where).toBeDefined();
+    expect(result.where.number).toBeDefined();
+    expect(result.where.number).toEqual({
+      [Op.iLike]: 12
+    });
+  });
+
+  it("should return an object with a an empty where condition if the query value cannot be parsed as a number", async () => {
+    const result: any = await util.buildCriteria({ q: "test" }, {
+      describe: () => {
+        return {
+          number: { type: "INTEGER" },
+        };
+      }
+    } as any);
+
+    expect(result.where).toBeDefined();
+    expect(result.where).toEqual({});
+  });
+
+  it("should return an object with a where condition matching the string using LIKE if the model has a single CHARACTER field", async () => {
+    const result: any = await util.buildCriteria({ q: "test" }, {
+      describe: () => {
+        return {
+          title: { type: "CHARACTER" },
+        };
+      }
+    } as any);
+
+    expect(result.where).toBeDefined();
+    expect(result.where.title).toBeDefined();
+    expect(result.where.title).toEqual({
+      [Op.iLike]: "%test%"
+    });
+  });
+
+  it("should return an object with a where condition matching the string using LIKE if the model has a single TEXT field", async () => {
+    const result: any = await util.buildCriteria({ q: "test" }, {
+      describe: () => {
+        return {
+          title: { type: "TEXT" },
+        };
+      }
+    } as any);
+
+    expect(result.where).toBeDefined();
+    expect(result.where.title).toBeDefined();
+    expect(result.where.title).toEqual({
+      [Op.iLike]: "%test%"
+    });
+  });
+
+  it("should return an object with where conditions for fields with supported data types", async () => {
+    const result: any = await util.buildCriteria({ q: "test" }, {
+      describe: () => {
+        return {
+          description: { type: "TEXT" },
+          user: { type: "TEXT" },
+          title: { type: "CHARACTER" },
+          id: { type: "UUID" },
+          number: { type: "INTEGER" },
+          updated_at: { type: "DATETIME" },
+          created_at: { type: "DATETIME" },
+        };
+      }
+    } as any);
+
+    expect(result.where).toBeDefined();
+    expect(Object.getOwnPropertyNames(result.where).length).toEqual(3);
+
+    expect(result.where.title).toBeDefined();
+    expect(result.where.description).toBeDefined();
+    expect(result.where.user).toBeDefined();
+  });
+
+  it("should return an object with where conditions for fields with supported data types including numeric fields if the query can be parsed as number", async () => {
+    const result: any = await util.buildCriteria({ q: "42" }, {
+      describe: () => {
+        return {
+          description: { type: "TEXT" },
+          user: { type: "TEXT" },
+          title: { type: "CHARACTER" },
+          id: { type: "UUID" },
+          number: { type: "INTEGER" },
+          updated_at: { type: "DATETIME" },
+          created_at: { type: "DATETIME" },
+        };
+      }
+    } as any);
+
+    expect(result.where).toBeDefined();
+    expect(Object.getOwnPropertyNames(result.where).length).toEqual(4);
+
+    expect(result.where.title).toBeDefined();
+    expect(result.where.description).toBeDefined();
+    expect(result.where.user).toBeDefined();
+    expect(result.where.number).toBeDefined();
   });
 });

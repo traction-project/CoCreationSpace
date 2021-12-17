@@ -62,5 +62,4 @@ describe("User likes post tests", () => {
     await post.addLikedUsers([user1, user2]);
     expect(await post.countLikedUsers()).toEqual(2);
   });
-
 });
