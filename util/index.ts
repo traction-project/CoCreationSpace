@@ -194,7 +194,7 @@ export function splitIntoChunks(input: string, chunkLength = 4500): Array<string
  * @param value string to check
  * @param term string to check if it is include in the other one
  */
-export const findTerm = (value: string, term: string): string => {
+export function findTerm(value: string, term: string): string {
   if (value.includes(term)){
     return value;
   }
@@ -207,7 +207,7 @@ export const findTerm = (value: string, term: string): string => {
  * @param value string from request query param
  * @param type model attribute type
  */
-const castType = (value: string, type: string) => {
+function castType(value: string, type: string) {
   switch(type) {
   case findTerm(type, "INTEGER"):
     return parseInt(value);
@@ -220,14 +220,14 @@ const castType = (value: string, type: string) => {
   default:
     return "";
   }
-};
+}
 
 /**
  * Generate the query to do it with the DB. Get the request params and depending of its value, genare the query with operators like: order, limit, pagination or where
  * @param q : request params
  * @param model Model where to do the query
  */
-export const buildCriteria = async ({ q }: { q?: string }, model: ModelCtor<Model>)  => {
+export async function buildCriteria({ q }: { q?: string }, model: ModelCtor<Model>) {
   const criteria = {};
 
   if (q) {
@@ -247,15 +247,15 @@ export const buildCriteria = async ({ q }: { q?: string }, model: ModelCtor<Mode
   }
 
   return criteria;
-};
+}
 
 /**
  * Check if the object is an instance of UserAttributes
  * @param object
  */
-export const isUser = (object: any): object is UserAttributes => {
+export function isUser(object: any): object is UserAttributes {
   return "username" in object;
-};
+}
 
 /**
  * Lists all methods that are callable on a given object and all objects along
