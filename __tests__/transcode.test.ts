@@ -231,6 +231,56 @@ describe("Utility function encodeAudio()", () => {
   });
 });
 
+describe("Utility function encodeHLSAudio()", () => {
+  afterEach(() => {
+    sinon.restore();
+  });
+
+  it("should resolve the promise with the new job id", async () => {
+    sinon.stub(aws, "ElasticTranscoder").returns({
+      createJob: (params: any, callback: (err: Error | null, data: any) => void) => {
+        callback(null, { Job: { Id: "new_job_id" } });
+      }
+    });
+
+    expect(
+      await transcode.encodeHLSAudio("my_pipeline", "audio.mp3")
+    ).toEqual("new_job_id");
+  });
+
+  it("should resolve the promise with undefined if job property is undefined", async () => {
+    sinon.stub(aws, "ElasticTranscoder").returns({
+      createJob: (params: any, callback: (err: Error | null, data: any) => void) => {
+        callback(null, {});
+      }
+    });
+
+    try {
+      await transcode.encodeHLSAudio("my_pipeline", "audio.mp3");
+      fail();
+    } catch (err) {
+      expect(err).toBeDefined();
+      expect(err.message).toEqual("Job ID undefined");
+    }
+  });
+
+  it("should reject the promise returning an error", async () => {
+    sinon.stub(aws, "ElasticTranscoder").returns({
+      createJob: (params: any, callback: (err: Error) => void) => {
+        callback(new Error("ERROR"));
+      }
+    });
+
+    try {
+      await transcode.encodeHLSAudio("my_pipeline", "audio.mp3");
+      fail();
+    } catch (err) {
+      expect(err).toBeDefined();
+      expect(err.message).toEqual("ERROR");
+    }
+  });
+});
+
 describe("Utility function processInputPath()", () => {
   it("should return an input key separated into prefix, basename and extension", () => {
     const input = "prefix/basename.extension";
