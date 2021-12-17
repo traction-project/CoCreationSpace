@@ -90,6 +90,46 @@ describe("Utility function encodeDash()", () => {
       "dash-audio/video"
     ]);
   });
+
+  it("should only include specified resolutions in the output", async () => {
+    sinon.stub(aws, "ElasticTranscoder").returns({
+      createJob: (params: any, callback: (err: Error | null, data: any) => void) => {
+        // Use combination of input names as 'job id' for test to work
+        const jobId = params.Outputs.map((o: any) => o.Key).join(",");
+        callback(null, { Job: { Id: jobId } });
+      }
+    });
+
+    const result = await transcode.encodeDash("my_pipeline", "video.mp4", false, ["720p", "360p"]);
+
+    expect(result).toBeDefined();
+    expect(result?.split(",").length).toEqual(2);
+
+    expect(result?.split(",")).toEqual([
+      "dash-4m/video",
+      "dash-1m/video"
+    ]);
+  });
+
+  it("should skip invalid resolutions and not include the in the output", async () => {
+    sinon.stub(aws, "ElasticTranscoder").returns({
+      createJob: (params: any, callback: (err: Error | null, data: any) => void) => {
+        // Use combination of input names as 'job id' for test to work
+        const jobId = params.Outputs.map((o: any) => o.Key).join(",");
+        callback(null, { Job: { Id: jobId } });
+      }
+    });
+
+    const result = await transcode.encodeDash("my_pipeline", "video.mp4", false, ["720p", "360p", "4k", "potato"]);
+
+    expect(result).toBeDefined();
+    expect(result?.split(",").length).toEqual(2);
+
+    expect(result?.split(",")).toEqual([
+      "dash-4m/video",
+      "dash-1m/video"
+    ]);
+  });
 });
 
 describe("Utility function encodeHLS()", () => {
