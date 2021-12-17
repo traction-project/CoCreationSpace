@@ -450,3 +450,23 @@ describe("Utility function performOCR()", () => {
     }
   });
 });
+
+describe("Utility function generateHasManyAssociationMethods()", () => {
+  it("should generate the names of association methods for the given input", () => {
+    const result = util.generateHasManyAssociationMethods("User");
+
+    expect(result.length).toEqual(10);
+
+    expect(result).toContain("getUsers");
+    expect(result).toContain("setUsers");
+    expect(result).toContain("countUsers");
+    expect(result).toContain("hasUsers");
+    expect(result).toContain("addUsers");
+    expect(result).toContain("removeUsers");
+
+    expect(result).toContain("hasUser");
+    expect(result).toContain("addUser");
+    expect(result).toContain("createUser");
+    expect(result).toContain("removeUser");
+  });
+});
