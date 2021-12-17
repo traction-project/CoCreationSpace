@@ -92,6 +92,95 @@ describe("Utility function encodeDash()", () => {
   });
 });
 
+describe("Utility function encodeHLS()", () => {
+  afterEach(() => {
+    sinon.restore();
+  });
+
+  it("should resolve the promise with the new job id", async () => {
+    sinon.stub(aws, "ElasticTranscoder").returns({
+      createJob: (params: any, callback: (err: Error | null, data: any) => void) => {
+        callback(null, { Job: { Id: "new_job_id" } });
+      }
+    });
+
+    expect(
+      await transcode.encodeHLS("my_pipeline", "video.mp4")
+    ).toEqual("new_job_id");
+  });
+
+  it("should resolve the promise with undefined if job property is undefined", async () => {
+    sinon.stub(aws, "ElasticTranscoder").returns({
+      createJob: (params: any, callback: (err: Error | null, data: any) => void) => {
+        callback(null, {});
+      }
+    });
+
+    expect(
+      await transcode.encodeHLS("my_pipeline", "video.mp4")
+    ).toBeUndefined();
+  });
+
+  it("should reject the promise returning an error", async () => {
+    sinon.stub(aws, "ElasticTranscoder").returns({
+      createJob: (params: any, callback: (err: Error) => void) => {
+        callback(new Error("ERROR"));
+      }
+    });
+
+    try {
+      await transcode.encodeHLS("my_pipeline", "video.mp4");
+      fail();
+    } catch (err) {
+      expect(err).toBeDefined();
+      expect(err.message).toEqual("ERROR");
+    }
+  });
+
+  it("should remove audio track from params if hasAudio is false", async () => {
+    sinon.stub(aws, "ElasticTranscoder").returns({
+      createJob: (params: any, callback: (err: Error | null, data: any) => void) => {
+        // Use combination of input names as 'job id' for test to work
+        const jobId = params.Outputs.map((o: any) => o.Key).join(",");
+        callback(null, { Job: { Id: jobId } });
+      }
+    });
+
+    const result = await transcode.encodeHLS("my_pipeline", "video.mp4", false);
+
+    expect(result).toBeDefined();
+    expect(result?.split(",").length).toEqual(3);
+
+    expect(result?.split(",")).toEqual([
+      "hls-2m/video",
+      "hls-1m/video",
+      "hls-600k/video"
+    ]);
+  });
+
+  it("should include audio track if hasAudio is true", async () => {
+    sinon.stub(aws, "ElasticTranscoder").returns({
+      createJob: (params: any, callback: (err: Error | null, data: any) => void) => {
+        // Use combination of input names as 'job id' for test to work
+        const jobId = params.Outputs.map((o: any) => o.Key).join(",");
+        callback(null, { Job: { Id: jobId } });
+      }
+    });
+
+    const result = await transcode.encodeHLS("my_pipeline", "video.mp4", true);
+
+    expect(result).toBeDefined();
+    expect(result?.split(",").length).toEqual(4);
+
+    expect(result?.split(",")).toEqual([
+      "hls-2m/video",
+      "hls-1m/video",
+      "hls-600k/video",
+      "hls-audio/video"
+    ]);
+  });
+});
+
 describe("Utility function encodeAudio()", () => {
   afterEach(() => {
     sinon.restore();
