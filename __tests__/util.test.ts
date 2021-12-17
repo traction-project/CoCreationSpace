@@ -470,3 +470,15 @@ describe("Utility function generateHasManyAssociationMethods()", () => {
     expect(result).toContain("removeUser");
   });
 });
+
+describe("Utility function generateBelongsToAssociationMethods()", () => {
+  it("should generate the names of association methods for the given input", () => {
+    const result = util.generateBelongsToAssociationMethods("User");
+
+    expect(result.length).toEqual(3);
+
+    expect(result).toContain("getUser");
+    expect(result).toContain("setUser");
+    expect(result).toContain("createUser");
+  });
+});
