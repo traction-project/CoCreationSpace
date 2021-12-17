@@ -482,3 +482,15 @@ describe("Utility function generateBelongsToAssociationMethods()", () => {
     expect(result).toContain("createUser");
   });
 });
+
+describe("Utility function generateHasOneAssociationMethods()", () => {
+  it("should generate the names of association methods for the given input", () => {
+    const result = util.generateHasOneAssociationMethods("User");
+
+    expect(result.length).toEqual(3);
+
+    expect(result).toContain("getUser");
+    expect(result).toContain("setUser");
+    expect(result).toContain("createUser");
+  });
+});
