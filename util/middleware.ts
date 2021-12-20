@@ -49,11 +49,16 @@ export function permissionRequired(...permissionNames: Array<string>) {
     const user = req.user as UserInstance;
 
     if (!user) {
-      res.status(401).send({
+      res.status(401);
+      res.send({
         status: "ERR",
         message: "Authorisation required"
       });
     } else {
+      if (permissionNames.length == 0) {
+        return next();
+      }
+
       Permission.findAll({
         where: { type: permissionNames }
       }).then(async (permissions) => {
@@ -62,7 +67,8 @@ export function permissionRequired(...permissionNames: Array<string>) {
         if (foundAllPermissions && await user.hasPermissions(permissions)) {
           next();
         } else {
-          res.status(403).send({
+          res.status(403);
+          res.send({
             status: "ERR",
             message: "Permission failure"
           });
