@@ -107,7 +107,7 @@ export async function translateText(input: string, targetLanguage: string, sourc
   return translatedChunks.join(" ");
 }
 
-export interface OCRLine {
+interface OCRLine {
   line: string;
   confidence: number;
 }

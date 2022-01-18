@@ -200,7 +200,7 @@ router.get("/:id", authRequired, async (req, res) => {
         model: DataContainer,
         include: [{
           model: MediaItem,
-          attributes: ["status", "id", "type", "title", "file", "ocrData"],
+          attributes: ["status", "id", "type", "title", "file"],
           include: ["emojiReactions", "videoChapters"]
         }]
       }, {
