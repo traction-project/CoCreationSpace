@@ -31,7 +31,6 @@ export interface MultimediaItem {
   title: string;
   file: string;
   startTime?: number;
-  ocrData?: Array<{ line: string, confidence: number }>;
 }
 
 interface DataContainerType {
@@ -278,17 +277,6 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
                   <Image id={selectedItem.id} showDetectedText={true} />
                 ) : (
                   <File id={selectedItem.id} />
-                )}
-
-                {(selectedItem.ocrData && selectedItem.ocrData.length > 0) && (
-                  <div className="mt-2">
-                    {selectedItem.ocrData.map(({ line }, i) => {
-                      return (
-                        <p key={i}>{line}</p>
-                      );
-                    })}
-                    <hr/>
-                  </div>
                 )}
 
                 {(selectedItem.type != "file") && (
