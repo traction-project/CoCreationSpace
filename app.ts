@@ -108,7 +108,10 @@ async function setupServer(): Promise<http.Server> {
       secret: SESSION_SECRET,
       resave: false,
       saveUninitialized: true,
-      cookie: { secure: false },
+      cookie: {
+        secure: false,
+        maxAge: 1000 * 60 * 60 * 24 * 30 * 6 // 6 months
+      },
       store: sessionStore
     }));
 
