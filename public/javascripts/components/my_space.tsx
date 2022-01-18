@@ -39,7 +39,7 @@ const MySpace: React.FC<MySpaceProps> = (props) => {
                   {t("Drafts")}
                 </li>
                 <li className="home__menu-item" onClick={navigateTo("/notes")}>
-                  {t("Media Boards")}
+                  {t("My Favourites")}
                 </li>
               </ul>
             </div>

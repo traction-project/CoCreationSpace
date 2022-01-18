@@ -42,7 +42,7 @@ const NotesList: React.FC<NotesListProps> = (props) => {
       <div className="container">
         <div className="columns is-centered">
           <div className="column is-9">
-            <h4 className="title is-4">{t("Media Boards")}</h4>
+            <h4 className="title is-4">{t("Favourites")}</h4>
             <hr/>
 
             {notes.map(({ id, name, mediaItems }) => {
