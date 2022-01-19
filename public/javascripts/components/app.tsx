@@ -10,7 +10,6 @@ import Startup from "./startup";
 import Login from "./login";
 import CreatePost from "./post/create_post";
 import Post from "./post/post";
-import Home from "./home";
 import PrivateRoute from "./private_route";
 import Header from "./header";
 import PostList from "./post_list/post_list";
@@ -23,7 +22,6 @@ import HistoryTracker from "./history_tracker";
 import RequestReset from "./request_reset";
 import ResetPassword from "./reset_password";
 import PublicProfile from "./public_profile";
-import MySpace from "./my_space";
 import NotesList from "./notes/notes_list";
 import NoteEntry from "./notes/note_entry";
 
@@ -70,21 +68,18 @@ const App: React.FC<AppProps> = () => {
               <PrivateRoute path="/upload">
                 <CreatePost />
               </PrivateRoute>
-              <Route path="/notifications">
+              <PrivateRoute path="/notifications">
                 <NotificationList />
-              </Route>
-              <PrivateRoute path="/posts">
-                <PostList endpoint="/posts/all/group" />
               </PrivateRoute>
               <PrivateRoute path="/post/:id/edit">
                 <EditPost />
               </PrivateRoute>
-              <Route path="/post/:id">
+              <PrivateRoute path="/post/:id">
                 <Post />
-              </Route>
-              <Route path="/profile/:id">
+              </PrivateRoute>
+              <PrivateRoute path="/profile/:id">
                 <PublicProfile />
-              </Route>
+              </PrivateRoute>
               <PrivateRoute path="/profile">
                 <Profile />
               </PrivateRoute>
@@ -93,9 +88,6 @@ const App: React.FC<AppProps> = () => {
               </PrivateRoute>
               <PrivateRoute path="/drafts">
                 <PostList endpoint="/posts/draft/user" />
-              </PrivateRoute>
-              <PrivateRoute path="/mySpace">
-                <MySpace />
               </PrivateRoute>
               <PrivateRoute path="/notes">
                 <NotesList />
