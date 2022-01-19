@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Provider } from "react-redux";
-import { Route, HashRouter as Router, Switch } from "react-router-dom";
+import { Route, HashRouter as Router, Routes } from "react-router-dom";
 
 import store from "../store";
 import { actionCreators as loginActionCreators } from "../actions/login";
@@ -52,7 +52,7 @@ const App: React.FC<AppProps> = () => {
         <Router>
           <Header />
           <HistoryTracker endpoint="/internalnavigation">
-            <Switch>
+            <Routes>
               <Route path="/signup">
                 <Signup />
               </Route>
@@ -98,7 +98,7 @@ const App: React.FC<AppProps> = () => {
               <PrivateRoute path="/">
                 <PostList endpoint="/posts/all/group" />
               </PrivateRoute>
-            </Switch>
+            </Routes>
           </HistoryTracker>
         </Router>
         <CookieBanner />
