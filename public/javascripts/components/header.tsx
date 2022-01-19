@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useState } from "react";
 import { Dispatch, bindActionCreators } from "redux";
-import { Link, useHistory, useLocation } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import { useTranslation } from "react-i18next";
 import classNames from "classnames";
@@ -10,6 +10,7 @@ import { ApplicationState } from "../store";
 import { actionCreators as loginActionCreators, LoginActions } from "../actions/login";
 import { LoginState } from "../reducers/login";
 import NotificationCounter from "./notifications/notification_counter";
+import HeaderLink from "./header_link";
 
 interface HeaderActionProps {
   loginActions: LoginActions
@@ -24,7 +25,6 @@ type HeaderProps = HeaderActionProps & HeaderConnectedProps;
 const Header: React.FC<HeaderProps> = (props) => {
   const { t } = useTranslation();
   const history = useHistory();
-  const location = useLocation();
   const [ burgerActive, setBurgerActive ] = useState(false);
 
   const logOut = () => {
@@ -70,41 +70,36 @@ const Header: React.FC<HeaderProps> = (props) => {
 
       <div id="mainNavbar" className={classNames("navbar-menu", { "is-active": burgerActive })}>
         <div className="navbar-start">
-          <Link
-            className={classNames("navbar-item", { "is-active": location.pathname == "/" })}
+          <HeaderLink
             onClick={() => setBurgerActive(false)}
             to={"/"}
           >
             {t("Explore")}
-          </Link>
-          <Link
-            className={classNames("navbar-item", { "is-active": location.pathname == "/userPosts" })}
+          </HeaderLink>
+          <HeaderLink
             onClick={() => setBurgerActive(false)}
             to={"/userPosts"}
           >
             {t("My Posts")}
-          </Link>
-          <Link
-            className={classNames("navbar-item", { "is-active": location.pathname == "/notes" })}
+          </HeaderLink>
+          <HeaderLink
             onClick={() => setBurgerActive(false)}
             to={"/notes"}
           >
             {t("My Favourites")}
-          </Link>
-          <Link
-            className={classNames("navbar-item", { "is-active": location.pathname == "/drafts" })}
+          </HeaderLink>
+          <HeaderLink
             onClick={() => setBurgerActive(false)}
             to={"/drafts"}
           >
             {t("Drafts")}
-          </Link>
-          <Link
-            className={classNames("navbar-item", { "is-active": location.pathname == "/upload" })}
+          </HeaderLink>
+          <HeaderLink
             onClick={() => setBurgerActive(false)}
             to={"/upload"}
           >
             {t("Create Post")}
-          </Link>
+          </HeaderLink>
         </div>
 
         <div className="navbar-end">
