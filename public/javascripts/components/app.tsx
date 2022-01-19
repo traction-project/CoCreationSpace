@@ -103,9 +103,9 @@ const App: React.FC<AppProps> = () => {
               <PrivateRoute path="/note/:id">
                 <NoteEntry />
               </PrivateRoute>
-              <Route path="/">
-                <Home />
-              </Route>
+              <PrivateRoute path="/">
+                <PostList endpoint="/posts/all/group" />
+              </PrivateRoute>
             </Switch>
           </HistoryTracker>
         </Router>
