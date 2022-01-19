@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Route, Redirect } from "react-router-dom";
+import { Route, Navigate } from "react-router-dom";
 import store from "../store";
 
 interface PrivateRouteProps {
@@ -16,7 +16,7 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({ children, path, ...rest }) 
       isLoggedIn() ? (
         children
       ) : (
-        <Redirect to="/login" />
+        <Navigate to="/login" />
       )
     )}></Route>
   );

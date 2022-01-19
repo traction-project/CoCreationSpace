@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Dispatch, bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { Link, Redirect } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { Trans, useTranslation } from "react-i18next";
 import { useForm } from "react-hook-form";
 
@@ -25,7 +25,7 @@ const Login: React.FC<LoginProps> = (props) => {
 
   if (props.login.user) {
     return (
-      <Redirect to="/" />
+      <Navigate to="/" />
     );
   }
 
