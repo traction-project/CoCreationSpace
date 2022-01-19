@@ -53,51 +53,23 @@ const App: React.FC<AppProps> = () => {
           <Header />
           <HistoryTracker endpoint="/internalnavigation">
             <Routes>
-              <Route path="/signup">
-                <Signup />
+              <Route path="/signup" element={<Signup />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/requestreset" element={<RequestReset />} />
+              <Route path="/resetpassword/:resettoken" element={<ResetPassword />} />
+              <Route element={<PrivateRoute />}>
+                <Route path="/upload" element={<CreatePost />} />
+                <Route path="/notifications" element={<NotificationList />} />
+                <Route path="/post/:id/edit" element={<EditPost />} />
+                <Route path="/post/:id" element={<Post />} />
+                <Route path="/profile/:id" element={<PublicProfile />} />
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/userPosts" element={<PostList endpoint="/posts/all/user" />} />
+                <Route path="/drafts" element={<PostList endpoint="/posts/draft/user" />} />
+                <Route path="/notes" element={<NotesList />} />
+                <Route path="/note/:id" element={<NoteEntry />} />
+                <Route path="/" element={<PostList endpoint="/posts/all/group" />} />
               </Route>
-              <Route path="/login">
-                <Login />
-              </Route>
-              <Route path="/requestreset">
-                <RequestReset />
-              </Route>
-              <Route path="/resetpassword/:resettoken">
-                <ResetPassword />
-              </Route>
-              <PrivateRoute path="/upload">
-                <CreatePost />
-              </PrivateRoute>
-              <PrivateRoute path="/notifications">
-                <NotificationList />
-              </PrivateRoute>
-              <PrivateRoute path="/post/:id/edit">
-                <EditPost />
-              </PrivateRoute>
-              <PrivateRoute path="/post/:id">
-                <Post />
-              </PrivateRoute>
-              <PrivateRoute path="/profile/:id">
-                <PublicProfile />
-              </PrivateRoute>
-              <PrivateRoute path="/profile">
-                <Profile />
-              </PrivateRoute>
-              <PrivateRoute path="/userPosts">
-                <PostList endpoint="/posts/all/user" />
-              </PrivateRoute>
-              <PrivateRoute path="/drafts">
-                <PostList endpoint="/posts/draft/user" />
-              </PrivateRoute>
-              <PrivateRoute path="/notes">
-                <NotesList />
-              </PrivateRoute>
-              <PrivateRoute path="/note/:id">
-                <NoteEntry />
-              </PrivateRoute>
-              <PrivateRoute path="/">
-                <PostList endpoint="/posts/all/group" />
-              </PrivateRoute>
             </Routes>
           </HistoryTracker>
         </Router>
