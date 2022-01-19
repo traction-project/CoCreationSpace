@@ -20,10 +20,9 @@ interface FileUpload {
 }
 
 interface CreatePostProps {
-  file?: File;
 }
 
-const CreatePost: React.FC<CreatePostProps> = ({ file }) => {
+const CreatePost: React.FC<CreatePostProps> = () => {
   const history = useHistory();
   const { t } = useTranslation();
   const { handleSubmit, register, setValue, getValues, watch, reset } = useForm();
@@ -44,12 +43,6 @@ const CreatePost: React.FC<CreatePostProps> = ({ file }) => {
 
       reset({ "topic": topics[0].id });
     });
-  }, []);
-
-  useEffect(() => {
-    if (file) {
-      startUpload(file);
-    }
   }, []);
 
   const startUpload = async (file: File) => {
