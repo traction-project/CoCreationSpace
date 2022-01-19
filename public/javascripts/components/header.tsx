@@ -75,21 +75,28 @@ const Header: React.FC<HeaderProps> = (props) => {
             onClick={() => setBurgerActive(false)}
             to={"/"}
           >
-            {t("Home")}
-          </Link>
-          <Link
-            className={classNames("navbar-item", { "is-active": location.pathname == "/mySpace" })}
-            onClick={() => setBurgerActive(false)}
-            to={"/mySpace"}
-          >
-            {t("My Space")}
-          </Link>
-          <Link
-            className={classNames("navbar-item", { "is-active": location.pathname == "/posts" })}
-            onClick={() => setBurgerActive(false)}
-            to={"/posts"}
-          >
             {t("Explore")}
+          </Link>
+          <Link
+            className={classNames("navbar-item", { "is-active": location.pathname == "/userPosts" })}
+            onClick={() => setBurgerActive(false)}
+            to={"/userPosts"}
+          >
+            {t("My Posts")}
+          </Link>
+          <Link
+            className={classNames("navbar-item", { "is-active": location.pathname == "/notes" })}
+            onClick={() => setBurgerActive(false)}
+            to={"/notes"}
+          >
+            {t("My Favourites")}
+          </Link>
+          <Link
+            className={classNames("navbar-item", { "is-active": location.pathname == "/drafts" })}
+            onClick={() => setBurgerActive(false)}
+            to={"/drafts"}
+          >
+            {t("Drafts")}
           </Link>
           <Link
             className={classNames("navbar-item", { "is-active": location.pathname == "/upload" })}
