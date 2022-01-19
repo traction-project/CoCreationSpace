@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useState, useEffect, useRef } from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useTranslation, Trans } from "react-i18next";
 import { useForm } from "react-hook-form";
 
@@ -23,7 +23,7 @@ interface CreatePostProps {
 }
 
 const CreatePost: React.FC<CreatePostProps> = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const { handleSubmit, register, setValue, getValues, watch, reset } = useForm();
 
@@ -135,9 +135,9 @@ const CreatePost: React.FC<CreatePostProps> = () => {
         const post = await res.json();
 
         if (!saveAsDraft.current) {
-          history.push(`/post/${post.id}`);
+          navigate(`/post/${post.id}`);
         } else {
-          history.push("/drafts");
+          navigate("/drafts");
         }
       } else {
         throw new Error("HTTP status code: " + res.status);

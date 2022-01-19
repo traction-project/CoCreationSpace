@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { useHistory, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import classNames from "classnames";
 
@@ -33,7 +33,7 @@ interface GroupData {
 }
 
 const PostList: React.FC<PostListProps> = ({endpoint}) => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const location = useLocation();
   const { t } = useTranslation();
 
@@ -159,7 +159,7 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
    * Handle clicking of 'New Post' button by redirecting to the upload page.
    */
   const handleClickButtonNewPost = () => {
-    history.push("/upload");
+    navigate("/upload");
   };
 
   /**
@@ -176,7 +176,7 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
     }).join("&");
 
     // Append updated query string to URL
-    history.push({ search: `?${queryString}` });
+    navigate({ search: `?${queryString}` });
   };
 
   /**

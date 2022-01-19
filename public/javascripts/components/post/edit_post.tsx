@@ -2,7 +2,7 @@ import * as React from "react";
 import { useEffect, useState, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { useParams, useHistory } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 import { MultimediaItem, PostType } from "./post";
 import { getPostId } from "../../services/post.service";
@@ -15,7 +15,7 @@ interface EditPostProps {
 
 const EditPost: React.FC<EditPostProps> = () => {
   const { id } = useParams<{ id: string }>();
-  const history = useHistory();
+  const navigate = useNavigate();
   const { register, handleSubmit, getValues, setValue, reset } = useForm();
   const { t } = useTranslation();
 
@@ -27,7 +27,7 @@ const EditPost: React.FC<EditPostProps> = () => {
   const saveAsDraft = useRef(false);
 
   useEffect(() => {
-    getPostId(id).then((res) => {
+    getPostId(id!).then((res) => {
       return res.json();
     }).then((data) => {
       setPost(data);
@@ -105,7 +105,7 @@ const EditPost: React.FC<EditPostProps> = () => {
     });
 
     if (res.ok) {
-      history.goBack();
+      navigate(-1);
     }
   });
 

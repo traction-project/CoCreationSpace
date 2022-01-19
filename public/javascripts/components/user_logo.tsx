@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useTranslation } from "react-i18next";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { CommonType } from "../util";
 
@@ -16,12 +16,12 @@ interface UserLogoProps {
 
 const UserLogo: React.FC<UserLogoProps> = ({ user, hideName = false }) => {
   const { t } = useTranslation();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const navigateTo = (destination: string) => {
     return (e: React.MouseEvent) => {
       e.stopPropagation();
-      history.push(destination);
+      navigate(destination);
     };
   };
 

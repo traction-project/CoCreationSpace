@@ -2,7 +2,7 @@ import * as React from "react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import classNames from "classnames";
 
 import { UserType } from "./user_logo";
@@ -20,7 +20,7 @@ interface PublicProfileProps {
 const PublicProfile: React.FC<PublicProfileProps> = (props) => {
   const { id } = useParams<{ id: string }>();
   const { t } = useTranslation();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const [ user, setUser ] = useState<PublicUserType>();
 
@@ -38,7 +38,7 @@ const PublicProfile: React.FC<PublicProfileProps> = (props) => {
 
   const navigateTo = (destination: string) => {
     return () => {
-      history.push(destination);
+      navigate(destination);
     };
   };
 

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { useHistory, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
 interface ResetPasswordProps {
@@ -11,7 +11,7 @@ const ResetPassword: React.FC<ResetPasswordProps> = (props) => {
   const { register, watch, handleSubmit, formState: { errors } } = useForm();
   const { t } = useTranslation();
   const { resettoken } = useParams<{ resettoken: string }>();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const [ hasError, setHasError ] = useState(false);
 
@@ -24,7 +24,7 @@ const ResetPassword: React.FC<ResetPasswordProps> = (props) => {
 
     if (res.ok) {
       setHasError(false);
-      history.push("/login");
+      navigate("/login");
     } else {
       setHasError(true);
     }

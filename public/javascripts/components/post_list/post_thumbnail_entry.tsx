@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 import { PostType } from "../post/post";
@@ -13,11 +13,11 @@ interface PostThumbnailEntryProps {
 const PostThumbnailEntry: React.FC<PostThumbnailEntryProps> = (props) => {
   const { post } = props;
   const { t } = useTranslation();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const navigateTo = (destination: string) => {
     return () => {
-      history.push(destination);
+      navigate(destination);
     };
   };
 

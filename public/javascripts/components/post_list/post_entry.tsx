@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 import { PostType } from "../post/post";
@@ -12,24 +12,20 @@ interface PostEntryProps {
 const PostEntry: React.FC<PostEntryProps> = (props) => {
   const { post } = props;
   const { t } = useTranslation();
-  const history = useHistory();
-
-  const navigateTo = (destination: string) => {
-    history.push(destination);
-  };
+  const navigate = useNavigate();
 
   const filterByTag = (tagId: string) => {
     return (e: React.MouseEvent<HTMLSpanElement>) => {
       e.stopPropagation();
-      history.push({ search: `?tag=${tagId}` });
+      navigate({ search: `?tag=${tagId}` });
     };
   };
 
   const entryClicked = () => {
     if (post.published) {
-      navigateTo(`/post/${post.id}`);
+      navigate(`/post/${post.id}`);
     } else {
-      navigateTo(`/post/${post.id}/edit`);
+      navigate(`/post/${post.id}/edit`);
     }
   };
 

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
 interface RequestResetProps {
@@ -10,7 +10,7 @@ interface RequestResetProps {
 const RequestReset: React.FC<RequestResetProps> = (props) => {
   const { register, watch, handleSubmit } = useForm();
   const { t } = useTranslation();
-  const history = useHistory();
+  const navigate = useNavigate();
   const [ hasError, setHasError ] = useState(false);
 
   const onSubmit = handleSubmit(async ({ email }) => {
@@ -22,7 +22,7 @@ const RequestReset: React.FC<RequestResetProps> = (props) => {
 
     if (res.ok) {
       setHasError(false);
-      history.goBack();
+      navigate(-1);
     } else {
       setHasError(true);
     }

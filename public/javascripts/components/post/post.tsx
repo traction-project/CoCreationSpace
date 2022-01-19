@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useState, useEffect, useRef } from "react";
-import { useParams, Link, useHistory } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import classNames from "classnames";
@@ -76,10 +76,10 @@ interface PostProps {
 
 const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
   const { t } = useTranslation();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const { id } = useParams<{ id: string }>();
-  const idPost = props.post ? props.post.id : id;
+  const idPost = props.post ? props.post.id : id!;
   const { callbackClickTime, login: { user } } = props;
   const currentTime = useRef(0);
   const { isOpen, openPortal, closePortal, Portal } = usePortal();
@@ -176,7 +176,7 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
 
   const handleDeletePost = (postDeleted: boolean) => {
     if (postDeleted) {
-      history.goBack();
+      navigate(-1);
     }
   };
 

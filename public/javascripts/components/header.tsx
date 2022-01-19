@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useState } from "react";
 import { Dispatch, bindActionCreators } from "redux";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { connect } from "react-redux";
 import { useTranslation } from "react-i18next";
 import classNames from "classnames";
@@ -24,12 +24,12 @@ type HeaderProps = HeaderActionProps & HeaderConnectedProps;
 
 const Header: React.FC<HeaderProps> = (props) => {
   const { t } = useTranslation();
-  const history = useHistory();
+  const navigate = useNavigate();
   const [ burgerActive, setBurgerActive ] = useState(false);
 
   const logOut = () => {
     props.loginActions.performLogout();
-    history.push("/");
+    navigate("/");
   };
 
   const onBurgerClicked = () => {
@@ -38,7 +38,7 @@ const Header: React.FC<HeaderProps> = (props) => {
 
   const onCollapsedNotificationIconClicked = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
-    history.push("/notifications");
+    navigate("/notifications");
   };
 
   return (

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import classNames from "classnames";
 
 import { Notification } from "./use_notification";
@@ -12,7 +12,7 @@ interface NotificationListProps {
 }
 
 const NotificationList: React.FC<NotificationListProps> = (props) => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const [ notifications, setNotifications ] = useState<Array<Notification>>([]);
 
@@ -55,7 +55,7 @@ const NotificationList: React.FC<NotificationListProps> = (props) => {
         const res = await fetch(`/posts/${postId}/parent`);
         const data = await res.json();
 
-        history.push(`/post/${data.id}`);
+        navigate(`/post/${data.id}`);
       }
     };
   };
