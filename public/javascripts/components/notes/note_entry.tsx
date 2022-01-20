@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useTranslation, Trans } from "react-i18next";
 import { useForm } from "react-hook-form";
 
@@ -125,7 +125,7 @@ const NoteEntry: React.FC<NoteEntryProps> = (props) => {
               {(!editDescription) ? (
                 <div>
                   <p>{description}</p>
-                  <hr/>
+                  <br/>
                   <a onClick={() => setEditDescription(true)}>
                     {t("Edit description")}
                   </a>
@@ -152,6 +152,15 @@ const NoteEntry: React.FC<NoteEntryProps> = (props) => {
                 </div>
               )}
 
+              <hr/>
+
+              <Link
+                className="button is-info"
+                to="/upload"
+                state={{ fileUploads: mediaItems }}
+              >
+                {t("Share as post")}
+              </Link>
             </div>
           </div>
         </div>
