@@ -29,7 +29,13 @@ const CreatePost: React.FC<CreatePostProps> = () => {
   const { t } = useTranslation();
   const { handleSubmit, register, setValue, getValues, watch, reset } = useForm();
 
-  const preloadedMediaItems: Array<FileUpload> = (location.state as { fileUploads: Array<MultimediaItem> }).fileUploads.map(({ id, type }) => {
+  const { mediaItems, title } = (location.state) ? (
+    location.state as Partial<{ mediaItems: Array<MultimediaItem>, title: string }>
+  ) : (
+    { mediaItems: [], title: null }
+  );
+
+  const preloadedMediaItems: Array<FileUpload> = (mediaItems || []).map(({ id, type }) => {
     return {
       status: "done",
       total: 0, progress: 0, filename: "",
@@ -51,7 +57,7 @@ const CreatePost: React.FC<CreatePostProps> = () => {
         return [t.id, t.title, t.userGroup.name];
       }));
 
-      reset({ "topic": topics[0].id });
+      reset({ "topic": topics[0].id }, { keepValues: true });
     });
   }, []);
 
@@ -283,7 +289,8 @@ const CreatePost: React.FC<CreatePostProps> = () => {
                     onKeyDown={(e) => (e.key == "Enter") && e.preventDefault()}
                     required={true}
                     {...register("title", {
-                      required: true
+                      required: true,
+                      value: title
                     })}
                   />
                 </div>
