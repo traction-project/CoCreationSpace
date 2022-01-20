@@ -29,7 +29,7 @@ const HistoryTracker: React.FC<HistoryTrackerProps> = (props) => {
           path: location.pathname,
           search: location.search,
           hash: location.hash,
-          state: location.state,
+          state: null,
           action: "PUSH"
         }
       })
