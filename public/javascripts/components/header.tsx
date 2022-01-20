@@ -29,7 +29,7 @@ const Header: React.FC<HeaderProps> = (props) => {
 
   const logOut = () => {
     props.loginActions.performLogout();
-    navigate("/");
+    navigate("/login");
   };
 
   const onBurgerClicked = () => {
