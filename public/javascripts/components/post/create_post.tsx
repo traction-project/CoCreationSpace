@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useTranslation, Trans } from "react-i18next";
 import { useForm } from "react-hook-form";
 
@@ -9,6 +9,7 @@ import Dropzone from "../dropzone";
 import ProgressBox from "../progress_box";
 import BlankVideo from "../blank_video";
 import UploadedMediaItem from "./uploaded_media_item";
+import { MultimediaItem } from "./post";
 
 interface FileUpload {
   status: "progressing" | "failed" | "done";
@@ -24,10 +25,19 @@ interface CreatePostProps {
 
 const CreatePost: React.FC<CreatePostProps> = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { t } = useTranslation();
   const { handleSubmit, register, setValue, getValues, watch, reset } = useForm();
 
-  const [ fileUploads, setFileUploads ] = useState<Array<FileUpload>>([]);
+  const preloadedMediaItems: Array<FileUpload> = (location.state as { fileUploads: Array<MultimediaItem> }).fileUploads.map(({ id, type }) => {
+    return {
+      status: "done",
+      total: 0, progress: 0, filename: "",
+      id, type
+    };
+  });
+
+  const [ fileUploads, setFileUploads ] = useState<Array<FileUpload>>(preloadedMediaItems);
   const [ displayNotification, setDisplayNotification] = useState<"success" | "error">();
   const [ tags, setTags ] = useState<Array<string>>([]);
   const [ topics, setTopics ] = useState<Array<[string, string, string]>>([]);
