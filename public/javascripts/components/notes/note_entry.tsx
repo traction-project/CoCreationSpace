@@ -157,7 +157,7 @@ const NoteEntry: React.FC<NoteEntryProps> = (props) => {
               <Link
                 className="button is-info"
                 to="/upload"
-                state={{ fileUploads: mediaItems }}
+                state={{ mediaItems, title: name }}
               >
                 {t("Share as post")}
               </Link>
