@@ -112,10 +112,11 @@ router.get("/all/group", authRequired, async (req, res) => {
   const page = (typeof req.query.page == "string") ? parseInt(req.query.page) : 1;
   const perPage = (typeof req.query.perPage == "string") ? parseInt(req.query.perPage) : 15;
 
-  // Get tag, group and interest id to filter by
+  // Get tag, group, user and interest id to filter by
   const groupId = req.query.group;
   const tagId = req.query.tag;
   const interestId = req.query.interest;
+  const userId = req.query.user;
 
   let queryDataContainer = {
     model: DataContainer,
@@ -139,6 +140,7 @@ router.get("/all/group", authRequired, async (req, res) => {
     distinct: true,
     include: [{
       model: User,
+      where: (userId && userId !== "") ? { id: userId } : undefined,
       attributes: ["id", "username", "image"]
     }, queryDataContainer, "comments", {
       model: Tag,
