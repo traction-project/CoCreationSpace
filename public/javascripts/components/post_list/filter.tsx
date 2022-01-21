@@ -14,7 +14,9 @@ const Filter: React.FC<FilterProps> = ({ value, searchValueChange, delay=500, pl
   const { t } = useTranslation();
 
   const handleChange = debounce((value: string) => {
-    searchValueChange(value);
+    if (value.length >= 3 || value.length == 0) {
+      searchValueChange(value);
+    }
   }, delay);
 
   return (
