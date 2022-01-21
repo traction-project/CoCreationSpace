@@ -7,6 +7,7 @@ import classNames from "classnames";
 
 import { UserType } from "./user_logo";
 import { PostType } from "./post/post";
+import { Link } from "react-router-dom";
 
 interface PublicUserType extends UserType {
   posts: Array<PostType>;
@@ -159,6 +160,12 @@ const PublicProfile: React.FC<PublicProfileProps> = (props) => {
                 );
               })}
             </div>
+
+            <br/>
+
+            <Link className="button is-info" to={`/?user=${user.id}`}>
+              {t("Show all")}
+            </Link>
           </div>
         </div>
       </div>
