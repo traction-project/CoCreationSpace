@@ -1,4 +1,5 @@
 import { Router, Request, Response } from "express";
+import { Op, WhereOptions } from "sequelize";
 
 import { db } from "../models";
 import { buildCriteria, isUser, getFromEnvironment } from "../util";
@@ -6,7 +7,7 @@ import { authRequired } from "../util/middleware";
 import { UserInstance } from "../models/user";
 import association from "../models/associations";
 import { TagInstance } from "models/tag";
-import { PostInstance } from "models/post";
+import { PostInstance, PostAttributes } from "models/post";
 import { MediaItemAttributes } from "../models/media_item";
 
 const [ CLOUDFRONT_URL ] = getFromEnvironment("CLOUDFRONT_URL");
@@ -118,31 +119,43 @@ router.get("/all/group", authRequired, async (req, res) => {
   const interestId = req.query.interest;
   const userId = req.query.user;
 
-  let queryDataContainer = {
-    model: DataContainer,
-    include: [{
-      model: MediaItem,
-      attributes: ["status", "id", "type"],
-      include: ["emojiReactions"]
-    }]
-  };
-
-  const criteria = await buildCriteria(req.query, DataContainer);
-  queryDataContainer = Object.assign(queryDataContainer, criteria);
-
   const groups = (await user.getApprovedUserGroups()).map((group) => group.id);
 
+  let topLevelConditions: WhereOptions<PostAttributes> = {
+    parentPostId: null,
+    published: true
+  };
+
+  if (req.query.q) {
+    const query = `%${req.query.q}%`;
+
+    topLevelConditions = {
+      ...topLevelConditions,
+      [Op.or]: [
+        { "$dataContainer.text_content$": { [Op.iLike]: query} },
+        { "$post.title$": { [Op.iLike]: query } },
+        { "$user.username$": { [Op.iLike]: query } }
+      ]
+    };
+  }
+
   const posts = await Post.findAndCountAll({
-    where: {
-      parentPostId: null,
-      published: true
-    },
+    where: topLevelConditions,
     distinct: true,
     include: [{
       model: User,
+      required: true,
       where: (userId && userId !== "") ? { id: userId } : undefined,
       attributes: ["id", "username", "image"]
-    }, queryDataContainer, "comments", {
+    }, {
+      model: DataContainer,
+      required: true,
+      include: [{
+        model: MediaItem,
+        attributes: ["status", "id", "type"],
+        include: ["emojiReactions"]
+      }]
+    }, "comments", {
       model: Tag,
       where: (tagId && tagId !== "") ? { id: tagId } : undefined
     }, {
@@ -162,7 +175,8 @@ router.get("/all/group", authRequired, async (req, res) => {
       ["createdAt", "DESC"]
     ],
     limit: perPage,
-    offset: (page - 1) * perPage
+    offset: (page - 1) * perPage,
+    logging: console.log
   });
 
   await logSearchQuery(req.query["q"] as string, posts.count, user);
