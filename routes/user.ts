@@ -202,6 +202,32 @@ router.post("/unfollow/:id", authRequired, async (req, res) => {
     status: "OK"
   });
 });
+
+/**
+ * Checks whether the current user is following the user identified by the ID
+ * in the URL.
+ */
+router.get("/follows/:id", authRequired, async (req, res) => {
+  const { User } = db.getModels();
+
+  // Get user objects
+  const user = req.user as UserInstance;
+  const userToCheck = await User.findByPk(req.params.id);
+
+  // Check if the user to follow is valid
+  if (!userToCheck) {
+    return res.status(404).send({
+      status: "ERR",
+      message: "No such user"
+    });
+  }
+
+  res.send({
+    status: "OK",
+    follows: await userToCheck.hasFollower(user)
+  });
+});
+
 /**
  * Retrieve all topics that the current user is interested in.
  */
