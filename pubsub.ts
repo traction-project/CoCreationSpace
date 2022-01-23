@@ -236,6 +236,72 @@ async function preparePostNotification(post: PostInstance): Promise<Notification
 }
 
 /**
+ * Prepares notifications for followers of the author of the given post. This
+ * function takes a newly created post and prepares a notification for it. It
+ * returns a function, which when called with a user instance and a list of
+ * websocket connections, decides whether that user should receive the created
+ * notification. This function returns true if the notification was created and
+ * false otherwise.
+ *
+ * @param post Post for notifications should be prepared
+ * @returns Function which takes a recipient and creates a notification if that user should receive one
+ */
+async function prepareSubscriberNotification(post: PostInstance): Promise<NotificationSender> {
+  const { Notification } = db.getModels();
+
+  const author = await post.getUser();
+
+  // Compile notification data and hash for interests
+  const data = {
+    type: "post-subscriber",
+    post: { id: post.id, title: post.title },
+    creator: { id: author.id, username: author.username, image: `${CLOUDFRONT_URL}/${author.image}` }
+  };
+  const notificationDataHash = crypto.createHash("sha256").update(JSON.stringify(data)).digest("hex");
+
+  return async (recipient, sockets) => {
+    // Don't send notification if client is creator of post
+    if (author.id == recipient.id) {
+      return false;
+    }
+
+    // Check if the recipient follows the author
+    const recipientIsFollower = await author.hasFollower(recipient);
+    if (!recipientIsFollower) {
+      return false;
+    }
+
+    console.log("Creating subscriber notification with hash", notificationDataHash, "for", recipient.id);
+
+    // Create notification in database
+    const notification = await Notification.create({
+      data,
+      user_id: recipient.id,
+      hash: notificationDataHash
+    } as any);
+
+    console.log("Sending subscriber notification to", sockets.length, "connections...");
+
+    // Send notification data over each socket connection
+    sockets.forEach((socket) => {
+      console.log("Sending subscriber notification to connection for", recipient.id);
+
+      socket.send(JSON.stringify({
+        type: "message",
+        data: {
+          id: notification.id,
+          seen: notification.seen,
+          createdAt: notification.createdAt,
+          data
+        }
+      }));
+    });
+
+    return true;
+  };
+}
+
+/**
  * Broadcasts a notification message to all clients which are subscribed to the
  * topic that the given post belongs to. The message contains topic id and
  * title and the id and title of the post.
