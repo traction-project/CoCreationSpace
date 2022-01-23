@@ -81,6 +81,8 @@ const PublicProfile: React.FC<PublicProfileProps> = (props) => {
   const numComments = user.posts.filter((p) => p.parentPostId != null).length;
   const numMedia = user.posts.reduce((sum, p) => sum + (p.dataContainer?.mediaItems?.length || 0), 0);
 
+  const currentUser = props.login.user;
+
   return (
     <section className="section">
       <div className="container">
@@ -154,14 +156,18 @@ const PublicProfile: React.FC<PublicProfileProps> = (props) => {
               );
             })}
 
-            <hr/>
+            {(currentUser && currentUser.id != user.id) && (
+              <>
+                <hr/>
 
-            <button
-              className="button is-info"
-              onClick={() => (isFollowing) ? unfollowUser(user.id) : followUser(user.id)}
-            >
-              {(isFollowing) ? t("Unfollow") : t("Follow")}
-            </button>
+                <button
+                  className="button is-info"
+                  onClick={() => (isFollowing) ? unfollowUser(user.id) : followUser(user.id)}
+                >
+                  {(isFollowing) ? t("Unfollow") : t("Follow")}
+                </button>
+              </>
+            )}
           </div>
         </div>
 
