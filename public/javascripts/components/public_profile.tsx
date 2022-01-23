@@ -13,6 +13,7 @@ interface PublicUserType extends UserType {
   posts: Array<PostType>;
   groups: Array<{ id: string, name: string }>;
   interests: Array<{ id: string, title: string }>;
+  followers: Array<{ id: string, username: string }>;
 }
 
 interface PublicProfileProps {
@@ -84,6 +85,12 @@ const PublicProfile: React.FC<PublicProfileProps> = (props) => {
                 <div>
                   <p className="heading">{t("Media Items")}</p>
                   <p className="subtitle">{numMedia}</p>
+                </div>
+              </div>
+              <div style={{ flexGrow: 1 }}>
+                <div>
+                  <p className="heading">{t("Followers")}</p>
+                  <p className="subtitle">{user.followers.length}</p>
                 </div>
               </div>
             </nav>
