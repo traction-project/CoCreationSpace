@@ -298,6 +298,18 @@ function userAssociations(models: DbInterface): void {
     foreignKey: "userId",
     as: "interestedTopics"
   });
+
+  models.User.belongsToMany(models.User, {
+    foreignKey: "userId",
+    as: "followers",
+    through: models.UserFollower
+  });
+
+  models.User.belongsToMany(models.User, {
+    foreignKey: "followerId",
+    as: "following",
+    through: models.UserFollower
+  });
 }
 
 /**
