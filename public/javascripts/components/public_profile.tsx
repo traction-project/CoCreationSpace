@@ -25,12 +25,19 @@ const PublicProfile: React.FC<PublicProfileProps> = (props) => {
   const navigate = useNavigate();
 
   const [ user, setUser ] = useState<PublicUserType>();
+  const [ isFollowing, setIsFollowing ] = useState<boolean>();
 
   useEffect(() => {
     fetch(`/users/profile/${id}`).then((res) => {
       return res.json();
     }).then((data) => {
       setUser(data);
+    });
+
+    fetch(`/users/follows/${id}`).then((res) => {
+      return res.json();
+    }).then(({ follows }) => {
+      setIsFollowing(follows);
     });
   }, []);
 
@@ -42,6 +49,22 @@ const PublicProfile: React.FC<PublicProfileProps> = (props) => {
     return () => {
       navigate(destination);
     };
+  };
+
+  const followUser = async (id: string) => {
+    const res = await fetch(`/users/follow/${id}`, { method: "POST" });
+
+    if (res.ok) {
+      setIsFollowing(true);
+    }
+  };
+
+  const unfollowUser = async (id: string) => {
+    const res = await fetch(`/users/unfollow/${id}`, { method: "POST" });
+
+    if (res.ok) {
+      setIsFollowing(false);
+    }
   };
 
   const numPosts = user.posts.filter((p) => p.parentPostId == null).length;
@@ -67,7 +90,7 @@ const PublicProfile: React.FC<PublicProfileProps> = (props) => {
             </div>
           </div>
 
-          <div className="column is-7 is-offset-1">
+          <div className="column is-9 is-offset-1">
             <nav style={{ display: "flex", backgroundColor: "#FAFAFA", padding: "1rem", marginBottom: "1rem", borderRadius: 4 }}>
               <div style={{ flexGrow: 1 }}>
                 <div>
@@ -120,6 +143,15 @@ const PublicProfile: React.FC<PublicProfileProps> = (props) => {
                 </span>
               );
             })}
+
+            <hr/>
+
+            <button
+              className="button is-info"
+              onClick={() => (isFollowing) ? unfollowUser(user.id) : followUser(user.id)}
+            >
+              {(isFollowing) ? t("Unfollow") : t("Follow")}
+            </button>
           </div>
         </div>
 
