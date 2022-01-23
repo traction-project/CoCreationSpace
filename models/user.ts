@@ -208,6 +208,26 @@ export interface UserInstance extends Sequelize.Model<UserAttributes, UserCreati
   hasNoteCollection: Sequelize.HasManyHasAssociationMixin<NoteCollectionInstance, NoteCollectionInstance["id"]>;
   hasNoteCollections: Sequelize.HasManyHasAssociationsMixin<NoteCollectionInstance, NoteCollectionInstance["id"]>;
   countNoteCollections: Sequelize.HasManyCountAssociationsMixin;
+
+  getFollowers: Sequelize.HasManyGetAssociationsMixin<NoteCollectionInstance>;
+  setFollowers: Sequelize.HasManySetAssociationsMixin<NoteCollectionInstance, NoteCollectionInstance["id"]>;
+  addFollowers: Sequelize.HasManyAddAssociationsMixin<NoteCollectionInstance, NoteCollectionInstance["id"]>;
+  addFollower: Sequelize.HasManyAddAssociationMixin<NoteCollectionInstance, NoteCollectionInstance["id"]>;
+  removeFollower: Sequelize.HasManyRemoveAssociationMixin<NoteCollectionInstance, NoteCollectionInstance["id"]>;
+  removeFollowers: Sequelize.HasManyRemoveAssociationsMixin<NoteCollectionInstance, NoteCollectionInstance["id"]>;
+  hasFollower: Sequelize.HasManyHasAssociationMixin<NoteCollectionInstance, NoteCollectionInstance["id"]>;
+  hasFollowers: Sequelize.HasManyHasAssociationsMixin<NoteCollectionInstance, NoteCollectionInstance["id"]>;
+  countFollowers: Sequelize.HasManyCountAssociationsMixin;
+
+  getFolloweds: Sequelize.HasManyGetAssociationsMixin<NoteCollectionInstance>;
+  setFolloweds: Sequelize.HasManySetAssociationsMixin<NoteCollectionInstance, NoteCollectionInstance["id"]>;
+  addFolloweds: Sequelize.HasManyAddAssociationsMixin<NoteCollectionInstance, NoteCollectionInstance["id"]>;
+  addFollowed: Sequelize.HasManyAddAssociationMixin<NoteCollectionInstance, NoteCollectionInstance["id"]>;
+  removeFollowed: Sequelize.HasManyRemoveAssociationMixin<NoteCollectionInstance, NoteCollectionInstance["id"]>;
+  removeFolloweds: Sequelize.HasManyRemoveAssociationsMixin<NoteCollectionInstance, NoteCollectionInstance["id"]>;
+  hasFollowed: Sequelize.HasManyHasAssociationMixin<NoteCollectionInstance, NoteCollectionInstance["id"]>;
+  hasFolloweds: Sequelize.HasManyHasAssociationsMixin<NoteCollectionInstance, NoteCollectionInstance["id"]>;
+  countFolloweds: Sequelize.HasManyCountAssociationsMixin;
 }
 
 /**
