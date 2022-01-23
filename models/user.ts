@@ -209,24 +209,24 @@ export interface UserInstance extends Sequelize.Model<UserAttributes, UserCreati
   hasNoteCollections: Sequelize.HasManyHasAssociationsMixin<NoteCollectionInstance, NoteCollectionInstance["id"]>;
   countNoteCollections: Sequelize.HasManyCountAssociationsMixin;
 
-  getFollowers: Sequelize.HasManyGetAssociationsMixin<NoteCollectionInstance>;
-  setFollowers: Sequelize.HasManySetAssociationsMixin<NoteCollectionInstance, NoteCollectionInstance["id"]>;
-  addFollowers: Sequelize.HasManyAddAssociationsMixin<NoteCollectionInstance, NoteCollectionInstance["id"]>;
-  addFollower: Sequelize.HasManyAddAssociationMixin<NoteCollectionInstance, NoteCollectionInstance["id"]>;
-  removeFollower: Sequelize.HasManyRemoveAssociationMixin<NoteCollectionInstance, NoteCollectionInstance["id"]>;
-  removeFollowers: Sequelize.HasManyRemoveAssociationsMixin<NoteCollectionInstance, NoteCollectionInstance["id"]>;
-  hasFollower: Sequelize.HasManyHasAssociationMixin<NoteCollectionInstance, NoteCollectionInstance["id"]>;
-  hasFollowers: Sequelize.HasManyHasAssociationsMixin<NoteCollectionInstance, NoteCollectionInstance["id"]>;
+  getFollowers: Sequelize.HasManyGetAssociationsMixin<UserInstance>;
+  setFollowers: Sequelize.HasManySetAssociationsMixin<UserInstance, UserInstance["id"]>;
+  addFollowers: Sequelize.HasManyAddAssociationsMixin<UserInstance, UserInstance["id"]>;
+  addFollower: Sequelize.HasManyAddAssociationMixin<UserInstance, UserInstance["id"]>;
+  removeFollower: Sequelize.HasManyRemoveAssociationMixin<UserInstance, UserInstance["id"]>;
+  removeFollowers: Sequelize.HasManyRemoveAssociationsMixin<UserInstance, UserInstance["id"]>;
+  hasFollower: Sequelize.HasManyHasAssociationMixin<UserInstance, UserInstance["id"]>;
+  hasFollowers: Sequelize.HasManyHasAssociationsMixin<UserInstance, UserInstance["id"]>;
   countFollowers: Sequelize.HasManyCountAssociationsMixin;
 
-  getFolloweds: Sequelize.HasManyGetAssociationsMixin<NoteCollectionInstance>;
-  setFolloweds: Sequelize.HasManySetAssociationsMixin<NoteCollectionInstance, NoteCollectionInstance["id"]>;
-  addFolloweds: Sequelize.HasManyAddAssociationsMixin<NoteCollectionInstance, NoteCollectionInstance["id"]>;
-  addFollowed: Sequelize.HasManyAddAssociationMixin<NoteCollectionInstance, NoteCollectionInstance["id"]>;
-  removeFollowed: Sequelize.HasManyRemoveAssociationMixin<NoteCollectionInstance, NoteCollectionInstance["id"]>;
-  removeFolloweds: Sequelize.HasManyRemoveAssociationsMixin<NoteCollectionInstance, NoteCollectionInstance["id"]>;
-  hasFollowed: Sequelize.HasManyHasAssociationMixin<NoteCollectionInstance, NoteCollectionInstance["id"]>;
-  hasFolloweds: Sequelize.HasManyHasAssociationsMixin<NoteCollectionInstance, NoteCollectionInstance["id"]>;
+  getFolloweds: Sequelize.HasManyGetAssociationsMixin<UserInstance>;
+  setFolloweds: Sequelize.HasManySetAssociationsMixin<UserInstance, UserInstance["id"]>;
+  addFolloweds: Sequelize.HasManyAddAssociationsMixin<UserInstance, UserInstance["id"]>;
+  addFollowed: Sequelize.HasManyAddAssociationMixin<UserInstance, UserInstance["id"]>;
+  removeFollowed: Sequelize.HasManyRemoveAssociationMixin<UserInstance, UserInstance["id"]>;
+  removeFolloweds: Sequelize.HasManyRemoveAssociationsMixin<UserInstance, UserInstance["id"]>;
+  hasFollowed: Sequelize.HasManyHasAssociationMixin<UserInstance, UserInstance["id"]>;
+  hasFolloweds: Sequelize.HasManyHasAssociationsMixin<UserInstance, UserInstance["id"]>;
   countFolloweds: Sequelize.HasManyCountAssociationsMixin;
 }
 
