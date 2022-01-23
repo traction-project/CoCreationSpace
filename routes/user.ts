@@ -317,6 +317,8 @@ router.get("/profile/:id", authRequired, async (req, res) => {
   const groups = await user.getUserGroups({ attributes: ["id", "name"] });
   // Retrieve interests for user
   const interests = await user.getInterestedTopics({ attributes: ["id", "title"] });
+  // Retrieve list of followers for user
+  const followers = await user.getFollowers({ attributes: ["id", "username" ]});
   // Check if user is an admin
   const admin = await user.isAdmin();
 
@@ -326,7 +328,8 @@ router.get("/profile/:id", authRequired, async (req, res) => {
     admin,
     posts,
     groups,
-    interests
+    interests,
+    followers
   });
 });
 
