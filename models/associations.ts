@@ -307,7 +307,7 @@ function userAssociations(models: DbInterface): void {
 
   models.User.belongsToMany(models.User, {
     foreignKey: "followerId",
-    as: "following",
+    as: "followeds",
     through: models.UserFollower
   });
 }
