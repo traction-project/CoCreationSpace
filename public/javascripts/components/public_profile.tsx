@@ -4,10 +4,14 @@ import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import classNames from "classnames";
+import { Link } from "react-router-dom";
+import { Dispatch } from "redux";
+import { connect } from "react-redux";
 
 import { UserType } from "./user_logo";
 import { PostType } from "./post/post";
-import { Link } from "react-router-dom";
+import { LoginState } from "../reducers/login";
+import { ApplicationState } from "../store";
 
 interface PublicUserType extends UserType {
   posts: Array<PostType>;
@@ -16,8 +20,14 @@ interface PublicUserType extends UserType {
   followers: Array<{ id: string, username: string }>;
 }
 
-interface PublicProfileProps {
+interface PublicProfileActionProps {
 }
+
+interface PublicProfileConnectedProps {
+  login: LoginState;
+}
+
+type PublicProfileProps = PublicProfileActionProps & PublicProfileConnectedProps;
 
 const PublicProfile: React.FC<PublicProfileProps> = (props) => {
   const { id } = useParams<{ id: string }>();
@@ -212,4 +222,14 @@ const PublicProfile: React.FC<PublicProfileProps> = (props) => {
   );
 };
 
-export default PublicProfile;
+function mapStateToProps(state: ApplicationState): PublicProfileConnectedProps {
+  return {
+    login: state.login
+  };
+}
+
+function mapDispatchToProps(dispatch: Dispatch) {
+  return {};
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(PublicProfile);
