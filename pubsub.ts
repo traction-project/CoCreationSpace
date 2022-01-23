@@ -175,6 +175,17 @@ async function prepareInterestNotification(post: PostInstance): Promise<Notifica
   };
 }
 
+/**
+ * Prepares notifications for replies to the given post. This function
+ * takes a newly created post and prepares a notification for it. It returns a
+ * function, which when called with a user instance and a list of websocket
+ * connections, decides whether that user should receive the created
+ * notification. This function returns true if the notification was created and
+ * false otherwise.
+ *
+ * @param post Post for notifications should be prepared
+ * @returns Function which takes a recipient and creates a notification if that user should receive one
+ */
 async function preparePostNotification(post: PostInstance): Promise<NotificationSender> {
   const { Notification } = db.getModels();
 
@@ -326,16 +337,29 @@ export async function broadcastNotification(post: PostInstance) {
   // Group socket connections by user ID
   const userSocketConnections = groupConnectionsByUserId(clients);
 
+  // Prepare notifcation functions
   const sendPostNotification = await preparePostNotification(post);
+  const sendSubscriberNotification = await prepareSubscriberNotification(post);
   const sendInterestNotification = await prepareInterestNotification(post);
 
   // Iterate over all members of the post's group
   recipients.forEach(async (recipient) => {
     const sockets = userSocketConnections.get(recipient.id) || [];
 
-    const notificationSent = await sendPostNotification(recipient, sockets);
-    if (!notificationSent) {
-      await sendInterestNotification(recipient, sockets);
+    // Run notification functions in order
+    const notificationFunctions = [
+      sendPostNotification,
+      sendSubscriberNotification,
+      sendInterestNotification
+    ];
+
+    for (const fn of notificationFunctions) {
+      const notificationSent = await fn(recipient, sockets);
+
+      // Break if notification was sent
+      if (notificationSent) {
+        break;
+      }
     }
   });
 }
