@@ -28,6 +28,7 @@ import { InternalNavigationStepModelFactory } from "./internal_navigation_step";
 import { ConsentFormModelFactory } from "./consent_form";
 import { AsyncJobModelFactory } from "./async_job";
 import { UserPermissionModelFactory } from "./user_permission";
+import { UserFollowerModelFactory } from "./user_follower";
 import { GroupMembershipModelFactory } from "./group_membership";
 import { NoteCollectionModelFactory } from "./note_collection";
 import { VideoChapterModelFactory } from "./video_chapter";
@@ -77,6 +78,7 @@ class DataBase {
     const GroupMembership = GroupMembershipModelFactory(sequelize);
     const NoteCollection = NoteCollectionModelFactory(sequelize);
     const VideoChapter = VideoChapterModelFactory(sequelize);
+    const UserFollower = UserFollowerModelFactory(sequelize);
 
     this.models = {
       AsyncJob,
@@ -104,6 +106,7 @@ class DataBase {
       UserReference,
       User,
       UserPermission,
+      UserFollower,
       GroupMembership,
       NoteCollection,
       VideoChapter

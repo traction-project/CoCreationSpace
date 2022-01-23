@@ -28,6 +28,7 @@ import { AsyncJobInstance } from "models/async_job";
 import { GroupMembershipInstance } from "models/group_membership";
 import { NoteCollectionInstance } from "models/note_collection";
 import { VideoChapterInstance } from "models/video_chapter";
+import { UserFollowerInstance } from "models/user_follower";
 
 /**
  *  Interface for the objects that containes all models from database
@@ -58,6 +59,7 @@ export interface DbInterface {
     UserReference: ModelCtor<UserReferenceInstance>;
     User: ModelCtor<UserInstance>;
     UserPermission: ModelCtor<UserPermissionInstance>;
+    UserFollower: ModelCtor<UserFollowerInstance>;
     GroupMembership: ModelCtor<GroupMembershipInstance>;
     NoteCollection: ModelCtor<NoteCollectionInstance>;
     VideoChapter: ModelCtor<VideoChapterInstance>;
