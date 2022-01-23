@@ -57,7 +57,7 @@ const CreatePost: React.FC<CreatePostProps> = () => {
         return [t.id, t.title, t.userGroup.name];
       }));
 
-      reset({ "topic": topics[0].id }, { keepValues: true });
+      reset({ "topic": topics[0].id }, { keepDirty: true });
     });
   }, []);
 
