@@ -260,6 +260,11 @@ async function prepareSubscriberNotification(post: PostInstance): Promise<Notifi
   const notificationDataHash = crypto.createHash("sha256").update(JSON.stringify(data)).digest("hex");
 
   return async (recipient, sockets) => {
+    // Don't send notification if post is not a top-level post
+    if (post.parentPostId != null) {
+      return false;
+    }
+
     // Don't send notification if client is creator of post
     if (author.id == recipient.id) {
       return false;
