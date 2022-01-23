@@ -685,6 +685,45 @@ describe("User model", () => {
     expect(foundCollections[2].mediaItems!.length).toEqual(2);
   });
 
+  it("should return an initial follower and followed count of zero", async () => {
+    const { User } = db.getModels();
+    const user = await User.create({ username: "test" });
+
+    expect(await user.countFollowers()).toEqual(0);
+    expect(await user.countFolloweds()).toEqual(0);
+  });
+
+  it("should add a follower to a user", async () => {
+    const { User } = db.getModels();
+    const user = await User.create({ username: "user" });
+    const follower = await User.create({ username: "follower" });
+
+    await user.addFollower(follower);
+
+    expect(await user.countFollowers()).toEqual(1);
+    expect(await follower.countFolloweds()).toEqual(1);
+
+    expect(await follower.countFollowers()).toEqual(0);
+    expect(await user.countFolloweds()).toEqual(0);
+  });
+
+  it("should remove a follower from a user", async () => {
+    const { User } = db.getModels();
+    const user = await User.create({ username: "user" });
+    const follower = await User.create({ username: "follower" });
+
+    await user.addFollower(follower);
+
+    expect(await user.countFollowers()).toEqual(1);
+    expect(await follower.countFolloweds()).toEqual(1);
+
+    await user.removeFollower(follower);
+
+    expect(await user.countFollowers()).toEqual(0);
+    expect(await follower.countFolloweds()).toEqual(0);
+  });
+
+
   it("should have automatically generated association methods for the Post model", async () => {
     const { User } = db.getModels();
     const user = await User.create({ username: "test" });
