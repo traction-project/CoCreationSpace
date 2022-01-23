@@ -804,4 +804,28 @@ describe("User model", () => {
       expect(availableMethods).toContain(method);
     }
   });
+
+  it("should have automatically generated association methods for self-referential follower association", async () => {
+    const { User } = db.getModels();
+    const user = await User.create({ username: "test" });
+
+    const expectedMethods = generateHasManyAssociationMethods("Follower");
+    const availableMethods = getAllMethods(user);
+
+    for (const method of expectedMethods) {
+      expect(availableMethods).toContain(method);
+    }
+  });
+
+  it("should have automatically generated association methods for self-referential followed association", async () => {
+    const { User } = db.getModels();
+    const user = await User.create({ username: "test" });
+
+    const expectedMethods = generateHasManyAssociationMethods("Followed");
+    const availableMethods = getAllMethods(user);
+
+    for (const method of expectedMethods) {
+      expect(availableMethods).toContain(method);
+    }
+  });
 });
