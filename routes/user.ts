@@ -169,6 +169,14 @@ router.post("/follow/:id", authRequired, async (req, res) => {
     });
   }
 
+  // A user cannot follow themselves
+  if (user.id == userToFollow.id) {
+    return res.status(400).send({
+      status: "ERR",
+      message: "Cannot follow self"
+    });
+  }
+
   // Add current user to list of followers
   await userToFollow.addFollower(user);
 
