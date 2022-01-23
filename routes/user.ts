@@ -152,6 +152,57 @@ router.post("/consent", authRequired, async (req, res) => {
 });
 
 /**
+ * Makes the current user follow the user identified by the ID in the URL
+ */
+router.post("/follow/:id", authRequired, async (req, res) => {
+  const { User } = db.getModels();
+
+  // Get user objects
+  const user = req.user as UserInstance;
+  const userToFollow = await User.findByPk(req.params.id);
+
+  // Check if the user to follow is valid
+  if (!userToFollow) {
+    return res.status(404).send({
+      status: "ERR",
+      message: "No such user"
+    });
+  }
+
+  // Add current user to list of followers
+  await userToFollow.addFollower(user);
+
+  res.send({
+    status: "OK"
+  });
+});
+
+/**
+ * Makes the current user unfollow the user identified by the ID in the URL
+ */
+router.post("/unfollow/:id", authRequired, async (req, res) => {
+  const { User } = db.getModels();
+
+  // Get user objects
+  const user = req.user as UserInstance;
+  const userToUnfollow = await User.findByPk(req.params.id);
+
+  // Check if the user to follow is valid
+  if (!userToUnfollow) {
+    return res.status(404).send({
+      status: "ERR",
+      message: "No such user"
+    });
+  }
+
+  // Add current user to list of followers
+  await userToUnfollow.removeFollower(user);
+
+  res.send({
+    status: "OK"
+  });
+});
+/**
  * Retrieve all topics that the current user is interested in.
  */
 router.get("/interests", authRequired, async (req, res) => {
