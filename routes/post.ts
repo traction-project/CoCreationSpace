@@ -175,8 +175,7 @@ router.get("/all/group", authRequired, async (req, res) => {
       ["createdAt", "DESC"]
     ],
     limit: perPage,
-    offset: (page - 1) * perPage,
-    logging: console.log
+    offset: (page - 1) * perPage
   });
 
   await logSearchQuery(req.query["q"] as string, posts.count, user);
