@@ -15,13 +15,14 @@ describe("User model", () => {
   });
 
   beforeEach(async () => {
-    const { User, UserGroup, Permission, NoteCollection, MediaItem } = db.getModels();
+    const { User, UserGroup, Permission, NoteCollection, MediaItem, Post } = db.getModels();
 
     await User.destroy({ truncate: true });
     await Permission.destroy({ truncate: true });
     await UserGroup.destroy({ truncate: true });
     await NoteCollection.destroy({ truncate: true });
     await MediaItem.destroy({ truncate: true });
+    await Post.destroy({ truncate: true });
   });
 
   it("should create a new user with just a username", async () => {
@@ -723,6 +724,33 @@ describe("User model", () => {
     expect(await follower.countFolloweds()).toEqual(0);
   });
 
+  it("should add a post to a user's favourites", async () => {
+    const { User, Post } = db.getModels();
+
+    const user = await User.create({ username: "user" });
+    const post = await Post.create({ title: "post" });
+
+    expect(await user.countFavourites()).toEqual(0);
+
+    await user.addFavourite(post);
+    expect(await user.countFavourites()).toEqual(1);
+
+    const favourite = (await user.getFavourites())[0];
+    expect(favourite.id).toEqual(post.id);
+  });
+
+  it("should remove a post from a user's favourites", async () => {
+    const { User, Post } = db.getModels();
+
+    const user = await User.create({ username: "user" });
+    const post = await Post.create({ title: "post" });
+
+    await user.addFavourite(post);
+    expect(await user.countFavourites()).toEqual(1);
+
+    await user.removeFavourite(post);
+    expect(await user.countFavourites()).toEqual(0);
+  });
 
   it("should have automatically generated association methods for the Post model", async () => {
     const { User } = db.getModels();

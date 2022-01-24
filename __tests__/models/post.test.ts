@@ -254,6 +254,34 @@ describe("Post model", () => {
     expect(associatedGroup).toBeNull();
   });
 
+  it("should add a post to a user's favourites", async () => {
+    const { User, Post } = db.getModels();
+
+    const user = await User.create({ username: "user4" });
+    const post = await Post.create({ title: "post" });
+
+    expect(await post.countFavourites()).toEqual(0);
+
+    await post.addFavourite(user);
+    expect(await post.countFavourites()).toEqual(1);
+
+    const favourite = (await post.getFavourites())[0];
+    expect(favourite.id).toEqual(user.id);
+  });
+
+  it("should remove a post from a user's favourites", async () => {
+    const { User, Post } = db.getModels();
+
+    const user = await User.create({ username: "user2" });
+    const post = await Post.create({ title: "post" });
+
+    await post.addFavourite(user);
+    expect(await user.countFavourites()).toEqual(1);
+
+    await post.removeFavourite(user);
+    expect(await post.countFavourites()).toEqual(0);
+  });
+
   it("should have automatically generated association methods for the DataContainer model", async () => {
     const { Post } = db.getModels();
     const post = await Post.create({ title: "test" });
