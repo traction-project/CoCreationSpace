@@ -186,6 +186,11 @@ function postsAssociations(models: DbInterface) {
     as: "likedUsers"
   });
 
+  models.Post.belongsToMany(models.User, {
+    through: models.Favourite,
+    as: "favourites"
+  });
+
   return {
     PostDataContainer
   };
@@ -309,6 +314,11 @@ function userAssociations(models: DbInterface): void {
     foreignKey: "followerId",
     as: "followeds",
     through: models.UserFollower
+  });
+
+  models.User.belongsToMany(models.Post, {
+    through: models.Favourite,
+    as: "favourites"
   });
 }
 
