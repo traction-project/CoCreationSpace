@@ -32,6 +32,7 @@ import { UserFollowerModelFactory } from "./user_follower";
 import { GroupMembershipModelFactory } from "./group_membership";
 import { NoteCollectionModelFactory } from "./note_collection";
 import { VideoChapterModelFactory } from "./video_chapter";
+import { FavouriteModelFactory } from "./favourite";
 
 /**
  *  Class that contains all models created in the data base. Also, it is charge of
@@ -79,6 +80,7 @@ class DataBase {
     const NoteCollection = NoteCollectionModelFactory(sequelize);
     const VideoChapter = VideoChapterModelFactory(sequelize);
     const UserFollower = UserFollowerModelFactory(sequelize);
+    const Favourite = FavouriteModelFactory(sequelize);
 
     this.models = {
       AsyncJob,
@@ -109,7 +111,8 @@ class DataBase {
       UserFollower,
       GroupMembership,
       NoteCollection,
-      VideoChapter
+      VideoChapter,
+      Favourite
     };
   }
 

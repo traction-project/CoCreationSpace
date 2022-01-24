@@ -29,6 +29,7 @@ import { GroupMembershipInstance } from "models/group_membership";
 import { NoteCollectionInstance } from "models/note_collection";
 import { VideoChapterInstance } from "models/video_chapter";
 import { UserFollowerInstance } from "models/user_follower";
+import { FavouriteInstance } from "models/favourite";
 
 /**
  *  Interface for the objects that containes all models from database
@@ -63,4 +64,5 @@ export interface DbInterface {
     GroupMembership: ModelCtor<GroupMembershipInstance>;
     NoteCollection: ModelCtor<NoteCollectionInstance>;
     VideoChapter: ModelCtor<VideoChapterInstance>;
+    Favourite: ModelCtor<FavouriteInstance>;
 }
