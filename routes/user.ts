@@ -237,6 +237,38 @@ router.get("/follows/:id", authRequired, async (req, res) => {
 });
 
 /**
+ * Returns the current user's favourited posts
+ */
+router.get("/favourites", authRequired, async (req, res) => {
+  const { DataContainer, MediaItem, Thread, Topic, Post } = db.getModels();
+  const user = req.user as UserInstance;
+
+  const favourites = await user.getFavourites({
+    order: [["createdAt", "DESC"]],
+    limit: 5,
+    include: [
+      {
+        model: DataContainer, include: [{
+          model: MediaItem, attributes: ["id", "type"]
+        }]
+      },
+      {
+        model: Thread, include: [{
+          model: Topic, include: [
+            "userGroup"
+          ]
+        }]
+      },
+      {
+        model: Post, as: "comments", attributes: ["id"]
+      }
+    ]
+  });
+
+  return res.send(favourites);
+});
+
+/**
  * Retrieve all topics that the current user is interested in.
  */
 router.get("/interests", authRequired, async (req, res) => {
