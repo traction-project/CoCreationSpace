@@ -7,6 +7,7 @@ import classNames from "classnames";
 import { Notification } from "./use_notification";
 import InterestNotification from "./interest_notification";
 import PostReplyNotification from "./post_reply_notification";
+import PostSubscriberNotification from "./post_subscriber_notification";
 
 interface NotificationListProps {
 }
@@ -81,6 +82,8 @@ const NotificationList: React.FC<NotificationListProps> = (props) => {
                     <div className="content">
                       {(data.type == "post-reply") ? (
                         <PostReplyNotification data={data} />
+                      ) : (data.type == "post-subscriber") ? (
+                        <PostSubscriberNotification data={data} />
                       ) : (
                         <InterestNotification data={data} />
                       )}
