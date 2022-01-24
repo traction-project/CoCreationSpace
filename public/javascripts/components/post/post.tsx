@@ -21,6 +21,7 @@ import File from "../file";
 import DeletePostModal from "./delete_post_modal";
 import NoteIcon from "./note_icon";
 import { VideoChapter } from "../media_player_with_chapters";
+import FavouriteToggle from "./favourite_toggle";
 
 export interface MultimediaItem {
   id: string;
@@ -86,7 +87,6 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
 
   const [ post, setPost ] = useState<PostType>();
   const [ isLike, setIsLike ] = useState<boolean>(false);
-  const [ isFavourite, setIsFavourite ] = useState<boolean>(false);
   const [ likes, setLikes ] = useState<number>(0);
   const [ showNewComment, setShowNewComment ] = useState<boolean>(false);
   const [ comments, setComments ] = useState<PostType[]>([]);
@@ -115,10 +115,6 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
           setLikes(data.likes);
         }
       }
-
-      const res = await fetch(`/posts/${idPost}/favourite`);
-      const data = await res.json();
-      setIsFavourite(data.favourite);
     })();
   }, [idPost]);
 
@@ -185,16 +181,6 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
     }
   };
 
-  const toggleFavourite = async () => {
-    const res = await fetch(`/posts/${idPost}/favourite`, {
-      method: (isFavourite) ? "DELETE" : "POST"
-    });
-
-    if (res.ok) {
-      setIsFavourite((favourite) => !favourite);
-    }
-  };
-
   if (!post) {
     return null;
   }
@@ -214,11 +200,7 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
                       {(post.title) && (
                         <strong className="post-title">
                           {post.title}&nbsp;
-                          <i
-                            style={{ color: "#F0BC00", cursor: "pointer" }}
-                            className={classNames((isFavourite) ? "fas" : "far", "fa-star")}
-                            onClick={toggleFavourite}
-                          />
+                          <FavouriteToggle postId={idPost} />
                         </strong>
                       )}
 
