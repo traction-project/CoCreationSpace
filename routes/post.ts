@@ -570,6 +570,29 @@ router.delete("/:id/favourite", authRequired, async (req, res) => {
 });
 
 /**
+ * Check whether a given post is favourited by the current user
+ */
+router.get("/:id/favourite", authRequired, async (req, res) => {
+  const { Post } = db.getModels();
+  const { id } = req.params;
+  const user = req.user as UserInstance;
+
+  const post = await Post.findByPk(id);
+
+  if (!post) {
+    return res.status(404).send({
+      status: "ERR",
+      message: "Post not found"
+    });
+  }
+
+  res.send({
+    status: "OK",
+    favourite: await user.hasFavourite(post)
+  });
+});
+
+/**
  * Like a post from user
  */
 router.post("/:id/like", authRequired, async (req, res) => {
