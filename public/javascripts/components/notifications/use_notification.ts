@@ -7,7 +7,7 @@ export interface Notification {
   createdAt: Date;
 }
 
-export type NotificationData = InterestNotificationData | PostReplyNotificationData;
+export type NotificationData = InterestNotificationData | PostReplyNotificationData | PostSubscriberNotificationData;
 
 export interface InterestNotificationData {
   type: "interest-post",
@@ -18,6 +18,12 @@ export interface InterestNotificationData {
 
 export interface PostReplyNotificationData {
   type: "post-reply",
+  post: { id: string, title: string | null },
+  creator: { id: string, username: string, image: string }
+}
+
+export interface PostSubscriberNotificationData {
+  type: "post-subscriber",
   post: { id: string, title: string | null },
   creator: { id: string, username: string, image: string }
 }
