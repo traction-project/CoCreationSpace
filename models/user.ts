@@ -228,6 +228,16 @@ export interface UserInstance extends Sequelize.Model<UserAttributes, UserCreati
   hasFollowed: Sequelize.HasManyHasAssociationMixin<UserInstance, UserInstance["id"]>;
   hasFolloweds: Sequelize.HasManyHasAssociationsMixin<UserInstance, UserInstance["id"]>;
   countFolloweds: Sequelize.HasManyCountAssociationsMixin;
+
+  getFavourites: Sequelize.HasManyGetAssociationsMixin<PostInstance>;
+  setFavourites: Sequelize.HasManySetAssociationsMixin<PostInstance, PostInstance["id"]>;
+  addFavourites: Sequelize.HasManyAddAssociationsMixin<PostInstance, PostInstance["id"]>;
+  addFavourite: Sequelize.HasManyAddAssociationMixin<PostInstance, PostInstance["id"]>;
+  removeFavourite: Sequelize.HasManyRemoveAssociationMixin<PostInstance, PostInstance["id"]>;
+  removeFavourites: Sequelize.HasManyRemoveAssociationsMixin<PostInstance, PostInstance["id"]>;
+  hasFavourite: Sequelize.HasManyHasAssociationMixin<PostInstance, PostInstance["id"]>;
+  hasFavourites: Sequelize.HasManyHasAssociationsMixin<PostInstance, PostInstance["id"]>;
+  countFavourites: Sequelize.HasManyCountAssociationsMixin;
 }
 
 /**

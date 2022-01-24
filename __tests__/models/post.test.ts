@@ -325,4 +325,16 @@ describe("Post model", () => {
       expect(availableMethods).toContain(method);
     }
   });
+
+  it("should have automatically generated association methods for the User model through Favourite", async () => {
+    const { Post } = db.getModels();
+    const post = await Post.create({ title: "test" });
+
+    const expectedMethods = generateHasManyAssociationMethods("Favourite");
+    const availableMethods = getAllMethods(post);
+
+    for (const method of expectedMethods) {
+      expect(availableMethods).toContain(method);
+    }
+  });
 });

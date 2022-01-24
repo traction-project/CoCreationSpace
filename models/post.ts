@@ -106,6 +106,16 @@ export interface PostInstance extends Sequelize.Model<PostAttributes, PostCreati
   removeTags: Sequelize.BelongsToManyRemoveAssociationsMixin<TagInstance, TagInstance["id"]>;
   createTags: Sequelize.BelongsToManyCreateAssociationMixin<TagInstance["id"]>;
 
+  getFavourites: Sequelize.HasManyGetAssociationsMixin<UserInstance>;
+  setFavourites: Sequelize.HasManySetAssociationsMixin<UserInstance, UserInstance["id"]>;
+  addFavourites: Sequelize.HasManyAddAssociationsMixin<UserInstance, UserInstance["id"]>;
+  addFavourite: Sequelize.HasManyAddAssociationMixin<UserInstance, UserInstance["id"]>;
+  removeFavourite: Sequelize.HasManyRemoveAssociationMixin<UserInstance, UserInstance["id"]>;
+  removeFavourites: Sequelize.HasManyRemoveAssociationsMixin<UserInstance, UserInstance["id"]>;
+  hasFavourite: Sequelize.HasManyHasAssociationMixin<UserInstance, UserInstance["id"]>;
+  hasFavourites: Sequelize.HasManyHasAssociationsMixin<UserInstance, UserInstance["id"]>;
+  countFavourites: Sequelize.HasManyCountAssociationsMixin;
+
   destroyWithComments: () => Promise<void>;
   getParentPost: () => Promise<PostInstance | null>;
   getUserGroup: () => Promise<UserGroupInstance | null>;
