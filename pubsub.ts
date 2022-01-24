@@ -292,7 +292,7 @@ async function prepareSubscriberNotification(post: PostInstance): Promise<Notifi
     // Create notification in database
     const notification = await Notification.create({
       data,
-      user_id: recipient.id,
+      userId: recipient.id,
       hash: notificationDataHash
     } as any);
 
