@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Provider } from "react-redux";
 import { Route, HashRouter as Router, Routes } from "react-router-dom";
+import { ThemeProvider } from "styled-components";
 
 import store from "../store";
 import { actionCreators as loginActionCreators } from "../actions/login";
@@ -25,6 +26,7 @@ import PublicProfile from "./public_profile";
 import NotesList from "./notes/notes_list";
 import NoteEntry from "./notes/note_entry";
 import GlobalStyles from "../global_styles";
+import { themes } from "../themes";
 
 async function checkLogin() {
   const loginStatus = await verifyLoginStatus();
@@ -50,32 +52,34 @@ const App: React.FC<AppProps> = () => {
   return (
     <Provider store={store}>
       <Startup condition={checkLogin}>
-        <GlobalStyles />
-        <Router>
-          <Header />
-          <HistoryTracker endpoint="/internalnavigation">
-            <Routes>
-              <Route path="/signup" element={<Signup />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/requestreset" element={<RequestReset />} />
-              <Route path="/resetpassword/:resettoken" element={<ResetPassword />} />
-              <Route element={<PrivateRoute />}>
-                <Route path="/upload" element={<CreatePost />} />
-                <Route path="/notifications" element={<NotificationList />} />
-                <Route path="/post/:id/edit" element={<EditPost />} />
-                <Route path="/post/:id" element={<Post />} />
-                <Route path="/profile/:id" element={<PublicProfile />} />
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/userPosts" element={<PostList endpoint="/posts/all/user" />} />
-                <Route path="/drafts" element={<PostList endpoint="/posts/draft/user" />} />
-                <Route path="/notes" element={<NotesList />} />
-                <Route path="/note/:id" element={<NoteEntry />} />
-                <Route path="/" element={<PostList endpoint="/posts/all/group" />} />
-              </Route>
-            </Routes>
-          </HistoryTracker>
-        </Router>
-        <CookieBanner />
+        <ThemeProvider theme={themes.data.default}>
+          <GlobalStyles />
+          <Router>
+            <Header />
+            <HistoryTracker endpoint="/internalnavigation">
+              <Routes>
+                <Route path="/signup" element={<Signup />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/requestreset" element={<RequestReset />} />
+                <Route path="/resetpassword/:resettoken" element={<ResetPassword />} />
+                <Route element={<PrivateRoute />}>
+                  <Route path="/upload" element={<CreatePost />} />
+                  <Route path="/notifications" element={<NotificationList />} />
+                  <Route path="/post/:id/edit" element={<EditPost />} />
+                  <Route path="/post/:id" element={<Post />} />
+                  <Route path="/profile/:id" element={<PublicProfile />} />
+                  <Route path="/profile" element={<Profile />} />
+                  <Route path="/userPosts" element={<PostList endpoint="/posts/all/user" />} />
+                  <Route path="/drafts" element={<PostList endpoint="/posts/draft/user" />} />
+                  <Route path="/notes" element={<NotesList />} />
+                  <Route path="/note/:id" element={<NoteEntry />} />
+                  <Route path="/" element={<PostList endpoint="/posts/all/group" />} />
+                </Route>
+              </Routes>
+            </HistoryTracker>
+          </Router>
+          <CookieBanner />
+        </ThemeProvider>
       </Startup>
     </Provider>
   );
