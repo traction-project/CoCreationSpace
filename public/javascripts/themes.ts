@@ -4,7 +4,10 @@ export interface SiteTheme {
   colors: {
     backgroundColor: string;
     headerColor: string;
-    buttonColor: string;
+    button: {
+      backgroundColor: string;
+      textColor: string;
+    };
   }
 }
 
@@ -22,7 +25,10 @@ export const themes: Themes = {
       colors: {
         backgroundColor: "#FFFFFF",
         headerColor: "#55AABB",
-        buttonColor: "#3298DC",
+        button: {
+          backgroundColor: "#3298DC",
+          textColor: "#FFFFFF"
+        }
       }
     },
     theme1: {
@@ -31,7 +37,10 @@ export const themes: Themes = {
       colors: {
         backgroundColor: "#DAE6BF",
         headerColor: "#981D16",
-        buttonColor: "#971D16",
+        button: {
+          backgroundColor: "#971D16",
+          textColor: "#FFFFFF"
+        }
       }
     },
     theme2: {
@@ -40,7 +49,10 @@ export const themes: Themes = {
       colors: {
         backgroundColor: "#F8F7F6",
         headerColor: "#CE278B",
-        buttonColor: "#210108",
+        button: {
+          backgroundColor: "#210108",
+          textColor: "#FFFFFF"
+        }
       }
     },
     theme3: {
@@ -49,7 +61,10 @@ export const themes: Themes = {
       colors: {
         backgroundColor: "#D7CD45",
         headerColor: "#1F0207",
-        buttonColor: "#1F0107",
+        button: {
+          backgroundColor: "#1F0107",
+          textColor: "#FFFFFF"
+        }
       }
     },
     theme4: {
@@ -58,7 +73,10 @@ export const themes: Themes = {
       colors: {
         backgroundColor: "#FEFDBD",
         headerColor: "#5E3B99",
-        buttonColor: "#1F0107",
+        button: {
+          backgroundColor: "#1F0107",
+          textColor: "#FFFFFF"
+        }
       }
     },
   }

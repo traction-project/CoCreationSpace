@@ -11,7 +11,8 @@ const GlobalStyles = createGlobalStyle<{ theme: SiteTheme }>`
   }
 
   .button.is-info {
-    background-color: ${({ theme }) => theme.colors.buttonColor};
+    background-color: ${({ theme }) => theme.colors.button.backgroundColor};
+    color: ${({ theme }) => theme.colors.button.textColor};
   }
 `;
 
