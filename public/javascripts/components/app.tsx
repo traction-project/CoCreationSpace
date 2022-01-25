@@ -24,6 +24,7 @@ import ResetPassword from "./reset_password";
 import PublicProfile from "./public_profile";
 import NotesList from "./notes/notes_list";
 import NoteEntry from "./notes/note_entry";
+import GlobalStyles from "../global_styles";
 
 async function checkLogin() {
   const loginStatus = await verifyLoginStatus();
@@ -49,6 +50,7 @@ const App: React.FC<AppProps> = () => {
   return (
     <Provider store={store}>
       <Startup condition={checkLogin}>
+        <GlobalStyles />
         <Router>
           <Header />
           <HistoryTracker endpoint="/internalnavigation">
