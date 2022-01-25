@@ -1,11 +1,11 @@
 import * as React from "react";
 import { Provider } from "react-redux";
 import { Route, HashRouter as Router, Routes } from "react-router-dom";
-import { ThemeProvider } from "styled-components";
 
 import store from "../store";
 import { actionCreators as loginActionCreators } from "../actions/login";
 import { verifyLoginStatus } from "../util";
+import GlobalStyles from "../global_styles";
 
 import Startup from "./startup";
 import Login from "./login";
@@ -25,8 +25,7 @@ import ResetPassword from "./reset_password";
 import PublicProfile from "./public_profile";
 import NotesList from "./notes/notes_list";
 import NoteEntry from "./notes/note_entry";
-import GlobalStyles from "../global_styles";
-import { themes } from "../themes";
+import ConnectedThemeProvider from "./connected_theme_provider";
 
 async function checkLogin() {
   const loginStatus = await verifyLoginStatus();
@@ -52,7 +51,7 @@ const App: React.FC<AppProps> = () => {
   return (
     <Provider store={store}>
       <Startup condition={checkLogin}>
-        <ThemeProvider theme={themes.data.default}>
+        <ConnectedThemeProvider>
           <GlobalStyles />
           <Router>
             <Header />
@@ -79,7 +78,7 @@ const App: React.FC<AppProps> = () => {
             </HistoryTracker>
           </Router>
           <CookieBanner />
-        </ThemeProvider>
+        </ConnectedThemeProvider>
       </Startup>
     </Provider>
   );
