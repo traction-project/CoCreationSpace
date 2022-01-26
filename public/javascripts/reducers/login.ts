@@ -54,10 +54,17 @@ actionHandler.addHandler("SET_REGISTRATION_ERROR", (state, action: actions.SET_R
 actionHandler.addHandler("SET_THEME", (state, action: actions.SET_THEME) => {
   const { payload } = action;
 
-  return {
-    ...state,
-    theme: payload.theme
-  };
+  if (state.user) {
+    return {
+      ...state,
+      user: {
+        ...state.user,
+        theme: payload.theme
+      }
+    };
+  }
+
+  return state;
 });
 
 export default actionHandler.getReducer();
