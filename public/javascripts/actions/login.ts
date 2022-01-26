@@ -37,6 +37,16 @@ function clearLoggedInUser(): CLEAR_LOGGED_IN_USER {
   };
 }
 
+export type SET_THEME = PayloadAction<"SET_THEME", { theme: string}>;
+function setTheme(theme: string): SET_THEME {
+  return {
+    type: "SET_THEME",
+    payload: {
+      theme
+    }
+  };
+}
+
 export function performLogin(username: string, password: string): AsyncAction<void, SET_LOGGED_IN_USER | SET_LOGIN_ERROR> {
   return async (dispatch) => {
     const response = await fetch("/login", {
@@ -80,6 +90,7 @@ export interface LoginActions extends ActionCreatorsMapObject {
   setLoggedInUser: (id: string, username: string, image: string, admin: boolean, theme: string, email?: string) => SET_LOGGED_IN_USER;
   setLoginError: () => SET_LOGIN_ERROR;
   setRegistrationError: (message: string) => SET_REGISTRATION_ERROR;
+  setTheme: (theme: string) => SET_THEME;
   clearLoggedInUser: () => CLEAR_LOGGED_IN_USER;
   performLogin: (username: string, password: string) => AsyncAction<void, SET_LOGGED_IN_USER>;
   performLogout: () => AsyncAction<void, CLEAR_LOGGED_IN_USER>;
@@ -89,6 +100,7 @@ export const actionCreators: LoginActions = {
   setLoggedInUser,
   setLoginError,
   setRegistrationError,
+  setTheme,
   clearLoggedInUser,
   performLogin,
   performLogout
