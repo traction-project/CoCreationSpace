@@ -17,10 +17,11 @@ interface ConnectedThemeProviderConnectedProps {
 type ConnectedThemeProviderProps = ConnectedThemeProviderActionProps & ConnectedThemeProviderConnectedProps;
 
 const ConnectedThemeProvider: React.FC<ConnectedThemeProviderProps> = ({ login, children }) => {
-  const theme = themes.data.default;
+  const themeName = login.user?.theme;
+  const theme = themes.data[themeName || "default"];
 
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={theme || themes.data.default}>
       {children}
     </ThemeProvider>
   );
