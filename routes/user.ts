@@ -315,6 +315,29 @@ router.delete("/interests", authRequired, async (req, res) => {
 });
 
 /**
+ * Sets the property 'theme' of the current user to the value given under the
+ * key 'theme' in the POST body.
+ */
+router.post("/theme", authRequired, async (req, res) => {
+  const user = req.user as UserInstance;
+  const { body } = req;
+
+  if (!body.theme) {
+    return res.status(400).send({
+      status: "ERR",
+      message: "Missing param"
+    });
+  }
+
+  user.theme = body.theme;
+  await user.save();
+
+  return res.send({
+    status: "OK"
+  });
+});
+
+/**
  * Get user information for given user ID
  */
 router.get("/profile/:id", authRequired, async (req, res) => {
