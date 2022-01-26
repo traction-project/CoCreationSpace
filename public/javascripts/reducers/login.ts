@@ -51,4 +51,13 @@ actionHandler.addHandler("SET_REGISTRATION_ERROR", (state, action: actions.SET_R
   };
 });
 
+actionHandler.addHandler("SET_THEME", (state, action: actions.SET_THEME) => {
+  const { payload } = action;
+
+  return {
+    ...state,
+    theme: payload.theme
+  };
+});
+
 export default actionHandler.getReducer();
