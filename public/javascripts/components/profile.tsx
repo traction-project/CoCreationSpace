@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { ApplicationState } from "../store";
 import { actionCreators as loginActionCreators, LoginActions } from "../actions/login";
 import { LoginState } from "../reducers/login";
+import { themes } from "../themes";
 
 import LanguageSwitcher from "./language_switcher";
 import ProfilePictureUploadForm from "./signup/profile_picture_upload_form";
@@ -47,6 +48,11 @@ const Profile: React.FC<ProfileProps> = (props) => {
       setTimeout(() => setDisplayNotification(undefined), 3000);
     });
   });
+
+  const updateTheme = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const theme = e.target.value;
+    props.loginActions.performThemeChange(theme);
+  };
 
   const closeNotification = () => {
     setDisplayNotification(undefined);
@@ -138,6 +144,21 @@ const Profile: React.FC<ProfileProps> = (props) => {
                 <label className="label">{t("Preferred language")}</label>
                 <div className="control">
                   <LanguageSwitcher registerFunction={register} />
+                </div>
+              </div>
+
+              <div className="field">
+                <label className="label">{t("Theme")}</label>
+                <div className="control">
+                  <div className="select">
+                    <select defaultValue={user.theme} onChange={updateTheme}>
+                      {Object.entries(themes.data).map(([key, theme]) => {
+                        return (
+                          <option key={key} value={key}>{theme.name}</option>
+                        );
+                      })}
+                    </select>
+                  </div>
                 </div>
               </div>
 
