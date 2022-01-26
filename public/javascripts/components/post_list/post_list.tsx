@@ -9,7 +9,7 @@ import { PostType } from "../post/post";
 import Filter from "./filter";
 import PostThumbnailEntry from "./post_thumbnail_entry";
 import PostEntry from "./post_entry";
-import PageCounter from "./page_counter";
+import PageCounter from "../page_counter/page_counter";
 
 interface PostListProps {
   endpoint: string;
