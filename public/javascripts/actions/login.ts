@@ -86,6 +86,20 @@ export function performLogout(): AsyncAction<void, CLEAR_LOGGED_IN_USER> {
   };
 }
 
+export function performThemeChange(theme: string): AsyncAction<void, SET_THEME> {
+  return async (dispatch) => {
+    const response = await fetch("/users/theme", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ theme })
+    });
+
+    if (response.ok) {
+      dispatch(setTheme(theme));
+    }
+  };
+}
+
 export interface LoginActions extends ActionCreatorsMapObject {
   setLoggedInUser: (id: string, username: string, image: string, admin: boolean, theme: string, email?: string) => SET_LOGGED_IN_USER;
   setLoginError: () => SET_LOGIN_ERROR;
@@ -94,6 +108,7 @@ export interface LoginActions extends ActionCreatorsMapObject {
   clearLoggedInUser: () => CLEAR_LOGGED_IN_USER;
   performLogin: (username: string, password: string) => AsyncAction<void, SET_LOGGED_IN_USER>;
   performLogout: () => AsyncAction<void, CLEAR_LOGGED_IN_USER>;
+  performThemeChange: (theme: string) => AsyncAction<void, SET_THEME>;
 }
 
 export const actionCreators: LoginActions = {
@@ -103,5 +118,6 @@ export const actionCreators: LoginActions = {
   setTheme,
   clearLoggedInUser,
   performLogin,
-  performLogout
+  performLogout,
+  performThemeChange
 };
