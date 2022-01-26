@@ -5,7 +5,7 @@ export interface LoginState {
   loggedIn: boolean;
   loginError: boolean;
   registrationError: string | null;
-  user?: { id: string, username: string, admin: boolean, image?: string, email?: string };
+  user?: { id: string, username: string, admin: boolean, theme: string, image?: string, email?: string };
 }
 
 export const initialState: LoginState = {

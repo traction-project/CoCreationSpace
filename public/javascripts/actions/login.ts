@@ -3,12 +3,12 @@ import { AsyncAction, BasicAction, PayloadAction } from "../util";
 
 import i18n from "../i18n";
 
-export type SET_LOGGED_IN_USER = PayloadAction<"SET_LOGGED_IN_USER", { id: string, username: string, image: string, admin: boolean, email?: string }>;
-function setLoggedInUser(id: string, username: string, image: string, admin: boolean, email?: string): SET_LOGGED_IN_USER {
+export type SET_LOGGED_IN_USER = PayloadAction<"SET_LOGGED_IN_USER", { id: string, username: string, image: string, admin: boolean, theme: string, email?: string }>;
+function setLoggedInUser(id: string, username: string, image: string, admin: boolean, theme: string, email?: string): SET_LOGGED_IN_USER {
   return {
     type: "SET_LOGGED_IN_USER",
     payload: {
-      id, username, image, admin, email
+      id, username, image, admin, email, theme
     }
   };
 }
@@ -53,6 +53,7 @@ export function performLogin(username: string, password: string): AsyncAction<vo
         user.username,
         user.image,
         user.admin,
+        user.theme,
         user.email
       ));
 
@@ -76,7 +77,7 @@ export function performLogout(): AsyncAction<void, CLEAR_LOGGED_IN_USER> {
 }
 
 export interface LoginActions extends ActionCreatorsMapObject {
-  setLoggedInUser: (id: string, username: string, image: string, admin: boolean, email?: string) => SET_LOGGED_IN_USER;
+  setLoggedInUser: (id: string, username: string, image: string, admin: boolean, theme: string, email?: string) => SET_LOGGED_IN_USER;
   setLoginError: () => SET_LOGIN_ERROR;
   setRegistrationError: (message: string) => SET_REGISTRATION_ERROR;
   clearLoggedInUser: () => CLEAR_LOGGED_IN_USER;
