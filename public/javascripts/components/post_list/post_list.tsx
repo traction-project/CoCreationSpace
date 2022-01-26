@@ -170,7 +170,7 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
    * @param filters Map of updated filters
    */
   const updateFilter = (filters: { [key: string]: string }) => {
-    // Composed query string
+    // Compose query string
     const queryString = Object.entries(filters).map(([k, v]) => {
       return `${k}=${v}`;
     }).join("&");
@@ -266,7 +266,7 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
                       <span
                         key={index}
                         className={classNames("tag", { "is-primary": filters.has("group") && filters.get("group") == group.id })}
-                        onClick={updateFilter.bind(null, { ...fromEntries(filters), group: group.id })}
+                        onClick={updateFilter.bind(null, { ...fromEntries(filters), page: 1, group: group.id })}
                       >
                         {group.name}
                       </span>
@@ -296,7 +296,7 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
                   <span
                     key={index}
                     className={classNames("tag", { "is-primary": filters.has("interest") && filters.get("interest") == interest.id })}
-                    onClick={updateFilter.bind(null, { ...fromEntries(filters), interest: interest.id })}
+                    onClick={updateFilter.bind(null, { ...fromEntries(filters), page: 1, interest: interest.id })}
                   >
                     {interest.title}
                   </span>
@@ -324,7 +324,7 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
                   <span
                     key={index}
                     className={classNames("tag", { "is-primary": filters.has("tag") && filters.get("tag") == tag.id })}
-                    onClick={updateFilter.bind(null, { ...fromEntries(filters), tag: tag.id })}
+                    onClick={updateFilter.bind(null, { ...fromEntries(filters), page: 1, tag: tag.id })}
                   >
                     {tag.name}
                   </span>
