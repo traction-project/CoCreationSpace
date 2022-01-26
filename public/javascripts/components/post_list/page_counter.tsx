@@ -7,11 +7,12 @@ interface PageCounterProps {
   page: number;
   perPage: number;
   totalItems: number;
+  maxPagesDisplayed?: number;
   onPageUpdated: (page: number) => void;
 }
 
 const PageCounter: React.FC<PageCounterProps> = (props) => {
-  const { page, perPage, totalItems, onPageUpdated } = props;
+  const { page, perPage, totalItems, maxPagesDisplayed = 10, onPageUpdated } = props;
   const lastPage = Math.ceil(totalItems / perPage);
 
   if (totalItems <= perPage) {
@@ -28,6 +29,22 @@ const PageCounter: React.FC<PageCounterProps> = (props) => {
         </p>
 
         {Range(1, lastPage + 1).map((n) => {
+          if (lastPage > maxPagesDisplayed) {
+            const pagesDisplayed = Math.ceil(maxPagesDisplayed / 2);
+
+            if (n == pagesDisplayed) {
+              return (
+                <p key={n} className="control">
+                  <button className={classnames("button", "is-small")}>
+                    <p>...</p>
+                  </button>
+                </p>
+              );
+            } else if (n > pagesDisplayed && n <= lastPage - pagesDisplayed) {
+              return null;
+            }
+          }
+
           return (
             <p key={n} className="control">
               <button className={classnames("button", "is-small", { "is-info": page == n, "is-light": page == n })} onClick={onPageUpdated.bind(null, n)}>
