@@ -244,7 +244,7 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
 
             <PageCounter
               page={parseInt(filters.get("page") || "1")}
-              perPage={15}
+              perPage={parseInt(filters.get("perPage") || "15")}
               totalItems={totalPostCount}
               onPageUpdated={(n) => updateFilter({ ...fromEntries(filters), page: n.toString() })}
             />
