@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Dispatch, bindActionCreators } from "redux";
 import { Link, useNavigate } from "react-router-dom";
 import { connect } from "react-redux";
@@ -27,9 +27,14 @@ const Header: React.FC<HeaderProps> = (props) => {
   const navigate = useNavigate();
   const [ burgerActive, setBurgerActive ] = useState(false);
 
+  useEffect(() => {
+    if (props.login.loggedIn == false) {
+      navigate("/login");
+    }
+  }, [props.login.loggedIn]);
+
   const logOut = () => {
     props.loginActions.performLogout();
-    navigate("/login");
   };
 
   const onBurgerClicked = () => {
