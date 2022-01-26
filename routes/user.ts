@@ -56,14 +56,15 @@ router.post("/image", authRequired, (req, res) => {
 router.get("/profile", authRequired, async (req, res) => {
   const user = req.user as UserInstance;
 
-  const { id, username, image, email } = user;
+  const { id, username, image, email, theme } = user;
   const admin = await user.isAdmin();
 
   return res.send({
     id, username,
     image: `${CLOUDFRONT_URL}/${image}`,
     email,
-    admin
+    admin,
+    theme
   });
 });
 

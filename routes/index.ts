@@ -56,7 +56,8 @@ router.post("/login", passport.authenticate("local"), async (req, res) => {
       image: `${CLOUDFRONT_URL}/${user.image}`,
       email: user.email,
       preferredLanguage: user.preferredLanguage,
-      admin: await user.isAdmin()
+      admin: await user.isAdmin(),
+      theme: user.theme
     }
   });
 });
