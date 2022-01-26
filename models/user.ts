@@ -39,9 +39,10 @@ export interface UserAttributes extends CommonAttributes {
   resettoken?: string | null;
   resetAt?: Date;
   participantCode?: string;
+  theme: string;
 }
 
-type UserCreationAttributes = Optional<UserAttributes, "id" | "createdAt" | "updatedAt">;
+type UserCreationAttributes = Optional<UserAttributes, "id" | "createdAt" | "updatedAt" | "theme">;
 
 interface UserToken {
   _id: string;
@@ -293,6 +294,10 @@ export function UserModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mode
     },
     participantCode: {
       type: Sequelize.DataTypes.STRING
+    },
+    theme: {
+      type: Sequelize.DataTypes.STRING,
+      defaultValue: "default"
     }
   };
 

@@ -77,6 +77,29 @@ describe("User model", () => {
     expect(user.validatePassword("secret")).toBeTruthy();
   });
 
+  it("should create a new user with a value 'default' for column theme", async () => {
+    const { User } = db.getModels();
+
+    const user = await User.build({
+      username: "test",
+    }).save();
+
+    expect(user.theme).not.toBeNull();
+    expect(user.theme).toEqual("default");
+  });
+
+  it("should create a new user with a given value for column theme", async () => {
+    const { User } = db.getModels();
+
+    const user = await User.build({
+      username: "test",
+      theme: "other_theme"
+    }).save();
+
+    expect(user.theme).not.toBeNull();
+    expect(user.theme).toEqual("other_theme");
+  });
+
   it("should return true when user has a certain permission", async () => {
     const { User, Permission } = db.getModels();
 
