@@ -3,6 +3,7 @@ import { useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 
 import ColorPicker from "./color_picker";
+import ToolPicker from "./tool_picker";
 
 type Coords = [x: number, y: number];
 
@@ -153,7 +154,12 @@ const EditableImage: React.FC<EditableImageProps> = ({ imageUrl, dimensions: [ w
               height={height}
             />
 
+            <ToolPicker
+              onToolPicked={(tool) => console.log(tool)}
+            />
+
             <ColorPicker
+              offsetTop={120}
               onColorPicked={(color) => {
                 console.log("color picked:", color);
                 penColor.current = color;
