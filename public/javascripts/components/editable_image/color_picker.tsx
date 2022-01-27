@@ -10,9 +10,9 @@ const ColorPicker: React.FC<ColorPickerProps> = ({ offsetTop = 15, onColorPicked
   const [ pickedColor, setPickedColor ] = useState("red");
 
   const colors = [
-    "red",
-    "green",
-    "blue"
+    "255, 0, 0",
+    "0, 255, 0",
+    "0, 0, 255"
   ];
 
   const boxStyle: React.CSSProperties = {
@@ -47,7 +47,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({ offsetTop = 15, onColorPicked
               marginLeft: (pickedColor == c) ? 1 : 3,
               marginTop: (pickedColor == c) ? 1 : 3,
               borderRadius: 2,
-              backgroundColor: c
+              backgroundColor: `rgb(${c})`
             }} />
           </div>
         );
