@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
+import debounce from "lodash.debounce";
 
 import ColorPicker from "./color_picker";
 import ToolPicker from "./tool_picker";
@@ -24,7 +25,9 @@ const EditableImage: React.FC<EditableImageProps> = ({ imageUrl, dimensions: [ w
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const imageRef = useRef<HTMLImageElement>();
-  const penColor = useRef("red");
+
+  const penColor = useRef("255, 0, 0");
+  const drawTool = useRef("pen");
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -74,24 +77,31 @@ const EditableImage: React.FC<EditableImageProps> = ({ imageUrl, dimensions: [ w
       isDrawing = false;
     };
 
-    const onMove = (e: CoordinateEvent) => {
+    const onMove = debounce((e: CoordinateEvent) => {
       if (isDrawing) {
         const [ x, y ] = getMousePosition(e);
         const [ prevX, prevY ] = prevCoords;
 
+        if (drawTool.current == "pen") {
+          context.globalCompositeOperation = "source-over";
+          context.lineWidth = 4;
+        } else {
+          context.globalCompositeOperation = "multiply";
+          context.lineWidth = 20;
+        }
+
+        context.strokeStyle = `rgb(${penColor.current})`;
+        context.lineCap = "round";
         context.beginPath();
         context.moveTo(prevX, prevY);
         context.lineTo(x, y);
-
-        context.strokeStyle = penColor.current;
-        context.lineWidth = 4;
 
         context.stroke();
         context.closePath();
 
         prevCoords = [x, y];
       }
-    };
+    }, 10, { leading: true });
 
     canvas.onmousemove = onMove;
     canvas.ontouchmove = (e: TouchEvent) => {
@@ -155,7 +165,10 @@ const EditableImage: React.FC<EditableImageProps> = ({ imageUrl, dimensions: [ w
             />
 
             <ToolPicker
-              onToolPicked={(tool) => console.log(tool)}
+              onToolPicked={(tool) => {
+                console.log("tool picked:", tool);
+                drawTool.current = tool;
+              }}
             />
 
             <ColorPicker
