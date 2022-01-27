@@ -2,10 +2,11 @@ import * as React from "react";
 import { useState } from "react";
 
 interface ColorPickerProps {
+  offsetTop?: number
   onColorPicked: (color: string) => void;
 }
 
-const ColorPicker: React.FC<ColorPickerProps> = ({ onColorPicked }) => {
+const ColorPicker: React.FC<ColorPickerProps> = ({ offsetTop = 15, onColorPicked }) => {
   const [ pickedColor, setPickedColor ] = useState("red");
 
   const colors = [
@@ -16,7 +17,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({ onColorPicked }) => {
 
   const boxStyle: React.CSSProperties = {
     position: "absolute",
-    top: 15, left: 15,
+    top: offsetTop, left: 15,
     width: 30, height: 30,
     borderRadius: 2,
     backgroundColor: "#FFFFFF",
@@ -37,7 +38,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({ onColorPicked }) => {
         return (
           <div
             key={i}
-            style={{ ...boxStyle, top: i * 45 + 15 }}
+            style={{ ...boxStyle, top: i * 45 + offsetTop }}
             onClick={onBoxClicked(c)}
           >
             <div style={{
