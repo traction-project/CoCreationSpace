@@ -6,7 +6,7 @@ import usePortal from "react-useportal";
 import FullscreenImage from "./fullscreen_image";
 import EditImageIcon from "./edit_image_icon";
 import { isImageBlurry, isImageEmpty, postFile, dataURLToFile } from "../util";
-import EditableImage from "./editable_image";
+import EditableImage from "./editable_image/editable_image";
 import ProgressBox from "./progress_box";
 
 interface UploadStatus {
