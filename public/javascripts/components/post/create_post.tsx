@@ -29,10 +29,11 @@ const CreatePost: React.FC<CreatePostProps> = () => {
   const { t } = useTranslation();
   const { handleSubmit, register, setValue, getValues, watch, reset } = useForm();
 
-  const { mediaItems, title } = (location.state) ? (
-    location.state as Partial<{ mediaItems: Array<MultimediaItem>, title: string }>
+  // Load preloaded items from location.state
+  const { mediaItems, title, id: existingPostId } = (location.state) ? (
+    location.state as Partial<{ mediaItems: Array<MultimediaItem>, title: string, id: string }>
   ) : (
-    { mediaItems: [], title: null }
+    { mediaItems: [], title: null, id: null }
   );
 
   const preloadedMediaItems: Array<FileUpload> = (mediaItems || []).map(({ id, type }) => {
