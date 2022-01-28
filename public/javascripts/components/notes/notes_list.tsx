@@ -49,7 +49,7 @@ const NotesList: React.FC<NotesListProps> = (props) => {
       <div className="container">
         <div className="columns is-centered">
           <div className="column is-9">
-            <h4 className="title is-4">{t("My Favourites")}</h4>
+            <h4 className="title is-4">{t("Favourite Posts")}</h4>
             <hr/>
 
             {(posts?.length == 0) && (
@@ -93,7 +93,7 @@ const NotesList: React.FC<NotesListProps> = (props) => {
               );
             })}
 
-            <h4 style={{ marginTop: "2em" }} className="title is-4">{t("Collections")}</h4>
+            <h4 style={{ marginTop: "2em" }} className="title is-4">{t("Favourite Collections")}</h4>
             <hr/>
 
             {(notes?.length == 0) && (
