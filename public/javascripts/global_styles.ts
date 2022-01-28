@@ -14,6 +14,10 @@ const GlobalStyles = createGlobalStyle<{ theme: SiteTheme }>`
     background-color: ${({ theme }) => theme.colors.button.backgroundColor};
     color: ${({ theme }) => theme.colors.button.textColor};
   }
+
+  .post-entry {
+    box-shadow: 2px 2px 5px ${({ theme }) => theme.colors.boxShadow};
+  }
 `;
 
 export default GlobalStyles;
