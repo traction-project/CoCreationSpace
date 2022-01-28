@@ -408,16 +408,16 @@ router.post("/:id/edit", authRequired, async (req, res) => {
 
       // Get tags which are not in the submitted tags list
       const tagsToRemove = existingTags.filter((existingTag) => {
-        return tags.find((t: string) => t == existingTag.name) == undefined;
+        return tags.find((t: { name: string }) => t.name == existingTag.name) == undefined;
       });
 
       // Remove tags from post
       await post.removeTags(tagsToRemove);
 
       // Get tags which are in the submitted list but not in the database
-      const tagsToAdd = tags.filter((t: string) => {
-        return existingTags.find((existingTag) => t == existingTag.name) == undefined;
-      });
+      const tagsToAdd = tags.filter((t: { name: string }) => {
+        return existingTags.find((existingTag) => t.name == existingTag.name) == undefined;
+      }).map((t: { name: string }) => t.name);
 
       tagsToAdd.forEach(async (tagToAdd: string) => {
         // Try to find pre-existing tag with same name
