@@ -148,7 +148,7 @@ const Profile: React.FC<ProfileProps> = (props) => {
               </div>
 
               <div className="field">
-                <label className="label">{t("Theme")}</label>
+                <label className="label">{t("Colour Theme")}</label>
                 <div className="control">
                   <div className="select">
                     <select defaultValue={user.theme} onChange={updateTheme}>
