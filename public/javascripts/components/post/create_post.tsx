@@ -159,7 +159,7 @@ const CreatePost: React.FC<CreatePostProps> = () => {
 
     const body = {
       title,
-      text: description,
+      description,
       multimedia: fileUploads.map((u) => u.id),
       tags: tags.concat(tagsToAdd).map((tag) => { return { name: tag }; } ),
       topicId: topic,
@@ -167,7 +167,14 @@ const CreatePost: React.FC<CreatePostProps> = () => {
     };
 
     try {
-      const res = await fetch("/posts", {
+      // If existingPostId has a value, submit data to edit endpoint
+      const endpoint = (existingPostId != null) ? (
+        `/posts/${existingPostId}/edit`
+      ) : (
+        "/posts"
+      );
+
+      const res = await fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body)
