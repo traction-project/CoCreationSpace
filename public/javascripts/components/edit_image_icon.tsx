@@ -19,7 +19,7 @@ const EditImageIcon: React.FC<EditImageIconProps> = ({ onClick }) => {
       onClick={onClick}
     >
       <p style={{ textAlign: "center", marginTop: 5 }}>
-        <i className="fas fa-pencil-alt" style={{ fontSize: 20 }} />
+        <i className="fas fa-palette" style={{ fontSize: 20 }} />
       </p>
     </div>
   );
