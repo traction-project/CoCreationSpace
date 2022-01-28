@@ -4,6 +4,7 @@ export interface SiteTheme {
   colors: {
     backgroundColor: string;
     headerColor: string;
+    boxShadow: string;
     button: {
       backgroundColor: string;
       textColor: string;
@@ -25,6 +26,7 @@ export const themes: Themes = {
       colors: {
         backgroundColor: "#FFFFFF",
         headerColor: "#55AABB",
+        boxShadow: "#F2F2F2",
         button: {
           backgroundColor: "#3298DC",
           textColor: "#FFFFFF"
@@ -37,6 +39,7 @@ export const themes: Themes = {
       colors: {
         backgroundColor: "#DAE6BF",
         headerColor: "#981D16",
+        boxShadow: "#999999",
         button: {
           backgroundColor: "#971D16",
           textColor: "#FFFFFF"
@@ -49,6 +52,7 @@ export const themes: Themes = {
       colors: {
         backgroundColor: "#F8F7F6",
         headerColor: "#CE278B",
+        boxShadow: "#F2F2F2",
         button: {
           backgroundColor: "#210108",
           textColor: "#FFFFFF"
@@ -61,6 +65,7 @@ export const themes: Themes = {
       colors: {
         backgroundColor: "#D7CD45",
         headerColor: "#1F0207",
+        boxShadow: "#999999",
         button: {
           backgroundColor: "#1F0107",
           textColor: "#FFFFFF"
@@ -73,6 +78,7 @@ export const themes: Themes = {
       colors: {
         backgroundColor: "#FEFDBD",
         headerColor: "#5E3B99",
+        boxShadow: "#F2F2F2",
         button: {
           backgroundColor: "#1F0107",
           textColor: "#FFFFFF"
