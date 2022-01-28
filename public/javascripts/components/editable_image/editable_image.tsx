@@ -137,7 +137,11 @@ const EditableImage: React.FC<EditableImageProps> = ({ imageUrl, dimensions: [ w
 
   const onClearClicked = () => {
     const context = canvasRef.current?.getContext("2d");
-    imageRef.current && context?.drawImage(imageRef.current, 0, 0, width, height);
+
+    if (imageRef.current && context) {
+      context.globalCompositeOperation = "source-over";
+      context.drawImage(imageRef.current, 0, 0, width, height);
+    }
 
     console.log("clear:", context, imageRef.current);
   };
