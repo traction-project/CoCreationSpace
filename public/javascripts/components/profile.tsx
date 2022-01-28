@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Dispatch, bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { useForm } from "react-hook-form";
@@ -29,9 +29,19 @@ type ProfileProps = ProfileActionProps & ProfileConnectedProps;
 
 const Profile: React.FC<ProfileProps> = (props) => {
   const [ displayNotification, setDisplayNotification ] = useState<"success" | "error">();
+  const [ following, setFollowing ] = useState<Array<{ id: string, username: string, image: string }>>([]);
+
   const { handleSubmit, register, formState: { errors }, watch } = useForm({});
   const { t } = useTranslation();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    fetch("/users/following").then((res) => {
+      return res.json();
+    }).then(({ following }) => {
+      setFollowing(following);
+    });
+  }, []);
 
   const handleButtonApplyClick = handleSubmit((data) => {
     fetch("/users", {
