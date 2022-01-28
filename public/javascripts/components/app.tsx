@@ -18,7 +18,6 @@ import Profile from "./profile";
 import Signup from "./signup/signup";
 import NotificationList from "./notifications/notification_list";
 import CookieBanner from "./cookie_banner";
-import EditPost from "./post/edit_post";
 import HistoryTracker from "./history_tracker";
 import RequestReset from "./request_reset";
 import ResetPassword from "./reset_password";
@@ -64,7 +63,6 @@ const App: React.FC<AppProps> = () => {
                 <Route element={<PrivateRoute />}>
                   <Route path="/upload" element={<CreatePost />} />
                   <Route path="/notifications" element={<NotificationList />} />
-                  <Route path="/post/:id/edit" element={<EditPost />} />
                   <Route path="/post/:id" element={<Post />} />
                   <Route path="/profile/:id" element={<PublicProfile />} />
                   <Route path="/profile" element={<Profile />} />
