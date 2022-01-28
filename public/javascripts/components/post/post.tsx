@@ -213,7 +213,7 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
                         )}
                         {(user && (user.id == post.user.id || user.admin)) && (
                           <>
-                            <Link to={`/post/${post.id}/edit`}>{t("Edit")}</Link>
+                            <Link to="/upload" state={{ id: post.id }}>{t("Edit")}</Link>
                             &emsp;
                             <a onClick={openPortal}>{t("Delete")}</a>
                           </>
