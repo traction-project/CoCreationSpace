@@ -9,7 +9,8 @@ import Dropzone from "../dropzone";
 import ProgressBox from "../progress_box";
 import BlankVideo from "../blank_video";
 import UploadedMediaItem from "./uploaded_media_item";
-import { MultimediaItem } from "./post";
+import { PostType, MultimediaItem } from "./post";
+import { getPostId } from "../../services/post.service";
 
 interface FileUpload {
   status: "progressing" | "failed" | "done";
@@ -59,6 +60,30 @@ const CreatePost: React.FC<CreatePostProps> = () => {
       }));
 
       reset({ "topic": topics[0].id }, { keepDirty: true });
+    }).then(() => {
+      // If existingPostId has a value, load post from server
+      if (existingPostId != null) {
+        getPostId(existingPostId).then((res) => {
+          return res.json();
+        }).then((post: PostType) => {
+          console.log(post);
+
+          setTags(post.tags?.map((t: { name: string}) => t.name) || []);
+          setFileUploads(post.dataContainer?.mediaItems?.map(({ id, type }) => {
+            return {
+              id, type,
+              status: "done",
+              total: 0, progress: 0, filename: ""
+            };
+          }) || []);
+
+          reset({
+            "title": post.title,
+            "description": post.dataContainer?.textContent,
+            "topic": post.thread.topic.id
+          });
+        });
+      }
     });
   }, []);
 
