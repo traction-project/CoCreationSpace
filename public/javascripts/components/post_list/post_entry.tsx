@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 
 import { PostType } from "../post/post";
 import UserLogo from "../user_logo";
+import FavouriteToggle from "../post/favourite_toggle";
 
 interface PostEntryProps {
   post: PostType;
@@ -35,7 +36,11 @@ const PostEntry: React.FC<PostEntryProps> = (props) => {
 
       <div className="media-content">
         <div className="content">
-          <strong className="post-title">{post.title ? post.title : t("Post")}</strong>
+          <strong className="post-title">
+            {post.title ? post.title : t("Post")}
+            &nbsp;
+            <FavouriteToggle postId={post.id} />
+          </strong>
           <small className="list-item__date">
             {post.createdAt && new Date(post.createdAt).toLocaleDateString()}&emsp;
             {post.createdAt && new Date(post.createdAt).toLocaleTimeString()}&emsp;
