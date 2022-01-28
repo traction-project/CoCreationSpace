@@ -321,7 +321,7 @@ router.get("/:id/parent", authRequired, async (req, res) => {
  * Create new Post
  */
 router.post("/", authRequired, async (req, res) => {
-  const { text, title, multimedia, tags, topicId, published } = req.body;
+  const { description, title, multimedia, tags, topicId, published } = req.body;
 
   const user = req.user as UserInstance;
   const { Post, Tag, Thread, DataContainer } = db.getModels();
@@ -339,7 +339,7 @@ router.post("/", authRequired, async (req, res) => {
   });
 
   const dataContainer = await DataContainer.create({
-    textContent: text,
+    textContent: description,
     postId: post.id
   });
 
