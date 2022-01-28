@@ -371,7 +371,7 @@ router.post("/", authRequired, async (req, res) => {
  */
 router.post("/:id/edit", authRequired, async (req, res) => {
   const { id } = req.params;
-  const { title, description, multimedia, tags, published } = req.body;
+  const { title, description, multimedia, tags, published, topicId } = req.body;
 
   const { Post, DataContainer, Tag } = db.getModels();
   const user = req.user as UserInstance;
@@ -379,6 +379,10 @@ router.post("/:id/edit", authRequired, async (req, res) => {
   const dataContainer = await DataContainer.findOne({ where: { post_id: id } as any });
 
   if (post && dataContainer) {
+    const thread = await post.getThread();
+    thread.topicId = topicId;
+    await thread.save();
+
     if (post.userId != user.id && !user.isAdmin()) {
       return res.status(401).send({
         status: "ERR",
@@ -436,7 +440,8 @@ router.post("/:id/edit", authRequired, async (req, res) => {
     }
 
     return res.send({
-      status: "OK"
+      status: "OK",
+      id: post.id
     });
   }
 
