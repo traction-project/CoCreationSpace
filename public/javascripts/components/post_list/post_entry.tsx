@@ -25,7 +25,7 @@ const PostEntry: React.FC<PostEntryProps> = (props) => {
     if (post.published) {
       navigate(`/post/${post.id}`);
     } else {
-      navigate(`/post/${post.id}/edit`);
+      navigate("/upload", { state: { id: post.id } });
     }
   };
 
