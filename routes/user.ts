@@ -238,6 +238,19 @@ router.get("/follows/:id", authRequired, async (req, res) => {
 });
 
 /**
+ * Returns a list of users that the current user is following
+ */
+router.get("/following", authRequired, async (req, res) => {
+  const user = req.user as UserInstance;
+  const following = await user.getFolloweds({ attributes: ["id", "username", "image"]});
+
+  res.send({
+    status: "OK",
+    following
+  });
+});
+
+/**
  * Returns the current user's favourited posts
  */
 router.get("/favourites", authRequired, async (req, res) => {
