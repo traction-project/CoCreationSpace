@@ -16,6 +16,7 @@ import ProfilePictureUploadForm from "./signup/profile_picture_upload_form";
 import InterestSelectForm from "./signup/interest_select_form";
 import JoinGroupForm from "./signup/join_group_form";
 import UpdatePermissionsForm from "./signup/update_permissions_form";
+import UserLogo from "./user_logo";
 
 interface ProfileActionProps {
   loginActions: LoginActions;
@@ -178,6 +179,33 @@ const Profile: React.FC<ProfileProps> = (props) => {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+
+        <div className="columns">
+          <div className="column">
+            <h5 className="title is-5">{t("People you are following")}</h5>
+            <hr/>
+
+            {(following.length == 0) && (
+              <p>{t("You are not following anyone yet!")}</p>
+            )}
+
+            <div className="columns is-multiline">
+              {following.map(({ id, username, image }) => {
+                return (
+                  <div key={id} className="column is-2" style={{ borderRight: "1px solid #E2E2E2", marginBottom: "0.75rem" }}>
+                    <article className="media">
+                      <UserLogo user={{ id, username, image }} hideName={true} />
+                      <div className="media-content" style={{ display: "flex", alignSelf: "center" }}>
+                        <strong>{username}</strong>
+                      </div>
+                    </article>
+                  </div>
+                );
+              })}
+            </div>
+            <hr/>
           </div>
         </div>
 
