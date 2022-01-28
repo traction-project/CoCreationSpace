@@ -26,7 +26,7 @@ const NoteIcon: React.FC<NoteIconProps> = (props) => {
         onClick={openPortal}
       >
         <p style={{ textAlign: "center", marginTop: 5 }}>
-          <i className="fas fa-book" style={{ fontSize: 20 }} />
+          <i className="far fa-bookmark" style={{ fontSize: 20 }} />
         </p>
       </div>
 
