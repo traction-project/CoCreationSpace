@@ -17,7 +17,9 @@ const FavouriteToggle: React.FC<FavouriteToggleProps> = ({ postId }) => {
     });
   }, [ postId ]);
 
-  const toggleFavourite = async () => {
+  const toggleFavourite = async (e: React.MouseEvent<HTMLElement>) => {
+    e.stopPropagation();
+
     const res = await fetch(`/posts/${postId}/favourite`, {
       method: (isFavourite) ? "DELETE" : "POST"
     });
