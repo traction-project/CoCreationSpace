@@ -246,7 +246,12 @@ router.get("/following", authRequired, async (req, res) => {
 
   res.send({
     status: "OK",
-    following
+    following: following.map(({ id, username, image }) => {
+      return {
+        id, username,
+        image: `${CLOUDFRONT_URL}/${image}`
+      };
+    })
   });
 });
 
