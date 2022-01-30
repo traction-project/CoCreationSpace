@@ -17,7 +17,8 @@ const ColorPicker: React.FC<ColorPickerProps> = ({ offsetTop = 15, onColorPicked
 
   const boxStyle: React.CSSProperties = {
     position: "absolute",
-    top: offsetTop, left: 15,
+    top: offsetTop,
+    marginLeft: 5,
     width: 30, height: 30,
     borderRadius: 2,
     backgroundColor: "#FFFFFF",

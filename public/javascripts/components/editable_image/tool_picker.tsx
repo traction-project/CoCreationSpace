@@ -16,7 +16,8 @@ const ToolPicker: React.FC<ToolPickerProps> = ({ offsetTop = 15, onToolPicked })
 
   const boxStyle: React.CSSProperties = {
     position: "absolute",
-    top: offsetTop, left: 15,
+    top: offsetTop,
+    marginLeft: 5,
     width: 26, height: 26,
     borderRadius: 2,
     backgroundColor: "#FFFFFF",
