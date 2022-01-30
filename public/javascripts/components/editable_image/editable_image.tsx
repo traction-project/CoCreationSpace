@@ -1,6 +1,5 @@
 import * as React from "react";
 import { useEffect, useRef } from "react";
-import { useTranslation } from "react-i18next";
 import debounce from "lodash.debounce";
 
 import ColorPicker from "./color_picker";
@@ -21,8 +20,6 @@ interface EditableImageProps {
 }
 
 const EditableImage: React.FC<EditableImageProps> = ({ imageUrl, dimensions: [ width, height ], onSave, onCancel }) => {
-  const { t } = useTranslation();
-
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const imageRef = useRef<HTMLImageElement>();
 
@@ -187,9 +184,11 @@ const EditableImage: React.FC<EditableImageProps> = ({ imageUrl, dimensions: [ w
               <div className="column">
                 <div className="field is-grouped is-grouped-left mt-2 mb-2">
                   <p className="control">
-                    <a className="button is-danger is-small" onClick={onClearClicked}>
-                      {t("Clear")}
-                    </a>
+                    <button className="button is-danger" onClick={onClearClicked}>
+                      <span className="icon is-small">
+                        <i className="fas fa-undo"></i>
+                      </span>
+                    </button>
                   </p>
                 </div>
               </div>
@@ -197,14 +196,18 @@ const EditableImage: React.FC<EditableImageProps> = ({ imageUrl, dimensions: [ w
               <div className="column">
                 <div className="field is-grouped is-grouped-right mt-2 mb-2">
                   <p className="control">
-                    <a className="button is-info is-small" onClick={onSaveClicked}>
-                      {t("Save")}
-                    </a>
+                    <button className="button is-info" onClick={onSaveClicked}>
+                      <span className="icon is-small">
+                        <i className="fas fa-check"></i>
+                      </span>
+                    </button>
                   </p>
                   <p className="control">
-                    <a className="button is-info is-light is-small" onClick={onCancel}>
-                      {t("Cancel")}
-                    </a>
+                    <button className="button is-info is-light" onClick={onCancel}>
+                      <span className="icon is-small">
+                        <i className="fas fa-times"></i>
+                      </span>
+                    </button>
                   </p>
                 </div>
               </div>
