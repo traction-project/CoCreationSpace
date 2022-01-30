@@ -187,7 +187,7 @@ const EditableImage: React.FC<EditableImageProps> = ({ imageUrl, dimensions: [ w
               <div className="column">
                 <div className="field is-grouped is-grouped-left mt-2 mb-2">
                   <p className="control">
-                    <a className="button is-danger" onClick={onClearClicked}>
+                    <a className="button is-danger is-small" onClick={onClearClicked}>
                       {t("Clear")}
                     </a>
                   </p>
@@ -197,12 +197,12 @@ const EditableImage: React.FC<EditableImageProps> = ({ imageUrl, dimensions: [ w
               <div className="column">
                 <div className="field is-grouped is-grouped-right mt-2 mb-2">
                   <p className="control">
-                    <a className="button is-info" onClick={onSaveClicked}>
+                    <a className="button is-info is-small" onClick={onSaveClicked}>
                       {t("Save")}
                     </a>
                   </p>
                   <p className="control">
-                    <a className="button is-info is-light" onClick={onCancel}>
+                    <a className="button is-info is-light is-small" onClick={onCancel}>
                       {t("Cancel")}
                     </a>
                   </p>
