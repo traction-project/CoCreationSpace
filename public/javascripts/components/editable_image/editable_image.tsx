@@ -176,7 +176,7 @@ const EditableImage: React.FC<EditableImageProps> = ({ imageUrl, dimensions: [ w
             />
 
             <ColorPicker
-              offsetTop={120}
+              offsetTop={90}
               onColorPicked={(color) => {
                 console.log("color picked:", color);
                 penColor.current = color;

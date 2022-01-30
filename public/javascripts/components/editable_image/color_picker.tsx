@@ -38,7 +38,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({ offsetTop = 15, onColorPicked
         return (
           <div
             key={i}
-            style={{ ...boxStyle, top: i * 45 + offsetTop }}
+            style={{ ...boxStyle, top: i * 35 + offsetTop }}
             onClick={onBoxClicked(c)}
           >
             <div style={{

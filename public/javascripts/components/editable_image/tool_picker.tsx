@@ -38,7 +38,7 @@ const ToolPicker: React.FC<ToolPickerProps> = ({ offsetTop = 15, onToolPicked })
         return (
           <div
             key={i}
-            style={{ ...boxStyle, top: i * 45 + offsetTop, border: (pickedTool == tool) ? "2px solid #555555" : "2px solid transparent" }}
+            style={{ ...boxStyle, top: i * 35 + offsetTop, border: (pickedTool == tool) ? "2px solid #555555" : "2px solid transparent" }}
             onClick={onBoxClicked(tool)}
           >
             <p style={{ textAlign: "center", marginTop: 3 }}>
