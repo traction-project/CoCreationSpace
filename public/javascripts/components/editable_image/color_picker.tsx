@@ -7,13 +7,13 @@ interface ColorPickerProps {
 }
 
 const ColorPicker: React.FC<ColorPickerProps> = ({ offsetTop = 15, onColorPicked }) => {
-  const [ pickedColor, setPickedColor ] = useState("red");
-
   const colors = [
     "255, 0, 0",
     "0, 255, 0",
     "0, 0, 255"
   ];
+
+  const [ pickedColor, setPickedColor ] = useState(colors[0]);
 
   const boxStyle: React.CSSProperties = {
     position: "absolute",
