@@ -39,7 +39,12 @@ async function logSearchQuery(query: string | undefined, resultcount: number, us
 function getUserPosts(publishedOnly: boolean) {
   return async (req: Request, res: Response) => {
     const user = req.user as UserInstance;
-    const { Post, User, DataContainer, MediaItem, Thread, Topic, UserGroup } = db.getModels();
+    const { Post, User, DataContainer, MediaItem, Tag, Thread, Topic, UserGroup } = db.getModels();
+
+    // Get tag, group, user and interest id to filter by
+    const groupId = req.query.group;
+    const tagId = req.query.tag;
+    const interestId = req.query.interest;
 
     // Get desired page number and results per page from query string if present
     // Use defaults otherwise
@@ -79,15 +84,20 @@ function getUserPosts(publishedOnly: boolean) {
           attributes: ["status", "id", "type"],
           include: ["emojiReactions"]
         }]
-      }, "comments", "tags", {
+      }, "comments", {
+        model: Tag,
+        where: (tagId && tagId !== "") ? { id: tagId } : undefined
+      }, {
         model: Thread,
         required: true,
         include: [{
           model: Topic,
           required: true,
+          where: (interestId && interestId !== "") ? { id: interestId } : undefined,
           include: [{
             model: UserGroup,
-            required: true
+            required: true,
+            where: (groupId && groupId !== "") ? { id: groupId } : undefined
           }]
         }]
       }],
