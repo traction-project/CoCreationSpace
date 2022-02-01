@@ -41,6 +41,11 @@ function getUserPosts(publishedOnly: boolean) {
     const user = req.user as UserInstance;
     const { Post, User, DataContainer, MediaItem, Thread, Topic, UserGroup } = db.getModels();
 
+    // Get desired page number and results per page from query string if present
+    // Use defaults otherwise
+    const page = (typeof req.query.page == "string") ? parseInt(req.query.page) : 1;
+    const perPage = (typeof req.query.perPage == "string") ? parseInt(req.query.perPage) : 15;
+
     let topLevelConditions: WhereOptions<PostAttributes> = {
       parentPostId: null,
       published: publishedOnly
@@ -61,6 +66,7 @@ function getUserPosts(publishedOnly: boolean) {
 
     const posts = await Post.findAndCountAll({
       where: topLevelConditions,
+      distinct: true,
       include: [{
         model: User,
         attributes: ["id", "username", "image"],
@@ -87,7 +93,9 @@ function getUserPosts(publishedOnly: boolean) {
       }],
       order: [
         ["createdAt", "DESC"]
-      ]
+      ],
+      limit: perPage,
+      offset: (page - 1) * perPage
     });
 
     await logSearchQuery(req.query["q"] as string, posts.count, user);
