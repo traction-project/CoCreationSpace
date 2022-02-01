@@ -2,7 +2,7 @@ import { Router, Request, Response } from "express";
 import { Op, WhereOptions } from "sequelize";
 
 import { db } from "../models";
-import { buildCriteria, isUser, getFromEnvironment } from "../util";
+import { isUser, getFromEnvironment } from "../util";
 import { authRequired } from "../util/middleware";
 import { UserInstance } from "../models/user";
 import association from "../models/associations";
@@ -41,28 +41,39 @@ function getUserPosts(publishedOnly: boolean) {
     const user = req.user as UserInstance;
     const { Post, User, DataContainer, MediaItem, Thread, Topic, UserGroup } = db.getModels();
 
-    let queryDataContainer = {
-      model: DataContainer,
-      include: [{
-        model: MediaItem,
-        attributes: ["status", "id", "type"],
-        include: ["emojiReactions"]
-      }]
+    let topLevelConditions: WhereOptions<PostAttributes> = {
+      parentPostId: null,
+      published: publishedOnly
     };
 
-    const criteria = await buildCriteria(req.query, DataContainer);
-    queryDataContainer = Object.assign(queryDataContainer, criteria);
+    if (req.query.q) {
+      const query = `%${req.query.q}%`;
+
+      topLevelConditions = {
+        ...topLevelConditions,
+        [Op.or]: [
+          { "$dataContainer.text_content$": { [Op.iLike]: query} },
+          { "$post.title$": { [Op.iLike]: query } },
+          { "$user.username$": { [Op.iLike]: query } }
+        ]
+      };
+    }
 
     const posts = await Post.findAndCountAll({
-      where: {
-        parentPostId: null,
-        published: publishedOnly
-      },
+      where: topLevelConditions,
       include: [{
         model: User,
         attributes: ["id", "username", "image"],
         where: { id: user.id }
-      }, queryDataContainer, "comments", "tags", {
+      }, {
+        model: DataContainer,
+        required: true,
+        include: [{
+          model: MediaItem,
+          attributes: ["status", "id", "type"],
+          include: ["emojiReactions"]
+        }]
+      }, "comments", "tags", {
         model: Thread,
         required: true,
         include: [{
@@ -87,7 +98,7 @@ function getUserPosts(publishedOnly: boolean) {
       }
     });
 
-    res.send(posts);
+    res.send({ posts, tags: [], groups: [], interests: [] });
   };
 }
 
