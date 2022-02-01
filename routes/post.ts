@@ -108,6 +108,45 @@ function getUserPosts(publishedOnly: boolean) {
       offset: (page - 1) * perPage
     });
 
+    const tags = await Tag.findAll({
+      attributes: ["id", "name"],
+      order: ["name"],
+      include: [{
+        model: Post,
+        required: true,
+        attributes: [],
+        include: [{
+          model: User,
+          required: true,
+          attributes: [],
+          where: { id: user.id }
+        }]
+      }]
+    });
+
+    const interests = await Topic.findAll({
+      attributes: ["id", "title"],
+      order: ["title"],
+      include: [{
+        model: Thread,
+        required: true,
+        attributes: [],
+        include: [{
+          model: Post,
+          required: true,
+          attributes: [],
+          include: [{
+            model: User,
+            required: true,
+            attributes: [],
+            where: { id: user.id }
+          }]
+        }]
+      }]
+    });
+
+    const groups = await user.getApprovedUserGroups();
+
     await logSearchQuery(req.query["q"] as string, posts.count, user);
 
     posts.rows.forEach(post => {
@@ -116,7 +155,7 @@ function getUserPosts(publishedOnly: boolean) {
       }
     });
 
-    res.send({ posts, tags: [], groups: [], interests: [] });
+    res.send({ posts, tags, groups, interests });
   };
 }
 
