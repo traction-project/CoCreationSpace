@@ -119,7 +119,7 @@ router.get("/all/group", authRequired, async (req, res) => {
   const interestId = req.query.interest;
   const userId = req.query.user;
 
-  const groups = (await user.getApprovedUserGroups()).map((group) => group.id);
+  const groups = await user.getApprovedUserGroups();
 
   let topLevelConditions: WhereOptions<PostAttributes> = {
     parentPostId: null,
@@ -167,7 +167,7 @@ router.get("/all/group", authRequired, async (req, res) => {
         where: (interestId && interestId !== "") ? { id: interestId } : undefined,
         include: [{
           model: UserGroup,
-          where: (groupId && groupId !== "") ? { id: groupId } : { id: groups }
+          where: (groupId && groupId !== "") ? { id: groupId } : { id: groups.map((g) => g.id) }
         }]
       }]
     }],
@@ -178,6 +178,41 @@ router.get("/all/group", authRequired, async (req, res) => {
     offset: (page - 1) * perPage
   });
 
+  const tags = await Tag.findAll({
+    attributes: ["id", "name"],
+    order: ["name"],
+    include: [{
+      model: Post,
+      required: true,
+      attributes: [],
+      include: [{
+        model: Thread,
+        attributes: [],
+        required: true,
+        include: [{
+          model: Topic,
+          attributes: [],
+          required: true,
+          include: [{
+            model: UserGroup,
+            attributes: [],
+            where: { id: groups.map((g) => g.id) }
+          }]
+        }]
+      }]
+    }]
+  });
+
+  const interests = await Topic.findAll({
+    attributes: ["id", "title"],
+    order: ["title"],
+    include: [{
+      model: UserGroup,
+      attributes: [],
+      where: { id: groups.map((g) => g.id) }
+    }]
+  });
+
   await logSearchQuery(req.query["q"] as string, posts.count, user);
 
   posts.rows.forEach(post => {
@@ -186,7 +221,7 @@ router.get("/all/group", authRequired, async (req, res) => {
     }
   });
 
-  res.send(posts);
+  res.send({ posts, tags, groups, interests });
 });
 
 /**
