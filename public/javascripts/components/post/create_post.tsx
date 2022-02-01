@@ -246,7 +246,7 @@ const CreatePost: React.FC<CreatePostProps> = () => {
           ) : (
             fileUploads.map((upload, i) => {
               return (
-                <div className="column" key={upload.id || i}>
+                <div className="column is-8" key={upload.id || i}>
                   {(upload.status == "progressing") ? (
                     <ProgressBox progress={upload.progress} total={upload.total} />
                   ) : (upload.status == "failed") ? (
