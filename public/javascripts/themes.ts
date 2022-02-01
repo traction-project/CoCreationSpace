@@ -33,6 +33,19 @@ export const themes: Themes = {
         }
       }
     },
+    liceu: {
+      id: "liceu",
+      name: "LICEU",
+      colors: {
+        backgroundColor: "#FFFFFF",
+        headerColor: "#D20A11",
+        boxShadow: "#F2F2F2",
+        button: {
+          backgroundColor: "#A7192F",
+          textColor: "#FFFFFF"
+        }
+      }
+    },
     theme1: {
       id: "theme1",
       name: "Theme 1",
