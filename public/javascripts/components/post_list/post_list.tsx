@@ -18,18 +18,16 @@ interface PostListProps {
 export interface TagData {
   id: string;
   name: string;
-  createdAt: string;
-  post?: PostType[]
 }
 
 interface InterestData {
-  title: string;
   id: string;
+  title: string;
 }
 
 interface GroupData {
-  name: string;
   id: string;
+  name: string;
 }
 
 const PostList: React.FC<PostListProps> = ({endpoint}) => {
@@ -38,6 +36,9 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
   const { t } = useTranslation();
 
   const [ posts, setPosts ] = useState<Array<PostType>>([]);
+  const [ tags, setTags ] = useState<Array<TagData>>([]);
+  const [ groups, setGroups ] = useState<Array<GroupData>>([]);
+  const [ interests, setInterests ] = useState<Array<InterestData>>([]);
   const [ totalPostCount, setTotalPostCount ] = useState(0);
   const [ selectedTab, setSelectedTab ] = useState<"text" | "media">("text");
 
@@ -47,12 +48,17 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
   // Fetch posts every time a filter in the query string or the endpoin changes
   useEffect(() => {
     (async () => {
-      // Fetch posts with filters applied
-      const postsList = await getPosts(filters);
+      // Fetch posts and associated information with filters applied
+      const { posts, tags, groups, interests } = await getPosts(filters);
 
       // Set posts and total post count
-      setPosts(postsList.rows);
-      setTotalPostCount(postsList.count);
+      setPosts(posts.rows);
+      setTotalPostCount(posts.count);
+
+      // Set associated information
+      setTags(tags);
+      setGroups(groups);
+      setInterests(interests);
     })();
   }, [endpoint, location.search]);
 
@@ -64,7 +70,7 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
    * @param filters Filters that should be applied to the posts to be fetched
    * @returns An object containing the total post count and a list of posts
    */
-  const getPosts = async (filters: Map<string, string>): Promise<{ count: number, rows: Array<PostType> }> => {
+  const getPosts = async (filters: Map<string, string>): Promise<{ posts: { count: number, rows: Array<PostType> }, tags: Array<TagData>, groups: Array<GroupData>, interests: Array<InterestData> }> => {
     // Compose query string from filters
     const queryString = Array.from(filters).map(([k, v]) => {
       return `${k}=${encodeURIComponent(v)}`;
@@ -75,84 +81,6 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
     // Make request and return parsed results
     const res = await fetch(url);
     return res.json();
-  };
-
-  /**
-   * Takes a list of posts and extracts a list of unique, alphabetically sorted
-   * interest topics associated to the given posts. The returned list contains
-   * the names and IDs of the extracted interest topics.
-   *
-   * @param posts List of posts to get interests from
-   * @returns A sorted list of interest topics alongside their IDs
-   */
-  const getInterestsFromPosts = (posts: Array<PostType>) => {
-    const interests = posts.reduce<Array<InterestData>>((acc, post) => {
-      // Extract interest topic ID and name from post
-      const { thread: { topic: { id, title } }} = post;
-
-      // Check if given ID is already present
-      if (acc.find((i) => i.id == id)) {
-        return acc;
-      }
-
-      // Add interest topic to output list if not present
-      return acc.concat([{
-        id, title
-      }]);
-    }, []);
-
-    // Sort interest topics by name
-    return interests.sort(({ title: titleA }, { title: titleB }) => {
-      return (titleA < titleB) ? -1 : (titleA > titleB) ? 1 : 0;
-    });
-  };
-
-  /**
-   * Takes a list of posts and extracts a list of unique, alphabetically sorted
-   * tags associated to the given posts. The returned list contains the names
-   * and IDs of the extracted tags.
-   *
-   * @param posts List of posts to get tags from
-   * @returns A sorted list of tags alongside their IDs
-   */
-  const getTagsFromPosts = (posts: Array<PostType>) => {
-    const tagsList: Array<TagData> = [];
-
-    posts.forEach((post) => {
-      if (post.tags && post.tags.length > 0) {
-        post.tags.forEach((tag: TagData) => {
-          const isSaved = tagsList.filter(tagSaved => tagSaved.id === tag.id);
-
-          if (!isSaved || isSaved.length == 0) {
-            tagsList.push(tag);
-          }
-        });
-      }
-    });
-
-    return tagsList.sort(({ name: tagA }, { name: tagB }) => {
-      return (tagA < tagB) ? -1 : (tagA > tagB) ? 1 : 0;
-    });
-  };
-
-  /**
-   * Takes a list of posts and extracts a list of unique, alphabetically sorted
-   * groups associated to the given posts. The returned list contains the names
-   * and IDs of the extracted groups.
-   *
-   * @param posts List of posts to get groups from
-   * @returns A sorted list of groups alongside their IDs
-   */
-  const getGroupsFromPosts = (posts: Array<PostType>) => {
-    const groups = posts.reduce<Array<GroupData>>((acc, post) => {
-      const { thread: { topic: { userGroup: { id, name } }}} = post;
-
-      return (acc.find((g) => g.id == id)) ? acc : acc.concat({ id, name });
-    }, []);
-
-    return groups.sort(({ name: nameA }, { name: nameB }) => {
-      return (nameA < nameB) ? -1 : (nameA > nameB) ? 1 : 0;
-    });
   };
 
   /**
@@ -198,11 +126,6 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
       updateFilter(fromEntries(filters));
     }
   };
-
-  // Get groups, interests and tags from the current list of posts
-  const groups = getGroupsFromPosts(posts);
-  const interests = getInterestsFromPosts(posts);
-  const tags = getTagsFromPosts(posts);
 
   return (
     <section className="section">
