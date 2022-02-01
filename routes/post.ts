@@ -115,6 +115,7 @@ function getUserPosts(publishedOnly: boolean) {
         model: Post,
         required: true,
         attributes: [],
+        where: { published: publishedOnly },
         include: [{
           model: User,
           required: true,
@@ -135,6 +136,7 @@ function getUserPosts(publishedOnly: boolean) {
           model: Post,
           required: true,
           attributes: [],
+          where: { published: publishedOnly },
           include: [{
             model: User,
             required: true,
