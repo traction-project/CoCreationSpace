@@ -83,15 +83,15 @@ const Header: React.FC<HeaderProps> = (props) => {
           </HeaderLink>
           <HeaderLink
             onClick={() => setBurgerActive(false)}
-            to={"/userPosts"}
-          >
-            {t("My Posts")}
-          </HeaderLink>
-          <HeaderLink
-            onClick={() => setBurgerActive(false)}
             to={"/notes"}
           >
             {t("My Favourites")}
+          </HeaderLink>
+          <HeaderLink
+            onClick={() => setBurgerActive(false)}
+            to={"/userPosts"}
+          >
+            {t("My Posts")}
           </HeaderLink>
           <HeaderLink
             onClick={() => setBurgerActive(false)}
