@@ -93,7 +93,7 @@ const NotesList: React.FC<NotesListProps> = (props) => {
               );
             })}
 
-            <h4 style={{ marginTop: "2em" }} className="title is-4">{t("Favourite Collections")}</h4>
+            <h4 style={{ marginTop: "2em" }} className="title is-4">{t("Favourite Media Collections")}</h4>
             <hr/>
 
             {(notes?.length == 0) && (
