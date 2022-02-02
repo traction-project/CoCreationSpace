@@ -39,7 +39,10 @@ const PostEntry: React.FC<PostEntryProps> = (props) => {
           <strong className="post-title">
             {post.title ? post.title : t("Post")}
             &nbsp;
-            <FavouriteToggle postId={post.id} />
+            <FavouriteToggle
+              postId={post.id}
+              favourite={post.favourites.length > 0}
+            />
           </strong>
           <small>
             {post.createdAt && new Date(post.createdAt).toLocaleDateString()}&emsp;

@@ -62,6 +62,7 @@ export interface PostType extends CommonType {
   userReferenced?: UserType[];
   tags?: TagData[];
   published: boolean;
+  favourites: Array<{ id: string }>;
 }
 
 interface PostConnectedProps {
