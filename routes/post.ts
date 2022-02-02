@@ -77,6 +77,12 @@ function getUserPosts(publishedOnly: boolean) {
         attributes: ["id", "username", "image"],
         where: { id: user.id }
       }, {
+        model: User,
+        as: "favourites",
+        attributes: ["id"],
+        required: false,
+        where: { id: user.id }
+      }, {
         model: DataContainer,
         required: true,
         include: [{
