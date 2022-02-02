@@ -218,6 +218,12 @@ router.get("/all/group", authRequired, async (req, res) => {
       where: (userId && userId !== "") ? { id: userId } : undefined,
       attributes: ["id", "username", "image"]
     }, {
+      model: User,
+      as: "favourites",
+      attributes: ["id"],
+      required: false,
+      where: { id: user.id }
+    }, {
       model: DataContainer,
       required: true,
       include: [{
