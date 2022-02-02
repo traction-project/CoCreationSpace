@@ -205,7 +205,7 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
                       )}
 
 
-                      <small className="list-item__date">
+                      <small>
                         {post.createdAt && new Date(post.createdAt).toLocaleDateString()}&emsp;
                         {post.createdAt && new Date(post.createdAt).toLocaleTimeString()}&emsp;
                         {(post.parentPostId == null) && (

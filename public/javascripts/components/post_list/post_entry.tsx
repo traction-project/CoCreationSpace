@@ -41,7 +41,7 @@ const PostEntry: React.FC<PostEntryProps> = (props) => {
             &nbsp;
             <FavouriteToggle postId={post.id} />
           </strong>
-          <small className="list-item__date">
+          <small>
             {post.createdAt && new Date(post.createdAt).toLocaleDateString()}&emsp;
             {post.createdAt && new Date(post.createdAt).toLocaleTimeString()}&emsp;
             in <i>{post.thread.topic.userGroup.name}</i> by <i>{post.user.username}</i>
