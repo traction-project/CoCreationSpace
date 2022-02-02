@@ -82,7 +82,7 @@ const MediaPlayerWithToolbar: React.FC<MediaPlayerWithToolbarProps> = (props) =>
         startTime={startTime}
       />
 
-      <nav className="level is-mobile" style={{position: "relative"}}>
+      <nav className="level" style={{position: "relative"}}>
         <div className="level-left">
           <div className="level-item">
             {EMOJIS.map((emoji, index) => {
