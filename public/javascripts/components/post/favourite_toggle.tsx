@@ -4,12 +4,18 @@ import classNames from "classnames";
 
 interface FavouriteToggleProps {
   postId: string;
+  favourite?: boolean
 }
 
-const FavouriteToggle: React.FC<FavouriteToggleProps> = ({ postId }) => {
-  const [ isFavourite, setIsFavourite ] = useState(false);
+const FavouriteToggle: React.FC<FavouriteToggleProps> = ({ postId, favourite }) => {
+  const [ isFavourite, setIsFavourite ] = useState(favourite || false);
 
   useEffect(() => {
+    // Don't fetch favourite data from server if prop `favourite` is defined
+    if (favourite != undefined) {
+      return;
+    }
+
     fetch(`/posts/${postId}/favourite`).then((res) => {
       return res.json();
     }).then((data) => {
