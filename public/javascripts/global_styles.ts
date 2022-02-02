@@ -10,6 +10,10 @@ const GlobalStyles = createGlobalStyle<{ theme: SiteTheme }>`
     background-color: ${({ theme }) => theme.colors.headerColor};
   }
 
+  .navbar-menu {
+    background-color: ${({ theme }) => theme.colors.headerColor};
+  }
+
   .button.is-info {
     background-color: ${({ theme }) => theme.colors.button.backgroundColor};
     color: ${({ theme }) => theme.colors.button.textColor};
