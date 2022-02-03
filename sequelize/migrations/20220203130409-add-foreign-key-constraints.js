@@ -9,7 +9,9 @@ module.exports = {
         references: {
           table: `${reference}s`,
           field: "id"
-        }
+        },
+        onDelete: "cascade",
+        onUpdate: "cascade"
       });
     };
 
@@ -43,7 +45,9 @@ module.exports = {
       references: {
         table: "users",
         field: "id"
-      }
+      },
+      onDelete: "cascade",
+      onUpdate: "cascade"
     });
 
     queryInterface.addConstraint("user_followers", {
@@ -52,7 +56,9 @@ module.exports = {
       references: {
         table: "users",
         field: "id"
-      }
+      },
+      onDelete: "cascade",
+      onUpdate: "cascade"
     });
 
     queryInterface.addConstraint("user_followers", {
@@ -61,7 +67,9 @@ module.exports = {
       references: {
         table: "users",
         field: "id"
-      }
+      },
+      onDelete: "cascade",
+      onUpdate: "cascade"
     });
 
     queryInterface.addConstraint("post_references", {
@@ -70,7 +78,9 @@ module.exports = {
       references: {
         table: "posts",
         field: "id"
-      }
+      },
+      onDelete: "cascade",
+      onUpdate: "cascade"
     });
 
     queryInterface.addConstraint("post_references", {
@@ -79,7 +89,9 @@ module.exports = {
       references: {
         table: "posts",
         field: "id"
-      }
+      },
+      onDelete: "cascade",
+      onUpdate: "cascade"
     });
   },
 
