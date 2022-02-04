@@ -37,10 +37,10 @@ const CreatePost: React.FC<CreatePostProps> = () => {
     { mediaItems: [], title: null, id: null }
   );
 
-  const preloadedMediaItems: Array<FileUpload> = (mediaItems || []).map(({ id, type }) => {
+  const preloadedMediaItems: Array<FileUpload> = (mediaItems || []).map(({ id, type, file }) => {
     return {
       status: "done",
-      total: 0, progress: 0, filename: "",
+      total: 0, progress: 0, filename: file,
       id, type
     };
   });
@@ -259,6 +259,10 @@ const CreatePost: React.FC<CreatePostProps> = () => {
                       onDelete={deleteUploadedItem}
                     />
                   )}
+
+                  <p className="has-text-centered mt-2">
+                    {upload.filename}
+                  </p>
                 </div>
               );
             })
