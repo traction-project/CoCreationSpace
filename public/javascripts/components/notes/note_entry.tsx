@@ -171,10 +171,10 @@ const NoteEntry: React.FC<NoteEntryProps> = (props) => {
 
               {(mediaItems && mediaItems.length > 1) && (
                 <div style={{ display: "flex", backgroundColor: "#F5F5F5", overflowX: "scroll" }}>
-                  {mediaItems.map((mediaItem, index) => {
+                  {mediaItems.map((mediaItem) => {
                     return (
                       <div
-                        key={index}
+                        key={mediaItem.id}
                         className="is-clickable"
                         style={{ flexShrink: 0 }}
                         onClick={setSelectedItem.bind(null, mediaItem)}
