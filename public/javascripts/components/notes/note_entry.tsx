@@ -202,6 +202,7 @@ const NoteEntry: React.FC<NoteEntryProps> = (props) => {
                         <Thumbnail
                           id={mediaItem.id}
                           type={mediaItem.type}
+                          filename={mediaItem.file}
                         />
                       </div>
                     );

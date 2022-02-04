@@ -337,6 +337,7 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
                     <Thumbnail
                       id={mediaItem.id}
                       type={mediaItem.type}
+                      filename={mediaItem.file}
                     />
                   </div>
                 );
