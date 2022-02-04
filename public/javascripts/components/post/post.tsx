@@ -285,11 +285,9 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
                   <File id={selectedItem.id} />
                 )}
 
-                {(selectedItem.type != "file") && (
-                  <p className="has-text-centered mt-2">
-                    {selectedItem.file}
-                  </p>
-                )}
+                <p className="has-text-centered mt-2">
+                  {selectedItem.file}
+                </p>
 
                 <NoteIcon id={selectedItem.id} />
               </div>
