@@ -81,7 +81,36 @@ const NoteEntry: React.FC<NoteEntryProps> = (props) => {
   return (
     <section className="section">
       <div className="container">
-        <h4 className="title is-4">{name}</h4>
+        <h4 className="title is-4">
+          {(editName) ? (
+            <div className="field has-addons">
+              <div className="control">
+                <input
+                  className="input"
+                  type="text"
+                  defaultValue={name}
+                  placeholder="Name"
+                  {...register("name", {
+                    required: true,
+                    value: name
+                  })}
+                />
+              </div>
+              <div className="control">
+                <a className="button is-info" style={{ fontWeight: "normal" }} onClick={onNameEdited}>
+                  {t("Save")}
+                </a>
+              </div>
+            </div>
+          ) : (
+            <>
+              {name}
+              <button className="button is-small is-pulled-right" onClick={() => setEditName(true)}>
+                {t("Edit")}
+              </button>
+            </>
+          )}
+        </h4>
         <h5 className="subtitle is-5">
           <Trans i18nKey="collection-count" count={mediaItems.length}>
             {{ mediaItemCount }} items in collection
