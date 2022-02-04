@@ -81,10 +81,30 @@ const NoteEntry: React.FC<NoteEntryProps> = (props) => {
       })
     });
 
-    if (res.ok) {
+    if (res.ok && noteCollection) {
+      const { mediaItems } = noteCollection;
+
+      // Find index of removed item
+      const index = mediaItems.findIndex((m) => m.id == mediaItemId);
+      // Remove item at index via splice
+      mediaItems.splice(index, 1);
+
+      // Reset selectedItem accordingly
+      if (index == 0 && mediaItems.length == 0) {
+        // Clear selectedItem if collection has become empty
+        setSelectedItem(undefined);
+      } else if (index == mediaItems.length) {
+        // Set selectedItem to previous item if last element was removed
+        setSelectedItem(mediaItems[index - 1]);
+      } else {
+        // Set selectedItem to next item otherwise
+        setSelectedItem(mediaItems[index]);
+      }
+
+      // Update note collection
       setNoteCollection({
-        ...noteCollection!,
-        mediaItems: noteCollection!.mediaItems.filter((m) => m.id != mediaItemId)
+        ...noteCollection,
+        mediaItems
       });
     }
   };
