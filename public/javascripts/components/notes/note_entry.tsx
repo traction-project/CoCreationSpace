@@ -92,6 +92,12 @@ const NoteEntry: React.FC<NoteEntryProps> = (props) => {
                     ) : (
                       <File id={selectedItem.id} />
                     )}
+
+                    {(selectedItem.type != "file") && (
+                      <p className="has-text-centered mt-2">
+                        {selectedItem.file}
+                      </p>
+                    )}
                   </div>
                 </div>
               )}
