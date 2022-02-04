@@ -143,7 +143,7 @@
     "facilitator-description": "El facilitador es un artista profesional que establece tareas y da instrucciones a los participantes. Es miembro de un grupo y puede descargar y editar contenido dentro de su grupo y compartirlo con el permiso de los participantes. Además, puede ver borradores del contenido de los participantes, pero no puede compartir ni editar contenido privado.",
     "moderator-description": "El moderador verifica que el trabajo de los participantes esté protegido y se le permita descargar y compartir contenido aprobado por los participantes y facilitadores fuera del Espacio de CoCreación. La función del moderador también es marcar y eliminar los comentarios negativos del sistema y cambiar el nivel de permisos de otros usuarios.",
     "admin-description": "El administrador se asegura de que el Espacio de CoCreación esté funcionando sin problemas. Este rol tiene acceso para descargar, compartir, restringir contenido y cambiar permisos.",
-    "Add to Media Board": "Añadir a tablero de medios",
+    "Add to Media Collection": "Añadir a colección de medios",
     "Level": "Nivel",
     "Add highlight": "Añadir resaltar",
     "My Favourites": "Mis favoritos",

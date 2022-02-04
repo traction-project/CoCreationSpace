@@ -143,7 +143,7 @@
     "facilitator-description": "El facilitador és un artista professional que estableix tasques i dóna indicacions als participants. És membre d'un grup i podt descarregar i editar contingut dins del seu grup i compartir-lo amb el permís dels participants. A més, pot veure esborranys del contingut dels participants, però no pot compartir ni editar contingut privat.",
     "moderator-description": "El moderador verifica que el treball dels participants estigui protegit i se li permet descarregar i compartir contingut aprovat pels participants i facilitadors fora de l'Espai de CoCreació. La funció del moderador també és marcar i eliminar els comentaris negatius del sistema i canviar el nivell de permisos d'altres usuaris.",
     "admin-description": "L'administrador s'assegura que l'Espai de CoCreació funcioni correctament. El moderador té accés per descarregar, compartir, restringir contingut i canviar els permisos.",
-    "Add to Media Board": "Afegeix al tauler de multimèdia",
+    "Add to Media Collection": "Afegeix al col·lecció de multimèdia",
     "Level": "Nivell",
     "Add highlight": "Afegeix ressaltar",
     "My Favourites": "Els meus preferits",

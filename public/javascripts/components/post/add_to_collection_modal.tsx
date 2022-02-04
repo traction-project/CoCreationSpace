@@ -71,7 +71,7 @@ const AddToCollectionModal: React.FC<AddToCollectionModalProps> = (props) => {
       <div className="modal-background" onClick={onClose} />
       <div className="modal-content">
         <div className="box">
-          <h4 className="title is-4">{t("Add to Media Board")}</h4>
+          <h4 className="title is-4">{t("Add to Media Collection")}</h4>
           <hr/>
 
           <div className="field">

@@ -143,7 +143,7 @@
     "facilitator-description": "The facilitator is a professional artist that sets tasks and gives directions to participants. They are a member of one group, and can download and edit content inside their group, and share it with the permission of participants. In addition, they can see drafts of participant content, but cannot share or edit private content.",
     "moderator-description": "The moderator checks that participants' work is protected and is allowed to download and share content approved by participants and facilitators outside of the Cocreation Space. The moderator’s role is also to flag and remove negative comments from the system, and to change other users' level of permissions.",
     "admin-description": "The administrator makes sure the Cocreation Space is running smoothly. This role has access to download, share, restrict content and change permissions.",
-    "Add to Media Board": "Add to Media Board",
+    "Add to Media Collection": "Add to Media Collection",
     "Level": "Level",
     "Add highlight": "Add highlight",
     "My Favourites": "My Favourites",
