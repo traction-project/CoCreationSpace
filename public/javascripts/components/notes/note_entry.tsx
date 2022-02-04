@@ -10,6 +10,7 @@ import MediaPlayer from "../media_player";
 import Image from "../image";
 import File from "../file";
 import Thumbnail from "../thumbnail";
+import DeleteIcon from "../post/delete_icon";
 
 interface NoteEntryProps {
 }
@@ -70,6 +71,23 @@ const NoteEntry: React.FC<NoteEntryProps> = (props) => {
       setEditName(false);
     }
   });
+
+  const onMediaItemDeleted = async (mediaItemId: string) => {
+    const res = await fetch(`/notes/remove/${id}/${mediaItemId}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name
+      })
+    });
+
+    if (res.ok) {
+      setNoteCollection({
+        ...noteCollection!,
+        mediaItems: noteCollection!.mediaItems.filter((m) => m.id != mediaItemId)
+      });
+    }
+  };
 
   if (!noteCollection) {
     return null;
@@ -145,6 +163,8 @@ const NoteEntry: React.FC<NoteEntryProps> = (props) => {
                     <p className="has-text-centered mt-2">
                       {selectedItem.file}
                     </p>
+
+                    <DeleteIcon onClick={() => onMediaItemDeleted(selectedItem.id)}/>
                   </div>
                 </div>
               )}
