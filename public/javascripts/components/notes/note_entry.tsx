@@ -22,6 +22,7 @@ const NoteEntry: React.FC<NoteEntryProps> = (props) => {
   const [ noteCollection, setNoteCollection ] = useState<NoteCollection>();
   const [ selectedItem, setSelectedItem ] = useState<MultimediaItem>();
   const [ editDescription, setEditDescription ] = useState(false);
+  const [ editName, setEditName ] = useState(false);
 
   useEffect(() => {
     fetch(`/notes/collection/${id}`).then((res) => {
@@ -48,6 +49,25 @@ const NoteEntry: React.FC<NoteEntryProps> = (props) => {
       });
 
       setEditDescription(false);
+    }
+  });
+
+  const onNameEdited = handleSubmit(async ({ name }) => {
+    const res = await fetch(`/notes/collection/${id}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name
+      })
+    });
+
+    if (res.ok) {
+      setNoteCollection({
+        ...noteCollection!,
+        name
+      });
+
+      setEditName(false);
     }
   });
 
