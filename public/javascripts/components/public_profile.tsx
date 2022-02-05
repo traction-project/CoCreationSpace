@@ -18,6 +18,12 @@ interface PublicUserType extends UserType {
   groups: Array<{ id: string, name: string }>;
   interests: Array<{ id: string, title: string }>;
   followers: Array<{ id: string, username: string }>;
+  count: {
+    posts: number,
+    comments: number,
+    mediaItems: number,
+    followers: number
+  }
 }
 
 interface PublicProfileActionProps {
@@ -81,10 +87,6 @@ const PublicProfile: React.FC<PublicProfileProps> = (props) => {
     }
   };
 
-  const numPosts = user.posts.filter((p) => p.parentPostId == null).length;
-  const numComments = user.posts.filter((p) => p.parentPostId != null).length;
-  const numMedia = user.posts.reduce((sum, p) => sum + (p.dataContainer?.mediaItems?.length || 0), 0);
-
   const currentUser = props.login.user;
 
   return (
@@ -111,19 +113,19 @@ const PublicProfile: React.FC<PublicProfileProps> = (props) => {
               <div style={{ flexGrow: 1 }}>
                 <div>
                   <p className="heading">{t("Posts")}</p>
-                  <p className="subtitle">{numPosts}</p>
+                  <p className="subtitle">{user.count.posts}</p>
                 </div>
               </div>
               <div style={{ flexGrow: 1 }}>
                 <div>
                   <p className="heading">{t("Comments")}</p>
-                  <p className="subtitle">{numComments}</p>
+                  <p className="subtitle">{user.count.comments}</p>
                 </div>
               </div>
               <div style={{ flexGrow: 1 }}>
                 <div>
                   <p className="heading">{t("Media Items")}</p>
-                  <p className="subtitle">{numMedia}</p>
+                  <p className="subtitle">{user.count.mediaItems}</p>
                 </div>
               </div>
               <div style={{ flexGrow: 1 }}>
