@@ -41,7 +41,6 @@ const PublicProfile: React.FC<PublicProfileProps> = (props) => {
   const navigate = useNavigate();
 
   const [ user, setUser ] = useState<PublicUserType>();
-  const [ followerCount, setFollowerCount ] = useState(0);
   const [ isFollowing, setIsFollowing ] = useState<boolean>();
 
   useEffect(() => {
@@ -49,7 +48,6 @@ const PublicProfile: React.FC<PublicProfileProps> = (props) => {
       return res.json();
     }).then((data: PublicUserType) => {
       setUser(data);
-      setFollowerCount(data.followers.length);
     });
 
     fetch(`/users/follows/${id}`).then((res) => {
@@ -72,9 +70,15 @@ const PublicProfile: React.FC<PublicProfileProps> = (props) => {
   const followUser = async (id: string) => {
     const res = await fetch(`/users/follow/${id}`, { method: "POST" });
 
-    if (res.ok) {
+    if (res.ok && user) {
+      setUser({
+        ...user,
+        count: {
+          ...user.count,
+          followers: user.count.followers + 1
+        }
+      });
       setIsFollowing(true);
-      setFollowerCount((count) => count + 1);
     }
   };
 
@@ -82,8 +86,14 @@ const PublicProfile: React.FC<PublicProfileProps> = (props) => {
     const res = await fetch(`/users/unfollow/${id}`, { method: "POST" });
 
     if (res.ok) {
+      setUser({
+        ...user,
+        count: {
+          ...user.count,
+          followers: user.count.followers - 1
+        }
+      });
       setIsFollowing(false);
-      setFollowerCount((count) => count - 1);
     }
   };
 
@@ -131,7 +141,7 @@ const PublicProfile: React.FC<PublicProfileProps> = (props) => {
               <div style={{ flexGrow: 1 }}>
                 <div>
                   <p className="heading">{t("Followers")}</p>
-                  <p className="subtitle">{followerCount}</p>
+                  <p className="subtitle">{user.count.followers}</p>
                 </div>
               </div>
             </nav>
