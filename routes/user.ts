@@ -2,6 +2,7 @@ import { Router } from "express";
 import Busboy from "busboy";
 import { v4 as uuid4 } from "uuid";
 import sharp from "sharp";
+import { Op } from "sequelize";
 
 import { db } from "../models";
 import { getExtension, getFromEnvironment, streamToBuffer } from "../util";
@@ -404,6 +405,11 @@ router.get("/profile/:id", authRequired, async (req, res) => {
   // Check if user is an admin
   const admin = await user.isAdmin();
 
+  const postCount = await user.countPosts({ where: { parentPostId: null } });
+  const commentCount = await user.countPosts({ where: { parentPostId: { [Op.not]: null } } });
+  const mediaItemCount = await user.countMediaItems({ where: { dataContainerId: { [Op.not]: null }} });
+  const followerCount = await user.countFollowers();
+
   return res.send({
     id, username,
     image: `${CLOUDFRONT_URL}/${image}`,
@@ -411,7 +417,13 @@ router.get("/profile/:id", authRequired, async (req, res) => {
     posts,
     groups,
     interests,
-    followers
+    followers,
+    count: {
+      posts: postCount,
+      comments: commentCount,
+      mediaItems: mediaItemCount,
+      followers: followerCount
+    }
   });
 });
 
