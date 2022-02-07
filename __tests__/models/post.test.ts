@@ -20,8 +20,10 @@ describe("Post model", () => {
   });
 
   beforeEach(async () => {
-    const { Post } = db.getModels();
+    const { Post, Thread } = db.getModels();
+
     await Post.destroy({ truncate: true });
+    await Thread.destroy({ truncate: true });
   });
 
   it("should create a post with associated data container", async () => {
@@ -187,6 +189,47 @@ describe("Post model", () => {
 
     expect(await Post.findByPk(comment1.id)).toBeNull();
     expect(await Post.findByPk(comment1Child.id)).toBeNull();
+  });
+
+  it("should delete the associated thread if it becomes empty through deleting posts", async () => {
+    const { User, Post, Thread } = db.getModels();
+
+    const thread = await Thread.create({ title: "thread" });
+
+    const post = await Post.create({
+      userId: (await User.findOne({}))!.id,
+      threadId: thread.id
+    });
+
+    const comment1 = await Post.create({
+      userId: (await User.findOne({}))!.id,
+      threadId: thread.id,
+      parentPostId: post.id
+    });
+
+    await Post.create({
+      userId: (await User.findOne({}))!.id,
+      threadId: thread.id,
+      parentPostId: comment1.id
+    });
+
+    await Post.create({
+      userId: (await User.findOne({}))!.id,
+      threadId: thread.id,
+      parentPostId: post.id
+    });
+
+    expect(await Thread.count()).toEqual(1);
+    expect(await thread.countPosts()).toEqual(4);
+
+    await comment1.destroyWithCommentsAndThread();
+
+    expect(await Thread.count()).toEqual(1);
+    expect(await thread.countPosts()).toEqual(2);
+
+    await post.destroyWithCommentsAndThread();
+
+    expect(await Thread.count()).toEqual(0);
   });
 
   it("should retrieve the parent post", async () => {
