@@ -631,15 +631,8 @@ router.delete("/:id", authRequired, async (req, res) => {
 
   if (post) {
     if (post.userId == user.id || user.isAdmin()) {
-      // Get thread that this post belongs to
-      const thread = await post.getThread();
-      // Destroy post and all its children
-      await post.destroyWithComments();
-
-      // Check whether thread has become empty and if so, destroy thread as well
-      if (await thread.countPosts() == 0) {
-        await thread.destroy();
-      }
+      // Destroy post and all its children and thread if it has become empty
+      await post.destroyWithCommentsAndThread();
 
       return res.send({
         status: "OK"

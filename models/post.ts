@@ -117,6 +117,7 @@ export interface PostInstance extends Sequelize.Model<PostAttributes, PostCreati
   countFavourites: Sequelize.HasManyCountAssociationsMixin;
 
   destroyWithComments: () => Promise<void>;
+  destroyWithCommentsAndThread: () => Promise<void>;
   getParentPost: () => Promise<PostInstance | null>;
   getUserGroup: () => Promise<UserGroupInstance | null>;
 }
@@ -171,6 +172,20 @@ export function PostModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mode
     }));
 
     await this.destroy();
+  };
+
+  /**
+   * Deletes the current post instance and all its children recursively. Also
+   * destroys the associated thread if it becomes empty as a result of this
+   * operation.
+   */
+  Post.prototype.destroyWithCommentsAndThread = async function (this: PostInstance) {
+    const thread = await this.getThread();
+    await this.destroyWithComments();
+
+    if (await thread.countPosts() == 0) {
+      await thread.destroy();
+    }
   };
 
   /**
