@@ -163,7 +163,7 @@ export function PostModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mode
   /**
    * Deletes the current post instance and all its children recursively.
    */
-  Post.prototype.destroyWithComments = async function () {
+  Post.prototype.destroyWithComments = async function (this: PostInstance) {
     const comments = await this.getComments();
 
     await Promise.all(comments.map((postComment: PostInstance) => {
@@ -177,7 +177,7 @@ export function PostModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mode
    * Returns the parent post of the current post, or null if it is a top-level
    * post.
    */
-  Post.prototype.getParentPost = async function () {
+  Post.prototype.getParentPost = async function (this: PostInstance) {
     return Post.findByPk(this.parentPostId);
   };
 
@@ -185,7 +185,7 @@ export function PostModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mode
    * Returns the user group that a post was posted in or null if associations
    * could not be queried.
    */
-  Post.prototype.getUserGroup = async function (): Promise<UserGroupInstance | null> {
+  Post.prototype.getUserGroup = async function (this: PostInstance): Promise<UserGroupInstance | null> {
     const { Topic, UserGroup } = db.getModels();
 
     const thread = await (this as PostInstance).getThread({
