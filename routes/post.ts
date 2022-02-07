@@ -292,6 +292,10 @@ router.get("/all/group", authRequired, async (req, res) => {
       model: UserGroup,
       attributes: [],
       where: { id: groups.map((g) => g.id) }
+    }, {
+      model: Thread,
+      attributes: [],
+      required: true
     }]
   });
 
