@@ -618,6 +618,9 @@ router.post("/:id", authRequired, async (req, res) => {
 /**
  * Deletes the post associated to the given id. Also deletes all child posts
  * recursively. Returns HTTP 404 if the post with the given id cannot be found.
+ *
+ * If, as a result of this operation, the associated thread record loses all
+ * children, it is also deleted.
  */
 router.delete("/:id", authRequired, async (req, res) => {
   const { id } = req.params;
@@ -628,7 +631,15 @@ router.delete("/:id", authRequired, async (req, res) => {
 
   if (post) {
     if (post.userId == user.id || user.isAdmin()) {
+      // Get thread that this post belongs to
+      const thread = await post.getThread();
+      // Destroy post and all its children
       await post.destroyWithComments();
+
+      // Check whether thread has become empty and if so, destroy thread as well
+      if (await thread.countPosts() == 0) {
+        await thread.destroy();
+      }
 
       return res.send({
         status: "OK"
