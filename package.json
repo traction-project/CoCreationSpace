@@ -73,5 +73,6 @@
     "ts-jest": "^26.4.3",
     "typedoc": "^0.17.6",
     "webpack-node-externals": "^2.5.2"
-  }
+  },
+  "packageManager": "yarn@3.1.1"
 }
