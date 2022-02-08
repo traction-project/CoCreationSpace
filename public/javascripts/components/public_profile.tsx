@@ -48,12 +48,10 @@ const PublicProfile: React.FC<PublicProfileProps> = (props) => {
       return res.json();
     }).then((data: PublicUserType) => {
       setUser(data);
-    });
 
-    fetch(`/users/follows/${id}`).then((res) => {
-      return res.json();
-    }).then(({ follows }) => {
-      setIsFollowing(follows);
+      setIsFollowing(data.followers.find((u) => {
+        return u.id == props.login.user?.id;
+      }) != undefined);
     });
   }, []);
 
@@ -70,7 +68,7 @@ const PublicProfile: React.FC<PublicProfileProps> = (props) => {
   const followUser = async (id: string) => {
     const res = await fetch(`/users/follow/${id}`, { method: "POST" });
 
-    if (res.ok && user) {
+    if (res.ok) {
       setUser({
         ...user,
         count: {
