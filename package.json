@@ -10,6 +10,9 @@
     "doc": "typedoc --out docs/ --mode file --exclude node_modules/ --ignoreCompilerErrors .",
     "build": "webpack"
   },
+  "workspaces": [
+    "public"
+  ],
   "dependencies": {
     "aws-sdk": "^2.863.0",
     "busboy": "^0.3.1",
