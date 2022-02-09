@@ -105,7 +105,7 @@ describe("NoteCollection model", () => {
     expect(associatedUser.username).toEqual("admin");
   });
 
-  it("should be able to query a NoteCollection with user_id", async () => {
+  it("should be able to query a NoteCollection with userId", async () => {
     const { User, NoteCollection } = db.getModels();
 
     const user = await User.create({
@@ -121,7 +121,7 @@ describe("NoteCollection model", () => {
 
     const result = await NoteCollection.findOne({
       where: {
-        user_id: user.id
+        userId: user.id
       }
     });
 

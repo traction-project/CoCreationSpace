@@ -57,7 +57,7 @@ router.post("/collection/:id", authRequired, async (req, res) => {
   const { NoteCollection } = db.getModels();
   const collection = await NoteCollection.findOne({
     where: {
-      id, user_id: user.id
+      id, userId: user.id
     }
   });
 
@@ -95,7 +95,7 @@ router.get("/collection/:id", authRequired, async (req, res) => {
 
   const collection = await NoteCollection.findOne({
     where: {
-      id, user_id: user.id
+      id, userId: user.id
     },
     include: ["mediaItems"]
   });
@@ -122,7 +122,7 @@ router.delete("/collection/:id", authRequired, async (req, res) => {
 
   const collection = await NoteCollection.findOne({
     where: {
-      id, user_id: user.id
+      id, userId: user.id
     },
     include: ["mediaItems"]
   });
@@ -154,7 +154,7 @@ router.post("/add/:collectionId/:mediaItemId", authRequired, async (req, res) =>
 
   const noteCollection = await NoteCollection.findOne({
     where: {
-      id: collectionId, user_id: user.id
+      id: collectionId, userId: user.id
     }
   });
 
@@ -194,7 +194,7 @@ router.post("/remove/:collectionId/:mediaItemId", authRequired, async (req, res)
 
   const noteCollection = await NoteCollection.findOne({
     where: {
-      id: collectionId, user_id: user.id
+      id: collectionId, userId: user.id
     }
   });
 
