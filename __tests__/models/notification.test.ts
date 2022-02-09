@@ -11,16 +11,13 @@ import { db } from "../../models";
 describe("Notifications model", () => {
   beforeAll(async () => {
     await db.createDB(sequelize);
-
-    const { User } = db.getModels();
-    await User.create({
-      username: "admin"
-    });
   });
 
   beforeEach(async () => {
-    const { Notification } = db.getModels();
+    const { Notification, User } = db.getModels();
+
     await Notification.destroy({ truncate: true });
+    await User.destroy({ truncate: true });
   });
 
   it("should create an empty notification", async () => {
@@ -49,7 +46,7 @@ describe("Notifications model", () => {
   it("should create a notification an associate it to a user", async () => {
     const { Notification, User } = db.getModels();
 
-    const user = await User.findOne({ where: { username: "admin" }});
+    const user = await User.create({ username: "admin" });
     const notification = await Notification.build({
       data: { text: "Hello World" }
     }).save();
@@ -65,7 +62,7 @@ describe("Notifications model", () => {
   it("should create a notification and retrieve the user through the getUser method", async () => {
     const { Notification, User } = db.getModels();
 
-    const user = await User.findOne({ where: { username: "admin" }});
+    const user = await User.create({ username: "admin" });
     const notification = await Notification.build({
       data: { text: "Hello World" }
     }).save();
@@ -80,7 +77,7 @@ describe("Notifications model", () => {
   it("should create a notification and set the user through user id", async () => {
     const { Notification, User } = db.getModels();
 
-    const user = (await User.findOne({ where: { username: "admin" }}))!;
+    const user = await User.create({ username: "admin" });
     const notification = await Notification.build({
       data: { text: "Hello World" }
     }).save();
@@ -95,7 +92,7 @@ describe("Notifications model", () => {
 
   it("should allow to query all notifications from an user instance", async () => {
     const { Notification, User } = db.getModels();
-    const user = (await User.findOne({ where: { username: "admin" }}))!;
+    const user = await User.create({ username: "admin" });
 
     let notification = await Notification.build({
       data: { text: "Hello World" }
@@ -119,7 +116,7 @@ describe("Notifications model", () => {
   it("should allow user IDs in where statements", async () => {
     const { Notification, User } = db.getModels();
 
-    const user = (await User.findOne({ where: { username: "admin" }}))!;
+    const user = await User.create({ username: "admin" });
     const notification = await Notification.build({
       data: { text: "Hello World" }
     }).save();
@@ -175,5 +172,78 @@ describe("Notifications model", () => {
     for (const method of expectedMethods) {
       expect(availableMethods).toContain(method);
     }
+  });
+
+  it("should create a notification with user ID", async () => {
+    const { Notification, User } = db.getModels();
+    const user = await User.create({ username: "admin" });
+
+    const notification = await Notification.create({
+      data: { title: "some notification" },
+      userId: user.id,
+      hash: "some_hash"
+    });
+
+    const notificationUser = await notification.getUser();
+
+    expect(notificationUser).not.toBeNull();
+    expect(notificationUser.id).toEqual(user.id);
+    expect(notificationUser.username).toEqual("admin");
+  });
+
+  it("should retrieve all notifications for a user which were not seen yet", async () => {
+    const { Notification, User } = db.getModels();
+
+    const user = await User.create({ username: "admin" });
+    const otherUser = await User.create({ username: "test" });
+
+    await Notification.create({ data: {}, hash: "some_hash", userId: user.id });
+    await Notification.create({ data: {}, hash: "some_hash", userId: user.id });
+    await Notification.create({ data: {}, hash: "some_hash", userId: user.id, seen: true });
+    await Notification.create({ data: {}, hash: "some_hash", userId: otherUser.id, seen: true });
+    await Notification.create({ data: {}, hash: "some_hash", userId: otherUser.id });
+
+    const notificationsUser = await Notification.findAll({
+      where: {
+        userId: user.id,
+        seen: false
+      }
+    });
+
+    expect(notificationsUser.length).toEqual(2);
+
+    const notificationsOther = await Notification.findAll({
+      where: {
+        userId: otherUser.id,
+        seen: false
+      }
+    });
+
+    expect(notificationsOther.length).toEqual(1);
+  });
+
+  it("should retrieve all notifications for a user", async () => {
+    const { Notification, User } = db.getModels();
+
+    const user = await User.create({ username: "admin" });
+    const otherUser = await User.create({ username: "test" });
+
+    await Notification.create({ data: {}, hash: "some_hash", userId: user.id });
+    await Notification.create({ data: {}, hash: "some_hash", userId: user.id });
+    await Notification.create({ data: {}, hash: "some_hash", userId: user.id, seen: true });
+    await Notification.create({ data: {}, hash: "some_hash", userId: otherUser.id, seen: true });
+    await Notification.create({ data: {}, hash: "some_hash", userId: otherUser.id });
+
+    const notificationsUser = await Notification.findAll({
+      where: { userId: user.id }
+    });
+
+    expect(notificationsUser.length).toEqual(3);
+
+    const notificationsOther = await Notification.findAll({
+      where: { userId: otherUser.id }
+    });
+
+    expect(notificationsOther.length).toEqual(2);
   });
 });
