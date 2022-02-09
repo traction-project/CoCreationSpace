@@ -8,6 +8,7 @@ export interface NotificationAttributes extends CommonAttributes {
   data: any;
   seen?: boolean;
   user?: UserAttributes | UserAttributes["id"];
+  userId?: UserAttributes["id"];
   hash?: string;
 }
 

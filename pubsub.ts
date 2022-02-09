@@ -147,9 +147,9 @@ async function prepareInterestNotification(post: PostInstance): Promise<Notifica
       // Create notification in database
       const notification = await Notification.create({
         data,
-        user_id: recipient.id,
+        userId: recipient.id,
         hash: notificationDataHash
-      } as any);
+      });
 
       console.log("Sending topic notification to", sockets.length, "connections...");
 
@@ -218,9 +218,9 @@ async function preparePostNotification(post: PostInstance): Promise<Notification
       // Create notification in database
       const notification = await Notification.create({
         data,
-        user_id: recipient.id,
+        userId: recipient.id,
         hash: notificationDataHash
-      } as any);
+      });
 
       console.log("Sending post reply notification to", sockets.length, "connections...");
 
@@ -294,7 +294,7 @@ async function prepareSubscriberNotification(post: PostInstance): Promise<Notifi
       data,
       userId: recipient.id,
       hash: notificationDataHash
-    } as any);
+    });
 
     console.log("Sending subscriber notification to", sockets.length, "connections...");
 

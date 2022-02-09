@@ -16,7 +16,7 @@ router.get("/", authRequired, async (req, res) => {
   // TODO Type definitions of models need to be adapted so this is possible
   // without the cast to 'any'
   const notifications = await Notification.findAll({
-    where: { user_id: user.id } as any,
+    where: { userId: user.id },
     order: [["createdAt", "DESC"]]
   });
 
@@ -42,7 +42,7 @@ router.get("/new", authRequired, async (req, res) => {
   // TODO Type definitions of models need to be adapted so this is possible
   // without the cast to 'any'
   const notifications = await Notification.findAll({
-    where: { user_id: user.id, seen: false } as any,
+    where: { userId: user.id, seen: false },
     order: [["createdAt", "DESC"]]
   });
 
