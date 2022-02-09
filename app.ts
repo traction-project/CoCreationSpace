@@ -11,6 +11,7 @@ import fs from "fs";
 import passport from "passport";
 import aws from "aws-sdk";
 import Umzug from "umzug";
+import expressStaticGzip from "express-static-gzip";
 
 dotenv.config({ path: process.env.ENV_FILE_PATH });
 aws.config.loadFromPath(process.env.AWS_CREDENTIAL_FILE_PATH || "./aws.json");
@@ -122,7 +123,9 @@ async function setupServer(): Promise<http.Server> {
 
     app.use(express.urlencoded({ extended: false }));
     app.use(cookieParser());
-    app.use(express.static(path.join(__dirname, "public")));
+    app.use("/", expressStaticGzip(path.join(__dirname, "public"), {
+      index: false
+    }));
 
     app.use("/", indexRouter);
 
