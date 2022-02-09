@@ -4,7 +4,6 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import classNames from "classnames";
-import usePortal from "react-useportal";
 
 import { CommonType, convertHMS, EmojiReaction } from "../../util";
 import UserLogo, { UserType } from "../user_logo";
@@ -18,10 +17,11 @@ import MediaPlayerWithToolbar from "../media_player_with_toolbar";
 import { LoginState } from "../../reducers/login";
 import { ApplicationState } from "../../store";
 import File from "../file";
-import DeletePostModal from "./delete_post_modal";
 import NoteIcon from "./note_icon";
 import { VideoChapter } from "../media_player_with_chapters";
 import FavouriteToggle from "./favourite_toggle";
+import ButtonWithConfirmation from "../button_with_confirmation";
+import { deletePost } from "../../services/post.service";
 
 export interface MultimediaItem {
   id: string;
@@ -84,7 +84,6 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
   const idPost = props.post ? props.post.id : id!;
   const { callbackClickTime, login: { user } } = props;
   const currentTime = useRef(0);
-  const { isOpen, openPortal, closePortal, Portal } = usePortal();
 
   const [ post, setPost ] = useState<PostType>();
   const [ isLike, setIsLike ] = useState<boolean>(false);
@@ -176,10 +175,14 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
     }
   };
 
-  const handleDeletePost = (postDeleted: boolean) => {
-    if (postDeleted) {
-      navigate(-1);
-    }
+  const handleDeletePost = (id: string) => {
+    return async () => {
+      const res = await deletePost(id);
+
+      if (res.ok) {
+        navigate(-1);
+      }
+    };
   };
 
   if (!post) {
@@ -216,7 +219,17 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
                           <>
                             <Link to="/upload" state={{ id: post.id }}>{t("Edit")}</Link>
                             &emsp;
-                            <a onClick={openPortal}>{t("Delete")}</a>
+                            <ButtonWithConfirmation
+                              labels={{
+                                header: t("Delete Post"),
+                                body: t("Are you sure you want to delete this post?"),
+                                confirm: t("Delete")
+                              }}
+                              onConfirm={handleDeletePost(post.id)}
+                              render={(onClick) => (
+                                <a onClick={onClick}>{t("Delete")}</a>
+                              )}
+                            />
                           </>
                         )}
                       </small>
@@ -362,16 +375,6 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
           </div>
         )}
       </div>
-
-      {isOpen && (
-        <Portal>
-          <DeletePostModal
-            id={idPost}
-            onDelete={handleDeletePost}
-            onClose={closePortal}
-          />
-        </Portal>
-      )}
     </section>
   );
 };
