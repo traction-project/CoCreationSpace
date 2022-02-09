@@ -59,6 +59,21 @@ describe("Data container model", () => {
     expect(postSaved.title).toEqual(post.title);
   });
 
+  it("should retrieve a data container by querying its post ID", async () => {
+    const { DataContainer, Post } = db.getModels();
+
+    const dataContainer = await DataContainer.create({ textContent: "text" });
+    const post = await Post.create({ title: "post" });
+    await dataContainer.setPost(post);
+
+    const result = await DataContainer.findOne({ where: {
+      postId: post.id
+    }});
+
+    expect(result).not.toBeNull();
+    expect(result!.id).toEqual(dataContainer.id);
+  });
+
   it("should return true when audio content has a certain multimedia", async () => {
     const { DataContainer, MediaItem } = db.getModels();
 

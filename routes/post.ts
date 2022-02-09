@@ -497,7 +497,7 @@ router.post("/:id/edit", authRequired, async (req, res) => {
   const { Post, DataContainer, Tag } = db.getModels();
   const user = req.user as UserInstance;
   const post = await Post.findByPk(id);
-  const dataContainer = await DataContainer.findOne({ where: { post_id: id } as any });
+  const dataContainer = await DataContainer.findOne({ where: { postId: id }});
 
   if (post && dataContainer) {
     const thread = await post.getThread();
