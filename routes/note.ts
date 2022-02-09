@@ -111,6 +111,37 @@ router.get("/collection/:id", authRequired, async (req, res) => {
 });
 
 /**
+ * Deletes the note collection with the given ID, provided it belongs to the
+ * current user.
+ */
+router.delete("/collection/:id", authRequired, async (req, res) => {
+  const user = req.user as UserInstance;
+  const { id } = req.params;
+
+  const { NoteCollection } = db.getModels();
+
+  const collection = await NoteCollection.findOne({
+    where: {
+      id, user_id: user.id
+    },
+    include: ["mediaItems"]
+  });
+
+  if (!collection) {
+    return res.status(400).send({
+      status: "ERR",
+      message: "No such collection"
+    });
+  }
+
+  await collection.destroy();
+
+  res.send({
+    status: "OK"
+  });
+});
+
+/**
  * Add the media item given by `mediaItemId` to the collection given by
  * `collectionId`. The function verifies that the collection belongs to the
  * current user before adding the media item to the collection.
