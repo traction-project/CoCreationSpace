@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useTranslation, Trans } from "react-i18next";
 import { useForm } from "react-hook-form";
 
@@ -11,6 +11,7 @@ import Image from "../image";
 import File from "../file";
 import Thumbnail from "../thumbnail";
 import DeleteIcon from "../post/delete_icon";
+import ButtonWithConfirmation from "../button_with_confirmation";
 
 interface NoteEntryProps {
 }
@@ -18,6 +19,7 @@ interface NoteEntryProps {
 const NoteEntry: React.FC<NoteEntryProps> = (props) => {
   const { id } = useParams<{ id: string }>();
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const { handleSubmit, register } = useForm();
 
   const [ noteCollection, setNoteCollection ] = useState<NoteCollection>();
@@ -109,6 +111,19 @@ const NoteEntry: React.FC<NoteEntryProps> = (props) => {
     }
   };
 
+  const onDeleteCollection = (id: string) => {
+    return async () => {
+      console.log("deleting collection", id);
+      const res = await fetch(`/notes/collection/${id}`, {
+        method: "DELETE"
+      });
+
+      if (res.ok) {
+        navigate("/notes");
+      }
+    };
+  };
+
   if (!noteCollection) {
     return null;
   }
@@ -143,7 +158,22 @@ const NoteEntry: React.FC<NoteEntryProps> = (props) => {
           ) : (
             <>
               {name}
-              <button className="button is-small is-pulled-right" onClick={() => setEditName(true)}>
+
+              <ButtonWithConfirmation
+                labels={{
+                  header: t("Delete Collection"),
+                  body: t("Are you sure you want to delete this collection?"),
+                  confirm: t("Delete")
+                }}
+                onConfirm={onDeleteCollection(id!)}
+                render={(onClick) => (
+                  <button className="button is-small is-danger is-pulled-right" onClick={onClick}>
+                    {t("Delete")}
+                  </button>
+                )}
+              />
+
+              <button className="button is-small is-pulled-right mr-2" onClick={() => setEditName(true)}>
                 {t("Edit")}
               </button>
             </>
