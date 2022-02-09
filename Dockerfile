@@ -5,7 +5,7 @@ WORKDIR /code
 
 RUN yarn install && \
     yarn build && \
-    yarn cache clean && \
+    yarn cache clean --all && \
     rm -rf node_modules/
 
 FROM troeggla/node-traction-mediavault:alpine-3.11 AS backend
@@ -19,7 +19,7 @@ COPY --from=frontend /code public/
 
 RUN yarn install && \
     yarn build && \
-    yarn cache clean
+    yarn cache clean --all
 
 EXPOSE 3000
 CMD ["yarn", "start"]
