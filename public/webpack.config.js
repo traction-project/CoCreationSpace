@@ -1,4 +1,5 @@
 const webpack = require("webpack");
+const CompressionPlugin = require("compression-webpack-plugin");
 
 const frontend = {
   mode: process.env.NODE_ENV || "development",
@@ -21,6 +22,9 @@ const frontend = {
       "path": false
     }
   },
+  plugins: [
+    new CompressionPlugin()
+  ],
   module: {
     rules: [
       {
