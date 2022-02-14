@@ -8,7 +8,6 @@ import { UserInstance } from "../models/user";
 import association from "../models/associations";
 import { TagInstance } from "models/tag";
 import { PostInstance, PostAttributes } from "models/post";
-import { MediaItemAttributes } from "../models/media_item";
 
 const [ CLOUDFRONT_URL ] = getFromEnvironment("CLOUDFRONT_URL");
 const router = Router();
@@ -356,17 +355,14 @@ router.get("/:id", authRequired, async (req, res) => {
       post.user.image = `${CLOUDFRONT_URL}/${post.user.image}`;
     }
 
-    if (post.dataContainer && post.dataContainer instanceof Object) {
-      const { mediaItem } = post.dataContainer;
-
-      if (mediaItem && mediaItem.length > 0) {
-        post.dataContainer.mediaItem = (mediaItem as Array<MediaItemAttributes>).map(
-          (multimedia: MediaItemAttributes) => multimedia.title = `${CLOUDFRONT_URL}/${multimedia.title}`
-        );
-      }
+    if (post.dataContainer) {
+      post.dataContainer.mediaItems?.forEach((mediaItem) => {
+        mediaItem.title = `${CLOUDFRONT_URL}/${mediaItem.title}`;
+      });
     }
 
-    const postJSON = post.toJSON();
+    const postJSON: any = post.toJSON();
+
     const result = {
       likes,
       isLiked,
