@@ -9,7 +9,7 @@ export interface DataContainerAttributes extends CommonAttributes{
     textContent?: string;
     postId?: string;
     post?: PostAttributes | PostAttributes["id"];
-    mediaItem?: MediaItemAttributes[] | MediaItemAttributes["id"][];
+    mediaItems?: MediaItemAttributes[];
 }
 
 type DataContainerCreationAttributes = Optional<DataContainerAttributes, "id" | "createdAt" | "updatedAt">;

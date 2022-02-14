@@ -17,7 +17,7 @@ export interface PostAttributes extends CommonAttributes{
   threadId?: string;
   multimediaRef?: string;
   karmaPoints?: number;
-  dataContainer?: DataContainerAttributes | DataContainerAttributes["id"];
+  dataContainer?: DataContainerAttributes;
   comments?: PostAttributes | PostAttributes["id"];
   likedUsers?: UserAttributes | UserAttributes["id"];
   parentPost?: PostAttributes | PostAttributes["id"];
