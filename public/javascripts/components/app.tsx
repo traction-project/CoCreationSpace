@@ -10,6 +10,7 @@ import GlobalStyles from "../global_styles";
 import Startup from "./startup";
 import Login from "./login";
 import Home from "./home";
+import NotFound from "./not_found";
 import CreatePost from "./post/create_post";
 import Post from "./post/post";
 import PrivateRoute from "./private_route";
@@ -74,6 +75,7 @@ const App: React.FC<AppProps> = () => {
                   <Route path="/note/:id" element={<NoteEntry />} />
                   <Route path="/" element={<PostList endpoint="/posts/all/group" />} />
                 </Route>
+                <Route path="*" element={<NotFound />} />
               </Routes>
             </HistoryTracker>
           </Router>
