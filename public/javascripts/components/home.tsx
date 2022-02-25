@@ -1,23 +1,11 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { Dispatch, bindActionCreators } from "redux";
-import { connect } from "react-redux";
 
-import { ApplicationState } from "../store";
-import { actionCreators as loginActionCreators, LoginActions } from "../actions/login";
-import { LoginState } from "../reducers/login";
 import LanguageSwitcher from "./language_switcher";
 
-interface HomeActionProps {
-  loginActions: LoginActions
+interface HomeProps {
 }
-
-interface HomeConnectedProps {
-  login: LoginState;
-}
-
-type HomeProps = HomeActionProps & HomeConnectedProps;
 
 const Home: React.FC<HomeProps> = (props) => {
   const { t } = useTranslation();
@@ -61,16 +49,4 @@ const Home: React.FC<HomeProps> = (props) => {
   );
 };
 
-function mapStateToProps(state: ApplicationState): HomeConnectedProps {
-  return {
-    login: state.login
-  };
-}
-
-function mapDispatchToProps(dispatch: Dispatch) {
-  return {
-    loginActions: bindActionCreators(loginActionCreators, dispatch)
-  };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default Home;
