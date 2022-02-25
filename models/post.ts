@@ -120,6 +120,7 @@ export interface PostInstance extends Sequelize.Model<PostAttributes, PostCreati
   destroyWithCommentsAndThread: () => Promise<void>;
   getParentPost: () => Promise<PostInstance | null>;
   getUserGroup: () => Promise<UserGroupInstance | null>;
+  countAllComments: () => Promise<number>;
 }
 
 /**
@@ -217,6 +218,20 @@ export function PostModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mode
     }
 
     return (thread.topic as any).userGroup;
+  };
+
+  /**
+   * Counts all comments of the given post recursively and returns the count.
+   */
+  Post.prototype.countAllComments = async function (this: PostInstance): Promise<number> {
+    const comments = await this.getComments({ attributes: ["id"] });
+    let childCommentLength = comments.length;
+
+    for (const comment of comments) {
+      childCommentLength += await comment.countAllComments();
+    }
+
+    return childCommentLength;
   };
 
   return Post;
