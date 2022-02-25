@@ -4,7 +4,7 @@ import { Op, WhereOptions } from "sequelize";
 import { db } from "../models";
 import { isUser, getFromEnvironment } from "../util";
 import { authRequired } from "../util/middleware";
-import { UserInstance } from "../models/user";
+import { UserAttributes, UserInstance } from "../models/user";
 import association from "../models/associations";
 import { TagInstance } from "models/tag";
 import { PostInstance, PostAttributes } from "models/post";
@@ -300,13 +300,29 @@ router.get("/all/group", authRequired, async (req, res) => {
 
   await logSearchQuery(req.query["q"] as string, posts.count, user);
 
-  posts.rows.forEach(post => {
-    if (post.user && isUser(post.user)) {
-      post.user.image = `${CLOUDFRONT_URL}/${post.user.image}`;
-    }
-  });
+  const mappedPostRows = await Promise.all(posts.rows.map(async (p) => {
+    const post = p.toJSON() as PostAttributes;
+    const user = post.user as UserAttributes;
 
-  res.send({ posts, tags, groups, interests });
+    return {
+      ...post,
+      user: {
+        ...user,
+        image: `${CLOUDFRONT_URL}/${user.image}`
+      },
+      commentCount: await p.countAllComments()
+    };
+  }));
+
+  res.send({
+    posts: {
+      count: posts.count,
+      rows: mappedPostRows
+    },
+    tags,
+    groups,
+    interests
+  });
 });
 
 /**
