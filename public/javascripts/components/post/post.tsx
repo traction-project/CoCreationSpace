@@ -45,6 +45,7 @@ export interface PostType extends CommonType {
   parentPostId: string;
   dataContainer?: DataContainerType;
   comments?: PostType[];
+  commentCount?: number;
   karmaPoints?: number;
   multimediaRef?: string;
   postReference?: PostType[];
