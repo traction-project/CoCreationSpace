@@ -29,7 +29,7 @@ const Header: React.FC<HeaderProps> = (props) => {
 
   useEffect(() => {
     if (props.login.loggedIn == false) {
-      navigate("/login");
+      navigate("/home");
     }
   }, [props.login.loggedIn]);
 
