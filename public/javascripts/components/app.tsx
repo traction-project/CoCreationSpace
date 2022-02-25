@@ -9,6 +9,7 @@ import GlobalStyles from "../global_styles";
 
 import Startup from "./startup";
 import Login from "./login";
+import Home from "./home";
 import CreatePost from "./post/create_post";
 import Post from "./post/post";
 import PrivateRoute from "./private_route";
@@ -58,6 +59,7 @@ const App: React.FC<AppProps> = () => {
               <Routes>
                 <Route path="/signup" element={<Signup />} />
                 <Route path="/login" element={<Login />} />
+                <Route path="/home" element={<Home />} />
                 <Route path="/requestreset" element={<RequestReset />} />
                 <Route path="/resetpassword/:resettoken" element={<ResetPassword />} />
                 <Route element={<PrivateRoute />}>
