@@ -297,6 +297,71 @@ describe("Post model", () => {
     expect(associatedGroup).toBeNull();
   });
 
+  it("should return 0 for comment count if a post has no comments", async () => {
+    const { User, Post } = db.getModels();
+
+    const post = await Post.create({
+      userId: (await User.findOne({}))!.id,
+    });
+
+    expect(await post.countAllComments()).toEqual(0);
+  });
+
+  it("should count a post's comments if the post only has top-level comments", async () => {
+    const { User, Post } = db.getModels();
+
+    const post = await Post.create({
+      userId: (await User.findOne({}))!.id,
+    });
+
+    await Post.create({
+      userId: (await User.findOne({}))!.id,
+      parentPostId: post.id
+    });
+
+    await Post.create({
+      userId: (await User.findOne({}))!.id,
+      parentPostId: post.id
+    });
+
+    expect(await post.countAllComments()).toEqual(2);
+  });
+
+  it("should count a post's comments recursively", async () => {
+    const { User, Post } = db.getModels();
+
+    const post = await Post.create({
+      userId: (await User.findOne({}))!.id,
+    });
+
+    const comment1 = await Post.create({
+      userId: (await User.findOne({}))!.id,
+      parentPostId: post.id
+    });
+
+    const comment2 = await Post.create({
+      userId: (await User.findOne({}))!.id,
+      parentPostId: comment1.id
+    });
+
+    await Post.create({
+      userId: (await User.findOne({}))!.id,
+      parentPostId: comment2.id
+    });
+
+    const comment3 = await Post.create({
+      userId: (await User.findOne({}))!.id,
+      parentPostId: post.id
+    });
+
+    await Post.create({
+      userId: (await User.findOne({}))!.id,
+      parentPostId: comment3.id
+    });
+
+    expect(await post.countAllComments()).toEqual(5);
+  });
+
   it("should add a post to a user's favourites", async () => {
     const { User, Post } = db.getModels();
 
