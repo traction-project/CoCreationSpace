@@ -53,8 +53,8 @@ const PostEntry: React.FC<PostEntryProps> = (props) => {
           {(post.published) && (
             <p className="mt-2">
               <i className="far fa-comment" />&nbsp;
-              {post.comments?.length || 0}&nbsp;
-              {t("Comment", { count: post.comments?.length || 0 })}
+              {post.commentCount || 0}&nbsp;
+              {t("Comment", { count: post.commentCount || 0 })}
             </p>
           )}
         </div>
