@@ -170,11 +170,15 @@ const JoinGroupForm: React.FC<JoinGroupFormProps> = (props) => {
   });
 
   const isSubmitDisabled = () => {
-    if (groups.length == 1 && groups[0].status == "joined") {
-      return false;
+    if (multiSelect) {
+      if (groups.length == 1 && groups[0].status == "joined") {
+        return false;
+      }
+
+      return selectableGroups.filter((g) => g.status == "joined").length == 0 || getRemainingGroups().length == 0;
     }
 
-    return selectableGroups.filter((g) => g.status == "joined").length == 0 || getRemainingGroups().length == 0;
+    return groups.filter((g) => g.status == "joined").length == 0;
   };
 
   return (
