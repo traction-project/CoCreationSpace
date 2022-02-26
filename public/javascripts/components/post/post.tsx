@@ -86,6 +86,8 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
   const { callbackClickTime, login: { user } } = props;
   const currentTime = useRef(0);
 
+  const isComment = props.post != undefined;
+
   const [ post, setPost ] = useState<PostType>();
   const [ isLike, setIsLike ] = useState<boolean>(false);
   const [ likes, setLikes ] = useState<number>(0);
@@ -155,6 +157,10 @@ const Post: React.FC<PostProps & PostConnectedProps> = (props) => {
         const data = await responsePost.json();
         setPost(data);
         setComments(data.comments);
+      }
+
+      if (isComment) {
+        setShowNewComment(false);
       }
     }
   };
