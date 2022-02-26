@@ -169,7 +169,10 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
               page={parseInt(filters.get("page") || "1")}
               perPage={parseInt(filters.get("perPage") || "15")}
               totalItems={totalPostCount}
-              onPageUpdated={(n) => updateFilter({ ...fromEntries(filters), page: n.toString() })}
+              onPageUpdated={(n) => {
+                updateFilter({ ...fromEntries(filters), page: n.toString() });
+                window.scrollTo(0, 0);
+              }}
             />
           </div>
 
