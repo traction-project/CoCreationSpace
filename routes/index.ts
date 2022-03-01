@@ -187,6 +187,22 @@ router.post("/resetpassword", async (req, res) => {
   });
 });
 
+/**
+ * Validates a given reset token and returns whether the token exists or not in
+ * the response.
+ */
+router.get("/token/:token/valid", async (req, res) => {
+  const { User } = db.getModels();
+  const { token } = req.params;
+
+  const user = await User.findOne({ where: { resettoken: token }});
+
+  res.send({
+    status: "OK",
+    valid: user != null
+  });
+});
+
 router.get("/loginstatus", (req, res) => {
   res.send({
     loggedIn: req.user !== undefined
