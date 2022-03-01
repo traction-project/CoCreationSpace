@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -14,6 +14,16 @@ const ResetPassword: React.FC<ResetPasswordProps> = (props) => {
   const navigate = useNavigate();
 
   const [ hasError, setHasError ] = useState(false);
+  const [ isTokenValid, setIsTokenValid ] = useState(false);
+
+  useEffect(() => {
+    fetch(`/token/${resettoken}/valid`).then((res) => {
+      return res.json();
+    }).then(({ valid }) => {
+      setIsTokenValid(valid);
+      console.log({ valid });
+    });
+  }, [resettoken]);
 
   const onSubmit = handleSubmit(async ({ password }) => {
     const res = await fetch("/resetpassword", {
@@ -29,6 +39,11 @@ const ResetPassword: React.FC<ResetPasswordProps> = (props) => {
       setHasError(true);
     }
   });
+
+  const isSubmitDisabled =
+    !isTokenValid ||
+    (watch("password") || "").length == 0 ||
+    watch("password") != watch("confirmation");
 
   return (
     <section className="hero is-fullheight-with-navbar">
@@ -88,7 +103,7 @@ const ResetPassword: React.FC<ResetPasswordProps> = (props) => {
                 </div>
 
                 <div className="field">
-                  <button type="submit" disabled={(watch("password") || "").length == 0} className="button is-info">
+                  <button type="submit" disabled={isSubmitDisabled} className="button is-info">
                     {t("Reset password")}
                   </button>
                 </div>
