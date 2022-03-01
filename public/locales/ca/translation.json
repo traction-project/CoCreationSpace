@@ -84,7 +84,7 @@
     "notification-text-comment": "S'ha enviat un nou comentari al tema <1><0>{{topicTitle}}</0></1>",
     "notification-title": "Nova publicació al tema <1>{{topicTitle}}</1>",
     "processing-message": "S'han pujat tots els fitxers. Pots afegir més fitxers o prémer <1>Envia</1>  quan hagis omplert el formulari de sota. Els vídeos que encara s'estiguin processant es processaran en segon pla.",
-    "registration-error-unknown": "registre-error-desconegut,<0>El registre ha fallat.</0> S'ha produït un error desconegut.",
+    "registration-error-unknown": "<0>El registre ha fallat.</0> S'ha produït un error desconegut.",
     "registration-error-username-exists": "<0>El registre ha fallat.</0> Aquest nom d'usuari ja existeix.",
     "required": "obligatori",
     "view-count": "<0>{{viewCount}}</0> visualitzacions",
