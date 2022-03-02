@@ -2,7 +2,7 @@ import { Router } from "express";
 import Busboy from "busboy";
 import { v4 as uuid4 } from "uuid";
 import sharp from "sharp";
-import { Op } from "sequelize";
+import { Op, col } from "sequelize";
 
 import { db } from "../models";
 import { getExtension, getFromEnvironment, streamToBuffer } from "../util";
@@ -265,7 +265,7 @@ router.get("/favourites", authRequired, async (req, res) => {
   const user = req.user as UserInstance;
 
   const favourites = await user.getFavourites({
-    order: [["createdAt", "DESC"]],
+    order: [[col("favourite.created_at"), "DESC"]],
     include: [
       {
         model: DataContainer, include: [{
