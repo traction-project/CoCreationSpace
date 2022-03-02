@@ -8,7 +8,8 @@ import { db } from "../models";
 import { getExtension, getFromEnvironment, streamToBuffer } from "../util";
 import { authRequired } from "../util/middleware";
 import { uploadToS3 } from "../util/s3";
-import { UserInstance } from "models/user";
+import { UserInstance } from "../models/user";
+import { PostAttributes } from "../models/post";
 
 const [ BUCKET_NAME, CLOUDFRONT_URL ] = getFromEnvironment("BUCKET_NAME", "CLOUDFRONT_URL");
 const router = Router();
@@ -284,7 +285,14 @@ router.get("/favourites", authRequired, async (req, res) => {
     ]
   });
 
-  return res.send(favourites);
+  return res.send(await Promise.all(favourites.map(async (p) => {
+    const post = p.toJSON() as PostAttributes;
+
+    return {
+      ...post,
+      commentCount: await p.countAllComments()
+    };
+  })));
 });
 
 /**
