@@ -152,13 +152,13 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
             </div>
 
             <div>
-              {posts.map((post, index) => {
+              {posts.map((post) => {
                 return (
-                  <React.Fragment key={index}>
+                  <React.Fragment key={post.id}>
                     {(selectedTab == "text") ? (
-                      <PostEntry key={index} post={post} />
+                      <PostEntry key={post.id} post={post} />
                     ) : (
-                      <PostThumbnailEntry key={index} post={post} />
+                      <PostThumbnailEntry key={post.id} post={post} />
                     )}
                   </React.Fragment>
                 );
