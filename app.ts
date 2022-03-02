@@ -123,9 +123,14 @@ async function setupServer(): Promise<http.Server> {
 
     app.use(express.urlencoded({ extended: false }));
     app.use(cookieParser());
-    app.use("/", expressStaticGzip(path.join(__dirname, "public"), {
-      index: false
-    }));
+
+    if (app.get("env") == "development") {
+      app.use(express.static(path.join(__dirname, "public")));
+    } else {
+      app.use("/", expressStaticGzip(path.join(__dirname, "public"), {
+        index: false
+      }));
+    }
 
     app.use("/", indexRouter);
 
