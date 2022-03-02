@@ -21,7 +21,6 @@ const ResetPassword: React.FC<ResetPasswordProps> = (props) => {
       return res.json();
     }).then(({ valid }) => {
       setIsTokenValid(valid);
-      console.log({ valid });
     });
   }, [resettoken]);
 

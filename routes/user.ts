@@ -265,7 +265,6 @@ router.get("/favourites", authRequired, async (req, res) => {
 
   const favourites = await user.getFavourites({
     order: [["createdAt", "DESC"]],
-    limit: 5,
     include: [
       {
         model: DataContainer, include: [{
