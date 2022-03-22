@@ -192,7 +192,7 @@ const PublicProfile: React.FC<PublicProfileProps> = (props) => {
             <h5 className="title is-5">{t("Latest Posts")}</h5>
 
             <div>
-              {user.posts.filter((p) => p.parentPostId == null).map((post, index) => {
+              {user.posts.map((post, index) => {
                 return (
                   <article key={index} className="media is-clickable post-entry" onClick={navigateTo(`/post/${post.id}`)}>
                     <div className="media-content">

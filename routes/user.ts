@@ -382,6 +382,9 @@ router.get("/profile/:id", authRequired, async (req, res) => {
 
   // Retrieve posts for user
   const posts = await user.getPosts({
+    where: {
+      parentPostId: null
+    },
     order: [["createdAt", "DESC"]],
     limit: 5,
     include: [
