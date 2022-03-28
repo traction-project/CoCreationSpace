@@ -523,7 +523,7 @@ router.get("/:id/subtitles", async (req, res) => {
     res.json(subtitles.map((s) => {
       return {
         id: s.id,
-        default: s.isDefault(),
+        default: s.default,
         language: s.language
       };
     }));
