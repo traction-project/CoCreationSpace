@@ -77,7 +77,7 @@ router.post("/register", async (req, res) => {
 
   if (!userExists) {
     const newUser = User.build({ username, email, preferredLanguage, participantCode });
-    newUser.setPassword(password);
+    newUser.password = password;
 
     try {
       await newUser.save();
@@ -179,7 +179,7 @@ router.post("/resetpassword", async (req, res) => {
 
   user.resettoken = null;
   user.resetAt = new Date();
-  user.setPassword(password);
+  user.password = password;
   await user.save();
 
   res.send({

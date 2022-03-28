@@ -78,7 +78,7 @@ router.put("/", authRequired, async (req, res) => {
   const { body } = req;
 
   if (body.password && body.password.length > 0) {
-    user.setPassword(body.password);
+    user.password = body.password;
 
     try {
       await user.save();
