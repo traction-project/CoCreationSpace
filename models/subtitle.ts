@@ -9,9 +9,10 @@ export interface SubtitleAttributes extends CommonAttributes{
   content: string;
   confidence?: number;
   mediaItem?: MediaItemAttributes | MediaItemAttributes["id"];
+  default: boolean;
 }
 
-type SubtitleCreationAttributes = Optional<SubtitleAttributes, "id" | "createdAt" | "updatedAt">;
+type SubtitleCreationAttributes = Optional<SubtitleAttributes, "id" | "createdAt" | "updatedAt" | "default">;
 
 /**
  * Subtitles instance object interface
@@ -19,8 +20,6 @@ type SubtitleCreationAttributes = Optional<SubtitleAttributes, "id" | "createdAt
 export interface SubtitleInstance extends Sequelize.Model<SubtitleAttributes, SubtitleCreationAttributes>, SubtitleAttributes {
   getMediaItem: Sequelize.BelongsToGetAssociationMixin<MediaItemInstance>;
   setMediaItem: Sequelize.BelongsToSetAssociationMixin<MediaItemInstance, MediaItemInstance["id"]>;
-
-  isDefault: () => boolean;
 }
 
 /**
@@ -47,15 +46,20 @@ export function SubtitleModelFactory(sequelize: Sequelize.Sequelize): Sequelize.
     },
     content: {
       type: Sequelize.DataTypes.TEXT
+    },
+    default: {
+      type: Sequelize.DataTypes.VIRTUAL,
+      get(this: SubtitleInstance) {
+        return !!this.confidence;
+      },
+      set() {
+        throw new Error("Property is not assignable");
+      }
     }
   };
 
   // Create the model
   const Subtitle = sequelize.define<SubtitleInstance, SubtitleCreationAttributes>("subtitle", attributes, { underscored: true, tableName: TABLE_NAME });
-
-  Subtitle.prototype.isDefault = function () {
-    return !!this.confidence;
-  };
 
   Subtitle.beforeCreate(subtitle => { subtitle.id = uuidv4(); });
 
