@@ -80,23 +80,6 @@ describe("Subtitles tests", () => {
     expect(subtitle.default).toBeTruthy();
   });
 
-  it("should not allow to assign to property default", async () => {
-    const { Subtitle } = db.getModels();
-
-    const subtitle = await Subtitle.create({
-      content: "subtitle",
-      language: "es",
-      confidence: 0.78
-    });
-
-    try {
-      subtitle.default = true;
-      fail();
-    } catch (err) {
-      expect(err).toBeDefined();
-    }
-  });
-
   it("should have automatically generated association methods for the MediaItem model", async () => {
     const { Subtitle } = db.getModels();
     const subtitle = await Subtitle.create({ content: "test" });

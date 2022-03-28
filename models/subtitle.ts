@@ -9,7 +9,7 @@ export interface SubtitleAttributes extends CommonAttributes{
   content: string;
   confidence?: number;
   mediaItem?: MediaItemAttributes | MediaItemAttributes["id"];
-  default: boolean;
+  readonly default: boolean;
 }
 
 type SubtitleCreationAttributes = Optional<SubtitleAttributes, "id" | "createdAt" | "updatedAt" | "default">;
