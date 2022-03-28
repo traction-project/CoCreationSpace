@@ -243,7 +243,7 @@ export interface UserInstance extends Sequelize.Model<UserAttributes, UserCreati
 
 /**
  *  Build User Model object
- * @param sequelize Sequelize: Conection object with de database
+ * @param sequelize Sequelize: Database connection object
  */
 export function UserModelFactory(sequelize: Sequelize.Sequelize): Sequelize.ModelCtor<UserInstance> {
 

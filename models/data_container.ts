@@ -6,10 +6,10 @@ import { PostAttributes, PostInstance } from "./post";
 import { MediaItemAttributes, MediaItemInstance } from "./media_item";
 
 export interface DataContainerAttributes extends CommonAttributes{
-    textContent?: string;
-    postId?: string;
-    post?: PostAttributes | PostAttributes["id"];
-    mediaItems?: MediaItemAttributes[];
+  textContent?: string;
+  postId?: string;
+  post?: PostAttributes | PostAttributes["id"];
+  mediaItems?: MediaItemAttributes[];
 }
 
 type DataContainerCreationAttributes = Optional<DataContainerAttributes, "id" | "createdAt" | "updatedAt">;
@@ -36,7 +36,7 @@ export interface DataContainerInstance extends Sequelize.Model<DataContainerAttr
 
 /**
  *  Build DataContainers Model object
- * @param sequelize Sequelize: Conection object with de database
+ * @param sequelize Sequelize: Database connection object
  */
 export function DataContainerModelFactory(sequelize: Sequelize.Sequelize): Sequelize.ModelCtor<DataContainerInstance> {
   // DB table name

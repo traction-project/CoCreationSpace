@@ -26,7 +26,7 @@ export interface ConsentFormInstance extends Sequelize.Model<ConsentFormAttribut
 /**
  * Build ConsentForm model object
  *
- * @param sequelize Sequelize: Conection object with de database
+ * @param sequelize Sequelize: Database connection object
  */
 export function ConsentFormModelFactory(sequelize: Sequelize.Sequelize): Sequelize.ModelCtor<ConsentFormInstance> {
   //  DB table name

@@ -25,7 +25,7 @@ export interface SubtitleInstance extends Sequelize.Model<SubtitleAttributes, Su
 
 /**
  *  Build Subtitles Model object
- * @param sequelize Sequelize: Conection object with de database
+ * @param sequelize Sequelize: Database connection object
  */
 export function SubtitleModelFactory(sequelize: Sequelize.Sequelize): Sequelize.ModelCtor<SubtitleInstance> {
   //  DB table name

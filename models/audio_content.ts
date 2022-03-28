@@ -6,11 +6,11 @@ import { MediaItemAttributes, MediaItemInstance } from "./media_item";
 import { MetadataItemAttributes, MetadataItemInstance } from "./metadata_item";
 
 export interface AudioContentAttributes extends CommonAttributes{
-    file: string;
-    language?: string;
-    audioType?: string;
-    multimedia?: MediaItemAttributes | MediaItemAttributes["id"];
-    metadataItems?: MetadataItemAttributes | MetadataItemAttributes["id"];
+  file: string;
+  language?: string;
+  audioType?: string;
+  multimedia?: MediaItemAttributes | MediaItemAttributes["id"];
+  metadataItems?: MetadataItemAttributes | MetadataItemAttributes["id"];
 }
 
 type AudioContentCreationAttributes = Optional<AudioContentAttributes, "id" | "createdAt" | "updatedAt">;
@@ -36,7 +36,7 @@ export interface AudioContentInstance extends Sequelize.Model<AudioContentAttrib
 
 /**
  *  Build AudioContents Model object
- * @param sequelize Sequelize: Conection object with de database
+ * @param sequelize Sequelize: Database connection object
  */
 export function AudioContentModelFactory(sequelize: Sequelize.Sequelize): Sequelize.ModelCtor<AudioContentInstance> {
   // DB table name

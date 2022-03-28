@@ -12,7 +12,7 @@ export interface UserFollowerInstance extends Sequelize.Model<UserFollowerAttrib
 /**
  * Build UserFollower model object
  *
- * @param sequelize Sequelize: Conection object with de database
+ * @param sequelize Sequelize: Database connection object
  */
 export function UserFollowerModelFactory(sequelize: Sequelize.Sequelize): Sequelize.ModelCtor<UserFollowerInstance> {
   //  DB table name

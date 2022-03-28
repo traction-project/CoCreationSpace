@@ -6,12 +6,12 @@ import { UserInstance, UserAttributes } from "./user";
 import { PostAttributes, PostInstance } from "./post";
 
 export interface EmojiReactionAttributes extends CommonAttributes{
-    emoji: string;
-    second?: number;
-    mediaItemId?: string;
-    userId?: string;
-    user?: UserAttributes | UserAttributes["id"];
-    post?: PostAttributes | PostAttributes["id"];
+  emoji: string;
+  second?: number;
+  mediaItemId?: string;
+  userId?: string;
+  user?: UserAttributes | UserAttributes["id"];
+  post?: PostAttributes | PostAttributes["id"];
 }
 
 type EmojiReactionCreationAttributes = Optional<EmojiReactionAttributes, "id" | "createdAt" | "updatedAt">;
@@ -29,7 +29,7 @@ export interface EmojiReactionInstance extends Sequelize.Model<EmojiReactionAttr
 
 /**
  * Build EmojiReactionss Model object
- * @param sequelize Sequelize: Conection object with de database
+ * @param sequelize Sequelize: Database connection object
  */
 export function EmojiReactionModelFactory(sequelize: Sequelize.Sequelize): Sequelize.ModelCtor<EmojiReactionInstance> {
   // DB table name

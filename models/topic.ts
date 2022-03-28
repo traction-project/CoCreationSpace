@@ -7,8 +7,8 @@ import { UserInstance } from "./user";
 import { UserGroupInstance } from "./user_group";
 
 export interface TopicAttributes extends CommonAttributes{
-    title: string;
-    thread?: ThreadAttributes | ThreadAttributes["id"];
+  title: string;
+  thread?: ThreadAttributes | ThreadAttributes["id"];
 }
 
 export type TopicCreationAttributes = Optional<TopicAttributes, "id" | "createdAt" | "updatedAt">;
@@ -45,7 +45,7 @@ export interface TopicInstance extends Sequelize.Model<TopicAttributes, TopicCre
 
 /**
  *  Build Topics Model object
- * @param sequelize Sequelize: Conection object with de database
+ * @param sequelize Sequelize: Database connection object
  */
 export function TopicModelFactory(sequelize: Sequelize.Sequelize): Sequelize.ModelCtor<TopicInstance> {
   //  DB table name

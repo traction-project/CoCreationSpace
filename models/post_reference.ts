@@ -3,8 +3,8 @@ import Sequelize, { Optional } from "sequelize";
 import { CommonAttributes } from "util/typing/modelCommonAttributes";
 
 export interface PostReferenceAttributes extends Omit<CommonAttributes, "id"> {
-    postReferencesId: number;
-    postReferencedId: number;
+  postReferencesId: number;
+  postReferencedId: number;
 }
 
 type PostReferenceCreationAttributes = Optional<PostReferenceAttributes, "createdAt" | "updatedAt">
@@ -16,7 +16,7 @@ export interface PostReferenceInstance extends Sequelize.Model<PostReferenceAttr
 
 /**
  *  Build PostReferencess Model object
- * @param sequelize Sequelize: Conection object with de database
+ * @param sequelize Sequelize: Database connection object
  */
 export function PostReferenceModelFactory(sequelize: Sequelize.Sequelize): Sequelize.ModelCtor<PostReferenceInstance> {
   //  DB table name

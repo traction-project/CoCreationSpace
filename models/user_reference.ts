@@ -16,7 +16,7 @@ export interface UserReferenceInstance extends Sequelize.Model<UserReferenceAttr
 
 /**
  *  Build UserReferencess Model object
- * @param sequelize Sequelize: Conection object with de database
+ * @param sequelize Sequelize: Database connection object
  */
 export function UserReferenceModelFactory(sequelize: Sequelize.Sequelize): Sequelize.ModelCtor<UserReferenceInstance> {
   //  DB table name

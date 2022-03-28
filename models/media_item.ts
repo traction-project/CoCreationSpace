@@ -143,7 +143,7 @@ export interface MediaItemInstance extends Sequelize.Model<MediaItemAttributes, 
 
 /**
  *  Build Multimedia Model object
- * @param sequelize Sequelize: Conection object with de database
+ * @param sequelize Sequelize: Database connection object
  */
 export function MediaItemModelFactory(sequelize: Sequelize.Sequelize): Sequelize.ModelCtor<MediaItemInstance> {
   //  DB table name

@@ -3,8 +3,8 @@ import Sequelize, { Optional } from "sequelize";
 import { CommonAttributes } from "util/typing/modelCommonAttributes";
 
 export interface TagReferenceAttributes extends Omit<CommonAttributes, "id"> {
-    tagId: number;
-    postId: number;
+  tagId: number;
+  postId: number;
 }
 
 type TagReferenceCreationAttributes = Optional<TagReferenceAttributes, "createdAt" | "updatedAt">;
@@ -16,7 +16,7 @@ export interface TagReferenceInstance extends Sequelize.Model<TagReferenceAttrib
 
 /**
  *  Build TagReferencess Model object
- * @param sequelize Sequelize: Conection object with de database
+ * @param sequelize Sequelize: Database connection object
  */
 export function TagReferenceModelFactory(sequelize: Sequelize.Sequelize): Sequelize.ModelCtor<TagReferenceInstance> {
   //  DB table name

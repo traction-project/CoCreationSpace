@@ -29,7 +29,7 @@ export interface TagInstance extends Sequelize.Model<TagAttributes, TagCreationA
 
 /**
  *  Build Tags Model object
- * @param sequelize Sequelize: Conection object with de database
+ * @param sequelize Sequelize: Database connection object
  */
 export function TagModelFactory(sequelize: Sequelize.Sequelize): Sequelize.ModelCtor<TagInstance> {
   //  DB table name

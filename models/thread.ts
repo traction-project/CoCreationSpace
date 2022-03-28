@@ -35,7 +35,7 @@ export interface ThreadInstance extends Sequelize.Model<ThreadAttributes, Thread
 
 /**
  *  Build Thread Model object
- * @param sequelize Sequelize: Conection object with de database
+ * @param sequelize Sequelize: Database connection object
  */
 export function ThreadModelFactory(sequelize: Sequelize.Sequelize): Sequelize.ModelCtor<ThreadInstance> {
   //  DB table name

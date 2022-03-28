@@ -125,7 +125,7 @@ export interface PostInstance extends Sequelize.Model<PostAttributes, PostCreati
 
 /**
  *  Build Posts Model object
- * @param sequelize Sequelize: Conection object with de database
+ * @param sequelize Sequelize: Database connection object
  */
 export function PostModelFactory(sequelize: Sequelize.Sequelize): Sequelize.ModelCtor<PostInstance> {
   //  DB table name

@@ -3,8 +3,8 @@ import Sequelize, { Optional } from "sequelize";
 import { CommonAttributes } from "util/typing/modelCommonAttributes";
 
 export interface LikeAttributes extends Omit<CommonAttributes, "id"> {
-    userId: number;
-    postId: number;
+  userId: number;
+  postId: number;
 }
 
 export type LikeCreationAttributes = Optional<LikeAttributes, "createdAt" | "updatedAt">;
@@ -16,7 +16,7 @@ export interface LikeInstance extends Sequelize.Model<LikeAttributes, LikeCreati
 
 /**
  *  Build Like Model object
- * @param sequelize Sequelize: Conection object with de database
+ * @param sequelize Sequelize: Database connection object
  */
 export function LikeModelFactory(sequelize: Sequelize.Sequelize): Sequelize.ModelCtor<LikeInstance> {
   //  DB table name

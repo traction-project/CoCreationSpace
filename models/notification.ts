@@ -24,7 +24,7 @@ export interface NotificationInstance extends Sequelize.Model<NotificationAttrib
 
 /**
  *  Build Users Model object
- * @param sequelize Sequelize: Conection object with de database
+ * @param sequelize Sequelize: Database connection object
  */
 export function NotificationModelFactory(sequelize: Sequelize.Sequelize): Sequelize.ModelCtor<NotificationInstance> {
   // Model attributtes

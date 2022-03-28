@@ -41,7 +41,7 @@ export interface UserGroupInstance extends Sequelize.Model<UserGroupAttributes, 
 /**
  * Build UserGroup model object
  *
- * @param sequelize Sequelize: Conection object with de database
+ * @param sequelize Sequelize: Database connection object
  */
 export function UserGroupModelFactory(sequelize: Sequelize.Sequelize): Sequelize.ModelCtor<UserGroupInstance> {
   //  DB table name

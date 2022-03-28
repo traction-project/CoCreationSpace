@@ -27,7 +27,7 @@ export interface SearchQueryInstance extends Sequelize.Model<SearchQueryAttribut
 /**
  * Build SearchQuery model object
  *
- * @param sequelize Sequelize: Conection object with de database
+ * @param sequelize Sequelize: Database connection object
  */
 export function SearchQueryModelFactory(sequelize: Sequelize.Sequelize): Sequelize.ModelCtor<SearchQueryInstance> {
   //  DB table name

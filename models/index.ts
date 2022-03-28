@@ -48,7 +48,7 @@ class DataBase {
 
   /**
    *  Create all models in the database and return them
-   * @param sequelize Sequelize: Conection object with de database
+   * @param sequelize Sequelize: Database connection object
    */
   createModels(sequelize: Sequelize): void {
     const AsyncJob = AsyncJobModelFactory(sequelize);
@@ -118,7 +118,7 @@ class DataBase {
 
   /**
    *  Calls all methods to create the models and them relationships and syncronize it with the database
-   * @param sequelize Sequelize: Conection object with de database
+   * @param sequelize Sequelize: Database connection object
    */
   async createDB(sequelize: Sequelize): Promise<DbInterface> {
     // Create the models

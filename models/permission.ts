@@ -29,7 +29,7 @@ export interface PermissionInstance extends Sequelize.Model<PermissionAttributes
 
 /**
  *  Build Permissionss Model object
- * @param sequelize Sequelize: Conection object with de database
+ * @param sequelize Sequelize: Database connection object
  */
 export function PermissionModelFactory(sequelize: Sequelize.Sequelize): Sequelize.ModelCtor<PermissionInstance> {
   //  DB table name

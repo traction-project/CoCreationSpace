@@ -17,7 +17,7 @@ export interface UserPermissionInstance extends Sequelize.Model<UserPermissionCr
 /**
  * Build UserPermission model object
  *
- * @param sequelize Sequelize: Conection object with de database
+ * @param sequelize Sequelize: Database connection object
  */
 export function UserPermissionModelFactory(sequelize: Sequelize.Sequelize): Sequelize.ModelCtor<UserPermissionInstance> {
   //  DB table name

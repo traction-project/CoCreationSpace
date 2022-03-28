@@ -16,7 +16,7 @@ export interface InterestInstance extends Sequelize.Model<InterestAttributes, In
 
 /**
  *  Build Interest Model object
- * @param sequelize Sequelize: Conection object with de database
+ * @param sequelize Sequelize: Database connection object
  */
 export function InterestModelFactory(sequelize: Sequelize.Sequelize): Sequelize.ModelCtor<InterestInstance> {
   //  DB table name

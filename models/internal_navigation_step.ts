@@ -27,7 +27,7 @@ export interface InternalNavigationStepInstance extends Sequelize.Model<Internal
 /**
  * Build InternalNavigationStep model object
  *
- * @param sequelize Sequelize: Conection object with de database
+ * @param sequelize Sequelize: Database connection object
  */
 export function InternalNavigationStepModelFactory(sequelize: Sequelize.Sequelize): Sequelize.ModelCtor<InternalNavigationStepInstance> {
   //  DB table name
