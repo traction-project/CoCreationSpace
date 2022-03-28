@@ -54,7 +54,6 @@ interface UserToken {
  * Users instance object interface
  */
 export interface UserInstance extends Sequelize.Model<UserAttributes, UserCreationAttributes>, UserAttributes {
-  setPassword: (password: string) => void;
   validatePassword: (password: string) => boolean;
   generateToken: (validityInDays: number) => string;
   getAuth: () => UserToken;
@@ -275,7 +274,16 @@ export function UserModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mode
     },
     password: {
       type: Sequelize.DataTypes.STRING(keyPasswordLeng * 2),
-      unique: true
+      unique: true,
+      set(this: UserInstance, value: string) {
+        this.salt = crypto.randomBytes(16).toString("hex");
+
+        this.setDataValue("password", crypto.pbkdf2Sync(
+          value, this.salt,
+          10000, keyPasswordLeng,
+          "sha512"
+        ).toString("hex"));
+      }
     },
     salt: {
       type: Sequelize.DataTypes.STRING
@@ -305,15 +313,6 @@ export function UserModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mode
   const User = sequelize.define<UserInstance, UserCreationAttributes>("user", attributes, { underscored: true, tableName: "users" });
 
   User.beforeCreate(user => { user.id = uuidv4(); });
-
-  User.prototype.setPassword = function (this: UserInstance, password: string): void {
-    this.salt = crypto.randomBytes(16).toString("hex");
-    this.password = crypto.pbkdf2Sync(
-      password, this.salt,
-      10000, keyPasswordLeng,
-      "sha512"
-    ).toString("hex");
-  };
 
   User.prototype.validatePassword = function (this: UserInstance, password: string): boolean {
     const hashedPassword = crypto.pbkdf2Sync(
