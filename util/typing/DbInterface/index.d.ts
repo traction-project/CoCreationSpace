@@ -30,6 +30,8 @@ import { NoteCollectionInstance } from "models/note_collection";
 import { VideoChapterInstance } from "models/video_chapter";
 import { UserFollowerInstance } from "models/user_follower";
 import { FavouriteInstance } from "models/favourite";
+import { QuestionnaireInstance } from "models/questionnaire";
+import { UserQuestionnaireInstance } from "models/user_questionnaire";
 
 /**
  *  Interface for the objects that containes all models from database
@@ -65,4 +67,6 @@ export interface DbInterface {
     NoteCollection: ModelCtor<NoteCollectionInstance>;
     VideoChapter: ModelCtor<VideoChapterInstance>;
     Favourite: ModelCtor<FavouriteInstance>;
+    Questionnaire: ModelCtor<QuestionnaireInstance>;
+    UserQuestionnaire: ModelCtor<UserQuestionnaireInstance>;
 }
