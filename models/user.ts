@@ -374,6 +374,9 @@ export function UserModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mode
     return false;
   };
 
+  /**
+   * Retrieves a list of open questionnaires for the current user
+   */
   User.prototype.getOpenQuestionnaires = async function (this: UserInstance): Promise<QuestionnaireInstance[]> {
     const { Questionnaire } = db.getModels();
 

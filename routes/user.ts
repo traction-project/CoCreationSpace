@@ -364,6 +364,16 @@ router.post("/theme", authRequired, async (req, res) => {
 });
 
 /**
+ * Returns a list of open questionnaires for the current user.
+ */
+router.get("/questionnaires", authRequired, async (req, res) => {
+  const user = req.user as UserInstance;
+  const openQuestionnaires = await user.getOpenQuestionnaires();
+
+  return res.send(openQuestionnaires);
+});
+
+/**
  * Get user information for given user ID
  */
 router.get("/profile/:id", authRequired, async (req, res) => {
