@@ -42,6 +42,7 @@ class Associations {
     asyncJobAssociations(models);
     noteCollectionAssociations(models);
     videoChapterAssociations(models);
+    questionnaireAssociations(models);
 
     this.associatons = {
       datacontainerAssociations,
@@ -195,6 +196,7 @@ function postsAssociations(models: DbInterface) {
     PostDataContainer
   };
 }
+
 /**
  *  Create all permissions table relationship with rest of tables
  * @param models DbInterface
@@ -202,6 +204,18 @@ function postsAssociations(models: DbInterface) {
 function permissionAssociations(models: DbInterface): void {
   models.Permission.belongsToMany(models.User, {
     through: models.UserPermission
+  });
+}
+
+/**
+ *  Create all permissions table relationship with rest of tables
+ * @param models DbInterface
+ */
+function questionnaireAssociations(models: DbInterface): void {
+  models.Questionnaire.belongsToMany(models.User, {
+    foreignKey: "userId",
+    as: "users",
+    through: models.UserQuestionnaire
   });
 }
 
@@ -319,6 +333,12 @@ function userAssociations(models: DbInterface): void {
   models.User.belongsToMany(models.Post, {
     through: models.Favourite,
     as: "favourites"
+  });
+
+  models.User.belongsToMany(models.Questionnaire, {
+    foreignKey: "userId",
+    as: "questionnaires",
+    through: models.UserQuestionnaire
   });
 }
 
