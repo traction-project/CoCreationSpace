@@ -789,6 +789,23 @@ describe("User model", () => {
     expect(await user.countQuestionnaires()).toEqual(2);
   });
 
+  it("should be possible to retrieve a user's open questionnaires", async () => {
+    const { User, Questionnaire } = db.getModels();
+
+    const user = await User.create({ username: "user" });
+    const q1 = await Questionnaire.create({ name: "q1", data: {} });
+    const q2 = await Questionnaire.create({ name: "q2", data: {} });
+
+    await user.addQuestionnaire(q1);
+    await user.addQuestionnaire(q2, { through: { results: { question: "answer" }}});
+
+    expect(await user.countQuestionnaires()).toEqual(2);
+
+    const openQuestionnaires = await user.getOpenQuestionnaires();
+    expect(openQuestionnaires.length).toEqual(1);
+    expect(openQuestionnaires[0].name).toEqual("q2");
+  });
+
   it("should have automatically generated association methods for the Post model", async () => {
     const { User } = db.getModels();
     const user = await User.create({ username: "test" });

@@ -1,6 +1,6 @@
 import crypto from "crypto";
 import jwt from "jsonwebtoken";
-import Sequelize, { Optional } from "sequelize";
+import Sequelize, { Optional, Op } from "sequelize";
 import { v4 as uuidv4 } from "uuid";
 
 import { CommonAttributes } from "util/typing/modelCommonAttributes";
@@ -63,6 +63,7 @@ export interface UserInstance extends Sequelize.Model<UserAttributes, UserCreati
   hasApprovedPermission: (type: string) => Promise<boolean>;
   getApprovedUserGroups: () => Promise<UserGroupInstance[]>;
   hasApprovedUserGroup: (group: UserGroupInstance) => Promise<boolean>;
+  getOpenQuestionnaires: () => Promise<QuestionnaireInstance[]>;
 
   getLikedPosts: Sequelize.BelongsToManyGetAssociationsMixin<PostInstance>;
   countLikedPosts: Sequelize.BelongsToManyCountAssociationsMixin;
@@ -371,6 +372,22 @@ export function UserModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mode
     }
 
     return false;
+  };
+
+  User.prototype.getOpenQuestionnaires = async function (this: UserInstance): Promise<QuestionnaireInstance[]> {
+    const { Questionnaire } = db.getModels();
+
+    const openQuestionnaires = Questionnaire.findAll({
+      include: {
+        model: User,
+        where: { id: this.id },
+        required: true,
+        through: { where: { results: { [Op.ne]: null } }},
+        attributes: []
+      }
+    });
+
+    return openQuestionnaires;
   };
 
   /**
