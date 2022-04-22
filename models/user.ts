@@ -18,6 +18,7 @@ import { ConsentFormInstance } from "./consent_form";
 import { SearchQueryInstance } from "./search_query";
 import { db } from "./index";
 import { NoteCollectionInstance } from "./note_collection";
+import { QuestionnaireInstance } from "./questionnaire";
 
 const [ SESSION_SECRET ] = getFromEnvironment("SESSION_SECRET");
 
@@ -238,6 +239,16 @@ export interface UserInstance extends Sequelize.Model<UserAttributes, UserCreati
   hasFavourite: Sequelize.HasManyHasAssociationMixin<PostInstance, PostInstance["id"]>;
   hasFavourites: Sequelize.HasManyHasAssociationsMixin<PostInstance, PostInstance["id"]>;
   countFavourites: Sequelize.HasManyCountAssociationsMixin;
+
+  getQuestionnaires: Sequelize.HasManyGetAssociationsMixin<QuestionnaireInstance>;
+  setQuestionnaires: Sequelize.HasManySetAssociationsMixin<QuestionnaireInstance, QuestionnaireInstance["id"]>;
+  addQuestionnaires: Sequelize.HasManyAddAssociationsMixin<QuestionnaireInstance, QuestionnaireInstance["id"]>;
+  addQuestionnaire: Sequelize.HasManyAddAssociationMixin<QuestionnaireInstance, QuestionnaireInstance["id"]>;
+  removeQuestionnaire: Sequelize.HasManyRemoveAssociationMixin<QuestionnaireInstance, QuestionnaireInstance["id"]>;
+  removeQuestionnaires: Sequelize.HasManyRemoveAssociationsMixin<QuestionnaireInstance, QuestionnaireInstance["id"]>;
+  hasQuestionnaire: Sequelize.HasManyHasAssociationMixin<QuestionnaireInstance, QuestionnaireInstance["id"]>;
+  hasQuestionnaires: Sequelize.HasManyHasAssociationsMixin<QuestionnaireInstance, QuestionnaireInstance["id"]>;
+  countQuestionnaires: Sequelize.HasManyCountAssociationsMixin;
 }
 
 /**

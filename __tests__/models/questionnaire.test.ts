@@ -53,10 +53,10 @@ describe("Questionnaire model", () => {
 
   it("should have automatically generated association methods for the User model", async () => {
     const { Questionnaire } = db.getModels();
-    const videoChapter = await Questionnaire.create({ name: "test", data: {} });
+    const questionnaire = await Questionnaire.create({ name: "test", data: {} });
 
     const expectedMethods = generateHasManyAssociationMethods("User");
-    const availableMethods = getAllMethods(videoChapter);
+    const availableMethods = getAllMethods(questionnaire);
 
     for (const method of expectedMethods) {
       expect(availableMethods).toContain(method);

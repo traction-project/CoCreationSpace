@@ -895,6 +895,18 @@ describe("User model", () => {
     }
   });
 
+  it("should have automatically generated association methods for the Questionnaire model", async () => {
+    const { User } = db.getModels();
+    const user = await User.create({ username: "test" });
+
+    const expectedMethods = generateHasManyAssociationMethods("Questionnaire");
+    const availableMethods = getAllMethods(user);
+
+    for (const method of expectedMethods) {
+      expect(availableMethods).toContain(method);
+    }
+  });
+
   it("should have automatically generated association methods for self-referential follower association", async () => {
     const { User } = db.getModels();
     const user = await User.create({ username: "test" });
