@@ -15,7 +15,7 @@ describe("User model", () => {
   });
 
   beforeEach(async () => {
-    const { User, UserGroup, Permission, NoteCollection, MediaItem, Post } = db.getModels();
+    const { User, UserGroup, Permission, NoteCollection, MediaItem, Post, Questionnaire } = db.getModels();
 
     await User.destroy({ truncate: true });
     await Permission.destroy({ truncate: true });
@@ -23,6 +23,7 @@ describe("User model", () => {
     await NoteCollection.destroy({ truncate: true });
     await MediaItem.destroy({ truncate: true });
     await Post.destroy({ truncate: true });
+    await Questionnaire.destroy({ truncate: true });
   });
 
   it("should create a new user with just a username", async () => {
@@ -52,7 +53,7 @@ describe("User model", () => {
     }
   });
 
-  it.skip("should hash the password when assigning the password property", async () => {
+  it("should hash the password when assigning the password property", async () => {
     const { User } = db.getModels();
 
     const user = User.build({ username: "admin" });
@@ -66,7 +67,7 @@ describe("User model", () => {
     expect(user.password!.length).toEqual(1024);
   });
 
-  it.skip("should validate the password when calling validatePassword()", async () => {
+  it("should validate the password when calling validatePassword()", async () => {
     const { User } = db.getModels();
 
     const user = User.build({ username: "admin" });
@@ -773,6 +774,19 @@ describe("User model", () => {
 
     await user.removeFavourite(post);
     expect(await user.countFavourites()).toEqual(0);
+  });
+
+  it("should be possible to associate a user to multiple questionnaires", async () => {
+    const { User, Questionnaire } = db.getModels();
+
+    const user = await User.create({ username: "user" });
+
+    const q1 = await Questionnaire.create({ name: "post", data: {} });
+    const q2 = await Questionnaire.create({ name: "post", data: {} });
+
+    await user.addQuestionnaires([q1, q2]);
+
+    expect(await user.countQuestionnaires()).toEqual(2);
   });
 
   it("should have automatically generated association methods for the Post model", async () => {
