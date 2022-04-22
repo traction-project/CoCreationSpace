@@ -240,15 +240,15 @@ export interface UserInstance extends Sequelize.Model<UserAttributes, UserCreati
   hasFavourites: Sequelize.HasManyHasAssociationsMixin<PostInstance, PostInstance["id"]>;
   countFavourites: Sequelize.HasManyCountAssociationsMixin;
 
-  getQuestionnaires: Sequelize.HasManyGetAssociationsMixin<QuestionnaireInstance>;
-  setQuestionnaires: Sequelize.HasManySetAssociationsMixin<QuestionnaireInstance, QuestionnaireInstance["id"]>;
-  addQuestionnaires: Sequelize.HasManyAddAssociationsMixin<QuestionnaireInstance, QuestionnaireInstance["id"]>;
-  addQuestionnaire: Sequelize.HasManyAddAssociationMixin<QuestionnaireInstance, QuestionnaireInstance["id"]>;
-  removeQuestionnaire: Sequelize.HasManyRemoveAssociationMixin<QuestionnaireInstance, QuestionnaireInstance["id"]>;
-  removeQuestionnaires: Sequelize.HasManyRemoveAssociationsMixin<QuestionnaireInstance, QuestionnaireInstance["id"]>;
-  hasQuestionnaire: Sequelize.HasManyHasAssociationMixin<QuestionnaireInstance, QuestionnaireInstance["id"]>;
-  hasQuestionnaires: Sequelize.HasManyHasAssociationsMixin<QuestionnaireInstance, QuestionnaireInstance["id"]>;
-  countQuestionnaires: Sequelize.HasManyCountAssociationsMixin;
+  getQuestionnaires: Sequelize.BelongsToManyGetAssociationsMixin<QuestionnaireInstance>;
+  setQuestionnaires: Sequelize.BelongsToManySetAssociationsMixin<QuestionnaireInstance, QuestionnaireInstance["id"]>;
+  addQuestionnaires: Sequelize.BelongsToManyAddAssociationsMixin<QuestionnaireInstance, QuestionnaireInstance["id"]>;
+  addQuestionnaire: Sequelize.BelongsToManyAddAssociationMixin<QuestionnaireInstance, QuestionnaireInstance["id"]>;
+  removeQuestionnaire: Sequelize.BelongsToManyRemoveAssociationMixin<QuestionnaireInstance, QuestionnaireInstance["id"]>;
+  removeQuestionnaires: Sequelize.BelongsToManyRemoveAssociationsMixin<QuestionnaireInstance, QuestionnaireInstance["id"]>;
+  hasQuestionnaire: Sequelize.BelongsToManyHasAssociationMixin<QuestionnaireInstance, QuestionnaireInstance["id"]>;
+  hasQuestionnaires: Sequelize.BelongsToManyHasAssociationsMixin<QuestionnaireInstance, QuestionnaireInstance["id"]>;
+  countQuestionnaires: Sequelize.BelongsToManyCountAssociationsMixin;
 }
 
 /**
