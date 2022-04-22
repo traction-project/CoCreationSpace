@@ -374,6 +374,37 @@ router.get("/questionnaires", authRequired, async (req, res) => {
 });
 
 /**
+ * Saves a list of answers to the given questionnaire for the current user.
+ */
+router.post("/questionnaire/:id", authRequired, async (req, res) => {
+  const { UserQuestionnaire } = db.getModels();
+  const user = req.user as UserInstance;
+
+  const { body, params } = req;
+
+  const userQuestionnaire = await UserQuestionnaire.findOne({
+    where: {
+      questionnaireId: params.id,
+      userId: user.id
+    } as any
+  });
+
+  if (!userQuestionnaire) {
+    return res.status(400).send({
+      status: "ERR",
+      message: "No such item"
+    });
+  }
+
+  userQuestionnaire.results = body;
+  await userQuestionnaire.save();
+
+  return res.send({
+    status: "OK"
+  });
+});
+
+/**
  * Get user information for given user ID
  */
 router.get("/profile/:id", authRequired, async (req, res) => {
