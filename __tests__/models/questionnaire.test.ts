@@ -12,23 +12,43 @@ describe("Questionnaire model", () => {
   });
 
   beforeEach(async () => {
-    const { Questionnaire } = db.getModels();
+    const { Questionnaire, User } = db.getModels();
 
     await Questionnaire.destroy({ truncate: true });
+    await User.destroy({ truncate: true });
   });
 
   it("should create a basic Questionnaire entry", async () => {
     const { Questionnaire } = db.getModels();
 
-    const chapter = await Questionnaire.create({
+    const questionnaire = await Questionnaire.create({
       name: "Questionnaire 1",
       data: { question1: "Hello World" }
     });
 
-    expect(chapter.name).toEqual("Questionnaire 1");
-    expect(chapter.data).toEqual({ question1: "Hello World"});
+    expect(questionnaire.name).toEqual("Questionnaire 1");
+    expect(questionnaire.data).toEqual({ question1: "Hello World"});
 
     expect(await Questionnaire.count()).toEqual(1);
+  });
+
+  it("should be possible to associate a questionnaire to a user", async () => {
+    const { Questionnaire, User } = db.getModels();
+
+    const questionnaire = await Questionnaire.create({
+      name: "Questionnaire 1",
+      data: { question1: "Hello World" }
+    });
+
+    const user = await User.create({
+      username: "test"
+    });
+
+    expect(await questionnaire.countUsers()).toEqual(0);
+    await questionnaire.addUser(user);
+
+    expect(await questionnaire.countUsers()).toEqual(1);
+    expect((await questionnaire.getUsers())[0].username).toEqual("test");
   });
 
   it("should have automatically generated association methods for the User model", async () => {

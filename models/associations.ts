@@ -213,7 +213,7 @@ function permissionAssociations(models: DbInterface): void {
  */
 function questionnaireAssociations(models: DbInterface): void {
   models.Questionnaire.belongsToMany(models.User, {
-    foreignKey: "userId",
+    foreignKey: "questionnaireId",
     as: "users",
     through: models.UserQuestionnaire
   });
