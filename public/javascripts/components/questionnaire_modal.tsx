@@ -40,7 +40,9 @@ interface QuestionnaireModalProps {
 
 const QuestionnaireModal: React.FC<QuestionnaireModalProps> = (props) => {
   const { questionnaire, onClose, onComplete } = props;
-  const { handleSubmit, register } = useForm();
+  const { handleSubmit, register, formState } = useForm({
+    mode: "onChange"
+  });
   const { t } = useTranslation();
 
   const onConfirm = handleSubmit(async (data) => {
@@ -126,7 +128,7 @@ const QuestionnaireModal: React.FC<QuestionnaireModalProps> = (props) => {
 
           <div className="field is-grouped pt-4">
             <div className="control">
-              <button className="button is-link" onClick={onConfirm}>{t("Submit")}</button>
+              <button className="button is-link" disabled={!formState.isValid} onClick={onConfirm}>{t("Submit")}</button>
             </div>
             <div className="control">
               <button className="button is-link is-light" onClick={onClose}>{t("Cancel")}</button>
