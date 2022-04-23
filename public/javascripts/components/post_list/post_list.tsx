@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import classNames from "classnames";
+import usePortal from "react-useportal";
 
 import { fromEntries, parseQueryString } from "../../util";
 import { PostType } from "../post/post";
@@ -10,6 +11,7 @@ import Filter from "./filter";
 import PostThumbnailEntry from "./post_thumbnail_entry";
 import PostEntry from "./post_entry";
 import PageCounter from "../page_counter/page_counter";
+import QuestionnaireModal, { Questionnaire } from "../questionnaire_modal";
 
 interface PostListProps {
   endpoint: string;
@@ -34,6 +36,7 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { t } = useTranslation();
+  const { isOpen, openPortal, closePortal, Portal } = usePortal();
 
   const [ posts, setPosts ] = useState<Array<PostType>>([]);
   const [ tags, setTags ] = useState<Array<TagData>>([]);
@@ -41,6 +44,7 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
   const [ interests, setInterests ] = useState<Array<InterestData>>([]);
   const [ totalPostCount, setTotalPostCount ] = useState(0);
   const [ selectedTab, setSelectedTab ] = useState<"text" | "media">("text");
+  const [ questionnaire, setQuestionnaire ] = useState<Questionnaire>();
 
   // Parse query string into map
   const filters = parseQueryString(location.search);
@@ -59,6 +63,15 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
       setTags(tags);
       setGroups(groups);
       setInterests(interests);
+
+      // Fetch open questionnaires for user
+      const res = await fetch("/users/questionnaires");
+      const [ questionnaire ] = await res.json();
+
+      if (questionnaire) {
+        setQuestionnaire(questionnaire.data["en"]);
+        openPortal();
+      }
     })();
   }, [endpoint, location.search]);
 
@@ -271,6 +284,16 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
           </div>
         </div>
       </div>
+
+      {isOpen && (
+        <Portal>
+          <QuestionnaireModal
+            questionnaire={questionnaire!}
+            onClose={closePortal}
+            onComplete={() => {}}
+          />
+        </Portal>
+      )}
     </section>
   );
 };
