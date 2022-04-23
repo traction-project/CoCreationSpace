@@ -36,7 +36,7 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { t, i18n } = useTranslation();
-  const { isOpen, openPortal, closePortal, Portal } = usePortal();
+  const { isOpen, openPortal, closePortal, Portal, ref } = usePortal();
 
   const [ posts, setPosts ] = useState<Array<PostType>>([]);
   const [ tags, setTags ] = useState<Array<TagData>>([]);
@@ -149,7 +149,7 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
 
   return (
     <section className="section">
-      <div className="container">
+      <div className="container" ref={ref}>
         <div className="columns is-centered">
           <div className="column is-6-desktop is-8-tablet">
             <Filter value={filters.get("q")} searchValueChange={onSearch} placeholder={`${t("Search")}...`}/>
