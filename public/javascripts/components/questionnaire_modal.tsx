@@ -59,7 +59,7 @@ const QuestionnaireModal: React.FC<QuestionnaireModalProps> = (props) => {
             return (
               <div key={i} className="control">
                 <label>
-                  <input value={c} type="radio" {...register(`q${index + 1}`, { required: true })} />
+                  <input value={i + 1} type="radio" {...register(`q${index + 1}`, { required: true })} />
                   &nbsp;{c}
                 </label>
               </div>
@@ -76,7 +76,7 @@ const QuestionnaireModal: React.FC<QuestionnaireModalProps> = (props) => {
             return (
               <div key={i} className="control">
                 <label>
-                  <input value={c} type="checkbox" {...register(`q${index + 1}`, { required: true })} />
+                  <input value={i + 1} type="checkbox" {...register(`q${index + 1}`, { required: true })} />
                   &nbsp;{c}
                 </label>
               </div>

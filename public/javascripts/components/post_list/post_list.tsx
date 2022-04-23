@@ -44,7 +44,7 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
   const [ interests, setInterests ] = useState<Array<InterestData>>([]);
   const [ totalPostCount, setTotalPostCount ] = useState(0);
   const [ selectedTab, setSelectedTab ] = useState<"text" | "media">("text");
-  const [ questionnaire, setQuestionnaire ] = useState<Questionnaire>();
+  const [ questionnaire, setQuestionnaire ] = useState<{ id: string, data: { [key: string]: Questionnaire }}>();
 
   // Parse query string into map
   const filters = parseQueryString(location.search);
@@ -69,14 +69,7 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
       const [ questionnaire ] = await res.json();
 
       if (questionnaire) {
-        // Display questionnaire in user's preferred language if available,
-        // use English otherwise
-        if (questionnaire.data[i18n.language]) {
-          setQuestionnaire(questionnaire.data[i18n.language]);
-        } else {
-          setQuestionnaire(questionnaire.data["en"]);
-        }
-
+        setQuestionnaire(questionnaire);
         openPortal();
       }
     })();
@@ -292,12 +285,18 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
         </div>
       </div>
 
-      {isOpen && (
+      {isOpen && questionnaire && (
         <Portal>
           <QuestionnaireModal
-            questionnaire={questionnaire!}
+            questionnaire={(questionnaire.data[i18n.language]) ? questionnaire.data[i18n.language] : questionnaire.data["en"]}
             onClose={closePortal}
-            onComplete={() => {}}
+            onComplete={(results) => {
+              fetch(`/users/questionnaire/${questionnaire.id}`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(results)
+              });
+            }}
           />
         </Portal>
       )}
