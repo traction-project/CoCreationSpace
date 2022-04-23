@@ -35,7 +35,7 @@ interface GroupData {
 const PostList: React.FC<PostListProps> = ({endpoint}) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { isOpen, openPortal, closePortal, Portal } = usePortal();
 
   const [ posts, setPosts ] = useState<Array<PostType>>([]);
@@ -69,7 +69,14 @@ const PostList: React.FC<PostListProps> = ({endpoint}) => {
       const [ questionnaire ] = await res.json();
 
       if (questionnaire) {
-        setQuestionnaire(questionnaire.data["en"]);
+        // Display questionnaire in user's preferred language if available,
+        // use English otherwise
+        if (questionnaire.data[i18n.language]) {
+          setQuestionnaire(questionnaire.data[i18n.language]);
+        } else {
+          setQuestionnaire(questionnaire.data["en"]);
+        }
+
         openPortal();
       }
     })();

@@ -28,7 +28,9 @@ export interface Questionnaire {
   questions: Array<Question>;
 }
 
-type QuestionnaireResults = Array<string | number | string[]>;
+interface QuestionnaireResults {
+  [key: string]: string;
+}
 
 interface QuestionnaireModalProps {
   questionnaire: Questionnaire;
@@ -42,8 +44,8 @@ const QuestionnaireModal: React.FC<QuestionnaireModalProps> = (props) => {
   const { t } = useTranslation();
 
   const onConfirm = handleSubmit(async (data) => {
-    console.log(data);
-    onComplete([]);
+    onComplete(data);
+    onClose();
   });
 
   const renderQuestion = (q: Question, index: number) => {
@@ -55,13 +57,13 @@ const QuestionnaireModal: React.FC<QuestionnaireModalProps> = (props) => {
             return (
               <div key={i} className="control">
                 <label>
-                  <input value={c} type="radio" {...register(`q${index}`, { required: true })} />
+                  <input value={c} type="radio" {...register(`q${index + 1}`, { required: true })} />
                   &nbsp;{c}
                 </label>
               </div>
             );
           })}
-          <br/>
+          <hr/>
         </div>
       );
     } else if (q.type == "multiple-choice") {
@@ -72,13 +74,13 @@ const QuestionnaireModal: React.FC<QuestionnaireModalProps> = (props) => {
             return (
               <div key={i} className="control">
                 <label>
-                  <input value={c} type="checkbox" {...register(`q${index}`, { required: true })} />
+                  <input value={c} type="checkbox" {...register(`q${index + 1}`, { required: true })} />
                   &nbsp;{c}
                 </label>
               </div>
             );
           })}
-          <br/>
+          <hr/>
         </div>
       );
     } else if (q.type == "likert") {
@@ -89,7 +91,7 @@ const QuestionnaireModal: React.FC<QuestionnaireModalProps> = (props) => {
             return (
               <div key={i} className="control">
                 <label>
-                  <input value={c} type="radio" {...register(`q${index}`, { required: true })} />
+                  <input value={c} type="radio" {...register(`q${index + 1}`, { required: true })} />
                   &nbsp;{c}.&nbsp;
                   {(c == 1) ? (
                     q.labels[0]
@@ -104,7 +106,7 @@ const QuestionnaireModal: React.FC<QuestionnaireModalProps> = (props) => {
               </div>
             );
           })}
-          <br/>
+          <hr/>
         </div>
       );
     }
@@ -122,7 +124,6 @@ const QuestionnaireModal: React.FC<QuestionnaireModalProps> = (props) => {
             return renderQuestion(q, i);
           })}
 
-          <hr/>
           <div className="field is-grouped pt-4">
             <div className="control">
               <button className="button is-link" onClick={onConfirm}>{t("Submit")}</button>
