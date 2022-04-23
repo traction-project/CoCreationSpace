@@ -1,0 +1,87 @@
+{
+	"en": {
+		"name": "Co-Creation Space Survey",
+		"questions": [
+			{
+				"type": "choice",
+				"question": "How often do you use the Co-Creation Space?",
+				"choices": ["Several times a day", "Once per day", "Several times per week", "Once per week", "Several times a month", "Once per month"]
+			}, {
+				"type": "multiple-choice",
+				"question": "What features of the tool do you use?",
+				"choices": ["Looking at posts", "Discussing your ideas", "Responding to other posts", "Creating new posts", "Saving favourite media", "Saving favourite posts"]
+			}, {
+				"type": "likert",
+				"question": "How useful do you find the tool?",
+				"scale": 7,
+				"labels": ["not at all useful", "somewhat useful", "very useful"]
+			}, {
+				"type": "likert",
+				"question": "How connected are you to other users of the Co-Creation Space?",
+				"scale": 7,
+				"labels": ["not at all connected", "somewhat connected", "very connected"]
+			}, {
+				"type": "likert",
+				"question": "How easy is it for you to have discussions about media with other users of the tool?",
+				"scale": 7,
+				"labels": ["not at all", "somewhat easy", "very easy"]
+			}
+		]
+	}, "es": {
+		"name": "Preguntas de la encuesta sobre Co-Creation Space",
+		"questions": [
+			{
+				"type": "choice",
+				"question": "¿Con qué frecuencia utiliza CCS?",
+				"choices": ["Varias veces al día", "Una vez al día", "Varias veces por semana", "Una vez por semana", "Varias veces al mes", "Una vez al mes"]
+			}, {
+				"type": "multiple-choice",
+				"question": "¿Qué características de la herramienta utiliza?",
+				"choices": ["Mirando las publicaciones", "Compartiendo tus ideas", "Respondiendo a otras publicaciones", "Creando nuevas publicaciones", "Guardando guardando los archivos multimedia preferidos", "Guardando las publicaciones preferidas"]
+			}, {
+				"type": "likert",
+				"question": "¿Cómo de útil ha encontrado la herramienta?",
+				"scale": 7,
+				"labels": ["nada útil", "algo útil", "muy útil"]
+			}, {
+				"type": "likert",
+				"question": "¿Cuán conectado está con otros usuarios de CCS?",
+				"scale": 7,
+				"labels": ["nada conectado", "un poco conectado", "muy conectado"]
+			}, {
+				"type": "likert",
+				"question": "¿Qué tan fácil es para usted tener discusiones sobre medios, con otros usuarios de la herramienta?",
+				"scale": 7,
+				"labels": ["nada fácil", "un poco fácil", "muy fácil"]
+			}
+		]
+	}, "ca": {
+		"name": "Preguntes de l’enquesta Co-Creation Space",
+		"questions": [
+			{
+				"type": "choice",
+				"question": "Amb quina freqüència utilitza CCS?",
+				"choices": ["Diverses vegades al dia", "Un cop al dia", "Diverses vegades per setmana", "Un cop per setmana", "Diverses vegades al mes", "Un cop al mes"]
+			}, {
+				"type": "multiple-choice",
+				"question": "Quines característiques de l''eina feu servir?",
+				"choices": ["Mirant les publicacions", "Compartint les teves idees", "Responent a altres publicacions", "Creant noves publicacions", "Desant desant els arxius multimedia preferits", "Desant les publicacions preferides"]
+			}, {
+				"type": "likert",
+				"question": "Com d’útil has trobat la eina?",
+				"scale": 7,
+				"labels": ["gens útil", "una mica útil", "molt útil"]
+			}, {
+				"type": "likert",
+				"question": "Quant connectat estàs amb altres usuaris de Co-Creation Space?",
+				"scale": 7,
+				"labels": ["gens connectat", "una mica connectat", "molt connectat"]
+			}, {
+				"type": "likert",
+				"question": "Què tan fàcil és per a tu tenir discussions sobre els mitjans amb altres usuaris de l''eina?",
+				"scale": 7,
+				"labels": ["gens fácil", "una mica fácil", "molt fácil"]
+			}
+		]
+	}
+}
