@@ -1,6 +1,6 @@
 import crypto from "crypto";
 import jwt from "jsonwebtoken";
-import Sequelize, { Optional, Op } from "sequelize";
+import Sequelize, { Optional } from "sequelize";
 import { v4 as uuidv4 } from "uuid";
 
 import { CommonAttributes } from "util/typing/modelCommonAttributes";
@@ -385,7 +385,7 @@ export function UserModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mode
         model: User,
         where: { id: this.id },
         required: true,
-        through: { where: { results: { [Op.ne]: null } }},
+        through: { where: { results: null }},
         attributes: []
       }
     });

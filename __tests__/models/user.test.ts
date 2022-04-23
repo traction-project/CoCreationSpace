@@ -803,7 +803,7 @@ describe("User model", () => {
 
     const openQuestionnaires = await user.getOpenQuestionnaires();
     expect(openQuestionnaires.length).toEqual(1);
-    expect(openQuestionnaires[0].name).toEqual("q2");
+    expect(openQuestionnaires[0].name).toEqual("q1");
   });
 
   it("should have automatically generated association methods for the Post model", async () => {
