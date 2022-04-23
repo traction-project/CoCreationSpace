@@ -23,7 +23,7 @@ interface LikertQuestion {
 
 type Question = ChoiceQuestion | MultipleChoiceQuestion | LikertQuestion;
 
-interface QuestionnaireQuestions {
+export interface Questionnaire {
   name: string;
   questions: Array<Question>;
 }
@@ -31,7 +31,7 @@ interface QuestionnaireQuestions {
 type QuestionnaireResults = Array<string | number | string[]>;
 
 interface QuestionnaireModalProps {
-  questionnaire: QuestionnaireQuestions;
+  questionnaire: Questionnaire;
   onClose: () => void;
   onComplete: (results: QuestionnaireResults) => void;
 }
@@ -42,58 +42,69 @@ const QuestionnaireModal: React.FC<QuestionnaireModalProps> = (props) => {
   const { t } = useTranslation();
 
   const onConfirm = handleSubmit(async (data) => {
+    console.log(data);
     onComplete([]);
   });
 
   const renderQuestion = (q: Question, index: number) => {
     if (q.type == "choice") {
       return (
-        <div>
-          <h6>{q.question}</h6>
+        <div key={index}>
+          <h5 className="title is-5">{q.question}</h5>
           {q.choices.map((c, i) => {
             return (
-              <div key={i}>
-                <input value={c} id={`q${index}${i}`} type="radio" {...register(`q${index}`, { required: true })} />
-                <label htmlFor={`q${index}${i}`}>{c}</label>
+              <div key={i} className="control">
+                <label>
+                  <input value={c} type="radio" {...register(`q${index}`, { required: true })} />
+                  &nbsp;{c}
+                </label>
               </div>
             );
           })}
+          <br/>
         </div>
       );
     } else if (q.type == "multiple-choice") {
       return (
-        <div>
-          <h6>{q.question}</h6>
+        <div key={index}>
+          <h5 className="title is-5">{q.question}</h5>
           {q.choices.map((c, i) => {
             return (
-              <div key={i}>
-                <input value={c} id={`q${index}${i}`} type="checkbox" {...register(`q${index}`, { required: true })} />
-                <label htmlFor={`q${index}${i}`}>{c}</label>
+              <div key={i} className="control">
+                <label>
+                  <input value={c} type="checkbox" {...register(`q${index}`, { required: true })} />
+                  &nbsp;{c}
+                </label>
               </div>
             );
           })}
+          <br/>
         </div>
       );
     } else if (q.type == "likert") {
       return (
-        <div>
-          <h6>{q.question}</h6>
+        <div key={index}>
+          <h5 className="title is-5">{q.question}</h5>
           {[1, 2, 3, 4, 5, 6, 7].map((c, i) => {
             return (
-              <div key={i}>
-                <input value={c} id={`q${index}${i}`} type="radio" {...register(`q${index}`, { required: true })} />
-                <label htmlFor={`q${index}${i}`}>
+              <div key={i} className="control">
+                <label>
+                  <input value={c} type="radio" {...register(`q${index}`, { required: true })} />
+                  &nbsp;{c}.&nbsp;
                   {(c == 1) ? (
                     q.labels[0]
                   ) : (c == 4) ? (
                     q.labels[1]
-                  ) : (
+                  ) : (c == 7) ? (
                     q.labels[2]
+                  ) : (
+                    ""
                   )}
                 </label>
               </div>
             );
           })}
+          <br/>
         </div>
       );
     }
@@ -114,7 +125,7 @@ const QuestionnaireModal: React.FC<QuestionnaireModalProps> = (props) => {
           <hr/>
           <div className="field is-grouped pt-4">
             <div className="control">
-              <button className="button is-link" onClick={onConfirm}>{t("Add")}</button>
+              <button className="button is-link" onClick={onConfirm}>{t("Submit")}</button>
             </div>
             <div className="control">
               <button className="button is-link is-light" onClick={onClose}>{t("Cancel")}</button>
