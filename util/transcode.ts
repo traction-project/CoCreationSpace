@@ -88,7 +88,7 @@ export function encodeDash(pipeline: string, input: string, hasAudio = true, out
         {
           Key: `dash-${bitrate}/${inputBasename}`,
           PresetId: preset,
-          SegmentDuration: "10"
+          SegmentDuration: "3"
         }
       ];
     }
@@ -267,7 +267,7 @@ export function encodeAudio(pipeline: string, input: string): Promise<string> {
       {
         Key: `dash-audio/${inputBasename}`,
         PresetId: "1351620000001-500060",
-        SegmentDuration: "10"
+        SegmentDuration: "3"
       }
     ],
     Playlists: [
