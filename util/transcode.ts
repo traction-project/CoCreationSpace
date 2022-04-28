@@ -118,7 +118,7 @@ export function encodeDash(pipeline: string, input: string, hasAudio = true, out
       {
         Key: `dash-audio/${inputBasename}`,
         PresetId: "1351620000001-500060",
-        SegmentDuration: "10"
+        SegmentDuration: "3"
       }
     ],
     Playlists: [
@@ -188,20 +188,20 @@ export function encodeHLS(pipeline: string, input: string, hasAudio = true): Pro
       {
         Key: `hls-2m/${inputBasename}`,
         PresetId: "1351620000001-200015",
-        SegmentDuration: "10",
+        SegmentDuration: "3",
         ThumbnailPattern: `thumbnails/${inputBasename}_hls_{count}`
       }, {
         Key: `hls-1m/${inputBasename}`,
         PresetId: "1351620000001-200035",
-        SegmentDuration: "10"
+        SegmentDuration: "3"
       }, {
         Key: `hls-600k/${inputBasename}`,
         PresetId: "1351620000001-200045",
-        SegmentDuration: "10"
+        SegmentDuration: "3"
       }, {
         Key: `hls-audio/${inputBasename}`,
         PresetId: "1351620000001-200060",
-        SegmentDuration: "10"
+        SegmentDuration: "3"
       }
     ],
     Playlists: [
@@ -326,7 +326,7 @@ export function encodeHLSAudio(pipeline: string, input: string): Promise<string>
       {
         Key: `hls-audio/${inputBasename}`,
         PresetId: "1351620000001-200060",
-        SegmentDuration: "10"
+        SegmentDuration: "3"
       }
     ],
     Playlists: [
