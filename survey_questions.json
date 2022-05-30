@@ -1,8 +1,7 @@
 {
 	"en": {
 		"name": "Co-Creation Space Survey",
-		"questions": [
-			{
+		"questions": [{
 				"type": "choice",
 				"question": "How often do you use the Co-Creation Space?",
 				"choices": ["Several times a day", "Once per day", "Several times per week", "Once per week", "Several times a month", "Once per month"]
@@ -29,8 +28,7 @@
 		]
 	}, "es": {
 		"name": "Preguntas de la encuesta sobre Co-Creation Space",
-		"questions": [
-			{
+		"questions": [{
 				"type": "choice",
 				"question": "¿Con qué frecuencia utiliza CCS?",
 				"choices": ["Varias veces al día", "Una vez al día", "Varias veces por semana", "Una vez por semana", "Varias veces al mes", "Una vez al mes"]
@@ -57,8 +55,7 @@
 		]
 	}, "ca": {
 		"name": "Preguntes de l’enquesta Co-Creation Space",
-		"questions": [
-			{
+		"questions": [{
 				"type": "choice",
 				"question": "Amb quina freqüència utilitza CCS?",
 				"choices": ["Diverses vegades al dia", "Un cop al dia", "Diverses vegades per setmana", "Un cop per setmana", "Diverses vegades al mes", "Un cop al mes"]

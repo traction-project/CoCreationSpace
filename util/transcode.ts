@@ -4,6 +4,7 @@ import aws from "aws-sdk";
  * List of available video resolutions and their ETS preset names
  */
 const resolutions: { [key: string]: [presetName: string, bitrate: string] } = {
+  "1080p": ["1653913357100-ikb9ew", "6m"],
   "720p": ["1351620000001-500020", "4m"],
   "480p": ["1351620000001-500030", "2m"],
   "360p": ["1351620000001-500040", "1m"],
@@ -63,9 +64,9 @@ export function processInputPath(input: string): [ prefix: string, basename: str
  * video stream, with one thumbnail saved every 5 minutes.
  *
  * The function also accepts an array of video resolutions that should be
- * generated for the output. Possible values for items in the array are `720p`,
- * `480p`, `360p`, `240p` and `180p`. All other values are ignored. Defaults to
- * `["720p", "480p", "360p"]`.
+ * generated for the output. Possible values for items in the array are `1080p`,
+ * `720p`, `480p`, `360p`, `240p` and `180p`. All other values are ignored.
+ * Defaults to `["720p", "480p", "360p"]`.
  *
  * @param pipeline ID of the transcoding pipeline to use
  * @param input Path to input file
