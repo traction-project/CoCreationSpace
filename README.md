@@ -1,4 +1,4 @@
-# TRACTION CoCreation Space
+# TRACTION Co-Creation Space
 
 ![Docker Image CI](https://github.com/tv-vicomtech/traction_MediaVault/workflows/Docker%20Image%20CI/badge.svg)
 
