@@ -1,4 +1,4 @@
-# TRACTION CoCreation Space
+# TRACTION Co-Creation Space
 
 ![Docker Image CI](https://github.com/tv-vicomtech/traction_MediaVault/workflows/Docker%20Image%20CI/badge.svg)
 
@@ -6,6 +6,12 @@ This repository contains the CoCreation Space code for the TRACTION EU-project.
 This is a Node.js based web application written in TypeScript, using Express.js
 as backend framework, MongoDB as database and React in combination with Redux
 for the frontend.
+
+<img src="https://www.traction-project.eu/wp-content/uploads/sites/3/2020/02/Logo-cabecera-Traction.png" align="left"/><em>This tool was originally developed as part of the <a href="https://www.traction-project.eu/">TRACTION</a> project, funded by the European Commission’s <a hef="http://ec.europa.eu/programmes/horizon2020/">Horizon 2020</a> research and innovation programme under grant agreement No. 870610.</em>
+
+## Documentation
+
+The documentation is available here: https://traction-project.github.io/CoCreationSpace
 
 ## Prerequisites
 
