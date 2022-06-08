@@ -20,7 +20,7 @@ type DataContainerCreationAttributes = Optional<DataContainerAttributes, "id" | 
 export interface DataContainerInstance extends Sequelize.Model<DataContainerAttributes, DataContainerCreationAttributes>, DataContainerAttributes {
   getPost: Sequelize.BelongsToGetAssociationMixin<PostInstance>;
   setPost: Sequelize.BelongsToSetAssociationMixin<PostInstance, PostInstance["id"]>;
-  createPost: Sequelize.BelongsToCreateAssociationMixin<PostAttributes>;
+  createPost: Sequelize.BelongsToCreateAssociationMixin<PostInstance>;
 
   getMediaItems: Sequelize.HasManyGetAssociationsMixin<MediaItemInstance>;
   countMediaItems: Sequelize.HasManyCountAssociationsMixin;

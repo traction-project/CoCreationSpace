@@ -473,4 +473,20 @@ describe("Post model", () => {
       expect(availableMethods).toContain(method);
     }
   });
+
+  it("should return posts without parent post when querying with value undefined", async () => {
+    const { Post } = db.getModels();
+
+    const post = await Post.create({ title: "test" });
+    await Post.create({ title: "test2", parentPostId: post.id });
+    await Post.create({ title: "test3" });
+
+    const result = await Post.findAll({
+      where: {
+        parentPostId: null
+      }
+    });
+
+    expect(result.length).toEqual(2);
+  });
 });

@@ -1,5 +1,5 @@
 import { DbInterface } from "util/typing/DbInterface";
-import { HasOne, HasMany } from "sequelize/types/lib/associations";
+import { HasOne, HasMany } from "sequelize/types/associations";
 import { PostInstance } from "./post";
 import { DataContainerInstance } from "./data_container";
 import { MediaItemInstance } from "./media_item";

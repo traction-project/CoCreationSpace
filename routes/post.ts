@@ -401,7 +401,7 @@ router.get("/:id/parent", authRequired, async (req, res) => {
   const { Post, DataContainer, MediaItem } = db.getModels();
 
   let post: PostInstance | null;
-  let parentPostId: string | undefined = id;
+  let parentPostId: string | null = id;
 
   do {
     post = await Post.findByPk(parentPostId, {

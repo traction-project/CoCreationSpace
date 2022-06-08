@@ -12,7 +12,7 @@ import { db } from "./index";
 export interface PostAttributes extends CommonAttributes{
   title?: string;
   second?: number;
-  parentPostId?: string;
+  parentPostId: string | null;
   userId?: string;
   threadId?: string;
   multimediaRef?: string;
@@ -104,7 +104,7 @@ export interface PostInstance extends Sequelize.Model<PostAttributes, PostCreati
   addTags: Sequelize.BelongsToManyAddAssociationsMixin<TagInstance, TagInstance["id"]>;
   removeTag: Sequelize.BelongsToManyRemoveAssociationMixin<TagInstance, TagInstance["id"]>;
   removeTags: Sequelize.BelongsToManyRemoveAssociationsMixin<TagInstance, TagInstance["id"]>;
-  createTags: Sequelize.BelongsToManyCreateAssociationMixin<TagInstance["id"]>;
+  createTags: Sequelize.BelongsToManyCreateAssociationMixin<TagInstance>;
 
   getFavourites: Sequelize.HasManyGetAssociationsMixin<UserInstance>;
   setFavourites: Sequelize.HasManySetAssociationsMixin<UserInstance, UserInstance["id"]>;
@@ -154,6 +154,10 @@ export function PostModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mode
     published: {
       type: Sequelize.DataTypes.BOOLEAN,
       defaultValue: true
+    },
+    parentPostId: {
+      type: Sequelize.DataTypes.UUID,
+      allowNull: true
     }
   };
 
@@ -194,6 +198,10 @@ export function PostModelFactory(sequelize: Sequelize.Sequelize): Sequelize.Mode
    * post.
    */
   Post.prototype.getParentPost = async function (this: PostInstance) {
+    if (!this.parentPostId) {
+      return null;
+    }
+
     return Post.findByPk(this.parentPostId);
   };
 
