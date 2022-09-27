@@ -7,7 +7,7 @@ import { getExtension, getFromEnvironment } from "../../util";
 import { tokenRequired, permissionRequired } from "../../util/middleware";
 import { uploadToS3, deleteFromS3 } from "../../util/s3";
 import { UserInstance } from "../../models/user";
-import { encodeDash, getJobStatus } from "../../util/transcode";
+import { encodeDash, getJobStatus, resolutions } from "../../util/transcode";
 
 const [ BUCKET_NAME, ETS_PIPELINE ] = getFromEnvironment("BUCKET_NAME", "ETS_PIPELINE");
 const UPLOAD_PREFIX = "upload/";
@@ -184,6 +184,17 @@ router.delete("/upload/raw", tokenRequired, permissionRequired( "upload_raw"), a
       message: "Could not delete from S3"
     });
   }
+});
+
+/**
+ * Returns a list of available output resolutions that can be passed as
+ * parameters to /upload/encode.
+ */
+router.get("/upload/encode/resolutions", tokenRequired, (req, res) => {
+  res.send({
+    status: "OK",
+    resolutions: Object.getOwnPropertyNames(resolutions)
+  });
 });
 
 export default router;
